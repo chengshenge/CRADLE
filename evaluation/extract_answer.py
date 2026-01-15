@@ -2,19 +2,21 @@ import argparse
 import logging
 import os
 import re
+import time
 
-from openai import AzureOpenAI
 from rich.logging import RichHandler
 from tqdm import tqdm
 
 from evaluation.prompts.ext_ans import demo_prompt
-from models import gpt
 from utilities import read_json, save_json
 
 
 def verify_extraction(extraction):
-    extraction = extraction.strip()
-    if extraction == "" or extraction == None:
+    if extraction is None:
+        return False
+    if isinstance(extraction, str):
+        extraction = extraction.strip()
+    if extraction == "":
         return False
     return True
 
@@ -26,55 +28,149 @@ def create_test_prompt(demo_prompt, query, response):
     return full_prompt
 
 
-def extract_answer(model, response, problem, quick_extract=False):
-    question_type = problem['question_type']
-    answer_type = problem['answer_type']
-    choices = problem['choices']
-    query = problem['query']
-    pid = problem['pid']
+def extract_answer_local_rules(response: str, problem: dict) -> str:
+    """
+    A safe local-only extractor used when --quick_extract is enabled.
+    This never calls any LLM.
+    """
+    question_type = problem.get("question_type")
+    answer_type = problem.get("answer_type")
+    choices = problem.get("choices") or []
+    pid = problem.get("pid", "")
 
+    if response is None:
+        return ""
+    if isinstance(response, str):
+        response = response.strip()
     if response == "":
         return ""
 
-    if question_type == 'multi_choice' and response in choices:
+    # If it's multi-choice and the response is exactly one of the choices
+    if question_type == "multi_choice" and response in choices:
         return response
 
+    # Try direct integer/float casting if answer_type indicates
     if answer_type == "integer":
         try:
-            extraction = int(response)
-            return str(extraction)
-        except Exception as e:
+            return str(int(response))
+        except Exception:
             pass
 
     if answer_type == "float":
         try:
-            extraction = str(float(response))
-            return extraction
-        except Exception as e:
+            return str(float(response))
+        except Exception:
             pass
 
-    # quick extraction
-    if quick_extract:
-        logging.info("Quickly extracting answer...")
-        # The answer is "text". -> "text"
+    # Common patterns:
+    # The answer is "text". -> text
+    try:
+        m = re.search(r'The answer is\s*"(.*)"\.', response)
+        if m:
+            return m.group(1).strip()
+    except Exception:
+        pass
+
+    # The answer is: XXX
+    try:
+        m = re.search(r"(?i)the answer is\s*[:：]\s*([^\n\r]+)", response)
+        if m:
+            return m.group(1).strip().strip(".")
+    except Exception:
+        pass
+
+    # Answer: XXX
+    try:
+        m = re.search(r"(?i)^answer\s*[:：]\s*([^\n\r]+)", response)
+        if m:
+            return m.group(1).strip().strip(".")
+    except Exception:
+        pass
+
+    # If multi-choice: try to find a single letter choice (A/B/C/D/...)
+    if question_type == "multi_choice" and choices:
+        # e.g., "Answer: C" or "Option C"
         try:
-            result = re.search(r'The answer is "(.*)"\.', response)
-            if result:
-                extraction = result.group(1)
-                return extraction
-        except Exception as e:
+            m = re.search(r"(?i)\b([A-Z])\b", response)
+            if m and m.group(1) in choices:
+                return m.group(1)
+        except Exception:
             pass
 
-    # general extraction
+    # Fallback: return empty to mark extraction failure (score script may treat as incorrect)
+    logging.debug(f"[{pid}] quick_extract failed to parse response.")
+    return ""
+
+
+def build_llm_extractor(args):
+    """
+    Build an LLM client+wrapper only when needed (i.e., not quick_extract).
+    Priority:
+      1) OpenAI official API via OPENAI_API_KEY
+      2) Azure OpenAI via AZURE_* env vars / args
+    """
+    # Try OpenAI official first
+    openai_key = args.openai_api_key or os.getenv("OPENAI_API_KEY")
+    if openai_key:
+        try:
+            from openai import OpenAI
+            from models import gpt
+
+            client = OpenAI(api_key=openai_key)
+            model_name = args.openai_model
+            logging.info(f"Using OpenAI API for extraction, model={model_name}")
+            return gpt.GPT_Model(client=client, model=model_name)
+        except Exception as e:
+            logging.warning("Failed to initialize OpenAI client for extraction, will try Azure if available.")
+            logging.warning(str(e))
+
+    # Fallback to Azure if configured
+    if args.azure_openai_api_endpoint and args.azure_openai_api_key and args.azure_openai_api_version and args.azure_openai_model:
+        try:
+            from openai import AzureOpenAI
+            from models import gpt
+
+            client = AzureOpenAI(
+                azure_endpoint=args.azure_openai_api_endpoint,
+                api_key=args.azure_openai_api_key,
+                api_version=args.azure_openai_api_version,
+            )
+            logging.info(f"Using Azure OpenAI for extraction, model={args.azure_openai_model}")
+            return gpt.GPT_Model(client=client, model=args.azure_openai_model)
+        except Exception as e:
+            raise RuntimeError(f"Azure OpenAI client init failed: {e}") from e
+
+    raise RuntimeError(
+        "No LLM credentials found for non-quick extraction. "
+        "Set OPENAI_API_KEY (recommended) or AZURE_OPENAI_API_* env vars."
+    )
+
+
+def extract_answer_with_llm(model, response, problem) -> str:
+    """
+    General extraction using an LLM. This matches the original behavior:
+    create a prompt and ask the model to output Extracted answer.
+    """
+    query = problem.get("query", "")
+    pid = problem.get("pid", "")
+
+    if response is None:
+        return ""
+    if isinstance(response, str):
+        response = response.strip()
+    if response == "":
+        return ""
+
     try:
         full_prompt = create_test_prompt(demo_prompt, query, response)
         extraction = model.get_response(user_prompt=full_prompt)
-        return extraction
+        if isinstance(extraction, str):
+            return extraction.strip()
+        return str(extraction).strip()
     except Exception as e:
         logging.info(f"Error in extracting answer for problem: {pid} with response: {response}")
         logging.info(e)
-
-    return ""
+        return ""
 
 
 def parse_args():
@@ -88,10 +184,20 @@ def parse_args():
     # output
     parser.add_argument('--save_every', type=int, default=100, help='save every n problems')
 
+    # OpenAI (recommended for non-quick extraction)
+    parser.add_argument('--openai_api_key', type=str, default=os.getenv("OPENAI_API_KEY"))
+    parser.add_argument('--openai_model', type=str, default=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                        help="Model for extraction when using OpenAI API. Default: gpt-4o-mini (cheap).")
+
+    # Azure OpenAI (optional fallback)
     parser.add_argument('--azure_openai_api_endpoint', type=str, default=os.getenv("AZURE_OPENAI_API_ENDPOINT"))
     parser.add_argument('--azure_openai_api_key', type=str, default=os.getenv("AZURE_OPENAI_API_KEY"))
     parser.add_argument('--azure_openai_api_version', type=str, default=os.getenv("AZURE_OPENAI_API_VERSION"))
     parser.add_argument('--azure_openai_model', type=str, default=os.getenv("AZURE_OPENAI_MODEL"))
+
+    # retry for LLM extraction
+    parser.add_argument('--max_retries', type=int, default=6)
+    parser.add_argument('--retry_sleep', type=int, default=10)
 
     args = parser.parse_args()
     return args
@@ -101,48 +207,29 @@ def main():
     logging.info("MathVista: Extract Answers - Start")
     args = parse_args()
 
-    # args
     label = args.response_label
-
-    assert (
-        args.azure_openai_api_endpoint is not None
-    ), "Env var AZURE_OPENAI_API_ENDPOINT is not set but is required for OpenAI client."
-    assert (
-        args.azure_openai_api_key is not None
-    ), "Env var AZURE_OPENAI_API_KEY is not set but is required for OpenAI client."
-    assert (
-        args.azure_openai_api_version is not None
-    ), "Env var AZURE_OPENAI_API_VERSION is not set but is required for OpenAI client."
-    assert (
-        args.azure_openai_model is not None
-    ), "Env var AZURE_OPENAI_MODEL is not set but is required for OpenAI client."
-
-    client = AzureOpenAI(
-        azure_endpoint=args.azure_openai_api_endpoint,
-        api_key=args.azure_openai_api_key,
-        api_version=args.azure_openai_api_version,
-    )
-    model = gpt.GPT_Model(client=client, model=args.azure_openai_model)
 
     logging.info(f"Reading {args.results_file_path}...")
     results = read_json(args.results_file_path)
 
     full_pids = list(results.keys())
 
+    # Determine which problems to run
     skip_pids = []
-    for pid, problem in results.items():
-        extraction = problem.get('extraction')
-        if extraction is not None and verify_extraction(extraction):
-            skip_pids.append(problem['pid'])
+    if not args.rerun:
+        for pid, problem in results.items():
+            extraction = problem.get('extraction')
+            if extraction is not None and verify_extraction(extraction):
+                skip_pids.append(problem.get('pid', pid))
 
     if args.rerun:
         test_pids = full_pids
     else:
         if len(skip_pids) > 0:
             logging.info(
-                f"Found existing results file with {len(skip_pids)} problems with valid responses. Skipping these problems..."
+                f"Found existing results file with {len(skip_pids)} problems with valid extractions. Skipping these problems..."
             )
-        test_pids = [pid for pid in full_pids if pid not in skip_pids]
+        test_pids = [pid for pid in full_pids if results[pid].get('pid', pid) not in skip_pids]
 
     if args.max_num_problems > 0:
         test_pids = test_pids[: min(args.max_num_problems, len(test_pids))]
@@ -150,12 +237,43 @@ def main():
 
     logging.info(f"Number of test problems to run: {len(test_pids)}")
 
+    # Build LLM extractor only if needed
+    llm_model = None
+    if not args.quick_extract:
+        llm_model = build_llm_extractor(args)
+
     for i, pid in enumerate(tqdm(test_pids)):
         problem = results[pid]
 
-        assert label in problem
+        if label not in problem:
+            raise KeyError(f"response_label '{label}' not found in problem {pid} keys={list(problem.keys())}")
+
         response = problem[label]
-        extraction = extract_answer(model, response, problem, args.quick_extract)
+
+        # Quick extract: local only
+        if args.quick_extract:
+            extraction = extract_answer_local_rules(response, problem)
+        else:
+            # LLM extraction with retry on rate-limit
+            attempt = 0
+            while True:
+                try:
+                    extraction = extract_answer_with_llm(llm_model, response, problem)
+                    break
+                except Exception as e:
+                    attempt += 1
+                    msg = str(e).lower()
+                    if ("rate limit" in msg or "429" in msg) and attempt <= args.max_retries:
+                        logging.warning(
+                            f"[{problem.get('pid', pid)}] Rate limit during extraction. "
+                            f"Retry {attempt}/{args.max_retries} after {args.retry_sleep}s"
+                        )
+                        time.sleep(args.retry_sleep)
+                        continue
+                    logging.error(f"[{problem.get('pid', pid)}] Extraction failed: {e}")
+                    extraction = ""
+                    break
+
         results[pid]['extraction'] = extraction
 
         if (i % args.save_every == 0 and i > 0) or i == len(test_pids) - 1:

@@ -3,9 +3,10 @@ import io
 import logging
 import os
 import sys
+import time
 
 from datasets import load_dataset
-from openai import AzureOpenAI
+from openai import OpenAI
 from rich.logging import RichHandler
 from tqdm import tqdm
 
@@ -13,6 +14,9 @@ from evaluation.build_query import create_query_data
 from utilities import read_json, save_json
 
 
+# =========================
+# Utils
+# =========================
 def verify_response(response):
     if isinstance(response, str):
         response = response.strip()
@@ -24,295 +28,275 @@ def verify_response(response):
 
 
 def evaluate_code(code_string):
-    # execute_code_and_capture_output
-    # Backup the original stdout
     old_stdout = sys.stdout
-
-    # Redirect stdout to capture the output
     new_stdout = io.StringIO()
     sys.stdout = new_stdout
 
-    # Try executing the code and capture any exception
     error = None
     try:
         exec(code_string)
     except Exception as e:
         error = e
 
-    # Restore the original stdout
     sys.stdout = old_stdout
-
-    # Get the captured output
     captured_output = new_stdout.getvalue()
     if isinstance(captured_output, str):
         captured_output = captured_output.strip()
 
-    # Return the captured output or error
     return captured_output, error
 
 
+# =========================
+# Args
+# =========================
 def parse_args():
     parser = argparse.ArgumentParser()
+
     # input
     parser.add_argument('--dataset_name', type=str, default='AI4Math/MathVista')
     parser.add_argument('--test_split_name', type=str, default='testmini')
     parser.add_argument('--data_dir', type=str, default='../data')
     parser.add_argument('--input_file', type=str, default='testmini.json')
+
     # output
-    parser.add_argument('--output_dir', type=str, default='../results/bard')
-    parser.add_argument('--output_file', type=str, default='output_bard.json')
-    parser.add_argument('--max_num_problems', type=int, default=-1, help='The number of problems to run')
-    parser.add_argument('--save_every', type=int, default=100, help='save every n problems')
-    # Local Model
-    parser.add_argument('--model_path', type=str, default=None)
-    parser.add_argument("--model-base", type=str, default=None)
-    parser.add_argument("--conv-mode", type=str, default="vicuna_v1")
-    parser.add_argument("--sep", type=str, default=",")
-    parser.add_argument("--temperature", type=float, default=0.2)
-    parser.add_argument("--top_p", type=float, default=None)
-    parser.add_argument("--num_beams", type=int, default=1)
-    parser.add_argument("--max_new_tokens", type=int, default=512)
-    # Remote model
+    parser.add_argument('--output_dir', type=str, default='results/gpt4o')
+    parser.add_argument('--output_file', type=str, default='output_gpt4o_testmini.json')
+    parser.add_argument('--max_num_problems', type=int, default=-1)
+    parser.add_argument('--save_every', type=int, default=20)
+
+    # model
     parser.add_argument(
         '--model',
         type=str,
-        default='gpt-3.5-turbo',
-        help='llm engine',
-        choices=['gpt-3.5-turbo', 'claude-2', 'gpt4', 'gpt-4-0613', 'bard'],
+        default='gpt-4o',
+        choices=['gpt-3.5-turbo', 'gpt-4o', 'gpt-4.1'],
     )
-    parser.add_argument('--key', type=str, default='', help='key for llm api')
+    parser.add_argument('--key', type=str, default='', help='OpenAI API key')
+
     # query
     parser.add_argument('--query_file', type=str, default=None)
     parser.add_argument('--caption_file', type=str, default='../data/texts/captions_bard.json')
     parser.add_argument('--ocr_file', type=str, default='../data/texts/ocrs_easyocr.json')
-    parser.add_argument('--shot_type', type=str, default='solution', help='shot type', choices=['solution', 'code'])
-    parser.add_argument('--shot_num', type=int, default=0, help='number of shot examples')
-    parser.add_argument('--use_caption', action='store_true', help='use caption data')
-    parser.add_argument('--use_ocr', action='store_true', help='use ocr data')
-    # other settings
-    parser.add_argument('--rerun', action='store_true', help='rerun answer extraction for all problems')
-    parser.add_argument('--debug', action='store_true', help='debug mode')
-    parser.add_argument('--azure_openai_api_endpoint', type=str, default=os.getenv("AZURE_OPENAI_API_ENDPOINT"))
-    parser.add_argument('--azure_openai_api_key', type=str, default=os.getenv("AZURE_OPENAI_API_KEY"))
-    parser.add_argument('--azure_openai_api_version', type=str, default=os.getenv("AZURE_OPENAI_API_VERSION"))
-    parser.add_argument('--azure_openai_model', type=str, default=os.getenv("AZURE_OPENAI_MODEL"))
-    args = parser.parse_args()
-    return args
+    parser.add_argument('--shot_type', type=str, default='solution', choices=['solution', 'code'])
+    parser.add_argument('--shot_num', type=int, default=0)
+    parser.add_argument('--use_caption', action='store_true')
+    parser.add_argument('--use_ocr', action='store_true')
+
+    # agent
+    parser.add_argument(
+        '--agent',
+        type=str,
+        default='direct',
+        choices=['direct', 'cradle_math_dynamic'],
+        help='direct: original single-call; cradle_math_dynamic: 6-module + dynamic skill learning'
+    )
+
+    # dynamic skill options
+    parser.add_argument('--skills_dir', type=str, default='skills',
+                        help='subdir under output_dir to store learned skills')
+    parser.add_argument('--freeze_skills', action='store_true',
+                        help='load skills but do not add/update new ones')
+    parser.add_argument('--reset_skills', action='store_true',
+                        help='clear learned skills at start (for reproducibility)')
+    parser.add_argument('--max_new_skills', type=int, default=3,
+                        help='max new skills to accept per run (safety)')
+    parser.add_argument('--cradle_max_steps', type=int, default=10,
+                        help='max tool steps in action planning')
+
+    # CRADLE alignment: observation (image) injection policy
+    parser.add_argument('--attach_image_mode', type=str, default='all',
+                        choices=['all', 'selective'],
+                        help='all: attach image to EVERY LLM call (closest to CRADLE); '
+                             'selective: attach only to certain steps')
+    parser.add_argument('--image_steps', type=str, default='IG,AP,SR',
+                        help='comma-separated step names used when attach_image_mode=selective')
+    parser.add_argument('--json_max_retries', type=int, default=1,
+                        help='re-ask retries when a strict JSON contract is violated (no repair).')
+
+    # retry / rate limit
+    parser.add_argument('--max_retries', type=int, default=10)
+    parser.add_argument('--retry_sleep', type=int, default=20,
+                        help='seconds to sleep when hitting rate limit')
+
+    # other
+    parser.add_argument('--rerun', action='store_true')
+    parser.add_argument('--debug', action='store_true')
+
+    return parser.parse_args()
 
 
+# =========================
+# Main
+# =========================
 def main():
     logging.info("MathVista: Generating Responses - Start")
     args = parse_args()
 
-    # load data
-    logging.info(f"Loading dataset {args.dataset_name}, split {args.test_split_name}...")
+    # load dataset
+    logging.info(f"Loading dataset {args.dataset_name}, split {args.test_split_name}")
     data_list = load_dataset(args.dataset_name, split=args.test_split_name)
-    # Convert Hugging Face data into dictionary to match local data format
-    # TODO: Convert scripts not to depend on dictionary .json format. Update to use .jsonl format
-    data = {item['pid']: item for item in data_list}
+    # IMPORTANT: normalize pid to str for stable JSON keys and correct skipping.
+    # HuggingFace dataset pids can be int, but JSON object keys are always str.
+    data = {str(item['pid']): item for item in data_list}
 
-    # load or create query data
+    # load / build query
     if args.query_file:
         query_file = os.path.join(args.data_dir, args.query_file)
-        if os.path.exists(query_file):
-            logging.info(f"Loading existing {query_file}...")
-            query_data = read_json(query_file)
+        logging.info(f"Loading query file {query_file}")
+        query_data = read_json(query_file)
     else:
-        logging.info("Creating new query...")
-
+        logging.info("Creating query data")
         caption_data = {}
-        if args.use_caption:
-            caption_file = args.caption_file
-            if os.path.exists(caption_file):
-                logging.info(f"Reading {caption_file}...")
-                try:
-                    caption_data = read_json(caption_file)["texts"]
-                    logging.info("Caption data loaded.")
-                except Exception as e:
-                    logging.info("Caption data not found!! Please Check.")
-
         ocr_data = {}
-        if args.use_ocr:
-            ocr_file = args.ocr_file
-            if os.path.exists(ocr_file):
-                logging.info(f"Reading {ocr_file}...")
-                try:
-                    ocr_data = read_json(ocr_file)["texts"]
-                    logging.info("OCR data loaded.")
-                except Exception as e:
-                    logging.info("OCR data not found!! Please Check.")
+
+        if args.use_caption and os.path.exists(args.caption_file):
+            caption_data = read_json(args.caption_file)["texts"]
+
+        if args.use_ocr and os.path.exists(args.ocr_file):
+            ocr_data = read_json(args.ocr_file)["texts"]
 
         query_data = create_query_data(data, caption_data, ocr_data, args)
 
-    # If we were given a custom model path, load that model, otherwise use a remote service model
-    if args.model_path:
-        # from models import llava
+    # OpenAI client
+    api_key = args.key if args.key else os.getenv("OPENAI_API_KEY")
+    assert api_key is not None, "OPENAI_API_KEY not set."
+    client = OpenAI(api_key=api_key)
 
-        logging.info(f"Loading model from {args.model_path}...")
-        # TODO: Add support for local models
-        raise NotImplementedError("Local models are not yet supported.")
+    # backbone model
+    from models import gpt
+    backbone = gpt.GPT_Model(client=client, model=args.model)
+
+    # agent wrapper
+    if args.agent == 'cradle_math_dynamic':
+        from models import cradle_math_dynamic
+
+        attach_all = (args.attach_image_mode == 'all')
+        image_steps = [s.strip() for s in args.image_steps.split(',') if s.strip()]
+
+        model = cradle_math_dynamic.CradleMathDynamicAgent(
+            backbone=backbone,
+            output_dir=args.output_dir,
+            skills_subdir=args.skills_dir,
+            max_steps=args.cradle_max_steps,
+            freeze_skills=args.freeze_skills,
+            reset_skills=args.reset_skills,
+            max_new_skills=args.max_new_skills,
+            debug=args.debug,
+            always_attach_image=attach_all,
+            image_steps=image_steps,
+            json_max_retries=args.json_max_retries,
+        )
+
+        logging.info(
+            f"Agent loaded: cradle_math_dynamic (backbone={args.model}, "
+            f"attach_image_mode={args.attach_image_mode}, image_steps={image_steps}, "
+            f"json_max_retries={args.json_max_retries})"
+        )
     else:
-        model_name = args.azure_openai_model if args.azure_openai_model else args.model
-        logging.info(f"Loading {model_name}...")
+        model = backbone
+        logging.info(f"Agent loaded: direct (model={args.model})")
 
-        if model_name == 'bard':
-            from models import bard
-
-            if args.key == '':
-                logging.info("Loading key from environment variable")
-                key = os.environ['_BARD_API_KEY']
-            else:
-                key = args.key
-            model = bard.Bard_Model(key)
-        elif "gpt" in model_name:
-            from models import gpt
-
-            key = args.azure_openai_api_key if args.azure_openai_api_key else args.key
-            if key == '':
-                key = os.getenv("OPENAI_API_KEY")
-
-            assert (
-                args.azure_openai_api_endpoint is not None
-            ), "Env var AZURE_OPENAI_API_ENDPOINT is not set but is required for OpenAI client."
-            assert (
-                args.azure_openai_api_key is not None
-            ), "Env var AZURE_OPENAI_API_KEY is not set but is required for OpenAI client."
-            assert (
-                args.azure_openai_api_version is not None
-            ), "Env var AZURE_OPENAI_API_VERSION is not set but is required for OpenAI client."
-            assert (
-                args.azure_openai_model is not None
-            ), "Env var AZURE_OPENAI_MODEL is not set but is required for OpenAI client."
-
-            client = AzureOpenAI(
-                azure_endpoint=args.azure_openai_api_endpoint,
-                api_key=args.azure_openai_api_key,
-                api_version=args.azure_openai_api_version,
-            )
-
-            model = gpt.GPT_Model(client=client, model=model_name)
-
-        elif "claude" in model_name:
-            from models import claude
-
-            if args.key == '':
-                logging.info("Loading token from environment variable")
-                key = os.environ.get("ANTHROPIC_API_KEY")
-            else:
-                key = args.key
-            model = claude.Claude_Model(model_name, key)
-        else:
-            raise ValueError(f"Model {model_name} not supported.")
-
-    logging.info(f"Model loaded.")
-
-    full_pids = list(data.keys())
-
+    # output
     os.makedirs(args.output_dir, exist_ok=True)
     output_file_path = os.path.join(args.output_dir, args.output_file)
 
-    # load results
+    # load existing results
     if os.path.exists(output_file_path):
-        logging.info("Results already exist.")
-        logging.info(f"Reading {output_file_path}...")
+        logging.info(f"Loading existing results from {output_file_path}")
         results = read_json(output_file_path)
     else:
         results = {}
 
+    # skip finished
     skip_pids = []
     if not args.rerun:
-        for problem_id in full_pids:
-            # logging.info(f"Checking {pid}...")
-            if problem_id in results and 'response' in results[problem_id]:
-                response = results[problem_id]['response']
-                if verify_response(response):
-                    # logging.info(f"Valid response found for {pid}.")
-                    skip_pids.append(problem_id)
+        for pid, res in results.items():
+            if 'response' in res and verify_response(res['response']):
+                skip_pids.append(pid)
 
-    if len(skip_pids) > 0:
-        logging.info(
-            f"Found existing results file with {len(skip_pids)} problems with valid responses. Skipping these problems..."
-        )
-
-    test_pids = [pid for pid in full_pids if pid not in skip_pids]
-
+    test_pids = [pid for pid in data if pid not in skip_pids]
     if args.max_num_problems > 0:
-        test_pids = test_pids[: min(args.max_num_problems, len(test_pids))]
-        logging.warning(f'Limiting number of problems to {args.max_num_problems}.')
+        test_pids = test_pids[:args.max_num_problems]
 
-    logging.info(f"Number of test problems to run: {len(test_pids)}")
+    logging.info(f"Running {len(test_pids)} problems")
 
-    for i, problem_id in enumerate(tqdm(test_pids)):
-        problem: dict = data[problem_id].copy()
+    # loop
+    for i, pid in enumerate(tqdm(test_pids)):
+        problem = data[pid].copy()
+        decoded_image = problem.pop('decoded_image')
+        query = query_data[pid]
 
-        # Remove decoded Image for JSON deserialization
-        problem_decoded_image = problem['decoded_image']
-        problem.pop('decoded_image')
+        if args.debug:
+            logging.info(f"[{pid}] decoded_image is None? {decoded_image is None} type={type(decoded_image)}")
 
-        query = query_data[problem_id]
+        attempt = 0
+        while True:
+            try:
+                response = model.get_response(
+                    user_prompt=query,
+                    decoded_image=decoded_image
+                )
 
-        logging.debug("--------------------------------------------------------------")
-        logging.debug(f"Generating response for problem: {problem_id}...")
-        try:
-            response = model.get_response(user_prompt=query, decoded_image=problem_decoded_image)
-            results[problem_id] = problem
-            results[problem_id]['query'] = query
-            if args.shot_type == 'solution':
-                results[problem_id]['response'] = response
-            else:
-                output, error = evaluate_code(response)
-                results[problem_id]['response'] = response
-                results[problem_id]['execution'] = output
-                results[problem_id]['error'] = str(error)
-            logging.debug(f"Query: \n{query}")
-            logging.debug(f"Response: \n{response}")
-        except Exception as e:
-            logging.error(f"Error in extracting answer for {problem_id}")
-            logging.error(e)
-            results[problem_id] = problem
-            results[problem_id]['error'] = str(e)
+                results[pid] = problem
+                results[pid]['query'] = query
+                results[pid]['response'] = response
+                results[pid]['agent'] = args.agent
+                results[pid]['backbone_model'] = args.model
+                if args.agent == 'cradle_math_dynamic':
+                    results[pid]['attach_image_mode'] = args.attach_image_mode
+                    results[pid]['image_steps'] = args.image_steps
+                    results[pid]['json_max_retries'] = args.json_max_retries
+                break
+
+            except Exception as e:
+                msg = str(e)
+                attempt += 1
+
+                if 'rate limit' in msg.lower() or '429' in msg:
+                    if attempt > args.max_retries:
+                        logging.error(f"[{pid}] Exceeded max retries due to rate limit.")
+                        results[pid] = problem
+                        results[pid]['query'] = query
+                        results[pid]['error'] = msg
+                        results[pid]['agent'] = args.agent
+                        results[pid]['backbone_model'] = args.model
+                        break
+
+                    logging.warning(
+                        f"[{pid}] Rate limit hit. Retry {attempt}/{args.max_retries} after {args.retry_sleep}s"
+                    )
+                    time.sleep(args.retry_sleep)
+                    continue
+
+                logging.error(f"[{pid}] Error: {msg}")
+                results[pid] = problem
+                results[pid]['query'] = query
+                results[pid]['error'] = msg
+                results[pid]['agent'] = args.agent
+                results[pid]['backbone_model'] = args.model
+                break
 
         if (i % args.save_every == 0 and i > 0) or i == len(test_pids) - 1:
-            try:
-                save_json(results, output_file_path)
-                logging.info(f"Saved results to {output_file_path}")
-            except Exception as e:
-                logging.info(f"Error in saving {output_file_path}")
-                logging.info(e)
+            save_json(results, output_file_path)
+            logging.info(f"Saved results to {output_file_path}")
 
     logging.info("MathVista: Generating Responses - Finish")
 
 
+# =========================
+# Entry
+# =========================
 if __name__ == '__main__':
     logging.basicConfig(
         level=os.environ.get("LOGLEVEL", "INFO").upper(),
         format="[%(name)s] %(message)s",
         datefmt="[%X]",
-        handlers=[
-            RichHandler(
-                rich_tracebacks=True,
-                markup=False,
-                show_path=False,
-                omit_repeated_times=False,
-            )
-        ],
+        handlers=[RichHandler(rich_tracebacks=True)],
     )
-    logger_blocklist = [
-        "asyncio",
-        "azure",
-        "azureml",
-        "datasets",
-        "httpx",
-        "httpcore",
-        "filelock",
-        "fsspec",
-        "msal",
-        "msrest",
-        "openai",
-        "PIL",
-        "urllib3",
-    ]
-    for module in logger_blocklist:
+
+    for module in [
+        "asyncio", "datasets", "httpx", "openai", "PIL", "urllib3"
+    ]:
         logging.getLogger(module).setLevel(logging.WARNING)
 
     main()
