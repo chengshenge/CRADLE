@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the measure of angle H from the diagram.",
+      "action": "reason",
+      "note": "The diagram directly provides the value of angle H as 102°."
+    },
+    {
+      "intention": "Map the identified angle value to the correct multiple-choice option.",
+      "action": "python",
+      "code": "map_value_to_option(102, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])"
+    },
+    {
+      "intention": "Format the final answer using the selected option.",
+      "action": "python",
+      "code": "format_final('B')"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

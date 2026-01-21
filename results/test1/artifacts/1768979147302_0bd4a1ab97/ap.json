@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and ensure all necessary information is available.",
+      "action": "reason",
+      "note": "The problem requires subtracting the number of large rubber spheres and big shiny cylinders from the total number of objects. All necessary counts are provided in the text."
+    },
+    {
+      "intention": "Calculate the remaining number of objects after subtracting large rubber spheres and big shiny cylinders.",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric('50 - 15 - 10')"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

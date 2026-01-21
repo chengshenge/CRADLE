@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find the measure of angle BOC.",
+      "how_to_use": "Use this skill to perform calculations involving the known angle A and the properties of angle bisectors to determine angle BOC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the multiple-choice question.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: [option label]'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_boc",
+      "signature": "(angle_a, options)->str",
+      "purpose": "Calculate the measure of angle BOC using the properties of angle bisectors and the sum of angles in a triangle.",
+      "inputs": [
+        "angle_a",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "If angle A is not valid, return an error message."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "Answer: B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_boc",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves a scenario where there are a total of 50 objects. Among these, 15 are large rubber spheres and 10 are big shiny cylinders. The task is to subtract the number of large rubber spheres and big shiny cylinders from the total number of objects. The goal is to determine how many objects remain after these subtractions. The problem is presented in a text format, and the necessary counts are provided within the text. The final answer should be an integer representing the remaining number of objects.",
+  "entities": [
+    "total_objects",
+    "large_rubber_spheres",
+    "big_shiny_cylinders"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify total objects from text",
+    "Subtract large rubber spheres from total",
+    "Subtract big shiny cylinders from result",
+    "Determine remaining objects"
+  ],
+  "blockers": [
+    "remaining_objects"
+  ],
+  "risk_checks": [
+    "Ensure clarity on criteria for 'large', 'rubber', 'big', and 'shiny' as described in text"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "subtraction",
+    "counting"
+  ]
+}

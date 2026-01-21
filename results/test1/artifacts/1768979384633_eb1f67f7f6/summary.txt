@@ -1,0 +1,23 @@
+run_id: 1768979384633_eb1f67f7f6
+ts: 1768979384.6329916
+prompt_hash: eb1f67f7f6
+img_hash: 1912e7f3f535
+
+stage_times (s):
+  IG: 4.671653
+  GTI: 3.922512
+  IGR: 2.619105
+  TI: 5.503343
+  SC: 4.843988
+  AP: 3.53688
+  EXEC: 0.000109
+  SR: 1.507101
+
+final_answer: Answer: C
+
+errors:
+  {"stage": "SC", "type": "warning_missing_optional", "missing": ["tags"]}
+
+python_step_errors:
+- step 2: pattern = 'C'  # Assume pattern is identified as C for demonstration
+map_value_to_option(pattern, ['A', 'B', 'C', 'D', 'E']) -> string indices must be integers, not 'str'

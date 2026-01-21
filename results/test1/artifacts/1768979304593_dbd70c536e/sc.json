@@ -1,0 +1,73 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_diagram",
+      "signature": "(diagram, object_type, reference_object, position)->int",
+      "purpose": "Count the number of specified objects in a diagram relative to a reference object and position.",
+      "inputs": [
+        "diagram",
+        "object_type",
+        "reference_object",
+        "position"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects of the specified type are present",
+        "Reference object is not found",
+        "Position is ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "('diagram1', 'tiny gray bicycles', 'brown metal sedan', 'left')",
+          "expect": 3
+        },
+        {
+          "input": "('diagram1', 'objects', 'tiny green bicycle', 'left')",
+          "expect": 5
+        }
+      ],
+      "tags": [
+        "diagram analysis",
+        "object counting",
+        "spatial reasoning"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1, count2)->str",
+      "purpose": "Compare two counts and return 'Yes' if the first is greater, otherwise 'No'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Both counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "(3, 2)",
+          "expect": "Yes"
+        },
+        {
+          "input": "(2, 3)",
+          "expect": "No"
+        },
+        {
+          "input": "(3, 3)",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_diagram",
+    "compare_counts"
+  ]
+}

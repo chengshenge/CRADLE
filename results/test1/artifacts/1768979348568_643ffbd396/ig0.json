@@ -1,0 +1,90 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure described as a '勾股树' (Pythagorean tree), which includes squares and right triangles. The areas of squares A and B are given, and the task is to find the area of square C. This requires understanding the geometric relationships in the diagram."
+  ],
+  "problem_understanding": "The problem involves a geometric figure called a Pythagorean tree, where all quadrilaterals are squares and all triangles are right triangles. Given the areas of squares A and B, the task is to find the area of the largest square C.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "Area of square A",
+        "value": "5",
+        "unit": "square units",
+        "source": "text",
+        "note": "Given in the problem statement."
+      },
+      {
+        "name": "Area of square B",
+        "value": "3",
+        "unit": "square units",
+        "source": "text",
+        "note": "Given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "Area of square C"
+    ],
+    "relations": [
+      "The squares and triangles form a Pythagorean tree, implying a geometric relationship between their areas."
+    ],
+    "constraints": [
+      "All quadrilaterals are squares.",
+      "All triangles are right triangles."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "5 nouns 0 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the area of square C using the given areas of squares A and B and the geometric properties of the Pythagorean tree."
+  ],
+  "problem_summary": "Given a Pythagorean tree with squares A and B having areas 5 and 3 respectively, find the area of the largest square C.",
+  "knowns": [
+    {
+      "name": "Area of square A",
+      "value": "5",
+      "unit": "square units",
+      "source": "text",
+      "note": "Given in the problem statement."
+    },
+    {
+      "name": "Area of square B",
+      "value": "3",
+      "unit": "square units",
+      "source": "text",
+      "note": "Given in the problem statement."
+    }
+  ],
+  "asks": [
+    "Area of square C"
+  ],
+  "constraints": [
+    "All quadrilaterals are squares.",
+    "All triangles are right triangles."
+  ],
+  "visual_facts": [
+    "The diagram is a Pythagorean tree with squares and right triangles."
+  ],
+  "ambiguity": [
+    "The exact geometric configuration of the Pythagorean tree is not described in detail, but it is assumed to follow standard properties."
+  ]
+}

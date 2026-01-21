@@ -1,0 +1,87 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves counting objects based on their descriptions, which are likely labeled or described in text within the image."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting specific types of objects (large rubber spheres and big shiny cylinders) from a total count of objects, and then determining how many objects remain.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "total_objects",
+        "value": "50",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      },
+      {
+        "name": "large_rubber_spheres",
+        "value": "15",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      },
+      {
+        "name": "big_shiny_cylinders",
+        "value": "10",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "unknown": [
+      "remaining_objects"
+    ],
+    "relations": [
+      "remaining_objects = total_objects - large_rubber_spheres - big_shiny_cylinders"
+    ],
+    "constraints": [
+      "large_rubber_spheres and big_shiny_cylinders must be identified and counted from the image"
+    ],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "3 nouns 2 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves counting and subtracting specific objects, which is a straightforward arithmetic operation."
+  ],
+  "problem_summary": "Count the total objects, subtract the number of large rubber spheres and big shiny cylinders, and find the remaining count.",
+  "knowns": [
+    {
+      "name": "total_objects",
+      "value": "50",
+      "unit": "",
+      "source": "image",
+      "note": "Extracted from text"
+    },
+    {
+      "name": "large_rubber_spheres",
+      "value": "15",
+      "unit": "",
+      "source": "image",
+      "note": "Extracted from text"
+    },
+    {
+      "name": "big_shiny_cylinders",
+      "value": "10",
+      "unit": "",
+      "source": "image",
+      "note": "Extracted from text"
+    }
+  ],
+  "asks": [
+    "remaining_objects"
+  ],
+  "constraints": [
+    "Identify and count large rubber spheres and big shiny cylinders from the image."
+  ],
+  "visual_facts": [
+    "Total objects: 50",
+    "Large rubber spheres: 15",
+    "Big shiny cylinders: 10"
+  ],
+  "ambiguity": [
+    "The exact criteria for 'large', 'rubber', 'big', and 'shiny' need to be clear from the image."
+  ]
+}

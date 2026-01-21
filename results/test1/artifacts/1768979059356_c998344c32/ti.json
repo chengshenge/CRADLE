@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is expected to be labeled on the cup itself. The image attached to the problem shows volume markings at different levels: 500 ml, 250 ml, 100 ml, and 50 ml. The task is to identify the total volume of the measuring cup based on these markings. However, there is an ambiguity because the unit specified in the question is grams, which is unusual for volume measurements, suggesting a possible need for conversion or clarification. The highest marking on the cup is 500 ml, which might indicate the total volume. The problem requires reading this specific value from the image and providing an integer answer as the final value.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the volume markings from the image",
+    "Identify the highest marking as the total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure the unit conversion from ml to grams is not required",
+    "Verify that the highest marking is indeed the total volume"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "unit conversion",
+    "image interpretation"
+  ]
+}

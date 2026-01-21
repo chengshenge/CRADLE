@@ -1,0 +1,35 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the initial kinetic energy of the canister.",
+      "action": "reason",
+      "note": "The kinetic energy of the canister is given by the formula KE = 0.5 * m * v^2, where m is the mass and v is the velocity."
+    },
+    {
+      "intention": "Compute the initial kinetic energy of the canister.",
+      "action": "python",
+      "code": "mass = 0.40  # kg\nvelocity = 0.50  # m/s\nkinetic_energy = calc_numeric(f'0.5 * {mass} * {velocity}**2')"
+    },
+    {
+      "intention": "Set up the equation for energy conservation.",
+      "action": "reason",
+      "note": "The initial kinetic energy of the canister is converted into the potential energy of the spring, given by PE = 0.5 * k * d^2, where k is the spring constant and d is the compression distance."
+    },
+    {
+      "intention": "Solve for the compression distance d using the spring potential energy formula.",
+      "action": "python",
+      "code": "spring_constant = 750  # N/m\ncompression_distance = sympy_solve(f'0.5 * {spring_constant} * d**2 - {kinetic_energy}', 'd')"
+    },
+    {
+      "intention": "Format the final answer for the compression distance.",
+      "action": "python",
+      "code": "formatted_answer = format_final(compression_distance)"
+    },
+    {
+      "intention": "Output the final answer.",
+      "action": "normalize",
+      "text": "Answer: {formatted_answer}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_value_to_option",
+      "purpose": "To map the identified pattern or value to one of the given options A, B, C, D, or E.",
+      "how_to_use": "Use this skill to determine which option corresponds to the identified pattern or value in the sequence."
+    },
+    {
+      "name": "count_objects_in_diagram",
+      "purpose": "To analyze the diagram and count specific objects or features that may help in identifying the pattern.",
+      "how_to_use": "Use this skill to count objects or features in the diagram that are relevant to identifying the sequence pattern."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "signature": "(diagram)->pattern",
+      "purpose": "To identify the pattern or rule governing the sequence of objects in the diagram.",
+      "inputs": [
+        "diagram"
+      ],
+      "outputs": "pattern",
+      "edge_cases": [
+        "Non-obvious patterns",
+        "Multiple possible patterns"
+      ],
+      "tests": [
+        {
+          "input": "diagram with a clear geometric progression",
+          "expect": "geometric progression pattern"
+        },
+        {
+          "input": "diagram with alternating colors",
+          "expect": "alternating color pattern"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence analysis",
+        "diagram"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "count_objects_in_diagram",
+    "map_value_to_option"
+  ]
+}

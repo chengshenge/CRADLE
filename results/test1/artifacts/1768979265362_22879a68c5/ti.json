@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves interpreting a clock diagram to determine the time word that fits the sentence 'It is (_) after eight'. The clock diagram shows the positions of the hour and minute hands, which must be analyzed to identify the correct time word. The time word must be selected from the given options. The task requires understanding the geometric representation of the clock and mapping it to the appropriate time word. The problem is a multiple-choice question with five options. The exact positions of the clock hands need to be interpreted to determine the correct time word.",
+  "entities": [
+    "hour hand",
+    "minute hand",
+    "clock face"
+  ],
+  "unknowns": [
+    "time word"
+  ],
+  "required_operations": [
+    "Interpret the positions of the hour and minute hands on the clock.",
+    "Determine the time word that fits the sentence 'It is (_) after eight'.",
+    "Map the determined time word to one of the given options."
+  ],
+  "blockers": [
+    "time word"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of the clock hands' positions.",
+    "Verify that the selected time word matches one of the given options."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "half"
+      },
+      {
+        "label": "B",
+        "text": "quarter"
+      },
+      {
+        "label": "C",
+        "text": "o'clock"
+      },
+      {
+        "label": "D",
+        "text": "quarter to"
+      },
+      {
+        "label": "E",
+        "text": "quarter past"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "clock interpretation",
+    "multiple-choice"
+  ]
+}

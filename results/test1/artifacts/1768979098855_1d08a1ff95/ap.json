@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known angle A and use the properties of angle bisectors to find angle BOC.",
+      "action": "reason",
+      "note": "In triangle ABC, angle A is 110 degrees. OB and OC are angle bisectors, so angle BOC is calculated using the formula: ∠BOC = 90° + (∠A / 2)."
+    },
+    {
+      "intention": "Calculate the measure of angle BOC using the known angle A.",
+      "action": "python",
+      "code": "angle_a = 110\nangle_boc = 90 + (angle_a / 2)"
+    },
+    {
+      "intention": "Map the calculated angle BOC to the closest multiple-choice option.",
+      "action": "reason",
+      "note": "The calculated angle BOC is 145 degrees, which corresponds to option C."
+    },
+    {
+      "intention": "Format the final answer as required by the multiple-choice question.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

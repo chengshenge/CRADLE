@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers in the problem.",
+      "action": "reason",
+      "note": "The problem has unresolved targets: number of tiny gray bicycles on the left side of the brown metal sedan and number of things to the left of the tiny green bicycle."
+    },
+    {
+      "intention": "Count the number of tiny gray bicycles on the left side of the brown metal sedan.",
+      "action": "python",
+      "code": "count_gray_bicycles = count_objects_in_diagram('diagram', 'tiny gray bicycle', 'brown metal sedan', 'left')"
+    },
+    {
+      "intention": "Count the number of things to the left of the tiny green bicycle.",
+      "action": "python",
+      "code": "count_left_of_green_bicycle = count_objects_in_diagram('diagram', 'object', 'tiny green bicycle', 'left')"
+    },
+    {
+      "intention": "Compare the counts to determine the answer.",
+      "action": "python",
+      "code": "answer = 'A' if count_gray_bicycles > count_left_of_green_bicycle else 'B'"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: {answer}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

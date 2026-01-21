@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_value_to_option",
+      "purpose": "To map the determined time word to one of the given options.",
+      "how_to_use": "Use the angle value derived from the clock hands' positions to find the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_hands",
+      "signature": "(hour_hand_position, minute_hand_position)->time_word",
+      "purpose": "To interpret the positions of the hour and minute hands on a clock and determine the corresponding time word.",
+      "inputs": [
+        "hour_hand_position",
+        "minute_hand_position"
+      ],
+      "outputs": "time_word",
+      "edge_cases": [
+        "When the hands are exactly on the hour or half-hour marks.",
+        "When the hands are close to each other."
+      ],
+      "tests": [
+        {
+          "input": "hour_hand_position=8, minute_hand_position=15",
+          "expect": "quarter past"
+        },
+        {
+          "input": "hour_hand_position=8, minute_hand_position=0",
+          "expect": "o'clock"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "clock interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_hands",
+    "map_value_to_option"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for the multiple-choice question.",
+      "how_to_use": "Use this skill to return the answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_angle_in_diagram",
+      "signature": "(diagram_data)->angle_value",
+      "purpose": "To identify and read the value of a specific angle from a geometric diagram.",
+      "inputs": [
+        "diagram_data"
+      ],
+      "outputs": "angle_value",
+      "edge_cases": [
+        "Diagram is unclear or labels are missing",
+        "Multiple angles are marked with values"
+      ],
+      "tests": [
+        {
+          "input": "diagram_data_with_angle_H_102",
+          "expect": "102"
+        },
+        {
+          "input": "diagram_data_with_angle_H_missing",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_value_to_option",
+      "signature": "(angle_value, options)->option_label",
+      "purpose": "To map a given angle value to the correct option label in a multiple-choice question.",
+      "inputs": [
+        "angle_value",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Angle value does not match any option",
+        "Options are not in numerical order"
+      ],
+      "tests": [
+        {
+          "input": "(102, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "B"
+        },
+        {
+          "input": "(105, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "option mapping",
+        "geometry"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_angle_in_diagram",
+    "map_value_to_option",
+    "format_final"
+  ]
+}

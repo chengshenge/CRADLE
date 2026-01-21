@@ -329,6 +329,143 @@ def check_code_static_safety(code: str) -> Optional[str]:
 # Safe execution context for python tool steps + skills
 # ============================================================
 
+def _safe_eval_expr(expr: str, ctx: Dict[str, Any]) -> Any:
+    """Safely evaluate a numeric/math expression.
+
+    Allowed:
+    - literals, arithmetic ops, comparisons/booleans
+    - names present in ctx (e.g., math, sp, symbols) and safe builtins
+    - attribute access only on whitelisted module names: math, sp
+    - function calls only if the callee is a Name in ctx OR attribute on math/sp
+    """
+    tree = ast.parse(expr, mode="eval")
+
+    ALLOWED = (
+        ast.Expression, ast.Constant, ast.Name, ast.Load,
+        ast.BinOp, ast.UnaryOp, ast.BoolOp, ast.Compare,
+        ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow,
+        ast.USub, ast.UAdd, ast.And, ast.Or,
+        ast.Eq, ast.NotEq, ast.Lt, ast.LtE, ast.Gt, ast.GtE,
+        ast.Call, ast.keyword, ast.Attribute,
+        ast.Tuple, ast.List, ast.Dict, ast.Set, ast.Subscript, ast.Slice,
+    )
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ALLOWED):
+            raise ValueError(f"Disallowed expression node: {type(node).__name__}")
+
+        if isinstance(node, ast.Attribute):
+            # only allow math.xxx or sp.xxx
+            if not isinstance(node.value, ast.Name) or node.value.id not in ("math", "sp"):
+                raise ValueError("Attribute access only allowed on math or sp")
+
+        if isinstance(node, ast.Name):
+            if node.id not in ctx and node.id not in ("True", "False", "None"):
+                raise ValueError(f"Unknown name in expression: {node.id}")
+
+        if isinstance(node, ast.Call):
+            # allow f(...) where f is a Name in ctx OR math.xxx(...) / sp.xxx(...)
+            if isinstance(node.func, ast.Name):
+                if node.func.id not in ctx:
+                    raise ValueError(f"Call to unknown function: {node.func.id}")
+            elif isinstance(node.func, ast.Attribute):
+                if not (isinstance(node.func.value, ast.Name) and node.func.value.id in ("math", "sp")):
+                    raise ValueError("Call target must be a Name or math/sp attribute")
+            else:
+                raise ValueError("Disallowed call target")
+
+    return eval(compile(tree, "<expr>", "eval"), ctx, ctx)
+
+
+def _install_builtin_skills(ctx: Dict[str, Any]) -> None:
+    """Install builtin helper skills into the safe execution context."""
+    import math as _math
+    ctx.setdefault("math", _math)
+
+    # Ensure sympy module alias if available
+    sp = ctx.get("sp", None)
+
+    def calc_numeric(expr: str) -> float:
+        val = _safe_eval_expr(expr, ctx)
+        try:
+            if sp is not None and isinstance(val, sp.Basic):
+                val = float(sp.N(val))
+        except Exception:
+            pass
+        return float(val)
+
+    def sympy_solve(eqs, vars_):
+        """Solve equations with sympy if available.
+
+        Args:
+          eqs: string like 'a=b' or list of such strings, or sympy expressions.
+          vars_: variable name string like 'd' or 'd,x' or list of sympy symbols.
+        Returns:
+          sympy.solve(..., dict=True) output (list of dicts) or a best-effort numeric fallback.
+        """
+        if sp is None:
+            raise RuntimeError("sympy (sp) is not available in this environment.")
+
+        def _symbols_from_text(s: str):
+            names = [x.strip() for x in s.split(",") if x.strip()]
+            return [sp.Symbol(n) for n in names]
+
+        def _parse_eq(e):
+            if isinstance(e, str):
+                if "=" in e:
+                    lhs, rhs = e.split("=", 1)
+                    return sp.Eq(sp.sympify(lhs, locals=ctx), sp.sympify(rhs, locals=ctx))
+                return sp.sympify(e, locals=ctx)
+            return e  # assume sympy expr/Eq
+
+        eq_list = eqs
+        if isinstance(eq_list, str):
+            eq_list = [eq_list]
+        parsed = [_parse_eq(e) for e in eq_list]
+
+        if isinstance(vars_, str):
+            syms = _symbols_from_text(vars_)
+        else:
+            syms = vars_
+
+        try:
+            return sp.solve(parsed, syms, dict=True)
+        except Exception as e:
+            # Fallback: try non-dict solve
+            return sp.solve(parsed, syms)
+
+    def format_final(ans, unit: Optional[str] = None, precision: Optional[int] = None) -> str:
+        """Format as a single line 'Answer: ...'."""
+        try:
+            # unwrap common containers
+            if isinstance(ans, (list, tuple)) and ans:
+                ans = ans[0]
+            if sp is not None and isinstance(ans, sp.Basic):
+                ans = sp.N(ans)
+                # try float
+                try:
+                    ans = float(ans)
+                except Exception:
+                    ans = str(ans)
+        except Exception:
+            pass
+
+        if precision is not None:
+            try:
+                ans = round(float(ans), int(precision))
+            except Exception:
+                pass
+
+        if unit:
+            return f"Answer: {ans} {unit}".strip()
+        return f"Answer: {ans}"
+
+    # Install/overwrite
+    ctx["calc_numeric"] = calc_numeric
+    ctx["sympy_solve"] = sympy_solve
+    ctx["format_final"] = format_final
+
+
 def make_safe_context() -> Dict[str, Any]:
     import math
 
@@ -345,38 +482,63 @@ def make_safe_context() -> Dict[str, Any]:
         "str": str,
         "print": print,
     }
-    ctx = {
+    ctx: Dict[str, Any] = {
         "__builtins__": safe_builtins,
         "math": math,
     }
     try:
         import sympy as sp  # type: ignore
-
         ctx["sp"] = sp
     except Exception:
         pass
+
+    # Critical: builtin skills used by AP must exist in ctx.
+    _install_builtin_skills(ctx)
     return ctx
+def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str], Any]:
+    """Execute or evaluate generated python tool code in a constrained context.
 
-
-def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+    Returns:
+      stdout_text, error_text_or_None, value
+    Where `value` is the evaluated value for expression-only snippets (best-effort),
+    otherwise None.
+    """
     for pat in DENY_PATTERNS:
         if re.search(pat, code):
-            return "", f"Blocked unsafe pattern: {pat}"
+            return "", f"Blocked unsafe pattern: {pat}", None
 
     import io
 
     old_stdout = sys.stdout  # type: ignore
     buf = io.StringIO()
     sys.stdout = buf  # type: ignore
-    err = None
+    err: Optional[str] = None
+    val: Any = None
+
     try:
-        exec(code, g, g)
+        tree = ast.parse(code, mode="exec")
+        # If the snippet is a single expression, eval it to capture the return value.
+        if len(tree.body) == 1 and isinstance(tree.body[0], ast.Expr):
+            expr_node = tree.body[0].value
+            compiled = compile(ast.Expression(expr_node), "<expr>", "eval")
+            val = eval(compiled, g, g)
+        else:
+            exec(code, g, g)
     except Exception as e:
         err = str(e)
-    sys.stdout = old_stdout  # type: ignore
-    return buf.getvalue().strip(), err
+    finally:
+        sys.stdout = old_stdout  # type: ignore
 
+    out = buf.getvalue().strip()
 
+    # If nothing was printed but we evaluated a value, expose it in stdout for downstream draft extraction.
+    if (not out) and (err is None) and (val is not None):
+        try:
+            out = str(val)
+        except Exception:
+            out = repr(val)
+
+    return out, err, val
 # (sys is used in safe_exec; keep import local to avoid global denylist concerns)
 import sys  # noqa: E402
 
@@ -454,7 +616,7 @@ class SkillManager:
                 )
                 err = check_code_static_safety(rec.code)
                 if err is None:
-                    _, run_err = safe_exec(rec.code, self.ctx)
+                    _, run_err, _ = safe_exec(rec.code, self.ctx)
                     if run_err is None:
                         self._loaded[rec.name] = rec
 
@@ -509,7 +671,7 @@ class SkillManager:
             return False, static_err
 
         temp_ctx = dict(self.ctx)
-        _, err = safe_exec(code, temp_ctx)
+        _, err, _ = safe_exec(code, temp_ctx)
         if err:
             return False, f"Skill code exec error: {err}"
 
@@ -520,13 +682,13 @@ class SkillManager:
             for t in tests:
                 tcode = t.get("code", "")
                 expect = t.get("expect_contains", "")
-                tout, terr = safe_exec(tcode, temp_ctx)
+                tout, terr, _ = safe_exec(tcode, temp_ctx)
                 if terr:
                     return False, f"Test error: {terr}"
                 if expect and expect not in str(tout):
                     return False, f"Test failed: expected output contains '{expect}', got '{tout}'"
 
-        _, err2 = safe_exec(code, self.ctx)
+        _, err2, _ = safe_exec(code, self.ctx)
         if err2:
             return False, f"Commit exec error: {err2}"
 
@@ -1020,9 +1182,36 @@ Return STRICT JSON:
         return paths
 
     def _append_run_log(self, run_record: Dict[str, Any]) -> None:
-        """Append a single run record into structured JSON array file(s)."""
-        for path in self._structured_log_paths():
+        """Append a single run record into:
+        - JSONL (recommended for reading / tail / grep)
+        - legacy JSON array (best-effort, may be skipped for huge files)
+        """
+        self._ensure_logging()
+        # Enrich with a compact status
+        rr = dict(run_record)
+        rr.setdefault("status", "error" if rr.get("errors") else "ok")
+
+        paths = self._structured_log_paths()
+        # 1) JSONL (append-only)
+        for path in paths:
+            jsonl_path = path[:-5] + ".jsonl" if path.endswith(".json") else path + ".jsonl"
             try:
+                os.makedirs(os.path.dirname(jsonl_path), exist_ok=True)
+                with open(jsonl_path, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(rr, ensure_ascii=False) + "\n")
+            except Exception as e:
+                try:
+                    self._logger.error(f"Failed appending JSONL run log to {jsonl_path}: {e}")
+                except Exception:
+                    pass
+
+        # 2) Legacy JSON array (may become slow/huge; skip when too large)
+        MAX_ARRAY_BYTES = 50 * 1024 * 1024  # 50MB
+        for path in paths:
+            try:
+                if os.path.exists(path) and os.path.getsize(path) > MAX_ARRAY_BYTES:
+                    # Rely on JSONL instead.
+                    continue
                 if os.path.exists(path):
                     with open(path, "r", encoding="utf-8") as f:
                         try:
@@ -1033,12 +1222,11 @@ Return STRICT JSON:
                             arr = []
                 else:
                     arr = []
-                arr.append(run_record)
+                arr.append(rr)
                 _atomic_write_json(path, arr)
             except Exception as e:
-                # Fall back to debug logger only
                 try:
-                    self._logger.error(f"Failed writing structured log {path}: {e}")
+                    self._logger.error(f"Failed appending JSON array run log to {path}: {e}")
                 except Exception:
                     pass
 
@@ -1047,7 +1235,8 @@ Return STRICT JSON:
         self._ensure_logging()
         adir = os.path.join(self.output_dir, "artifacts", run_id)
         os.makedirs(adir, exist_ok=True)
-        for name, obj in artifacts.items():
+
+        for name, obj in (artifacts or {}).items():
             try:
                 if name.endswith(".txt"):
                     with open(os.path.join(adir, name), "w", encoding="utf-8") as f:
@@ -1059,6 +1248,48 @@ Return STRICT JSON:
                     self._logger.error(f"Failed writing artifact {name} for {run_id}: {e}")
                 except Exception:
                     pass
+
+        # Write a human-readable summary for quick debugging (tail-friendly)
+        try:
+            rr = artifacts.get("run_record", {}) if isinstance(artifacts, dict) else {}
+            stage_times = rr.get("stage_times", {}) or {}
+            errors = rr.get("errors", []) or []
+            final_answer = rr.get("final_answer", "")
+            tlogs = rr.get("tool_logs", []) or artifacts.get("tool_logs", []) or []
+            py_errs = []
+            for t in tlogs:
+                if t.get("action") == "python" and t.get("error"):
+                    py_errs.append(f"- step {t.get('i')}: {t.get('code')} -> {t.get('error')}")
+
+            lines = []
+            lines.append(f"run_id: {rr.get('run_id', run_id)}")
+            lines.append(f"ts: {rr.get('ts')}")
+            lines.append(f"prompt_hash: {rr.get('prompt_hash')}")
+            lines.append(f"img_hash: {rr.get('img_hash')}")
+            lines.append("")
+            lines.append("stage_times (s):")
+            for k in ["IG","GTI","IGR","TI","SC","AP","EXEC","SR","MEM","TOTAL"]:
+                if k in stage_times:
+                    lines.append(f"  {k}: {stage_times.get(k)}")
+            lines.append("")
+            lines.append(f"final_answer: {final_answer}")
+            lines.append("")
+            if errors:
+                lines.append("errors:")
+                for e in errors:
+                    lines.append("  " + json.dumps(e, ensure_ascii=False))
+            else:
+                lines.append("errors: (none)")
+            if py_errs:
+                lines.append("")
+                lines.append("python_step_errors:")
+                lines.extend(py_errs)
+
+            with open(os.path.join(adir, "summary.txt"), "w", encoding="utf-8") as f:
+                f.write("\n".join(lines) + "\n")
+        except Exception:
+            pass
+
         return adir
 
     def _should_attach_image(self, step: str, need_image: bool) -> bool:
@@ -1214,10 +1445,26 @@ Return STRICT JSON:
             obs,
             need_image=True,
             )
-            _mk = _missing_keys(gti, ["region_to_detect", "text_lines", "unresolved_targets"])
+            # Schema-flex validation: GTI uses region_used / structured.text_lines / targets_from_math_elements.unresolved_targets
+            _mk = []
+            if not (("region_to_detect" in gti) or ("region_used" in gti)):
+                _mk.append("region_used")
+            _text_lines = None
+            if "text_lines" in gti:
+                _text_lines = gti.get("text_lines")
+            else:
+                _text_lines = (gti.get("structured") or {}).get("text_lines")
+            if _text_lines is None:
+                _mk.append("text_lines")
+            _unresolved = None
+            if "unresolved_targets" in gti:
+                _unresolved = gti.get("unresolved_targets")
+            else:
+                _unresolved = ((gti.get("targets_from_math_elements") or {}).get("unresolved_targets"))
+            if _unresolved is None:
+                _mk.append("unresolved_targets")
             if _mk:
                 errors.append({'stage':'GTI','type':'missing_keys','missing':_mk})
-
         with _stage("IGR"):
             ig = self._llm_call_json(
             "IGR",
@@ -1252,10 +1499,13 @@ Return STRICT JSON:
         )
         with _stage("SC"):
             sc = self._llm_call_json("SC", sc_input, obs, need_image=False)
-            _mk = _missing_keys(sc, ["selected_skills", "tags"])
+            # SC may omit optional keys; only selected_skills is required.
+            _mk = _missing_keys(sc, ["selected_skills"])
             if _mk:
                 errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
-
+            # Treat missing tags as a warning only (log-friendly, no hard failure).
+            if "tags" not in sc:
+                errors.append({'stage':'SC','type':'warning_missing_optional','missing':['tags']})
         new_specs = sc.get("new_skill_specs", [])
         if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
             sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
@@ -1311,7 +1561,9 @@ Return STRICT JSON:
                 intention = step.get("intention", "")
                 if action == "python":
                     code = step.get("code", "")
-                    out, err = safe_exec(code, skill_mgr.ctx)
+                    _t_py0 = time.perf_counter()
+                    out, err, val = safe_exec(code, skill_mgr.ctx)
+                    _t_py = time.perf_counter() - _t_py0
                     tool_logs.append(
                         {
                             "i": idx,
@@ -1319,6 +1571,8 @@ Return STRICT JSON:
                             "intention": intention,
                             "code": code,
                             "stdout": out,
+                            "value_repr": _truncate(val, 240) if val is not None else "",
+                            "latency_s": round(_t_py, 4),
                             "error": err,
                         }
                     )
@@ -1439,9 +1693,9 @@ Return STRICT JSON:
             run_record['artifacts_dir'] = artifacts_dir
         except Exception as e:
             errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e)})
+        stage_times['TOTAL'] = round(time.perf_counter() - t_total0, 6)
         try:
             self._append_run_log(run_record)
         except Exception:
             pass
-        stage_times['TOTAL'] = round(time.perf_counter() - t_total0, 6)
         return final_answer

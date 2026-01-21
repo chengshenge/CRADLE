@@ -1,0 +1,44 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers in the problem.",
+    "note": "The problem has unresolved targets: number of tiny gray bicycles on the left side of the brown metal sedan and number of things to the left of the tiny green bicycle."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Count the number of tiny gray bicycles on the left side of the brown metal sedan.",
+    "code": "count_gray_bicycles = count_objects_in_diagram('diagram', 'tiny gray bicycle', 'brown metal sedan', 'left')",
+    "stdout": "",
+    "value_repr": "",
+    "latency_s": 0.0001,
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Count the number of things to the left of the tiny green bicycle.",
+    "code": "count_left_of_green_bicycle = count_objects_in_diagram('diagram', 'object', 'tiny green bicycle', 'left')",
+    "stdout": "",
+    "value_repr": "",
+    "latency_s": 0.0,
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "python",
+    "intention": "Compare the counts to determine the answer.",
+    "code": "answer = 'A' if count_gray_bicycles > count_left_of_green_bicycle else 'B'",
+    "stdout": "",
+    "value_repr": "",
+    "latency_s": 0.0001,
+    "error": null
+  },
+  {
+    "i": 4,
+    "action": "normalize",
+    "intention": "Normalize the final answer to the required format.",
+    "text": "Answer: {answer}"
+  }
+]
