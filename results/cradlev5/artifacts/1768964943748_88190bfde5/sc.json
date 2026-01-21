@@ -1,0 +1,67 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image_data, object_type)->int",
+      "purpose": "Identify and count specific types of objects in an image.",
+      "inputs": [
+        "image_data",
+        "object_type"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with similar appearance to other types"
+      ],
+      "tests": [
+        {
+          "input": "(image_data, 'small balls')",
+          "expect": "5"
+        },
+        {
+          "input": "(image_data, 'blue rubber things')",
+          "expect": "3"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "visual identification"
+      ]
+    },
+    {
+      "name": "calculate_remaining_objects",
+      "signature": "(total_objects, small_balls, blue_rubber_things)->int",
+      "purpose": "Calculate the number of remaining objects after subtracting specific counts.",
+      "inputs": [
+        "total_objects",
+        "small_balls",
+        "blue_rubber_things"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Negative result if subtracted counts exceed total"
+      ],
+      "tests": [
+        {
+          "input": "(20, 5, 3)",
+          "expect": "12"
+        },
+        {
+          "input": "(10, 5, 6)",
+          "expect": "-1"
+        }
+      ],
+      "tags": [
+        "calculation",
+        "subtraction",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "calculate_remaining_objects"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "answer_correct": false,
+  "issues_found": [
+    "The DRAFT answer contains a placeholder instead of a computed value.",
+    "Errors in TOOL_LOGS indicate that 'image_data' is not defined, preventing object counting."
+  ],
+  "most_probable_cause": "visual_misread",
+  "fixes": [
+    "Ensure 'image_data' is properly defined and accessible for object counting functions.",
+    "Re-run the object counting steps to obtain actual counts for yellow matte blocks, tiny brown cylinders, and total objects."
+  ],
+  "final_answer": "Answer: [actual_remaining_objects]",
+  "confidence": 0.2
+}

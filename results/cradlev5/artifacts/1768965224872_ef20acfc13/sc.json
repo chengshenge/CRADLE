@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects",
+      "purpose": "To count the total number of objects in the diagram.",
+      "how_to_use": "Use this skill to determine the total number of objects present in the image."
+    },
+    {
+      "name": "calculate_remaining_objects",
+      "purpose": "To calculate the number of objects remaining after subtracting specific objects.",
+      "how_to_use": "Use this skill to subtract the count of identified objects from the total count to find the remaining objects."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_by_properties",
+      "signature": "(image_data, color, size, material)->list",
+      "purpose": "To identify and count objects in an image based on specified color, size, and material properties.",
+      "inputs": [
+        "image_data",
+        "color",
+        "size",
+        "material"
+      ],
+      "outputs": "list of identified objects",
+      "edge_cases": [
+        "Objects partially obscured or overlapping",
+        "Objects with similar but not exact properties"
+      ],
+      "tests": [
+        {
+          "input": "image_data, 'red', 'matte', 'cube'",
+          "expect": "list of red matte cubes"
+        },
+        {
+          "input": "image_data, 'green', 'small', 'metal'",
+          "expect": "list of small green metal objects"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object identification",
+        "property-based filtering"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_by_properties",
+    "count_objects",
+    "calculate_remaining_objects"
+  ]
+}

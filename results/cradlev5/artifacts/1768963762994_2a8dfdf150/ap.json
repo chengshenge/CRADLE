@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Verify the spatial relationship that AB is the diameter of the circle.",
+      "action": "reason",
+      "note": "Use the 'identify_spatial_relationships' skill to confirm that AB is marked as a diameter in the diagram."
+    },
+    {
+      "intention": "Calculate the length of AB using the given lengths of AC and BC.",
+      "action": "python",
+      "code": "AB = calc_numeric('8 + 15')"
+    },
+    {
+      "intention": "Calculate the radius of the circle as half of the diameter AB.",
+      "action": "python",
+      "code": "radius = AB / 2"
+    },
+    {
+      "intention": "Map the calculated radius to the closest multiple-choice option.",
+      "action": "reason",
+      "note": "Compare the calculated radius with the provided options: (A) 7.5, (B) 8, (C) 8.5, (D) 17."
+    },
+    {
+      "intention": "Format the final answer in the required multiple-choice format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

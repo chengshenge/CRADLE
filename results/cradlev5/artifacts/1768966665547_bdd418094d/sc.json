@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and understand the geometric relationships between points and lines.",
+      "how_to_use": "Use this skill to identify spatial relationships such as bisectors and perpendicular lines in the diagram."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle to the correct multiple-choice option.",
+      "how_to_use": "Use this skill to match the calculated angle of ∠A with the given options and select the correct one."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_triangle_with_bisector_and_perpendicular",
+      "signature": "(angle_ACB, angle_DBC, angle_ABD)->angle_A",
+      "purpose": "To calculate the angle A in a triangle with a bisector and a perpendicular line given specific angle relationships.",
+      "inputs": [
+        "angle_ACB",
+        "angle_DBC",
+        "angle_ABD"
+      ],
+      "outputs": "angle_A",
+      "edge_cases": [
+        "Ensure the angles provided are consistent with the triangle's geometry."
+      ],
+      "tests": [
+        {
+          "input": "angle_ACB=90, angle_DBC=54, angle_ABD=36",
+          "expect": "angle_A=36"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "triangle",
+        "bisector",
+        "perpendicular"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_in_triangle_with_bisector_and_perpendicular",
+    "map_angle_to_option"
+  ]
+}

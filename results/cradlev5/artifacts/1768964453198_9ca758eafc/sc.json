@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the rate of change using the formula: (September wait time - August wait time) / (September - August).",
+      "how_to_use": "Use calc_numeric('(85 - 80) / 1') to calculate the rate of change."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use format_final(answer) to return the answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_wait_times_from_table",
+      "signature": "(table_image_data)->dict",
+      "purpose": "Extract the average wait times for August and September from a table image.",
+      "inputs": [
+        "table_image_data"
+      ],
+      "outputs": "A dictionary with keys 'August' and 'September' and their corresponding wait times as values.",
+      "edge_cases": [
+        "Table is not clear or values are misaligned.",
+        "Table does not contain the required months."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_table",
+          "expect": {
+            "August": 80,
+            "September": 85
+          }
+        },
+        {
+          "input": "image_data_with_missing_months",
+          "expect": "Error: Required months not found"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "table interpretation",
+        "text extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_wait_times_from_table",
+    "calc_numeric",
+    "format_final"
+  ]
+}

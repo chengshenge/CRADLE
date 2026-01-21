@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the task and relevant information from the graph.",
+      "action": "reason",
+      "note": "The task is to determine if the function is continuous at each point by analyzing the graph for any breaks, jumps, or holes."
+    },
+    {
+      "intention": "Use the learned skill to analyze the function's continuity.",
+      "action": "python",
+      "code": "result = analyze_function_continuity('566a2a2a2a6d')"
+    },
+    {
+      "intention": "Map the result to the correct multiple-choice option.",
+      "action": "python",
+      "code": "option = 'A' if result == 'continuous' else 'B'"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relevant data from the table for the year 2014.",
+      "action": "reason",
+      "note": "Extract the semiconductor demand values for computing and wireless from the table for the year 2014."
+    },
+    {
+      "intention": "Extract numerical values for computing and wireless demand in 2014.",
+      "action": "python",
+      "code": "values = {'computing': 150, 'wireless': 200}"
+    },
+    {
+      "intention": "Calculate the total semiconductor demand for computing and wireless in 2014.",
+      "action": "python",
+      "code": "total_demand = values['computing'] + values['wireless']"
+    },
+    {
+      "intention": "Format the total demand as a floating-point number with one decimal place.",
+      "action": "python",
+      "code": "formatted_total_demand = format_final(total_demand)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 350.0"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

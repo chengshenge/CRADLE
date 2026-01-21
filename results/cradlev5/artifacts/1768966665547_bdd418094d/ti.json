@@ -1,0 +1,69 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure, specifically triangle ABC with a point D inside it. CD bisects angle ACB, and BD is perpendicular to CD. It is given that angle A equals angle ABD, and angle DBC is 54 degrees. The task is to determine the measure of angle A. The problem is presented with a diagram that includes points labeled A, B, C, and D, and angles labeled ∠ACB, ∠ABD, and ∠DBC. The relationships between the lines and angles are crucial for solving the problem. The problem is multiple-choice with four options for the measure of angle A.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "∠ACB",
+    "∠ABD",
+    "∠DBC",
+    "CD",
+    "BD"
+  ],
+  "unknowns": [
+    "∠A"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the geometric relationships.",
+    "Use the given angle measures and relationships to set up equations.",
+    "Solve for the unknown angle ∠A using the relationships and given values."
+  ],
+  "blockers": [
+    "∠A"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram.",
+    "Verify angle markers are correctly interpreted.",
+    "Check perpendicular and bisecting line indicators are clear."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "36°"
+      },
+      {
+        "label": "B",
+        "text": "44°"
+      },
+      {
+        "label": "C",
+        "text": "27°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "triangles",
+    "bisector",
+    "perpendicular"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves determining the time shown on a clock, which is typically represented as a diagram with clock hands. The task is to interpret the position of the clock hands to determine the time word that fits the sentence 'It is (_) after eight.' The time must be expressed as a word from the given options. The clock face is a diagram with numbers representing hours. The exact position of the clock hands needs to be determined to choose the correct time word. The problem asks for the time shown on a clock and requires selecting the correct time word from the given options.",
+  "entities": [
+    "clock",
+    "clock hands",
+    "time word"
+  ],
+  "unknowns": [
+    "time word"
+  ],
+  "required_operations": [
+    "interpret clock diagram",
+    "determine position of clock hands",
+    "map position to time word",
+    "select correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "half"
+      },
+      {
+        "label": "B",
+        "text": "quarter"
+      },
+      {
+        "label": "C",
+        "text": "o'clock"
+      },
+      {
+        "label": "D",
+        "text": "quarter to"
+      },
+      {
+        "label": "E",
+        "text": "quarter past"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "time interpretation",
+    "diagram analysis"
+  ]
+}

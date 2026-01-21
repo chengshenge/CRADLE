@@ -1,0 +1,35 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers in the problem-solving process.",
+      "action": "reason",
+      "note": "The problem has unresolved targets: number of yellow matte blocks, number of tiny brown cylinders, and total number of objects. These need to be determined from the image."
+    },
+    {
+      "intention": "Identify and count yellow matte blocks in the diagram.",
+      "action": "python",
+      "code": "yellow_matte_blocks = identify_objects_by_properties(image_data, color='yellow', size='matte', material='block')"
+    },
+    {
+      "intention": "Identify and count tiny brown cylinders in the diagram.",
+      "action": "python",
+      "code": "tiny_brown_cylinders = identify_objects_by_properties(image_data, color='brown', size='tiny', material='cylinder')"
+    },
+    {
+      "intention": "Determine the total number of objects in the diagram.",
+      "action": "python",
+      "code": "total_objects = identify_objects_by_properties(image_data, color=None, size=None, material=None)"
+    },
+    {
+      "intention": "Calculate the remaining number of objects after subtracting yellow matte blocks and tiny brown cylinders.",
+      "action": "python",
+      "code": "remaining_objects = calculate_remaining_objects(total_objects, yellow_matte_blocks, tiny_brown_cylinders)"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

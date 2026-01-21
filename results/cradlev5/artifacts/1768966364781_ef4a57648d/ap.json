@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relevant data from the table for the price of $790.",
+      "action": "reason",
+      "note": "Extract the quantity supplied and quantity demanded at the price of $790 from the table."
+    },
+    {
+      "intention": "Extract numerical values for supply and demand at $790.",
+      "action": "python",
+      "code": "data = extract_numerical_values_from_image('table_image_data')\nquantity_supplied = data['$790']['Quantity Supplied']\nquantity_demanded = data['$790']['Quantity Demanded']"
+    },
+    {
+      "intention": "Compare the extracted quantities to determine if there is a shortage or surplus.",
+      "action": "python",
+      "code": "comparison_result = compare_numerical_values(quantity_supplied, quantity_demanded)"
+    },
+    {
+      "intention": "Map the comparison result to the correct multiple-choice option.",
+      "action": "python",
+      "code": "answer_option = map_comparison_to_option(comparison_result, [{'label': 'A', 'text': 'shortage'}, {'label': 'B', 'text': 'surplus'}])"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

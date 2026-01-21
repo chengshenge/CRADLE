@@ -1,0 +1,90 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a rhombus and points E and F on its sides, which suggests a geometric configuration that needs to be analyzed."
+  ],
+  "problem_understanding": "The problem involves a rhombus ABCD with points E and F as midpoints of sides AB and AD, respectively. The lengths of AB and AC are given, and the task is to find the length of segment EF.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AB",
+        "value": "5",
+        "unit": "",
+        "source": "text",
+        "note": "Side of the rhombus"
+      },
+      {
+        "name": "AC",
+        "value": "6",
+        "unit": "",
+        "source": "text",
+        "note": "Diagonal of the rhombus"
+      }
+    ],
+    "unknown": [
+      "EF"
+    ],
+    "relations": [
+      "E is the midpoint of AB",
+      "F is the midpoint of AD"
+    ],
+    "constraints": [
+      "ABCD is a rhombus"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "4"
+      },
+      {
+        "label": "B",
+        "text": "5"
+      },
+      {
+        "label": "C",
+        "text": "5.5"
+      },
+      {
+        "label": "D",
+        "text": "6"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "E nouns F verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the length of EF using the properties of the rhombus and the given measurements."
+  ],
+  "problem_summary": "Determine the length of segment EF in rhombus ABCD, where E and F are midpoints of sides AB and AD, respectively, with AB = 5 and AC = 6.",
+  "knowns": [
+    {
+      "name": "AB",
+      "value": "5",
+      "unit": "",
+      "source": "text",
+      "note": "Side of the rhombus"
+    },
+    {
+      "name": "AC",
+      "value": "6",
+      "unit": "",
+      "source": "text",
+      "note": "Diagonal of the rhombus"
+    }
+  ],
+  "asks": [
+    "EF"
+  ],
+  "constraints": [
+    "ABCD is a rhombus"
+  ],
+  "visual_facts": [
+    "E is the midpoint of AB",
+    "F is the midpoint of AD"
+  ],
+  "ambiguity": [
+    "The exact position of points E and F relative to the rhombus is not visually confirmed without the diagram."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "region_used": "table",
+  "information": [
+    "Price",
+    "Quantity Supplied",
+    "Quantity Demanded",
+    "$750",
+    "1000",
+    "1200",
+    "$790",
+    "1100",
+    "1100",
+    "$830",
+    "1300",
+    "1000"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [
+        "Price",
+        "Quantity Supplied",
+        "Quantity Demanded"
+      ],
+      "rows": [
+        {
+          "row_label": "$750",
+          "cells": [
+            {
+              "col": "Quantity Supplied",
+              "text": "1000"
+            },
+            {
+              "col": "Quantity Demanded",
+              "text": "1200"
+            }
+          ]
+        },
+        {
+          "row_label": "$790",
+          "cells": [
+            {
+              "col": "Quantity Supplied",
+              "text": "1100"
+            },
+            {
+              "col": "Quantity Demanded",
+              "text": "1100"
+            }
+          ]
+        },
+        {
+          "row_label": "$830",
+          "cells": [
+            {
+              "col": "Quantity Supplied",
+              "text": "1300"
+            },
+            {
+              "col": "Quantity Demanded",
+              "text": "1000"
+            }
+          ]
+        }
+      ]
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ],
+    "unresolved_targets": [
+      "shortage or surplus"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The table provides data on supply and demand at different prices, which is necessary to determine if there is a shortage or surplus at $790."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves a table that contains groups with associated values. The task is to find the sum of all values in a group labeled as the 'Ruling Group'. The table has headers 'Group' and 'Value', and includes two groups: 'Ruling Group' and 'Other Group'. The 'Ruling Group' has values 10, 15, and 20. The problem requires summing these values to find the total for the 'Ruling Group'. The task is straightforward arithmetic, but it requires correctly identifying and summing the values associated with the 'Ruling Group'. The final answer should be presented as an integer.",
+  "entities": [
+    "Ruling Group",
+    "Other Group",
+    "Value"
+  ],
+  "unknowns": [
+    "sum of values in the ruling group"
+  ],
+  "required_operations": [
+    "Identify the 'Ruling Group' in the table",
+    "Extract values associated with the 'Ruling Group'",
+    "Sum the extracted values"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct row alignment for 'Ruling Group'",
+    "Verify that all values for 'Ruling Group' are included",
+    "Check for any missing or misaligned headers"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "table",
+    "sum",
+    "group identification"
+  ]
+}

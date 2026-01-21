@@ -1,0 +1,36 @@
+{
+  "problem_state_summary": "The problem involves determining the average miles per gallon that a city bus gets. The information is presented in text form, and the specific numerical value is extracted from the text. The task is straightforward as it requires identifying a specific numerical value related to fuel efficiency. The text explicitly states the average miles per gallon for a city bus, which is the target information needed. The problem does not involve any complex calculations or additional data interpretation. The final answer should be provided as an integer value.",
+  "entities": [
+    "average miles per gallon for a city bus"
+  ],
+  "unknowns": [
+    "average miles per gallon for a city bus"
+  ],
+  "required_operations": [
+    "Extract numerical value from text"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check for currency/percent, rounding, multi-line conditions, hidden footnotes in text"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "text extraction",
+    "numerical value",
+    "fuel efficiency"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves determining the number of items sold in different stores, which suggests a tabular format with rows representing items and columns representing stores or vice versa."
+  ],
+  "problem_understanding": "The problem asks for the count of items that have sold less than 5 units in at least one store.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "Number of items sold less than 5 units in at least one store"
+    ],
+    "relations": [
+      "An item is counted if it has sold less than 5 units in at least one store."
+    ],
+    "constraints": [
+      "The count should only include items with sales less than 5 units in at least one store."
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "items nouns sold verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires scanning through a table to identify items with sales less than 5 units in any store."
+  ],
+  "problem_summary": "Determine the number of items that have sold less than 5 units in at least one store.",
+  "knowns": [],
+  "asks": [
+    "Number of items sold less than 5 units in at least one store"
+  ],
+  "constraints": [
+    "Count only items with sales less than 5 units in at least one store."
+  ],
+  "visual_facts": [
+    "Table headers: Item, Store A, Store B, Store C",
+    "Item 1: Store A - 3, Store B - 7, Store C - 2",
+    "Item 2: Store A - 6, Store B - 5, Store C - 8",
+    "Item 3: Store A - 4, Store B - 3, Store C - 9",
+    "Item 4: Store A - 10, Store B - 2, Store C - 1"
+  ],
+  "ambiguity": [
+    "The exact layout of the table is unknown, but it is assumed to have sales figures for items across different stores."
+  ]
+}

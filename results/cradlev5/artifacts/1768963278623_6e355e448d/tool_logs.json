@@ -1,0 +1,28 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers and proceed with grounded information.",
+    "note": "The blocker is identifying the organism most affected by the elimination of algae. We will use the provided text information to determine the dependency of each organism on algae."
+  },
+  {
+    "i": 1,
+    "action": "reason",
+    "intention": "Determine which organism is most dependent on algae.",
+    "note": "Based on the text, the Common water flea consumes algae as a primary food source, indicating the highest dependency on algae among the listed organisms."
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map the finding to the multiple-choice option.",
+    "code": "answer = 'B'",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Provide the final answer in the required format.",
+    "text": "Answer: B"
+  }
+]

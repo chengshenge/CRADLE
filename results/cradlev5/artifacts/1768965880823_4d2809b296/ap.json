@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and ensure all necessary information is available.",
+      "action": "reason",
+      "note": "The unresolved target is ∠CDE. We need to use the given angle ∠ABC and the geometric properties of the circle to find it."
+    },
+    {
+      "intention": "Apply circle theorems to find the unknown angle ∠CDE.",
+      "action": "python",
+      "code": "angle_ABC = 60.0\nangle_CDE = 180 - angle_ABC  # Using the property that angles on a straight line sum to 180 degrees"
+    },
+    {
+      "intention": "Map the calculated angle to one of the multiple-choice options.",
+      "action": "python",
+      "code": "from learned_skill_catalog import map_angle_to_option\noptions = [{'label': 'A', 'text': '30°'}, {'label': 'B', 'text': '45°'}, {'label': 'C', 'text': '60°'}, {'label': 'D', 'text': '70°'}]\nselected_option = map_angle_to_option(angle_CDE, options)"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

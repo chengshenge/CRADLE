@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To determine the relationships between angles in the diagram.",
+      "how_to_use": "Use the image data and specify the reference and target objects as the angles and points in the diagram to identify spatial relationships."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle to the correct multiple-choice option.",
+      "how_to_use": "Use the calculated angle and the provided options to find the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_from_known_angles",
+      "signature": "(known_angles, relationships)->angle",
+      "purpose": "To calculate an unknown angle using known angles and their relationships.",
+      "inputs": [
+        "known_angles",
+        "relationships"
+      ],
+      "outputs": "angle",
+      "edge_cases": [
+        "No direct relationship between known and unknown angles",
+        "Incorrectly labeled angles"
+      ],
+      "tests": [
+        {
+          "input": "{\"known_angles\": {\"∠1\": 90, \"∠2\": 52}, \"relationships\": \"∠1 + ∠2 + ∠3 = 180\"}",
+          "expect": "38"
+        },
+        {
+          "input": "{\"known_angles\": {\"∠1\": 90, \"∠2\": 52}, \"relationships\": \"∠1 + ∠3 = 180\"}",
+          "expect": "90"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "diagram interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_from_known_angles",
+    "map_angle_to_option"
+  ]
+}

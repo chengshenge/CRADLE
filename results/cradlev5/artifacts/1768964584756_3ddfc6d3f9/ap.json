@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and available information.",
+      "action": "reason",
+      "note": "The problem requires finding m ∠3 using the diagram. Known angles are m ∠1 = 90° and m ∠2 = 52°. The relationship between these angles and m ∠3 is not explicitly given, but we can assume they form a triangle."
+    },
+    {
+      "intention": "Calculate the measure of angle 3 using known angles in a triangle.",
+      "action": "python",
+      "code": "m_angle3 = 180 - 90 - 52"
+    },
+    {
+      "intention": "Map the calculated angle to the correct multiple-choice option.",
+      "action": "python",
+      "code": "from learned_skill_catalog import map_angle_to_option\noption = map_angle_to_option(m_angle3, [{'label': 'A', 'text': '28'}, {'label': 'B', 'text': '38'}, {'label': 'C', 'text': '52'}, {'label': 'D', 'text': '62'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

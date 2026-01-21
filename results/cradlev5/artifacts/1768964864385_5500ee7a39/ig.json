@@ -1,0 +1,93 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a right triangle and angles, which suggests a geometric diagram is present in the image."
+  ],
+  "problem_understanding": "The problem involves a right triangle with a 60° angle, where the vertex A of the 60° angle and the right angle vertex C are on two parallel lines FG and DE, respectively. The hypotenuse AB bisects ∠CAG and intersects line DE at point H. The task is to find the measure of ∠BCH.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠CAB",
+        "value": "60",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given as part of the right triangle."
+      },
+      {
+        "name": "Lines FG and DE",
+        "value": "parallel",
+        "unit": "",
+        "source": "text",
+        "note": "Given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "∠BCH"
+    ],
+    "relations": [
+      "AB bisects ∠CAG",
+      "A is on line FG",
+      "C is on line DE",
+      "H is the intersection of AB and DE"
+    ],
+    "constraints": [
+      "FG || DE"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "triangle involves",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of an angle in a geometric configuration involving a right triangle and parallel lines."
+  ],
+  "problem_summary": "Determine the measure of ∠BCH in a right triangle configuration with given angles and parallel lines.",
+  "knowns": [
+    {
+      "name": "∠CAB",
+      "value": "60",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given as part of the right triangle."
+    },
+    {
+      "name": "Lines FG and DE",
+      "value": "parallel",
+      "unit": "",
+      "source": "text",
+      "note": "Given in the problem statement."
+    }
+  ],
+  "asks": [
+    "∠BCH"
+  ],
+  "constraints": [
+    "FG || DE"
+  ],
+  "visual_facts": [
+    "Diagram labels: A, B, C, G, H, F, D, E",
+    "Marked angle: ∠CAB = 60°",
+    "Relations: AB bisects ∠CAG, FG || DE"
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, G, H, and the lines FG, DE are not specified in the text and need to be interpreted from the diagram."
+  ]
+}

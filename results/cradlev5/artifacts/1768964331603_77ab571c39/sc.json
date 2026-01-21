@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_ages_from_image",
+      "purpose": "Extract ages of Alice and Bob from the image.",
+      "how_to_use": "Use this skill to read the ages from the image data and return them as a tuple."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the age gap by subtraction.",
+      "how_to_use": "Use this skill to subtract Bob's age from Alice's age to find the age gap."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer.",
+      "how_to_use": "Use this skill to format the computed age gap into the required answer format."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

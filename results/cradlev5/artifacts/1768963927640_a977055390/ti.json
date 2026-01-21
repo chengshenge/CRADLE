@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure, specifically a quadrilateral ABCD. It is given that AB equals AC, and angle CAB is 40 degrees. The task is to determine the measure of angle D. The problem is presented with a diagram that labels points A, B, C, and D, and marks the relationship AB = AC and angle CAB as 40 degrees. The exact configuration of the quadrilateral and the position of angle D are not specified in the text, which may affect the interpretation of the problem. The problem is multiple-choice, with options for the measure of angle D provided.",
+  "entities": [
+    "AB",
+    "AC",
+    "∠CAB",
+    "∠D",
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "unknowns": [
+    "∠D"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the configuration of quadrilateral ABCD",
+    "Use the given information AB = AC and ∠CAB = 40° to deduce properties of the quadrilateral",
+    "Calculate the measure of angle D based on geometric principles"
+  ],
+  "blockers": [
+    "∠D"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "40°"
+      },
+      {
+        "label": "B",
+        "text": "50°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "quadrilateral",
+    "angle calculation",
+    "diagram interpretation"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Extract numerical values for brown SUVs and brown rubber school buses from the image.",
+      "action": "reason",
+      "note": "Use the extracted numerical values from GTI_JSON to compare the quantities."
+    },
+    {
+      "intention": "Compare the number of brown SUVs to the number of brown rubber school buses.",
+      "action": "python",
+      "code": "comparison_result = compare_numerical_values(15, 20)"
+    },
+    {
+      "intention": "Map the comparison result to the correct multiple-choice option.",
+      "action": "python",
+      "code": "answer_option = map_comparison_to_option(comparison_result, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

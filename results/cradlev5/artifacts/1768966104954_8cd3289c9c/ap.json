@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Extract the number of shiny buses and matte things from the image.",
+      "action": "reason",
+      "note": "Use the extracted values from GTI_JSON to compare the quantities."
+    },
+    {
+      "intention": "Compare the number of shiny buses to the number of matte things.",
+      "action": "python",
+      "code": "comparison_result = compare_numerical_values(5, 8)"
+    },
+    {
+      "intention": "Map the comparison result to the correct multiple-choice option.",
+      "action": "python",
+      "code": "selected_option = map_comparison_to_option(comparison_result, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

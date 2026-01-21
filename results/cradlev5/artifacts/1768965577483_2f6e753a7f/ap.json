@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relevant data from the table to count the number of blocks with exactly 36 houses.",
+      "action": "reason",
+      "note": "The table provides the number of houses for each block. We need to count how many blocks have exactly 36 houses."
+    },
+    {
+      "intention": "Count the number of blocks with exactly 36 houses using the table data.",
+      "action": "python",
+      "code": "table_data = [{'Block': 'A', 'Number of Houses': 36}, {'Block': 'B', 'Number of Houses': 24}, {'Block': 'C', 'Number of Houses': 36}, {'Block': 'D', 'Number of Houses': 30}, {'Block': 'E', 'Number of Houses': 36}]\ncount_36_houses = sum(1 for row in table_data if row['Number of Houses'] == 36)"
+    },
+    {
+      "intention": "Provide the final answer as the number of blocks with exactly 36 houses.",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

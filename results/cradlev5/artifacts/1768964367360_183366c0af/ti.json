@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves identifying the wettest month in Christchurch using a graph that displays monthly rainfall data. The graph is titled 'Monthly Rainfall in Christchurch' and has the months labeled on the X-axis and rainfall in millimeters on the Y-axis. The task is to determine which month has the highest average rainfall. The graph provides specific rainfall values for August, April, and May, with August having the highest value. The problem is presented as a multiple-choice question with three options: August, April, and May. The solution requires interpreting the graph to find the month with the highest rainfall and mapping it to the correct option label.",
+  "entities": [
+    "Monthly Rainfall in Christchurch",
+    "August",
+    "April",
+    "May"
+  ],
+  "unknowns": [
+    "wettest month"
+  ],
+  "required_operations": [
+    "Read the graph to identify rainfall values for each month",
+    "Compare the rainfall values to determine the highest",
+    "Map the highest value to the corresponding month and option label"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accurate reading",
+    "Ensure correct mapping of rainfall values to months",
+    "Verify units are consistent (mm)"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "August"
+      },
+      {
+        "label": "B",
+        "text": "April"
+      },
+      {
+        "label": "C",
+        "text": "May"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart interpretation",
+    "rainfall data",
+    "multiple choice"
+  ]
+}

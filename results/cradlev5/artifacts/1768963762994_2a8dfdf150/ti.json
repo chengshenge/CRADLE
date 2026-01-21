@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves a circle with a diameter labeled as AB. Points A, B, and C are on the circle, with segments AC and BC having lengths of 8 inches and 15 inches, respectively. The task is to find the radius of the circle. Given that AB is a diameter, the sum of AC and BC should equal the length of AB. The problem provides multiple-choice options for the radius, and the solution must map to one of these options.",
+  "entities": [
+    "Circle",
+    "Diameter AB",
+    "Point A",
+    "Point B",
+    "Point C",
+    "Segment AC",
+    "Segment BC"
+  ],
+  "unknowns": [
+    "radius of the circle"
+  ],
+  "required_operations": [
+    "Identify that AB is the diameter of the circle",
+    "Use the relation AC + BC = AB to find the length of AB",
+    "Calculate the radius as half of AB",
+    "Map the calculated radius to one of the multiple-choice options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: ensure AB is marked as a diameter"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "7.5"
+      },
+      {
+        "label": "B",
+        "text": "8"
+      },
+      {
+        "label": "C",
+        "text": "8.5"
+      },
+      {
+        "label": "D",
+        "text": "17"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "diameter",
+    "radius",
+    "multiple-choice"
+  ]
+}

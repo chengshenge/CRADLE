@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves a diagram where the task is to find the value of a square. The diagram contains labels such as A, B, C, D, E, F, G, and H, which are likely points or vertices of geometric shapes. The specific method to determine the value of the square is not provided in the prompt, indicating a need for geometric or spatial reasoning. The problem is straightforward in its request for an integer value as the answer. The image is essential to solving the problem, as it contains the necessary visual information. However, the exact method or relation to find the value of the square is not clear from the given data.",
+  "entities": [
+    "square",
+    "labels A, B, C, D, E, F, G, H"
+  ],
+  "unknowns": [
+    "value of the square"
+  ],
+  "required_operations": [
+    "Analyze the diagram",
+    "Identify geometric properties or relations",
+    "Determine the value of the square"
+  ],
+  "blockers": [
+    "value of the square"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "check for any hidden geometric relations or markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "diagram",
+    "spatial reasoning"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves determining whether the value of the function f at x = 3 is greater than 0. The function f(x) is represented graphically on a chart. The x-axis is labeled as 'x' and the y-axis as 'f(x)', with ticks marked at regular intervals. The key point of interest is at x = 3, where the y-value of the function is approximately 1. The task is to analyze the graph to find the value of f(3) and compare it to 0. The problem is presented in a multiple-choice format with two options: 'Yes' or 'No'.",
+  "entities": [
+    "f(x)",
+    "x-axis",
+    "y-axis"
+  ],
+  "unknowns": [
+    "f(3)"
+  ],
+  "required_operations": [
+    "Read the chart to find the value of f(3)",
+    "Compare f(3) to 0",
+    "Map the result to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accuracy",
+    "Ensure correct interpretation of the graph at x=3"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "graph analysis",
+    "function evaluation",
+    "comparison"
+  ]
+}

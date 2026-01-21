@@ -1,0 +1,61 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves determining the number of algorithms with accuracies higher than a specific value, which suggests the presence of a table listing algorithms and their accuracies."
+  ],
+  "problem_understanding": "The problem asks for the count of algorithms with accuracies greater than 9.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "accuracy threshold",
+        "value": "9",
+        "unit": "",
+        "source": "text",
+        "note": "The threshold accuracy value to compare against."
+      }
+    ],
+    "unknown": [
+      "number of algorithms with accuracy > 9"
+    ],
+    "relations": [
+      "An algorithm's accuracy must be greater than 9 to be counted."
+    ],
+    "constraints": [
+      "Only consider algorithms with accuracies listed in the table."
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "algorithms have",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires counting entries in a table that meet a specific numerical condition."
+  ],
+  "problem_summary": "Count the number of algorithms with accuracies greater than 9 from a table.",
+  "knowns": [
+    {
+      "name": "accuracy threshold",
+      "value": "9",
+      "unit": "",
+      "source": "text",
+      "note": "The threshold accuracy value to compare against."
+    }
+  ],
+  "asks": [
+    "number of algorithms with accuracy > 9"
+  ],
+  "constraints": [
+    "Only consider algorithms with accuracies listed in the table."
+  ],
+  "visual_facts": [
+    "The table contains a list of algorithms and their corresponding accuracies.",
+    "Algorithm A has an accuracy of 8.5.",
+    "Algorithm B has an accuracy of 9.2.",
+    "Algorithm C has an accuracy of 9.7.",
+    "Algorithm D has an accuracy of 7.9."
+  ],
+  "ambiguity": [
+    "The problem does not specify if the accuracies are integers or decimals, but the threshold is an integer."
+  ]
+}

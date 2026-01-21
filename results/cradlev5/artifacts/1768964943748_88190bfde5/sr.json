@@ -1,0 +1,14 @@
+{
+  "answer_correct": false,
+  "issues_found": [
+    "The DRAFT answer is not properly formatted and contains a placeholder instead of a calculated value.",
+    "There is an error in the TOOL_LOGS indicating 'small_balls' is not defined, which suggests a failure in the calculation step."
+  ],
+  "most_probable_cause": "arithmetic_error",
+  "fixes": [
+    "Ensure that the variables 'total_objects', 'small_balls', and 'blue_rubber_things' are correctly defined and counted from the image.",
+    "Recalculate the remaining objects using the correct values."
+  ],
+  "final_answer": "Answer: 0",
+  "confidence": 0.5
+}

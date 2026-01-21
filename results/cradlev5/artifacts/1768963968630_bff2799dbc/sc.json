@@ -1,0 +1,128 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "calculate_arc_length",
+      "signature": "(radius, central_angle_degrees)->arc_length",
+      "purpose": "Calculate the arc length of a sector given its radius and central angle in degrees.",
+      "inputs": [
+        "radius",
+        "central_angle_degrees"
+      ],
+      "outputs": "arc_length",
+      "edge_cases": [
+        "Central angle is 0 degrees",
+        "Central angle is 360 degrees",
+        "Radius is 0"
+      ],
+      "tests": [
+        {
+          "input": {
+            "radius": 6,
+            "central_angle_degrees": 120
+          },
+          "expect": "4π"
+        },
+        {
+          "input": {
+            "radius": 0,
+            "central_angle_degrees": 120
+          },
+          "expect": "0"
+        },
+        {
+          "input": {
+            "radius": 6,
+            "central_angle_degrees": 0
+          },
+          "expect": "0"
+        },
+        {
+          "input": {
+            "radius": 6,
+            "central_angle_degrees": 360
+          },
+          "expect": "12π"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "arc length",
+        "sector"
+      ]
+    },
+    {
+      "name": "match_perimeter_to_option",
+      "signature": "(calculated_perimeter, options)->str",
+      "purpose": "Match the calculated perimeter to the correct multiple-choice option.",
+      "inputs": [
+        "calculated_perimeter",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Calculated perimeter does not match any option",
+        "Multiple options have the same perimeter"
+      ],
+      "tests": [
+        {
+          "input": {
+            "calculated_perimeter": "4π",
+            "options": [
+              {
+                "label": "A",
+                "text": "2πcm"
+              },
+              {
+                "label": "B",
+                "text": "3πcm"
+              },
+              {
+                "label": "C",
+                "text": "4πcm"
+              },
+              {
+                "label": "D",
+                "text": "5πcm"
+              }
+            ]
+          },
+          "expect": "C"
+        },
+        {
+          "input": {
+            "calculated_perimeter": "5π",
+            "options": [
+              {
+                "label": "A",
+                "text": "2πcm"
+              },
+              {
+                "label": "B",
+                "text": "3πcm"
+              },
+              {
+                "label": "C",
+                "text": "4πcm"
+              },
+              {
+                "label": "D",
+                "text": "5πcm"
+              }
+            ]
+          },
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "perimeter",
+        "option matching"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_arc_length",
+    "match_perimeter_to_option"
+  ]
+}

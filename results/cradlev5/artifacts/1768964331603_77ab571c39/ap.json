@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the ages of Alice and Bob from the image text.",
+      "action": "reason",
+      "note": "Use the extracted ages from the image: Alice is 30 years old and Bob is 25 years old."
+    },
+    {
+      "intention": "Calculate the age gap between Alice and Bob.",
+      "action": "python",
+      "code": "age_gap = calc_numeric('30 - 25')"
+    },
+    {
+      "intention": "Format the final answer to match the required output format.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

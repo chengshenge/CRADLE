@@ -1,0 +1,73 @@
+{
+  "problem_state_summary": "The problem involves analyzing a food web diagram to determine the impact on various species if all the algae die due to pesticides. The food web is represented as a diagram with species such as algae, crabs, limpets, dolphins, sea gulls, and star fish. Arrows in the diagram indicate the relationships between these species. The task is to understand these relationships to predict the consequences of the algae's extinction. The problem provides multiple-choice options regarding the potential outcomes for different species. The goal is to select the correct option based on the food web's structure and dependencies.",
+  "entities": [
+    "Algae",
+    "Crabs",
+    "Limpets",
+    "Dolphins",
+    "Sea Gulls",
+    "Star Fish"
+  ],
+  "unknowns": [
+    "impact on crabs",
+    "impact on limpets",
+    "impact on dolphins",
+    "impact on sea gulls",
+    "impact on star fish"
+  ],
+  "required_operations": [
+    "Analyze the food web diagram",
+    "Identify relationships and dependencies",
+    "Determine the impact of algae dying on each species",
+    "Map the impact to the given options"
+  ],
+  "blockers": [
+    "impact on crabs",
+    "impact on limpets",
+    "impact on dolphins",
+    "impact on sea gulls",
+    "impact on star fish"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure all species and relationships are correctly identified"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Crabs and limpets will decrease"
+      },
+      {
+        "label": "B",
+        "text": "Dolphins will increase"
+      },
+      {
+        "label": "C",
+        "text": "Sea gulls will become extinct"
+      },
+      {
+        "label": "D",
+        "text": "Star fish will increase"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "food web",
+    "ecology",
+    "diagram analysis",
+    "species impact"
+  ]
+}

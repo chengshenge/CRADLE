@@ -1,0 +1,19 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_by_properties",
+      "purpose": "To extract the number of big matte balls and green rubber objects from the image.",
+      "how_to_use": "Use the skill with parameters (image_data, 'green', 'big', 'rubber') for green rubber objects and (image_data, 'any', 'big', 'matte') for big matte balls."
+    },
+    {
+      "name": "calculate_remaining_objects",
+      "purpose": "To calculate the number of remaining objects after subtracting specific types from the total.",
+      "how_to_use": "Use the skill with parameters (total_objects, big_matte_balls, green_rubber_objects) to get the remaining objects."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "identify_objects_by_properties",
+    "calculate_remaining_objects"
+  ]
+}

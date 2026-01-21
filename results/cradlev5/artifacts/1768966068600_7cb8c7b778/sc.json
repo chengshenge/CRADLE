@@ -1,0 +1,74 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "calculate_side_of_square_from_circle_area",
+      "signature": "(circle_area)->float",
+      "purpose": "Calculate the side length of a square inscribed in a circle given the area of the circle.",
+      "inputs": [
+        "circle_area"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "circle_area is zero",
+        "circle_area is negative"
+      ],
+      "tests": [
+        {
+          "input": "18 * 3.14159",
+          "expect": "6"
+        },
+        {
+          "input": "0",
+          "expect": "0"
+        },
+        {
+          "input": "-18 * 3.14159",
+          "expect": "ValueError"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "square",
+        "calculation"
+      ]
+    },
+    {
+      "name": "map_length_to_option",
+      "signature": "(calculated_length, options)->str",
+      "purpose": "Map the calculated length of the square's side to the correct multiple-choice option.",
+      "inputs": [
+        "calculated_length",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "calculated_length does not match any option",
+        "options list is empty"
+      ],
+      "tests": [
+        {
+          "input": "6, [{'label': 'A', 'text': '3'}, {'label': 'B', 'text': '3 \\sqrt 2'}, {'label': 'C', 'text': '6'}, {'label': 'D', 'text': '6 \\sqrt 2'}]",
+          "expect": "C"
+        },
+        {
+          "input": "3, [{'label': 'A', 'text': '3'}, {'label': 'B', 'text': '3 \\sqrt 2'}, {'label': 'C', 'text': '6'}, {'label': 'D', 'text': '6 \\sqrt 2'}]",
+          "expect": "A"
+        },
+        {
+          "input": "5, [{'label': 'A', 'text': '3'}, {'label': 'B', 'text': '3 \\sqrt 2'}, {'label': 'C', 'text': '6'}, {'label': 'D', 'text': '6 \\sqrt 2'}]",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "length mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_side_of_square_from_circle_area",
+    "map_length_to_option"
+  ]
+}

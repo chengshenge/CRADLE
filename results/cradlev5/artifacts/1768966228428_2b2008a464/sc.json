@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_chart_for_work_hours",
+      "signature": "(chart_image_data)->int",
+      "purpose": "To analyze a chart displaying average weekly work hours by country and determine the number of countries where the work hours exceed 35.",
+      "inputs": [
+        "chart_image_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Chart with unclear axis labels",
+        "Countries with work hours exactly 35",
+        "Multiple data points for the same country"
+      ],
+      "tests": [
+        {
+          "input": "chart_image_data_with_clear_labels",
+          "expect": 3
+        },
+        {
+          "input": "chart_image_data_with_ambiguous_labels",
+          "expect": "error"
+        },
+        {
+          "input": "chart_image_data_with_multiple_years",
+          "expect": 4
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data interpretation",
+        "work hours",
+        "country comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_chart_for_work_hours"
+  ]
+}

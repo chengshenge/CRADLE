@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves a geometric configuration where a square is tangent to a line at a specific point labeled P. The task is to determine the value of x, which is likely a geometric parameter related to this configuration. The diagram is expected to show the square, the line, and the point of tangency, P. The problem requires understanding the geometric relationship between the square and the line to find x. The exact role of x is not specified in the text, adding some ambiguity to the problem. The solution must provide an integer value for x.",
+  "entities": [
+    "square",
+    "line",
+    "point P",
+    "x"
+  ],
+  "unknowns": [
+    "x"
+  ],
+  "required_operations": [
+    "Analyze the geometric configuration of the square and the line.",
+    "Determine the role of x in this configuration.",
+    "Calculate the value of x based on the geometric properties."
+  ],
+  "blockers": [
+    "x"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure point P is correctly identified",
+    "verify the tangency condition is visually represented"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "tangency",
+    "square",
+    "line",
+    "diagram"
+  ]
+}

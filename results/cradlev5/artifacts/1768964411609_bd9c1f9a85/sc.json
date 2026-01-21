@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the total cost of beads using the given weights and prices.",
+      "how_to_use": "Use calc_numeric to compute the total cost by multiplying the weights of the beads by their respective prices and summing the results."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_prices_from_image",
+      "signature": "(image_data)->dict",
+      "purpose": "Extract the prices per kilogram for different types of beads from an image.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary with bead types as keys and their prices as values.",
+      "edge_cases": [
+        "Image is blurry or text is unclear",
+        "Prices are not in expected format"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_prices",
+          "expect": {
+            "oval beads": 3,
+            "star-shaped beads": 4
+          }
+        },
+        {
+          "input": "image_data_with_unexpected_format",
+          "expect": {}
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "price extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_prices_from_image",
+    "calc_numeric"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_value_from_polar_chart",
+      "signature": "(chart_image_data, angle)->float",
+      "purpose": "Extract the value of r from a polar chart at a specified angle theta.",
+      "inputs": [
+        "chart_image_data",
+        "angle"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Angle not labeled on the chart",
+        "Multiple values of r for the same angle"
+      ],
+      "tests": [
+        {
+          "input": "(chart_image_data, 3.14159)",
+          "expect": 2.0
+        },
+        {
+          "input": "(chart_image_data, 1.5708)",
+          "expect": 1.0
+        }
+      ],
+      "tags": [
+        "image processing",
+        "polar coordinates",
+        "value extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_value_from_polar_chart"
+  ]
+}

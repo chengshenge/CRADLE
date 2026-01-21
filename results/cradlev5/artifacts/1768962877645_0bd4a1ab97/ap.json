@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known quantities and the operation needed.",
+      "action": "reason",
+      "note": "We need to subtract the number of large rubber spheres and big shiny cylinders from the total number of objects."
+    },
+    {
+      "intention": "Perform the subtraction to find the remaining number of objects.",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric('50 - 15 - 10')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: 25"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

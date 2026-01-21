@@ -1,0 +1,61 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_web_impact",
+      "signature": "(diagram_image_data, species_list, impact_scenario)->dict",
+      "purpose": "Analyze a food web diagram to determine the impact on various species if a specific species is removed.",
+      "inputs": [
+        "diagram_image_data",
+        "species_list",
+        "impact_scenario"
+      ],
+      "outputs": "A dictionary mapping each species to its predicted impact (e.g., increase, decrease, extinction).",
+      "edge_cases": [
+        "No direct predators or prey for the removed species",
+        "Circular dependencies in the food web"
+      ],
+      "tests": [
+        {
+          "input": "('image_data_of_food_web', ['Algae', 'Crabs', 'Limpets', 'Dolphins', 'Sea Gulls', 'Star Fish'], 'Algae dies')",
+          "expect": "{'Crabs': 'decrease', 'Limpets': 'decrease', 'Dolphins': 'no change', 'Sea Gulls': 'no change', 'Star Fish': 'no change'}"
+        }
+      ],
+      "tags": [
+        "food web",
+        "ecology",
+        "diagram analysis",
+        "species impact"
+      ]
+    },
+    {
+      "name": "map_impact_to_option",
+      "signature": "(impact_dict, options)->str",
+      "purpose": "Map the predicted impacts of species in a food web to the correct multiple-choice option.",
+      "inputs": [
+        "impact_dict",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "Multiple options match the impact scenario",
+        "No options match the impact scenario"
+      ],
+      "tests": [
+        {
+          "input": "({'Crabs': 'decrease', 'Limpets': 'decrease', 'Dolphins': 'no change', 'Sea Gulls': 'no change', 'Star Fish': 'no change'}, [{'label': 'A', 'text': 'Crabs and limpets will decrease'}, {'label': 'B', 'text': 'Dolphins will increase'}, {'label': 'C', 'text': 'Sea gulls will become extinct'}, {'label': 'D', 'text': 'Star fish will increase'}])",
+          "expect": "'A'"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping",
+        "species impact"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_web_impact",
+    "map_impact_to_option"
+  ]
+}

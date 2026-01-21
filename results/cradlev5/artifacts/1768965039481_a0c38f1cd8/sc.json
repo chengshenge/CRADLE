@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To examine the diagram and understand the geometric configuration, specifically the spatial relationships between points A, B, C, and D on the circle.",
+      "how_to_use": "Provide the image data along with reference and target objects to identify spatial relationships."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle ∠CAB to one of the multiple-choice options.",
+      "how_to_use": "Use the calculated angle and the provided options to determine the correct multiple-choice answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "apply_circle_theorems",
+      "signature": "(angle_ADC, diameter_AB, chord_CD)->angle_CAB",
+      "purpose": "To apply circle theorems to relate the given angle ∠ADC and the unknown angle ∠CAB.",
+      "inputs": [
+        "angle_ADC",
+        "diameter_AB",
+        "chord_CD"
+      ],
+      "outputs": "angle_CAB",
+      "edge_cases": [
+        "If the angle ∠ADC is not directly related to ∠CAB through simple circle theorems, additional geometric reasoning may be required."
+      ],
+      "tests": [
+        {
+          "input": "26, AB, CD",
+          "expect": "64"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "angle calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "apply_circle_theorems",
+    "map_angle_to_option"
+  ]
+}

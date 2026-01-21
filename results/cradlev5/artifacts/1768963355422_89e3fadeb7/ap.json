@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The problem involves finding the length of segment CD in a right triangle ABC with a right angle at C. D is the midpoint of AB, which is 10 units long. The unresolved target is CD."
+    },
+    {
+      "intention": "Use geometric properties to find CD",
+      "action": "reason",
+      "note": "Since D is the midpoint of AB, AD = DB = 5. In right triangle ABC, we can use the Pythagorean theorem to find CD."
+    },
+    {
+      "intention": "Calculate the length of CD using the Pythagorean theorem",
+      "action": "python",
+      "code": "from math import sqrt\nAB = 10\nAD = AB / 2\nCD = sqrt(AD**2 + AD**2)"
+    },
+    {
+      "intention": "Map the calculated length to the closest multiple-choice option",
+      "action": "reason",
+      "note": "The calculated length of CD should be compared to the options: (A) 5, (B) 6, (C) 8, (D) 10."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

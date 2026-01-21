@@ -1,0 +1,67 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "calculate_area_under_curve",
+      "signature": "(chart_image_data, category)->float",
+      "purpose": "Calculate the area under the curve for a specified category in a chart.",
+      "inputs": [
+        "chart_image_data",
+        "category"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Curves with overlapping areas",
+        "Curves with non-linear segments",
+        "Curves with missing data points"
+      ],
+      "tests": [
+        {
+          "input": "(sample_chart_image_data, 'Firebrick')",
+          "expect": 120.0
+        },
+        {
+          "input": "(sample_chart_image_data, 'Blue')",
+          "expect": 100.0
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "area under curve",
+        "image processing"
+      ]
+    },
+    {
+      "name": "compare_areas",
+      "signature": "(areas_dict)->str",
+      "purpose": "Compare areas under curves for different categories and determine which has the maximum area.",
+      "inputs": [
+        "areas_dict"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Multiple categories with the same maximum area",
+        "Empty areas dictionary"
+      ],
+      "tests": [
+        {
+          "input": "{'Firebrick': 120.0, 'Blue': 100.0, 'Green': 110.0, 'Yellow': 90.0}",
+          "expect": "Firebrick"
+        },
+        {
+          "input": "{'Firebrick': 100.0, 'Blue': 100.0, 'Green': 100.0, 'Yellow': 100.0}",
+          "expect": "Firebrick"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "area under curve",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_area_under_curve",
+    "compare_areas"
+  ]
+}

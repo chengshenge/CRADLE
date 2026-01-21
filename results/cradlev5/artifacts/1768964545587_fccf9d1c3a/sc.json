@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_prices_from_image",
+      "purpose": "Extract numerical data from an image, such as the total number of objects, number of rubber balls, and number of yellow shiny things.",
+      "how_to_use": "Use this skill to extract the required numerical values from the image data."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform arithmetic operations to calculate the remaining number of objects.",
+      "how_to_use": "Use this skill to subtract the number of rubber balls and yellow shiny things from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the calculated remaining number of objects into the required output format."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_prices_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

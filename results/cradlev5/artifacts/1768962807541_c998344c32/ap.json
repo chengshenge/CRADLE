@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the highest volume marking from the image to determine the total volume of the measuring cup.",
+      "action": "reason",
+      "note": "The image contains volume markings in milliliters (ml). The task is to identify the highest volume marking, which represents the total volume of the measuring cup."
+    },
+    {
+      "intention": "Extract the highest volume marking from the image data.",
+      "action": "python",
+      "code": "highest_volume = extract_highest_volume_marking(GTI_JSON['information'])"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "python",
+      "code": "formatted_answer = format_final(highest_volume)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 2000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

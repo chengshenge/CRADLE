@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between pelicans and fish based on the provided information.",
+      "action": "reason",
+      "note": "The text indicates that pelicans feed on fish, and an increase in pelicans can lead to a decrease in fish populations due to higher predation."
+    },
+    {
+      "intention": "Determine the effect on fish populations if the number of pelicans increases.",
+      "action": "reason",
+      "note": "Given the relationship, an increase in pelicans is likely to cause a decrease in fish populations."
+    },
+    {
+      "intention": "Map the logical conclusion to the provided multiple-choice options.",
+      "action": "python",
+      "code": "select_correct_option('decrease', [{'label': 'A', 'text': 'decrease'}, {'label': 'B', 'text': 'nothing'}, {'label': 'C', 'text': 'increase'}, {'label': 'D', 'text': 'none of the above'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

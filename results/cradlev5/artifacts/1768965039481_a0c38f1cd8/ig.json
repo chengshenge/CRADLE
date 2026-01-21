@@ -1,0 +1,107 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with specific references to a circle, diameter, chord, and angles, which suggests the need to examine a diagram."
+  ],
+  "problem_understanding": "The problem involves a circle with a diameter AB and a chord CD. An angle ∠ADC is given, and the task is to find the degree of angle ∠CAB.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AB",
+        "value": "diameter",
+        "unit": "",
+        "source": "text",
+        "note": "AB is the diameter of the circle."
+      },
+      {
+        "name": "CD",
+        "value": "chord",
+        "unit": "",
+        "source": "text",
+        "note": "CD is a chord of the circle."
+      },
+      {
+        "name": "∠ADC",
+        "value": "26",
+        "unit": "degrees",
+        "source": "text",
+        "note": "The angle ∠ADC is given as 26 degrees."
+      }
+    ],
+    "unknown": [
+      "∠CAB"
+    ],
+    "relations": [
+      "AB is the diameter of the circle, implying it passes through the center O.",
+      "CD is a chord of the circle.",
+      "∠ADC is related to ∠CAB through circle theorems."
+    ],
+    "constraints": [
+      "AB is a straight line as it is the diameter.",
+      "The sum of angles in a triangle is 180 degrees."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "26°"
+      },
+      {
+        "label": "B",
+        "text": "74°"
+      },
+      {
+        "label": "C",
+        "text": "64°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "5 nouns 0 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle ∠CAB using the given information about the circle and the angles."
+  ],
+  "problem_summary": "Given a circle with diameter AB and chord CD, and angle ∠ADC = 26°, find the degree of angle ∠CAB.",
+  "knowns": [
+    {
+      "name": "AB",
+      "value": "diameter",
+      "unit": "",
+      "source": "text",
+      "note": "AB is the diameter of the circle."
+    },
+    {
+      "name": "CD",
+      "value": "chord",
+      "unit": "",
+      "source": "text",
+      "note": "CD is a chord of the circle."
+    },
+    {
+      "name": "∠ADC",
+      "value": "26",
+      "unit": "degrees",
+      "source": "text",
+      "note": "The angle ∠ADC is given as 26 degrees."
+    }
+  ],
+  "asks": [
+    "∠CAB"
+  ],
+  "constraints": [
+    "AB is a straight line as it is the diameter.",
+    "The sum of angles in a triangle is 180 degrees."
+  ],
+  "visual_facts": [
+    "The circle has a diameter AB and a chord CD.",
+    "Diagram labels: A, B, C, D, O"
+  ],
+  "ambiguity": [
+    "The exact position of points A, B, C, and D on the circle is not specified, but it is implied by the geometry."
+  ]
+}

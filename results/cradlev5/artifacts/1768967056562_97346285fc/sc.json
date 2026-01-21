@@ -1,0 +1,165 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_text_labels_from_image",
+      "signature": "(image_data)->list",
+      "purpose": "Extract text labels from an image to identify and compare objects based on their labels.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "Image contains noise or distortion affecting text clarity",
+        "Text labels are partially obscured"
+      ],
+      "tests": [
+        {
+          "input": "image_with_clear_labels",
+          "expect": [
+            "white five",
+            "white three",
+            "white four",
+            "white one",
+            "white two"
+          ]
+        },
+        {
+          "input": "image_with_obscured_labels",
+          "expect": [
+            "white five",
+            "white three",
+            "white four",
+            "white one",
+            "white two"
+          ]
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "label identification"
+      ]
+    },
+    {
+      "name": "compare_text_labels_for_size",
+      "signature": "(labels)->str",
+      "purpose": "Compare a list of text labels to determine which represents the largest object.",
+      "inputs": [
+        "labels"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Labels do not contain size information",
+        "Multiple labels indicate the same size"
+      ],
+      "tests": [
+        {
+          "input": [
+            "white five",
+            "white three",
+            "white four",
+            "white one",
+            "white two"
+          ],
+          "expect": "white five"
+        },
+        {
+          "input": [
+            "white three",
+            "white three",
+            "white three"
+          ],
+          "expect": "white three"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "text analysis",
+        "size determination"
+      ]
+    },
+    {
+      "name": "map_label_to_option",
+      "signature": "(label, options)->str",
+      "purpose": "Map a determined label to the corresponding multiple-choice option.",
+      "inputs": [
+        "label",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Label does not match any option",
+        "Multiple options match the label"
+      ],
+      "tests": [
+        {
+          "input": [
+            "white five",
+            [
+              {
+                "label": "A",
+                "text": "white five"
+              },
+              {
+                "label": "B",
+                "text": "white three"
+              },
+              {
+                "label": "C",
+                "text": "white four"
+              },
+              {
+                "label": "D",
+                "text": "white one"
+              },
+              {
+                "label": "E",
+                "text": "white two"
+              }
+            ]
+          ],
+          "expect": "A"
+        },
+        {
+          "input": [
+            "white two",
+            [
+              {
+                "label": "A",
+                "text": "white five"
+              },
+              {
+                "label": "B",
+                "text": "white three"
+              },
+              {
+                "label": "C",
+                "text": "white four"
+              },
+              {
+                "label": "D",
+                "text": "white one"
+              },
+              {
+                "label": "E",
+                "text": "white two"
+              }
+            ]
+          ],
+          "expect": "E"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping",
+        "label matching"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_labels_from_image",
+    "compare_text_labels_for_size",
+    "map_label_to_option"
+  ]
+}

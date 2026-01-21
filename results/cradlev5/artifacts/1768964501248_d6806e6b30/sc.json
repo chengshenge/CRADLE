@@ -1,0 +1,33 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "deduce_population_impact",
+      "signature": "(scenario_description, options)->str",
+      "purpose": "To deduce the impact on a population based on a given scenario and map it to a multiple-choice option.",
+      "inputs": [
+        "scenario_description",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "All options are equally plausible",
+        "Scenario description is ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "('All spider eggs are eaten by predators, affecting adult spider population', [{'label': 'A', 'text': 'Adult spider population would remain the same'}, {'label': 'B', 'text': 'Adult spider population would double.'}, {'label': 'C', 'text': 'Adults spider population would decrease'}, {'label': 'D', 'text': 'Adult spider population would increase.'}])",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "logic",
+        "population dynamics",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "deduce_population_impact"
+  ]
+}

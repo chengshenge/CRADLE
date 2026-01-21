@@ -1,0 +1,66 @@
+{
+  "region_used": "text",
+  "information": [
+    "Person 1: 35 years old",
+    "Person 2: 28 years old"
+  ],
+  "structured": {
+    "text_lines": [
+      "Person 1: 35 years old",
+      "Person 2: 28 years old"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "age of person 1",
+        "value": "35",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 1: 35 years old'"
+      },
+      {
+        "name": "age of person 2",
+        "value": "28",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 2: 28 years old'"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "age gap"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The image contains text lines specifying the ages of two people. These ages are necessary to calculate the age gap, which is the unknown value in the problem."
+  ]
+}

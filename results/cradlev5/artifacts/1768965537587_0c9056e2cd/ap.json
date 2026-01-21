@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the dimensions of the rectangle from the diagram.",
+      "action": "reason",
+      "note": "The problem involves finding the perimeter of a rectangle using its dimensions, which are extracted from the diagram. The known dimensions are the length of AB and the width of BC."
+    },
+    {
+      "intention": "Extract the dimensions of the rectangle from the diagram.",
+      "action": "python",
+      "code": "length, width = extract_rectangle_dimensions_from_diagram({'labels': ['A', 'B', 'C', 'D'], 'marked_lengths': [{'segment': 'AB', 'value': '5', 'unit': 'cm'}, {'segment': 'BC', 'value': '3', 'unit': 'cm'}]})"
+    },
+    {
+      "intention": "Calculate the perimeter of the rectangle using the extracted dimensions.",
+      "action": "python",
+      "code": "perimeter = calculate_rectangle_perimeter(length, width)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 16"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,54 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and identify the spatial relationships between the angles and chords.",
+      "how_to_use": "Use this skill to determine the relationships between angles ∠D, ∠AEC, and ∠C in the diagram."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic calculations needed to find the measure of angle C.",
+      "how_to_use": "Use this skill to calculate the measure of angle C using the sum of angles around point E."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to return the final answer as an option label or exact value."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_angle_to_option",
+      "signature": "(calculated_angle, options)->str",
+      "purpose": "To map the calculated angle to one of the provided multiple-choice options.",
+      "inputs": [
+        "calculated_angle",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the calculated angle.",
+      "edge_cases": [
+        "If the calculated angle does not match any option, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "70, [{'label': 'A', 'text': '60°'}, {'label': 'B', 'text': '70°'}, {'label': 'C', 'text': '80°'}, {'label': 'D', 'text': '85°'}]",
+          "expect": "B"
+        },
+        {
+          "input": "75, [{'label': 'A', 'text': '60°'}, {'label': 'B', 'text': '70°'}, {'label': 'C', 'text': '80°'}, {'label': 'D', 'text': '85°'}]",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "angle mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calc_numeric",
+    "map_angle_to_option",
+    "format_final"
+  ]
+}

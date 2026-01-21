@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and identify the spatial relationships between points E and F and the rhombus ABCD.",
+      "how_to_use": "Use the image data of the diagram to determine the positions of E and F relative to the rhombus and calculate the length of EF."
+    },
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the calculated length of EF to the given multiple-choice options.",
+      "how_to_use": "Use the calculated length of EF and the provided options to determine the correct answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_length_in_rhombus",
+      "signature": "(AB, AC, E, F)->float",
+      "purpose": "Calculate the length of segment EF in a rhombus given the side lengths and midpoints.",
+      "inputs": [
+        "AB",
+        "AC",
+        "E",
+        "F"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "When E and F coincide with other vertices of the rhombus.",
+        "When the rhombus is a square."
+      ],
+      "tests": [
+        {
+          "input": "(5, 6, 'midpoint of AB', 'midpoint of AD')",
+          "expect": "3.5"
+        },
+        {
+          "input": "(4, 4, 'midpoint of AB', 'midpoint of AD')",
+          "expect": "2.828"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "rhombus",
+        "length calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_length_in_rhombus",
+    "map_length_to_option"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires identifying specific objects (rubber balls and yellow shiny things) from the image, which likely involves reading labels or descriptions associated with these objects."
+  ],
+  "problem_understanding": "The problem asks to subtract the number of rubber balls and yellow shiny things from a total number of objects, and then determine how many objects are left.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "total number of objects",
+        "value": "50",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "number of rubber balls",
+        "value": "15",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "number of yellow shiny things",
+        "value": "10",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      }
+    ],
+    "unknown": [
+      "total number of objects",
+      "number of rubber balls",
+      "number of yellow shiny things"
+    ],
+    "relations": [
+      "remaining objects = total objects - rubber balls - yellow shiny things"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects subtract",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves simple arithmetic subtraction to find the remaining number of objects after removing specific categories."
+  ],
+  "problem_summary": "Determine the number of objects left after subtracting the number of rubber balls and yellow shiny things from the total number of objects.",
+  "knowns": [
+    {
+      "name": "total number of objects",
+      "value": "50",
+      "unit": "",
+      "source": "image",
+      "note": ""
+    },
+    {
+      "name": "number of rubber balls",
+      "value": "15",
+      "unit": "",
+      "source": "image",
+      "note": ""
+    },
+    {
+      "name": "number of yellow shiny things",
+      "value": "10",
+      "unit": "",
+      "source": "image",
+      "note": ""
+    }
+  ],
+  "asks": [
+    "remaining number of objects"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Total number of objects: 50",
+    "Number of rubber balls: 15",
+    "Number of yellow shiny things: 10"
+  ],
+  "ambiguity": [
+    "The image must provide clear identification of rubber balls and yellow shiny things to accurately perform the subtraction."
+  ]
+}

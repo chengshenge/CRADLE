@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Compare the roughness values of Coral and other materials to determine if Coral is the roughest.",
+      "action": "reason",
+      "note": "We need to compare the roughness values: Coral (7.5), Sandstone (6.8), Granite (5.9), Limestone (6.2)."
+    },
+    {
+      "intention": "Determine if Coral has the highest roughness value.",
+      "action": "python",
+      "code": "coral_roughness = 7.5\nsandstone_roughness = 6.8\ngranite_roughness = 5.9\nlimestone_roughness = 6.2\nis_coral_roughest = coral_roughness > sandstone_roughness and coral_roughness > granite_roughness and coral_roughness > limestone_roughness\noption = 'A' if is_coral_roughest else 'B'"
+    },
+    {
+      "intention": "Format the final answer based on the comparison result.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

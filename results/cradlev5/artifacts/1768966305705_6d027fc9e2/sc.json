@@ -1,0 +1,61 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_accuracy_scores_from_chart",
+      "signature": "(chart_image_data, pretrain_loss_value)->dict",
+      "purpose": "Extract accuracy scores for different models from a chart at a specified pretrain loss value.",
+      "inputs": [
+        "chart_image_data",
+        "pretrain_loss_value"
+      ],
+      "outputs": "A dictionary mapping model names to their accuracy scores at the specified pretrain loss.",
+      "edge_cases": [
+        "Chart with overlapping data points",
+        "Unclear legend mapping",
+        "Non-standard axis scales"
+      ],
+      "tests": [
+        {
+          "input": "chart_image_data, 1.80",
+          "expect": "{\"ICL\": 0.85, \"SFT\": 0.80, \"SFT 1/8\": 0.78, \"RFT k=100\": 0.88, \"RFT k=25\": 0.82, \"RET k=6\": 0.84, \"RFT U13B\": 0.86}"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "accuracy score",
+        "pretrain loss",
+        "image processing"
+      ]
+    },
+    {
+      "name": "map_accuracy_to_option",
+      "signature": "(accuracy_scores, options)->str",
+      "purpose": "Map the model with the highest accuracy score to the corresponding multiple-choice option.",
+      "inputs": [
+        "accuracy_scores",
+        "options"
+      ],
+      "outputs": "The label of the option corresponding to the model with the highest accuracy score.",
+      "edge_cases": [
+        "Tied accuracy scores",
+        "Invalid option labels"
+      ],
+      "tests": [
+        {
+          "input": "{\"ICL\": 0.85, \"SFT\": 0.80, \"SFT 1/8\": 0.78, \"RFT k=100\": 0.88, \"RFT k=25\": 0.82, \"RET k=6\": 0.84, \"RFT U13B\": 0.86}, [{\"label\": \"A\", \"text\": \"ICL\"}, {\"label\": \"B\", \"text\": \"SFT\"}, {\"label\": \"C\", \"text\": \"SFT 1/8\"}, {\"label\": \"D\", \"text\": \"RFT k=100\"}, {\"label\": \"E\", \"text\": \"RFT k=25\"}, {\"label\": \"F\", \"text\": \"RET k=6\"}, {\"label\": \"G\", \"text\": \"RFT U13B\"}]",
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping",
+        "accuracy score"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_accuracy_scores_from_chart",
+    "map_accuracy_to_option"
+  ]
+}

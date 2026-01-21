@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the geometric configuration from the diagram and calculate the new length of the rubber band using the Pythagorean theorem.",
+      "action": "reason",
+      "note": "The rubber band forms two right triangles when the midpoint is pulled up. Each half of the rubber band is a hypotenuse of a right triangle with one leg being half the original length (8 cm) and the other leg being the vertical displacement (6 cm)."
+    },
+    {
+      "intention": "Calculate the length of one half of the rubber band using the Pythagorean theorem.",
+      "action": "python",
+      "code": "import math\nhalf_original_length = 8\nvertical_displacement = 6\nhalf_stretched_length = math.sqrt(half_original_length**2 + vertical_displacement**2)\nnew_total_length = 2 * half_stretched_length\nstretch_amount = new_total_length - 16"
+    },
+    {
+      "intention": "Map the calculated stretch amount to one of the multiple-choice options.",
+      "action": "python",
+      "code": "options = [{'label': 'A', 'text': '2cm'}, {'label': 'B', 'text': '4cm'}, {'label': 'C', 'text': '6cm'}, {'label': 'D', 'text': '8cm'}]\nselected_option = map_length_to_option(stretch_amount, options)"
+    },
+    {
+      "intention": "Output the final answer as the selected option label.",
+      "action": "normalize",
+      "text": "Answer: {selected_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

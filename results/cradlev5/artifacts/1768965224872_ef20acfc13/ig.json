@@ -1,0 +1,43 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves identifying and counting specific objects based on their color, size, and material, which suggests a need to visually inspect a diagram or image containing these objects."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting specific objects based on their color, size, and material properties from a total set of objects, and then determining how many objects remain.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects left"
+    ],
+    "relations": [
+      "total objects - red matte cubes - small green metal objects = objects left"
+    ],
+    "constraints": [
+      "objects must be identified by color, size, and material"
+    ],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects subtract",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves counting and subtracting specific objects based on visual attributes, which requires identifying these attributes in the image."
+  ],
+  "problem_summary": "Identify and subtract all red matte cubes and small green metal objects from a set of objects, then determine how many objects are left.",
+  "knowns": [],
+  "asks": [
+    "number of objects left"
+  ],
+  "constraints": [
+    "Subtract red matte cubes",
+    "Subtract small green metal objects"
+  ],
+  "visual_facts": [
+    "Objects are distinguished by color, size, and material",
+    "Diagram labels: red matte cube, small green metal object"
+  ],
+  "ambiguity": [
+    "The exact number of each type of object is not provided in the text and must be determined from the image."
+  ]
+}

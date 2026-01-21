@@ -1,0 +1,76 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_graph_slope",
+      "signature": "(image_data, x_values)->list",
+      "purpose": "Determine the slope of a function at specific x-values by interpreting a graph image.",
+      "inputs": [
+        "image_data",
+        "x_values"
+      ],
+      "outputs": "list of slopes at the given x-values",
+      "edge_cases": [
+        "Graph with unclear axis labels",
+        "Graph with non-linear scales",
+        "Graph with overlapping data points"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_linear_graph, [2, 5]",
+          "expect": "[1.5, -0.5]"
+        },
+        {
+          "input": "image_data_with_noisy_graph, [2, 5]",
+          "expect": "[approximate values based on noise]"
+        },
+        {
+          "input": "image_data_with_missing_x_values, [2, 5]",
+          "expect": "error or empty list"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "graph interpretation",
+        "slope calculation"
+      ]
+    },
+    {
+      "name": "compare_slopes",
+      "signature": "(slopes)->str",
+      "purpose": "Compare two slopes and return a label indicating their relationship.",
+      "inputs": [
+        "slopes"
+      ],
+      "outputs": "string label ('A', 'B', or 'C')",
+      "edge_cases": [
+        "Identical slopes",
+        "One or both slopes are zero",
+        "Slopes with very small differences"
+      ],
+      "tests": [
+        {
+          "input": "[1.5, -0.5]",
+          "expect": "A"
+        },
+        {
+          "input": "[1.0, 1.0]",
+          "expect": "B"
+        },
+        {
+          "input": "[-0.5, 1.5]",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "slope analysis",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_graph_slope",
+    "compare_slopes"
+  ]
+}

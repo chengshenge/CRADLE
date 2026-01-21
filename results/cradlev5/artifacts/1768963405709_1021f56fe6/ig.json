@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves understanding an experiment described in a passage and selecting the correct option based on that description. The image is not necessary for extracting the required information."
+  ],
+  "problem_understanding": "The problem involves determining which question Linda and Bob's experiment can best answer based on the description of their experiment involving a snowboard with and without wax.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "average time with wax",
+        "value": "calculated",
+        "unit": "time",
+        "source": "text",
+        "note": "Average time calculated for rides with wax."
+      },
+      {
+        "name": "average time without wax",
+        "value": "calculated",
+        "unit": "time",
+        "source": "text",
+        "note": "Average time calculated for rides without wax."
+      }
+    ],
+    "unknown": [
+      "correct option"
+    ],
+    "relations": [
+      "Comparison of average times with and without wax."
+    ],
+    "constraints": [
+      "The experiment alternates between using wax and not using wax."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?"
+      },
+      {
+        "label": "B",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?"
+      }
+    ]
+  },
+  "question_type_guess": "logic",
+  "need_ocr": "no",
+  "noun_and_verb": "Linda nouns applied verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to identify which question the experiment is designed to answer based on the description provided in the text."
+  ],
+  "problem_summary": "Linda and Bob conducted an experiment to compare the average time it takes for a snowboard to slide down a hill with and without a layer of wax.",
+  "knowns": [
+    {
+      "name": "average time with wax",
+      "value": "calculated",
+      "unit": "time",
+      "source": "text",
+      "note": "Average time calculated for rides with wax."
+    },
+    {
+      "name": "average time without wax",
+      "value": "calculated",
+      "unit": "time",
+      "source": "text",
+      "note": "Average time calculated for rides without wax."
+    }
+  ],
+  "asks": [
+    "Identify the question that the experiment can best answer."
+  ],
+  "constraints": [
+    "The experiment alternates between using wax and not using wax."
+  ],
+  "visual_facts": [],
+  "ambiguity": [
+    "The options involve different comparisons related to the presence and thickness of wax."
+  ]
+}

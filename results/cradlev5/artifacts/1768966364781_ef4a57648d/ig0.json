@@ -1,0 +1,66 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves analyzing a table to determine if there is a shortage or surplus at a given price."
+  ],
+  "problem_understanding": "The problem asks to determine whether there is a shortage or surplus at a price of $790 by analyzing a table.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "price",
+        "value": "790",
+        "unit": "dollars",
+        "source": "text",
+        "note": "The price at which to determine shortage or surplus."
+      }
+    ],
+    "unknown": [
+      "shortage or surplus"
+    ],
+    "relations": [
+      "The relationship between price and quantity supplied/demanded determines shortage or surplus."
+    ],
+    "constraints": [
+      "The table provides data on supply and demand at various prices."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ]
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "table look",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires reading data from a table to compare supply and demand at a specific price."
+  ],
+  "problem_summary": "Determine if there is a shortage or surplus at a price of $790 using the data from a table.",
+  "knowns": [
+    {
+      "name": "price",
+      "value": "790",
+      "unit": "dollars",
+      "source": "text",
+      "note": "The price at which to determine shortage or surplus."
+    }
+  ],
+  "asks": [
+    "Determine if there is a shortage or surplus at $790."
+  ],
+  "constraints": [
+    "The table provides data on supply and demand at various prices."
+  ],
+  "visual_facts": [
+    "The table contains data on supply and demand at different prices."
+  ],
+  "ambiguity": [
+    "The exact data points for supply and demand at $790 are not specified in the prompt and need to be extracted from the table."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and understand the geometric relationships between the circle, chords, and angles.",
+      "how_to_use": "Use this skill to identify spatial relationships in the diagram, such as intersections and midpoints."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle to one of the multiple-choice options.",
+      "how_to_use": "Use this skill to match the calculated angle of ∠F to the given multiple-choice options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_circle",
+      "signature": "(center, diameter, chords, given_angle)->angle",
+      "purpose": "To calculate unknown angles in a circle using given angles and geometric properties.",
+      "inputs": [
+        "center",
+        "diameter",
+        "chords",
+        "given_angle"
+      ],
+      "outputs": "angle",
+      "edge_cases": [
+        "Chords intersecting at the center",
+        "Chords parallel to the diameter"
+      ],
+      "tests": [
+        {
+          "input": "{\"center\": \"O\", \"diameter\": \"AB\", \"chords\": [\"EF\", \"EB\"], \"given_angle\": \"∠AOF = 40°\"}",
+          "expect": "∠F = 20°"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "angle calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_in_circle",
+    "map_angle_to_option"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem presents two diagrams showing pure samples of gas in identical closed, rigid containers. Each diagram uses colored balls to represent gas particles, and both samples have the same number of particles. The task is to compare the average kinetic energies of the particles in each sample and determine which sample has the higher temperature. The relationship between kinetic energy and temperature is implied, but not visually specified. The problem is multiple-choice, requiring selection of the correct option based on the comparison of the diagrams.",
+  "entities": [
+    "Sample A",
+    "Sample B",
+    "gas particles"
+  ],
+  "unknowns": [
+    "average kinetic energy of sample A",
+    "average kinetic energy of sample B",
+    "temperature of sample A",
+    "temperature of sample B"
+  ],
+  "required_operations": [
+    "Analyze the diagrams to compare particle representations",
+    "Infer kinetic energy differences from visual cues",
+    "Determine temperature differences based on kinetic energy"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct interpretation of particle representation",
+    "verify that visual cues are sufficient to infer kinetic energy"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "neither; the samples have the same temperature"
+      },
+      {
+        "label": "B",
+        "text": "sample A"
+      },
+      {
+        "label": "C",
+        "text": "sample B"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "kinetic energy",
+    "temperature",
+    "gas samples",
+    "diagram analysis"
+  ]
+}

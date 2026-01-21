@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the spatial relationships and angle properties in the diagram.",
+      "action": "reason",
+      "note": "Use the known angles ∠D and ∠AEC to find ∠C using the sum of angles around point E."
+    },
+    {
+      "intention": "Calculate the measure of angle C using the sum of angles around point E.",
+      "action": "python",
+      "code": "angle_D = 35.0\nangle_AEC = 105.0\nangle_C = 360 - (angle_D + angle_AEC)"
+    },
+    {
+      "intention": "Map the calculated angle to the closest option.",
+      "action": "python",
+      "code": "from learned_skill_catalog import map_angle_to_option\noptions = [{'label': 'A', 'text': '60°'}, {'label': 'B', 'text': '70°'}, {'label': 'C', 'text': '80°'}, {'label': 'D', 'text': '85°'}]\nselected_option = map_angle_to_option(angle_C, options)"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "python",
+      "code": "from learned_skill_catalog import format_final\nfinal_answer = format_final(selected_option)"
+    },
+    {
+      "intention": "Output the final answer.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

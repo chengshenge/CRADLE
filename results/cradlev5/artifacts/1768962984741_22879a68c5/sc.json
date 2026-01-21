@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_diagram",
+      "signature": "(image_data)->str",
+      "purpose": "Interpret the position of clock hands in a diagram to determine the time word.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Clock hands are not clearly visible",
+        "Clock hands overlap"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_half_past_eight",
+          "expect": "half"
+        },
+        {
+          "input": "image_data_with_quarter_past_eight",
+          "expect": "quarter past"
+        },
+        {
+          "input": "image_data_with_eight_oclock",
+          "expect": "o'clock"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "time interpretation",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_diagram"
+  ]
+}

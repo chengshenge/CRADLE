@@ -1,0 +1,62 @@
+{
+  "problem_state_summary": "The problem presents a scenario where all spider eggs are eaten by predators, and it asks for the impact on the population of adult spiders. The question is structured as a multiple-choice question with four options. The task is to logically deduce the effect on the adult spider population based on the given scenario. There is no specific numerical data provided, making it a logical deduction problem. The problem requires understanding the life cycle or population dynamics of spiders to determine the outcome. The options suggest different possible outcomes for the adult spider population, including remaining the same, doubling, decreasing, or increasing.",
+  "entities": [
+    "spider eggs",
+    "adult spiders",
+    "predators"
+  ],
+  "unknowns": [
+    "population of adult spiders"
+  ],
+  "required_operations": [
+    "Understand the life cycle of spiders",
+    "Deduce the impact of predators eating all spider eggs",
+    "Map the logical deduction to one of the given options"
+  ],
+  "blockers": [
+    "population of adult spiders"
+  ],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Adult spider population would remain the same"
+      },
+      {
+        "label": "B",
+        "text": "Adult spider population would double."
+      },
+      {
+        "label": "C",
+        "text": "Adults spider population would decrease"
+      },
+      {
+        "label": "D",
+        "text": "Adult spider population would increase."
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "population dynamics",
+    "multiple-choice"
+  ]
+}

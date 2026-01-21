@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves identifying which cat is larger from a list of options. The options are labeled as 'white five', 'white three', 'white four', 'white one', and 'white two'. The image associated with the problem likely contains text labels or descriptions that correspond to each of these options. The task is to read these labels and determine which cat is the largest. The problem does not specify how the size of the cats is determined, whether by visual comparison or by reading specific measurements or descriptions. The answer must be provided as the correct option letter, such as A, B, C, D, or E.",
+  "entities": [
+    "white five",
+    "white three",
+    "white four",
+    "white one",
+    "white two"
+  ],
+  "unknowns": [
+    "Which cat is larger?"
+  ],
+  "required_operations": [
+    "Read text labels from the image",
+    "Compare the sizes of the cats based on the labels",
+    "Determine the largest cat",
+    "Map the largest cat to the correct option label"
+  ],
+  "blockers": [
+    "Which cat is larger?"
+  ],
+  "risk_checks": [
+    "Ensure all text labels are correctly read and associated with the correct cat",
+    "Verify that the size comparison is based on accurate information from the image"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "white five"
+      },
+      {
+        "label": "B",
+        "text": "white three"
+      },
+      {
+        "label": "C",
+        "text": "white four"
+      },
+      {
+        "label": "D",
+        "text": "white one"
+      },
+      {
+        "label": "E",
+        "text": "white two"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "text recognition",
+    "multiple choice"
+  ]
+}

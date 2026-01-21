@@ -1,0 +1,53 @@
+{
+  "problem_state_summary": "The problem involves analyzing a table to determine if there is a shortage or surplus at a price of $790. The table provides data on supply and demand at various prices, including $750, $790, and $830. At $790, both the quantity supplied and demanded are 1100 units. The task is to compare these quantities to determine if there is a shortage or surplus. The problem is presented as a multiple-choice question with two options: shortage or surplus. The final answer must be provided as the correct option letter.",
+  "entities": [
+    "price",
+    "quantity supplied",
+    "quantity demanded"
+  ],
+  "unknowns": [
+    "shortage or surplus"
+  ],
+  "required_operations": [
+    "Read the table data for price $790",
+    "Compare quantity supplied and quantity demanded",
+    "Determine if there is a shortage or surplus",
+    "Map the result to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure row alignment for price $790",
+    "Verify correct interpretation of quantity supplied and demanded",
+    "Check for any missing data points in the table"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "economics",
+    "supply and demand",
+    "table analysis",
+    "multiple choice"
+  ]
+}

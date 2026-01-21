@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the total cost of the beads using the given weights and prices.",
+      "action": "reason",
+      "note": "We need to calculate the total cost by multiplying the weights of the beads by their respective prices and summing the results."
+    },
+    {
+      "intention": "Compute the total cost using the known weights and prices.",
+      "action": "python",
+      "code": "total_cost = calc_numeric('(3 * 4) + (4 * 5)')"
+    },
+    {
+      "intention": "Provide the final answer as an integer value.",
+      "action": "normalize",
+      "text": "Answer: 32"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

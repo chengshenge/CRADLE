@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and understand the geometric relationships between lines and angles.",
+      "how_to_use": "Use the image data and specify reference and target objects to identify spatial relationships."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle to the correct multiple-choice option.",
+      "how_to_use": "Use the calculated angle and the provided options to determine the correct answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_with_bisector",
+      "signature": "(angle_BOC, bisected_angle_AOE)->angle_EOB",
+      "purpose": "To calculate the angle EOB using the given angle BOC and the fact that OD bisects angle AOE.",
+      "inputs": [
+        "angle_BOC",
+        "bisected_angle_AOE"
+      ],
+      "outputs": "angle_EOB",
+      "edge_cases": [
+        "If angle BOC is not provided, the calculation cannot proceed.",
+        "If the bisector information is incorrect, the result will be inaccurate."
+      ],
+      "tests": [
+        {
+          "input": "50, 100",
+          "expect": "60"
+        },
+        {
+          "input": "40, 80",
+          "expect": "50"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "bisector"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_with_bisector",
+    "map_angle_to_option"
+  ]
+}

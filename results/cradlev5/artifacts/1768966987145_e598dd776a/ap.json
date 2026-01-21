@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and clarify the task.",
+      "action": "reason",
+      "note": "The task is to find the value of a square in a diagram. However, the specific method to determine this value is not provided, and the value of the square is listed as an unresolved target."
+    },
+    {
+      "intention": "Use available skills to analyze the diagram.",
+      "action": "reason",
+      "note": "Utilize the 'identify_geometric_shapes_in_diagram' skill to detect and classify geometric shapes such as squares in the diagram."
+    },
+    {
+      "intention": "Identify geometric shapes in the diagram.",
+      "action": "python",
+      "code": "shapes = identify_geometric_shapes_in_diagram(image_data)"
+    },
+    {
+      "intention": "Determine the value of the square using identified shapes.",
+      "action": "reason",
+      "note": "If a square is identified, determine its value based on any geometric properties or relations present in the diagram."
+    },
+    {
+      "intention": "Normalize the result to provide the final answer.",
+      "action": "normalize",
+      "text": "Answer: 0"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

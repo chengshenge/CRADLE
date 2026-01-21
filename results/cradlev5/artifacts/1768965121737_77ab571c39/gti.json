@@ -1,0 +1,64 @@
+{
+  "region_used": "text",
+  "information": [
+    "Person 1: Age 34",
+    "Person 2: Age 29"
+  ],
+  "structured": {
+    "text_lines": [
+      "Person 1: Age 34",
+      "Person 2: Age 29"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "age of person 1",
+        "value": "34",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 1: Age 34'"
+      },
+      {
+        "name": "age of person 2",
+        "value": "29",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 2: Age 29'"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The image contains text lines that clearly state the ages of two people, which are necessary to determine the age gap."
+  ]
+}

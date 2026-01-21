@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves a visual inspection of a diagram containing various objects. The task is to count the total number of objects and then subtract those that are red and those that are tiny matte balls. The goal is to determine how many objects remain after these subtractions. The problem requires categorizing objects based on their color and size, which suggests that the diagram contains visual cues for these attributes. The exact definitions of 'tiny' and 'matte' may require subjective visual judgment. The problem does not provide specific numbers or labels, indicating that the solution relies heavily on visual analysis.",
+  "entities": [
+    "total_objects",
+    "red_objects",
+    "tiny_matte_balls"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify total number of objects in the diagram",
+    "Count the number of red objects",
+    "Count the number of tiny matte balls",
+    "Subtract the red objects and tiny matte balls from the total",
+    "Determine the remaining number of objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure accurate visual categorization of objects by color and size",
+    "Verify the subjective judgment of 'tiny' and 'matte' attributes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual analysis",
+    "categorization",
+    "subtraction",
+    "diagram interpretation"
+  ]
+}

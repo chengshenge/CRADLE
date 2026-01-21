@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and understand the problem context.",
+      "action": "reason",
+      "note": "The problem involves understanding the impact on the population of adult spiders if all spider eggs are eaten by predators. The main blocker is determining the impact on the adult spider population."
+    },
+    {
+      "intention": "Logically deduce the impact on the adult spider population.",
+      "action": "reason",
+      "note": "If all spider eggs are eaten by predators, no new spiders will hatch, leading to a decrease in the adult spider population over time as existing adults die without replacement."
+    },
+    {
+      "intention": "Map the logical deduction to the correct multiple-choice option.",
+      "action": "python",
+      "code": "options = {'A': 'Adult spider population would remain the same', 'B': 'Adult spider population would double.', 'C': 'Adults spider population would decrease', 'D': 'Adult spider population would increase.'}\nanswer = 'C' if 'decrease' in options['C'] else None"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

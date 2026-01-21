@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the task and relevant data from the table.",
+      "action": "reason",
+      "note": "The task is to count the number of items that have sold less than 5 units in at least one store. We will examine the sales figures for each item across all stores."
+    },
+    {
+      "intention": "Extract sales data from the table and count items meeting the criteria.",
+      "action": "python",
+      "code": "def count_items_with_low_sales(table_data):\n    count = 0\n    for row in table_data['rows']:\n        for cell in row['cells']:\n            if int(cell['text']) < 5:\n                count += 1\n                break\n    return count\n\n# Table data extracted from GTI_JSON\nsales_table = {\n    'rows': [\n        {'row_label': 'Item 1', 'cells': [{'col': 'Store A', 'text': '3'}, {'col': 'Store B', 'text': '7'}, {'col': 'Store C', 'text': '2'}]},\n        {'row_label': 'Item 2', 'cells': [{'col': 'Store A', 'text': '6'}, {'col': 'Store B', 'text': '5'}, {'col': 'Store C', 'text': '8'}]},\n        {'row_label': 'Item 3', 'cells': [{'col': 'Store A', 'text': '4'}, {'col': 'Store B', 'text': '3'}, {'col': 'Store C', 'text': '9'}]},\n        {'row_label': 'Item 4', 'cells': [{'col': 'Store A', 'text': '10'}, {'col': 'Store B', 'text': '2'}, {'col': 'Store C', 'text': '1'}]}\n    ]\n}\n\ncount_items_with_low_sales(sales_table)"
+    },
+    {
+      "intention": "Normalize the result to the required answer format.",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

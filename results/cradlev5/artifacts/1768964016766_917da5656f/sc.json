@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_function_continuity",
+      "signature": "(graph_image_data)->str",
+      "purpose": "To analyze a graph of a function and determine if the function is continuous at each point.",
+      "inputs": [
+        "graph_image_data"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Graph with very close points that might appear continuous but are not",
+        "Graphs with subtle discontinuities"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_continuous_function",
+          "expect": "A"
+        },
+        {
+          "input": "image_data_with_discontinuous_function",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "calculus",
+        "continuity",
+        "graph analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_function_continuity"
+  ]
+}

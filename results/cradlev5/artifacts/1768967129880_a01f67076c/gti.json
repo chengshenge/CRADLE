@@ -1,0 +1,95 @@
+{
+  "region_used": "table",
+  "information": [
+    "Group",
+    "Value",
+    "Ruling Group",
+    "10",
+    "15",
+    "20",
+    "Other Group",
+    "5",
+    "8",
+    "12"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [
+        "Group",
+        "Value"
+      ],
+      "rows": [
+        {
+          "row_label": "Ruling Group",
+          "cells": [
+            {
+              "col": "Value",
+              "text": "10"
+            },
+            {
+              "col": "Value",
+              "text": "15"
+            },
+            {
+              "col": "Value",
+              "text": "20"
+            }
+          ]
+        },
+        {
+          "row_label": "Other Group",
+          "cells": [
+            {
+              "col": "Value",
+              "text": "5"
+            },
+            {
+              "col": "Value",
+              "text": "8"
+            },
+            {
+              "col": "Value",
+              "text": "12"
+            }
+          ]
+        }
+      ]
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "sum of values in the ruling group"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The table was identified as the region of interest due to the task involving summing values from a specific group.",
+    "The 'Ruling Group' was located within the table, and its associated values were extracted for further processing."
+  ]
+}

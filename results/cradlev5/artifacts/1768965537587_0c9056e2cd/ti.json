@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves calculating the perimeter of a rectangle. The rectangle is depicted in a diagram with its sides labeled as AB, BC, CD, and DA. The lengths of sides AB and BC are provided as 5 cm and 3 cm, respectively. The task is to determine the perimeter using these dimensions. The perimeter of a rectangle is calculated by summing the lengths of all sides, which can be simplified to 2 times the sum of the length and width. The dimensions are extracted from the diagram, as they are not provided in the text. The final answer should be an integer value representing the perimeter.",
+  "entities": [
+    "length of AB",
+    "width of BC",
+    "perimeter of the rectangle"
+  ],
+  "unknowns": [
+    "perimeter of the rectangle"
+  ],
+  "required_operations": [
+    "Extract dimensions from diagram",
+    "Calculate perimeter using formula 2 * (length + width)"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct extraction of dimensions from diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "perimeter",
+    "rectangle",
+    "diagram"
+  ]
+}

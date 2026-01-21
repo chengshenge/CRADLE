@@ -1,0 +1,48 @@
+{
+  "problem_state_summary": "The problem involves a diagram containing various objects, including yellow matte blocks and tiny brown cylinders. The task is to count these specific types of objects and subtract them from the total number of objects in the diagram. The goal is to determine how many objects remain after these subtractions. The problem requires visual identification and counting of the specified objects. The exact number of each type of object is not provided in the text and must be determined from the image. The final answer should be an integer representing the remaining number of objects.",
+  "entities": [
+    "yellow matte blocks",
+    "tiny brown cylinders",
+    "total number of objects"
+  ],
+  "unknowns": [
+    "number of yellow matte blocks",
+    "number of tiny brown cylinders",
+    "total number of objects"
+  ],
+  "required_operations": [
+    "Identify and count yellow matte blocks in the diagram",
+    "Identify and count tiny brown cylinders in the diagram",
+    "Subtract the counts of yellow matte blocks and tiny brown cylinders from the total number of objects",
+    "Determine the remaining number of objects"
+  ],
+  "blockers": [
+    "number of yellow matte blocks",
+    "number of tiny brown cylinders",
+    "total number of objects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure all object types are correctly identified and counted"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "subtraction",
+    "visual identification",
+    "geometry"
+  ]
+}

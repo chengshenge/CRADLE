@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_numerical_values_from_image",
+      "purpose": "To extract numerical values from the table image for computing and wireless demand in 2014.",
+      "how_to_use": "Use this skill to extract the values 150 and 200 from the table image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To calculate the total semiconductor demand by summing the extracted values.",
+      "how_to_use": "Use this skill to sum the extracted values 150 and 200."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a floating-point number with one decimal place.",
+      "how_to_use": "Use this skill to format the calculated total demand as a floating-point number with one decimal place."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_numerical_values_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

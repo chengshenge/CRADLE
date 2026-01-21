@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison task where the user must determine if the number of gray rubber objects located in front of a small yellow aeroplane is greater than the number of big cyan matte fighters. The task requires identifying and counting these specific objects based on their attributes, such as color, size, and material. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The visual information necessary to solve the problem is contained within a diagram, which requires careful observation to count the objects accurately. The problem does not provide explicit numerical data, so the user must rely on visual inspection to make the comparison. The task is straightforward but requires attention to detail to ensure the correct objects are counted and compared.",
+  "entities": [
+    "gray rubber objects",
+    "small yellow aeroplane",
+    "big cyan matte fighters"
+  ],
+  "unknowns": [
+    "number of gray rubber objects in front of the small yellow aeroplane",
+    "number of big cyan matte fighters"
+  ],
+  "required_operations": [
+    "Identify the small yellow aeroplane in the diagram",
+    "Count the gray rubber objects in front of the small yellow aeroplane",
+    "Identify the big cyan matte fighters in the diagram",
+    "Count the big cyan matte fighters",
+    "Compare the two counts to determine which is greater"
+  ],
+  "blockers": [
+    "number of gray rubber objects in front of the small yellow aeroplane",
+    "number of big cyan matte fighters"
+  ],
+  "risk_checks": [
+    "Ensure correct identification of the small yellow aeroplane",
+    "Verify that gray rubber objects are indeed in front of the aeroplane",
+    "Confirm that fighters are big, cyan, and matte",
+    "Check for any potential misinterpretation of object attributes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual comparison",
+    "counting",
+    "geometry",
+    "multiple-choice"
+  ]
+}

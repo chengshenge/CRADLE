@@ -1,0 +1,72 @@
+{
+  "problem_state_summary": "The problem involves a right triangle with a 60° angle, where the vertex A of the 60° angle and the right angle vertex C are on two parallel lines FG and DE, respectively. The hypotenuse AB bisects ∠CAG and intersects line DE at point H. The task is to find the measure of ∠BCH. The diagram includes labels for points A, B, C, G, H, F, D, and E, and marks the angle ∠CAB as 60°. The relationship that AB bisects ∠CAG and the parallel nature of lines FG and DE are also indicated. The problem is a multiple-choice question with four options for the measure of ∠BCH.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "G",
+    "H",
+    "F",
+    "D",
+    "E",
+    "∠CAB",
+    "AB",
+    "FG",
+    "DE"
+  ],
+  "unknowns": [
+    "∠BCH"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric configuration.",
+    "Use the given relationships and constraints to calculate ∠BCH.",
+    "Map the calculated angle to one of the provided options."
+  ],
+  "blockers": [
+    "∠BCH"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "right triangle",
+    "angle bisector",
+    "parallel lines",
+    "multiple choice"
+  ]
+}

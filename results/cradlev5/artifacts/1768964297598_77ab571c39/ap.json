@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from the image using the provided skill.",
+      "action": "reason",
+      "note": "Use the 'extract_ages_from_image' skill to obtain the ages of Alice and Bob from the image data."
+    },
+    {
+      "intention": "Calculate the age gap between Alice and Bob.",
+      "action": "python",
+      "code": "alice_age, bob_age = 30, 25\nage_gap = calc_numeric(f'{alice_age} - {bob_age}')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

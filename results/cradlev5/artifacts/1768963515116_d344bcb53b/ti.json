@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The problem involves a model with 4 dots that need to be divided into 2 equal groups. The task is to determine how many dots are in each group. The model is likely represented as a diagram, which visually shows the dots and their grouping. The total number of dots is known to be 4, and the problem requires finding the number of dots per group. The solution must be an integer, as specified by the constraints. The diagram may have labels such as A, B, C, and D, but the exact arrangement of dots is not described in the text.",
+  "entities": [
+    "total_dots",
+    "dots_per_group"
+  ],
+  "unknowns": [
+    "dots_per_group"
+  ],
+  "required_operations": [
+    "Identify total number of dots",
+    "Divide total dots by number of groups",
+    "Ensure result is an integer"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "division",
+    "integer constraint"
+  ]
+}

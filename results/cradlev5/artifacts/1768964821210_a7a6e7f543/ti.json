@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure with lines AB and AC. The task is to find the length of line AB given that the ratio of the lengths of AB to AC is 2:5. The length of line AC is provided as 25 units. The problem is presented with multiple-choice options for the length of AB. The solution requires understanding the given ratio and applying it to the known length of AC to determine the unknown length of AB. The diagram is used to confirm the points and lines involved, ensuring the correct application of the ratio.",
+  "entities": [
+    "Point A",
+    "Point B",
+    "Point C",
+    "Line AB",
+    "Line AC"
+  ],
+  "unknowns": [
+    "Length of AB"
+  ],
+  "required_operations": [
+    "Identify the given ratio of AB to AC",
+    "Use the known length of AC to calculate the length of AB using the ratio",
+    "Map the calculated length of AB to one of the provided options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "10"
+      },
+      {
+        "label": "C",
+        "text": "15"
+      },
+      {
+        "label": "D",
+        "text": "18"
+      },
+      {
+        "label": "E",
+        "text": "20"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "ratio",
+    "length",
+    "multiple-choice"
+  ]
+}

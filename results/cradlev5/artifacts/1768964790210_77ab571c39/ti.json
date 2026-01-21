@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The problem involves determining the age gap between two individuals, Alice and Bob, whose ages are provided in an image. The image contains text that specifies Alice's age as 30 years and Bob's age as 25 years. The task requires extracting these ages from the image and calculating the difference between them to find the age gap. The problem is straightforward and involves basic arithmetic operations. The final answer should be presented as an integer value representing the age gap in years.",
+  "entities": [
+    "Alice",
+    "Bob"
+  ],
+  "unknowns": [
+    "age gap between Alice and Bob"
+  ],
+  "required_operations": [
+    "Extract ages from image",
+    "Compute age gap as difference between ages"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure ages are correctly extracted from text",
+    "Verify integer result for age gap"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "age gap",
+    "text extraction"
+  ]
+}

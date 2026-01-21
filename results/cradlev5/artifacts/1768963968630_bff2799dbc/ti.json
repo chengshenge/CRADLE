@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves a geometric transformation where a sector of a circle with a central angle of 120 degrees and a radius of 6 cm is rolled into a conical shape. The task is to determine the perimeter of the base of the resulting cone. The arc length of the sector becomes the circumference of the base of the cone. The problem is presented with a diagram that likely shows the sector and/or the resulting cone. The solution requires understanding the relationship between the sector's arc length and the cone's base perimeter. The problem is multiple-choice with four options provided.",
+  "entities": [
+    "sector",
+    "cone",
+    "central angle",
+    "radius",
+    "arc length",
+    "base perimeter"
+  ],
+  "unknowns": [
+    "bottom perimeter of the paper cap"
+  ],
+  "required_operations": [
+    "Calculate the arc length of the sector",
+    "Use the arc length as the circumference of the cone's base",
+    "Determine which option matches the calculated perimeter"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify angle markers and segment lengths are accurately interpreted"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "2πcm"
+      },
+      {
+        "label": "B",
+        "text": "3πcm"
+      },
+      {
+        "label": "C",
+        "text": "4πcm"
+      },
+      {
+        "label": "D",
+        "text": "5πcm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "transformation",
+    "sector",
+    "cone",
+    "perimeter"
+  ]
+}

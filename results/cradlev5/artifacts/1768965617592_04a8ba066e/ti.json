@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves completing a matrix that is represented in a tabular format. The matrix consists of three rows with a sequence of numbers. The task is to identify the pattern or rule governing these numbers and complete the matrix accordingly. The options provided (A, B, C, D, E, F) represent different possible completions of the matrix. The specific pattern or rule is not explicitly given, which adds an element of ambiguity to the task. The solution requires selecting the correct option that completes the matrix according to the identified pattern.",
+  "entities": [
+    "matrix",
+    "rows",
+    "numbers"
+  ],
+  "unknowns": [
+    "matrix completion"
+  ],
+  "required_operations": [
+    "Identify the pattern or rule in the matrix",
+    "Apply the pattern to complete the matrix",
+    "Select the correct option from A, B, C, D, E, F"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure row and column alignment is correct",
+    "Verify that the pattern or rule is consistently applied across the matrix"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "matrix",
+    "pattern recognition",
+    "multiple choice"
+  ]
+}

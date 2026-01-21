@@ -1,0 +1,103 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar Chart Title: Sales Data for Q1",
+    "X-axis Label: Products",
+    "Y-axis Label: Sales (in thousands)",
+    "X-axis Ticks: ['Product A', 'Product B', 'Product C', 'Product D']",
+    "Y-axis Ticks: ['0', '10', '20', '30', '40', '50']",
+    "Legend: None",
+    "Key Points: [{'label': 'Product A', 'x': 'Product A', 'y': '30', 'note': 'Bar height for Product A'}, {'label': 'Product B', 'x': 'Product B', 'y': '45', 'note': 'Bar height for Product B'}, {'label': 'Product C', 'x': 'Product C', 'y': '20', 'note': 'Bar height for Product C'}, {'label': 'Product D', 'x': 'Product D', 'y': '50', 'note': 'Bar height for Product D'}]"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Sales Data for Q1",
+      "x_axis": {
+        "label": "Products",
+        "unit": "",
+        "ticks": [
+          "Product A",
+          "Product B",
+          "Product C",
+          "Product D"
+        ]
+      },
+      "y_axis": {
+        "label": "Sales (in thousands)",
+        "unit": "thousands",
+        "ticks": [
+          "0",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      },
+      "legend": [],
+      "key_points": [
+        {
+          "label": "Product A",
+          "x": "Product A",
+          "y": "30",
+          "note": "Bar height for Product A"
+        },
+        {
+          "label": "Product B",
+          "x": "Product B",
+          "y": "45",
+          "note": "Bar height for Product B"
+        },
+        {
+          "label": "Product C",
+          "x": "Product C",
+          "y": "20",
+          "note": "Bar height for Product C"
+        },
+        {
+          "label": "Product D",
+          "x": "Product D",
+          "y": "50",
+          "note": "Bar height for Product D"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "largest_bar_value",
+        "value": "50",
+        "unit": "thousands",
+        "source": "image",
+        "note": "Largest bar value for Product D"
+      },
+      {
+        "name": "smallest_bar_value",
+        "value": "20",
+        "unit": "thousands",
+        "source": "image",
+        "note": "Smallest bar value for Product C"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides clear labels and values for each bar, allowing for the extraction of the largest and smallest bar values directly from the image."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints.",
+      "action": "reason",
+      "note": "The problem requires identifying and subtracting specific objects based on their color, size, and material properties from a total set of objects. The unresolved target is the number of objects left."
+    },
+    {
+      "intention": "Identify and count all objects in the diagram.",
+      "action": "python",
+      "code": "total_objects = count_objects()"
+    },
+    {
+      "intention": "Identify and count all red matte cubes in the diagram.",
+      "action": "python",
+      "code": "red_matte_cubes = identify_objects_by_properties(image_data, 'red', 'matte', 'cube')"
+    },
+    {
+      "intention": "Identify and count all small green metal objects in the diagram.",
+      "action": "python",
+      "code": "small_green_metal_objects = identify_objects_by_properties(image_data, 'green', 'small', 'metal')"
+    },
+    {
+      "intention": "Calculate the number of objects remaining after subtraction.",
+      "action": "python",
+      "code": "remaining_objects = calculate_remaining_objects(total_objects, len(red_matte_cubes), len(small_green_metal_objects))"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

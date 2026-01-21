@@ -1,0 +1,61 @@
+{
+  "problem_state_summary": "The problem involves comparing the derivative of a function f(x) at two specific points, x=2 and x=5. The task is to determine whether the derivative at x=2 is larger than, equal to, or smaller than the derivative at x=5. This requires examining a graph of the function to understand the slope at these points. The graph provides key points at x=2 and x=5, which are essential for determining the slope. The exact values of the derivatives are not given, so interpretation from the graph is necessary. The problem is presented in a multiple-choice format with three options to choose from.",
+  "entities": [
+    "f(x)",
+    "x=2",
+    "x=5",
+    "derivative at x=2",
+    "derivative at x=5"
+  ],
+  "unknowns": [
+    "derivative of f(x) at x=2",
+    "derivative of f(x) at x=5"
+  ],
+  "required_operations": [
+    "Examine the graph of f(x)",
+    "Determine the slope at x=2",
+    "Determine the slope at x=5",
+    "Compare the slopes",
+    "Map the comparison to an option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accurate slope interpretation",
+    "Ensure correct mapping of key points to their respective x-values",
+    "Verify units on axes to ensure correct interpretation of slopes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "larger than"
+      },
+      {
+        "label": "B",
+        "text": "equal to"
+      },
+      {
+        "label": "C",
+        "text": "smaller than"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "derivative",
+    "graph interpretation",
+    "multiple-choice"
+  ]
+}

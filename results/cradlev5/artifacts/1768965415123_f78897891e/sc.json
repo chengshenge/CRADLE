@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "Map the calculated stretch of the rubber band to one of the multiple-choice options.",
+      "how_to_use": "Use the calculated stretch length as input to map it to the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_stretch_in_right_triangle",
+      "signature": "(original_length, vertical_displacement)->float",
+      "purpose": "Calculate the new length of the rubber band when the midpoint is pulled up, forming two right triangles.",
+      "inputs": [
+        "original_length",
+        "vertical_displacement"
+      ],
+      "outputs": "The new length of the rubber band.",
+      "edge_cases": [
+        "If the vertical displacement is zero, the new length should equal the original length."
+      ],
+      "tests": [
+        {
+          "input": "(16, 6)",
+          "expect": "17.88854381999832"
+        },
+        {
+          "input": "(16, 0)",
+          "expect": "16"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "right triangle",
+        "Pythagorean theorem"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_stretch_in_right_triangle",
+    "map_length_to_option"
+  ]
+}

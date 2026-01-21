@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To interpret the diagram and understand the geometric configuration, including parallel lines and angle bisectors.",
+      "how_to_use": "Use this skill to analyze the spatial relationships between points A, B, C, G, H, F, D, and E, and the lines FG and DE in the diagram."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle to one of the provided multiple-choice options.",
+      "how_to_use": "Use this skill to match the calculated measure of ∠BCH to the given options and return the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_right_triangle_with_bisector",
+      "signature": "(angle_CAB, parallel_lines, bisector, diagram_data)->angle_BCH",
+      "purpose": "To calculate the measure of an angle in a right triangle where one angle is bisected and the triangle is situated between two parallel lines.",
+      "inputs": [
+        "angle_CAB",
+        "parallel_lines",
+        "bisector",
+        "diagram_data"
+      ],
+      "outputs": "angle_BCH",
+      "edge_cases": [
+        "If the bisector is not clearly defined in the diagram, the calculation may be inaccurate.",
+        "If the parallel lines are not correctly identified, the angle calculation may be incorrect."
+      ],
+      "tests": [
+        {
+          "input": "60°, ['FG', 'DE'], 'AB', diagram_data",
+          "expect": "30°"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "right triangle",
+        "angle bisector",
+        "parallel lines"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_in_right_triangle_with_bisector",
+    "map_angle_to_option"
+  ]
+}

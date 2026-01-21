@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_sequence_pattern",
+      "signature": "(image_data)->str",
+      "purpose": "To analyze a diagram and identify the pattern governing a sequence of objects.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "The label of the next object in the sequence.",
+      "edge_cases": [
+        "Ambiguous patterns where multiple interpretations are possible.",
+        "Diagrams with visual noise or distortion."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_pattern",
+          "expect": "C"
+        },
+        {
+          "input": "image_data_with_ambiguous_pattern",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_sequence_pattern"
+  ]
+}

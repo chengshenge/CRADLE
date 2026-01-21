@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_algorithms_above_threshold",
+      "signature": "(table_data, threshold)->int",
+      "purpose": "Count the number of algorithms with accuracy values greater than a specified threshold.",
+      "inputs": [
+        "table_data",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All algorithms have accuracy below the threshold",
+        "All algorithms have accuracy above the threshold",
+        "Some algorithms have accuracy exactly equal to the threshold"
+      ],
+      "tests": [
+        {
+          "input": "([{'name': 'Algorithm A', 'accuracy': 8.5}, {'name': 'Algorithm B', 'accuracy': 9.2}, {'name': 'Algorithm C', 'accuracy': 9.7}, {'name': 'Algorithm D', 'accuracy': 7.9}], 9)",
+          "expect": 2
+        },
+        {
+          "input": "([{'name': 'Algorithm A', 'accuracy': 8.5}, {'name': 'Algorithm B', 'accuracy': 8.9}, {'name': 'Algorithm C', 'accuracy': 8.7}, {'name': 'Algorithm D', 'accuracy': 7.9}], 9)",
+          "expect": 0
+        },
+        {
+          "input": "([{'name': 'Algorithm A', 'accuracy': 9.5}, {'name': 'Algorithm B', 'accuracy': 9.2}, {'name': 'Algorithm C', 'accuracy': 9.7}, {'name': 'Algorithm D', 'accuracy': 9.9}], 9)",
+          "expect": 4
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "comparison",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_algorithms_above_threshold"
+  ]
+}

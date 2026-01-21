@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the length of AB using the given ratio and known length of AC.",
+      "how_to_use": "Use the expression '2/5 * 25' to calculate the length of AB."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use the calculated length of AB to map to the correct multiple-choice option and format as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_length_to_option",
+      "signature": "(calculated_length, options)->str",
+      "purpose": "Map the calculated length of AB to the correct multiple-choice option.",
+      "inputs": [
+        "calculated_length",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "If the calculated length does not match any option, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "10, [{'label': 'A', 'text': '8'}, {'label': 'B', 'text': '10'}, {'label': 'C', 'text': '15'}, {'label': 'D', 'text': '18'}, {'label': 'E', 'text': '20'}]",
+          "expect": "B"
+        },
+        {
+          "input": "15, [{'label': 'A', 'text': '8'}, {'label': 'B', 'text': '10'}, {'label': 'C', 'text': '15'}, {'label': 'D', 'text': '18'}, {'label': 'E', 'text': '20'}]",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "length mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calc_numeric",
+    "map_length_to_option",
+    "format_final"
+  ]
+}

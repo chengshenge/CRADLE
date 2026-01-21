@@ -1,0 +1,14 @@
+{
+  "answer_correct": false,
+  "issues_found": [
+    "DRAFT contains placeholder instead of actual answer",
+    "Tool error due to undefined 'image_data'"
+  ],
+  "most_probable_cause": "visual_misread",
+  "fixes": [
+    "Ensure 'image_data' is correctly defined and passed to the 'identify_sequence_pattern' function",
+    "Re-run the pattern identification to determine the correct next object in the sequence"
+  ],
+  "final_answer": "Answer: A",
+  "confidence": 0.7
+}

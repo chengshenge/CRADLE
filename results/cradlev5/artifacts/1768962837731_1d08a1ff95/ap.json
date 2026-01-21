@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known and unknown elements in the problem.",
+      "action": "reason",
+      "note": "We know ∠A = 110° and need to find ∠BOC. OB and OC are angle bisectors intersecting at O."
+    },
+    {
+      "intention": "Use the angle sum property of triangles to find ∠B and ∠C.",
+      "action": "python",
+      "code": "calc_numeric('180 - 110')"
+    },
+    {
+      "intention": "Calculate the measure of angle ∠BOC using the properties of angle bisectors.",
+      "action": "python",
+      "code": "calc_numeric('0.5 * (180 - 110)')"
+    },
+    {
+      "intention": "Map the calculated angle ∠BOC to the closest multiple-choice option.",
+      "action": "reason",
+      "note": "The calculated angle ∠BOC is 70°. The options are (A) 135°, (B) 140°, (C) 145°, (D) 150°. None match exactly, so we need to verify the calculation."
+    },
+    {
+      "intention": "Re-evaluate the calculation for ∠BOC using the correct method.",
+      "action": "python",
+      "code": "calc_numeric('180 - 0.5 * (180 - 110)')"
+    },
+    {
+      "intention": "Map the corrected angle ∠BOC to the closest multiple-choice option.",
+      "action": "reason",
+      "note": "The corrected angle ∠BOC is 145°, which matches option (C)."
+    },
+    {
+      "intention": "Format the final answer to match the required output format.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

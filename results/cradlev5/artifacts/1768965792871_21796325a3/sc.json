@@ -1,0 +1,65 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_line_data_from_chart",
+      "signature": "(chart_image_data)->dict",
+      "purpose": "Extracts data points for each line from a chart image.",
+      "inputs": [
+        "chart_image_data"
+      ],
+      "outputs": "A dictionary with years as keys and tuples of data points for Line A and Line B as values.",
+      "edge_cases": [
+        "Chart with missing data points",
+        "Overlapping lines making data extraction difficult"
+      ],
+      "tests": [
+        {
+          "input": "chart_image_data_with_clear_lines",
+          "expect": "{\"2018\": (50, 30), \"2019\": (40, 20), \"2020\": (60, 30), \"2021\": (50, 40), \"2022\": (70, 50)}"
+        },
+        {
+          "input": "chart_image_data_with_missing_points",
+          "expect": "{\"2018\": (50, 30), \"2019\": (40, null), \"2020\": (null, 30), \"2021\": (50, 40), \"2022\": (70, 50)}"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data extraction",
+        "line chart"
+      ]
+    },
+    {
+      "name": "compute_year_with_max_difference",
+      "signature": "(line_data)->int",
+      "purpose": "Computes the year with the largest difference between data points of two lines.",
+      "inputs": [
+        "line_data"
+      ],
+      "outputs": "The year with the maximum difference.",
+      "edge_cases": [
+        "Multiple years with the same maximum difference",
+        "All differences are zero"
+      ],
+      "tests": [
+        {
+          "input": "{\"2018\": (50, 30), \"2019\": (40, 20), \"2020\": (60, 30), \"2021\": (50, 40), \"2022\": (70, 50)}",
+          "expect": "2022"
+        },
+        {
+          "input": "{\"2018\": (50, 50), \"2019\": (40, 40), \"2020\": (60, 60), \"2021\": (50, 50), \"2022\": (70, 70)}",
+          "expect": "2018"
+        }
+      ],
+      "tags": [
+        "data comparison",
+        "yearly difference",
+        "calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_line_data_from_chart",
+    "compute_year_with_max_difference"
+  ]
+}

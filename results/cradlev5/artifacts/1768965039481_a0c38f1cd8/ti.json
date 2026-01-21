@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves a circle with a diameter AB and a chord CD. The angle ∠ADC is given as 26 degrees. The task is to find the degree of angle ∠CAB. The circle's diameter implies that AB passes through the center O. The relationship between ∠ADC and ∠CAB is governed by circle theorems. The problem is presented with multiple-choice options for the answer. The diagram is essential to understand the geometric relationships and solve for the unknown angle.",
+  "entities": [
+    "AB",
+    "CD",
+    "∠ADC",
+    "∠CAB",
+    "O"
+  ],
+  "unknowns": [
+    "∠CAB"
+  ],
+  "required_operations": [
+    "Examine the diagram to understand the geometric configuration",
+    "Apply circle theorems to relate ∠ADC and ∠CAB",
+    "Calculate the measure of ∠CAB",
+    "Map the calculated angle to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "∠CAB"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify angle markers are correctly interpreted",
+    "Check for any missing or unclear angle indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "26°"
+      },
+      {
+        "label": "B",
+        "text": "74°"
+      },
+      {
+        "label": "C",
+        "text": "64°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "angle",
+    "diagram"
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "region_used": "table",
+  "information": [
+    "Item",
+    "Store A",
+    "Store B",
+    "Store C",
+    "Item 1",
+    "3",
+    "7",
+    "2",
+    "Item 2",
+    "6",
+    "5",
+    "8",
+    "Item 3",
+    "4",
+    "3",
+    "9",
+    "Item 4",
+    "10",
+    "2",
+    "1"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [
+        "Item",
+        "Store A",
+        "Store B",
+        "Store C"
+      ],
+      "rows": [
+        {
+          "row_label": "Item 1",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "3"
+            },
+            {
+              "col": "Store B",
+              "text": "7"
+            },
+            {
+              "col": "Store C",
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 2",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "6"
+            },
+            {
+              "col": "Store B",
+              "text": "5"
+            },
+            {
+              "col": "Store C",
+              "text": "8"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 3",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "4"
+            },
+            {
+              "col": "Store B",
+              "text": "3"
+            },
+            {
+              "col": "Store C",
+              "text": "9"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 4",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "10"
+            },
+            {
+              "col": "Store B",
+              "text": "2"
+            },
+            {
+              "col": "Store C",
+              "text": "1"
+            }
+          ]
+        }
+      ]
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "Number of items sold less than 5 units in at least one store"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The table contains sales figures for different items across three stores. The task is to identify items with sales less than 5 units in at least one store."
+  ]
+}

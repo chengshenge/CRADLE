@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and identify geometric properties or relations.",
+      "how_to_use": "Use this skill to determine spatial relationships between labeled points in the diagram."
+    },
+    {
+      "name": "identify_geometric_shapes_in_diagram",
+      "purpose": "To identify geometric shapes present in the diagram.",
+      "how_to_use": "Use this skill to detect and classify geometric shapes such as squares in the diagram."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_square_value_from_diagram",
+      "signature": "(image_data, labels)->int",
+      "purpose": "To calculate the value of a square using geometric properties and relations from a diagram.",
+      "inputs": [
+        "image_data",
+        "labels"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Labels do not correspond to any geometric shape",
+        "Diagram is incomplete or unclear"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_square, ['A', 'B', 'C', 'D']",
+          "expect": "4"
+        },
+        {
+          "input": "image_data_with_no_square, ['E', 'F', 'G', 'H']",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram analysis",
+        "value calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "identify_geometric_shapes_in_diagram",
+    "calculate_square_value_from_diagram"
+  ]
+}

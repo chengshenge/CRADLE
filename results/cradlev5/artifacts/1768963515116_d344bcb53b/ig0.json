@@ -1,0 +1,57 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves understanding a model with dots divided into groups, which suggests a visual representation of dots and groups, likely a diagram."
+  ],
+  "problem_understanding": "The problem asks to determine the number of dots in each group when 4 dots are divided into 2 equal groups.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "total_dots",
+        "value": "4",
+        "unit": "dots",
+        "source": "text",
+        "note": "Total number of dots in the model."
+      }
+    ],
+    "unknown": [
+      "dots_per_group"
+    ],
+    "relations": [
+      "total_dots = 2 * dots_per_group"
+    ],
+    "constraints": [
+      "dots_per_group must be an integer"
+    ],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "model nouns has verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward as it involves dividing the total number of dots by the number of groups to find the number of dots per group."
+  ],
+  "problem_summary": "Determine the number of dots in each group when 4 dots are divided into 2 equal groups.",
+  "knowns": [
+    {
+      "name": "total_dots",
+      "value": "4",
+      "unit": "dots",
+      "source": "text",
+      "note": "Total number of dots in the model."
+    }
+  ],
+  "asks": [
+    "dots_per_group"
+  ],
+  "constraints": [
+    "dots_per_group must be an integer"
+  ],
+  "visual_facts": [
+    "The model likely shows 4 dots divided into 2 groups."
+  ],
+  "ambiguity": [
+    "The exact arrangement of dots in the model is not described in the text."
+  ]
+}

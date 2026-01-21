@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the area of square C using the Pythagorean relationship.",
+      "how_to_use": "Use the formula C = sqrt(A^2 + B^2) to calculate the area of square C."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the multiple-choice question.",
+      "how_to_use": "Return the answer in the format: Answer: [option label]."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_pythagorean_tree",
+      "signature": "(areas)->float",
+      "purpose": "Determine the area of the largest square in a Pythagorean tree given the areas of two smaller squares.",
+      "inputs": [
+        "areas of squares A and B"
+      ],
+      "outputs": "area of square C",
+      "edge_cases": [
+        "Non-integer areas",
+        "Negative areas"
+      ],
+      "tests": [
+        {
+          "input": "areas = {'A': 5, 'B': 3}",
+          "expect": "C = sqrt(5^2 + 3^2)"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "Pythagorean tree",
+        "area calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_pythagorean_tree",
+    "calc_numeric",
+    "format_final"
+  ]
+}

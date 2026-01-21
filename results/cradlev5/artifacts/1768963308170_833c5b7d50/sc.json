@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_sales_table",
+      "signature": "(table_data)->int",
+      "purpose": "To analyze a table of sales figures and count the number of items that have sold less than 5 units in at least one store.",
+      "inputs": [
+        "table_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Empty table",
+        "All sales figures are above 5",
+        "All sales figures are below 5"
+      ],
+      "tests": [
+        {
+          "input": "[['Item', 'Store A', 'Store B', 'Store C'], ['Item 1', 3, 6, 7], ['Item 2', 5, 5, 5], ['Item 3', 2, 4, 6]]",
+          "expect": 2
+        },
+        {
+          "input": "[['Item', 'Store A', 'Store B', 'Store C'], ['Item 1', 6, 6, 6], ['Item 2', 7, 8, 9]]",
+          "expect": 0
+        },
+        {
+          "input": "[['Item', 'Store A', 'Store B', 'Store C'], ['Item 1', 1, 2, 3], ['Item 2', 4, 4, 4]]",
+          "expect": 2
+        }
+      ],
+      "tags": [
+        "table analysis",
+        "sales figures",
+        "counting problem"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_sales_table"
+  ]
+}

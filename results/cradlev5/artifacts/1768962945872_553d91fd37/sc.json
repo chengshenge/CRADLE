@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "sympy_solve",
+      "purpose": "To solve the equation for the length of AC using the midpoint property.",
+      "how_to_use": "Use sympy_solve to solve the equation AC/2 = DB for AC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use format_final to return the answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_midpoint_property",
+      "signature": "(points, segments)->bool",
+      "purpose": "To identify if a point is the midpoint of a segment.",
+      "inputs": [
+        "points",
+        "segments"
+      ],
+      "outputs": "bool",
+      "edge_cases": [
+        "Point not on segment",
+        "Segment not straight"
+      ],
+      "tests": [
+        {
+          "input": "(['A', 'D', 'C'], ['AC'])",
+          "expect": "True"
+        },
+        {
+          "input": "(['B', 'D', 'C'], ['BC'])",
+          "expect": "False"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "midpoint"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_midpoint_property",
+    "sympy_solve",
+    "format_final"
+  ]
+}

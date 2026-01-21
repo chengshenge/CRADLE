@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the task and the known values from the image.",
+      "action": "reason",
+      "note": "The task is to subtract the number of big matte balls and green rubber objects from the total number of objects to find the remaining objects. The known values are: total_objects = 50, big_matte_balls = 15, green_rubber_objects = 10."
+    },
+    {
+      "intention": "Calculate the number of remaining objects after subtraction.",
+      "action": "python",
+      "code": "remaining_objects = 50 - 15 - 10"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: 25"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Determine the number of dots per group by dividing the total number of dots by the number of groups.",
+      "action": "reason",
+      "note": "The problem involves dividing 4 dots into 2 equal groups. We need to calculate how many dots are in each group."
+    },
+    {
+      "intention": "Calculate the number of dots per group using division.",
+      "action": "python",
+      "code": "dots_per_group = calc_numeric('4 / 2')"
+    },
+    {
+      "intention": "Format the final answer to present the number of dots per group.",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

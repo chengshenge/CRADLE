@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the pattern in the sequence to find the missing value.",
+      "action": "reason",
+      "note": "The sequence given is 2, 4, 6, ?, 10. It appears to be an arithmetic sequence where each number increases by a constant difference."
+    },
+    {
+      "intention": "Determine the common difference in the sequence.",
+      "action": "python",
+      "code": "common_difference = 4 - 2"
+    },
+    {
+      "intention": "Calculate the missing value using the identified pattern.",
+      "action": "python",
+      "code": "missing_value = 6 + common_difference"
+    },
+    {
+      "intention": "Format the final answer for presentation.",
+      "action": "normalize",
+      "text": "Answer: 8"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

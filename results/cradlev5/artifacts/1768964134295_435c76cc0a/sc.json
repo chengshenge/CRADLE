@@ -1,0 +1,38 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_limit_from_graph",
+      "signature": "(graph_image_data, point_of_interest)->int",
+      "purpose": "To determine the limit of a function as x approaches a specific point using a graph image.",
+      "inputs": [
+        "graph_image_data",
+        "point_of_interest"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Graph with unclear markings",
+        "Point of interest not clearly visible",
+        "Non-integer limit values"
+      ],
+      "tests": [
+        {
+          "input": "(sample_graph_image_data, -1)",
+          "expect": "2"
+        },
+        {
+          "input": "(another_graph_image_data, 0)",
+          "expect": "1"
+        }
+      ],
+      "tags": [
+        "calculus",
+        "limit",
+        "graph analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_limit_from_graph"
+  ]
+}

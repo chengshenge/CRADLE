@@ -1,0 +1,59 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the geometric configuration of the square and the line, and determine the role of x in this configuration.",
+      "how_to_use": "Use this skill to identify the spatial relationships between the square, the line, and the point of tangency P in the diagram."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "To calculate the value of x based on the geometric properties identified.",
+      "how_to_use": "Use this skill to solve the equations derived from the geometric relationships to find the value of x."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required.",
+      "how_to_use": "Use this skill to ensure the final answer is presented in the correct format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_square_and_line_parameters",
+      "signature": "(image_data)->dict",
+      "purpose": "To extract the parameters of the square and the line from the diagram, including the point of tangency.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary containing the parameters of the square and the line.",
+      "edge_cases": [
+        "The diagram is unclear or missing labels.",
+        "The point of tangency is not clearly marked."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_square_and_line",
+          "expect": {
+            "square_side": 5,
+            "line_equation": "y=2x+3",
+            "tangency_point": "P"
+          }
+        },
+        {
+          "input": "image_data_with_missing_labels",
+          "expect": "Error: Missing labels in the diagram."
+        }
+      ],
+      "tags": [
+        "image processing",
+        "geometry",
+        "parameter extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_square_and_line_parameters",
+    "identify_spatial_relationships",
+    "sympy_solve",
+    "format_final"
+  ]
+}

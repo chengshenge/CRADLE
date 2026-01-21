@@ -1,0 +1,92 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Title: Customer Satisfaction Survey Results",
+    "X-axis label: Categories",
+    "Y-axis label: Number of Responses",
+    "Legend: Satisfied, Dissatisfied",
+    "Key points: Satisfied - 120, Dissatisfied - 80"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Customer Satisfaction Survey Results",
+      "x_axis": {
+        "label": "Categories",
+        "unit": "",
+        "ticks": [
+          "Satisfied",
+          "Dissatisfied"
+        ]
+      },
+      "y_axis": {
+        "label": "Number of Responses",
+        "unit": "",
+        "ticks": [
+          "0",
+          "20",
+          "40",
+          "60",
+          "80",
+          "100",
+          "120",
+          "140"
+        ]
+      },
+      "legend": [
+        "Satisfied",
+        "Dissatisfied"
+      ],
+      "key_points": [
+        {
+          "label": "Satisfied",
+          "x": "Satisfied",
+          "y": "120",
+          "note": ""
+        },
+        {
+          "label": "Dissatisfied",
+          "x": "Dissatisfied",
+          "y": "80",
+          "note": ""
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "Number of Satisfied",
+        "value": "120",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "Number of Dissatisfied",
+        "value": "80",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides the necessary data to determine the ratio of 'Dissatisfied' to 'Satisfied' responses by extracting the key points for each category."
+  ]
+}

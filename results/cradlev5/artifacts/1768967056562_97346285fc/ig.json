@@ -1,0 +1,56 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires identifying which cat is larger based on the names provided in the choices. This suggests that the image likely contains text labels or descriptions associated with each cat, which need to be read to determine the correct answer."
+  ],
+  "problem_understanding": "The problem is asking to identify which of the listed cats is larger based on some information that is likely present in the image.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "Which cat is larger?"
+    ],
+    "relations": [],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "white five"
+      },
+      {
+        "label": "B",
+        "text": "white three"
+      },
+      {
+        "label": "C",
+        "text": "white four"
+      },
+      {
+        "label": "D",
+        "text": "white one"
+      },
+      {
+        "label": "E",
+        "text": "white two"
+      }
+    ]
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "cat is",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to identify the largest cat from a list of options, which requires reading and comparing text labels associated with each cat in the image."
+  ],
+  "problem_summary": "Identify which cat is larger from the given options based on information in the image.",
+  "knowns": [],
+  "asks": [
+    "Which cat is larger?"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains text labels: white five, white three, white four, white one, white two."
+  ],
+  "ambiguity": [
+    "The problem does not specify how the size of the cats is determined, whether by visual comparison or by reading specific measurements or descriptions."
+  ]
+}

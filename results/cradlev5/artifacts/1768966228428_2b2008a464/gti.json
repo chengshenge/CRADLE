@@ -1,0 +1,98 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Title: Average Weekly Work Hours by Country",
+    "X-axis label: Year",
+    "Y-axis label: Average Weekly Work Hours",
+    "Legend: Country A, Country B, Country C, Country D",
+    "X-axis ticks: 2010, 2011, 2012, 2013, 2014, 2015",
+    "Y-axis ticks: 30, 32, 34, 36, 38, 40",
+    "Key points: Country A (2012, 36), Country B (2014, 37), Country C (2015, 35.5), Country D (2013, 36.5)"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Average Weekly Work Hours by Country",
+      "x_axis": {
+        "label": "Year",
+        "unit": "",
+        "ticks": [
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014",
+          "2015"
+        ]
+      },
+      "y_axis": {
+        "label": "Average Weekly Work Hours",
+        "unit": "",
+        "ticks": [
+          "30",
+          "32",
+          "34",
+          "36",
+          "38",
+          "40"
+        ]
+      },
+      "legend": [
+        "Country A",
+        "Country B",
+        "Country C",
+        "Country D"
+      ],
+      "key_points": [
+        {
+          "label": "Country A",
+          "x": "2012",
+          "y": "36",
+          "note": ""
+        },
+        {
+          "label": "Country B",
+          "x": "2014",
+          "y": "37",
+          "note": ""
+        },
+        {
+          "label": "Country C",
+          "x": "2015",
+          "y": "35.5",
+          "note": ""
+        },
+        {
+          "label": "Country D",
+          "x": "2013",
+          "y": "36.5",
+          "note": ""
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of countries with people working more than 35 hours"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides data on average weekly work hours by country over several years.",
+    "The task is to identify countries where the average work hours exceed 35, which can be determined by analyzing the y-axis values and corresponding countries in the legend."
+  ]
+}

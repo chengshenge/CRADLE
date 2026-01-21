@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The blocker is identifying the next object in the sequence. We will use the 'identify_sequence_pattern' skill to infer the pattern from the diagram."
+    },
+    {
+      "intention": "Use the learned skill to identify the sequence pattern from the diagram.",
+      "action": "python",
+      "code": "next_object = identify_sequence_pattern(image_data)"
+    },
+    {
+      "intention": "Normalize the result to match the expected answer format.",
+      "action": "normalize",
+      "text": "Answer: {next_object}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

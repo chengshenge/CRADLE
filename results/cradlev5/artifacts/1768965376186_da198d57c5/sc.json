@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_rectangle_dimensions_from_diagram",
+      "purpose": "To extract the side length of the square from the diagram.",
+      "how_to_use": "Use this skill to obtain the side length of the square from the image data."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To calculate the perimeter of the square using the extracted side length.",
+      "how_to_use": "Use this skill to compute the perimeter by multiplying the side length by 4."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use this skill to format the calculated perimeter into the required answer format."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_rectangle_dimensions_from_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

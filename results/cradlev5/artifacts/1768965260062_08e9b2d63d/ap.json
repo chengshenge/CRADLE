@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the task and relevant information from the problem statement.",
+      "action": "reason",
+      "note": "The task is to compare the average kinetic energies of particles in two gas samples shown in diagrams and determine which sample has the higher temperature. The relationship between kinetic energy and temperature is implied."
+    },
+    {
+      "intention": "Use the learned skill to compare kinetic energy from diagrams.",
+      "action": "python",
+      "code": "compare_kinetic_energy_from_diagrams(image_data='aa6570bc1260')"
+    },
+    {
+      "intention": "Normalize the output to match the expected answer format.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

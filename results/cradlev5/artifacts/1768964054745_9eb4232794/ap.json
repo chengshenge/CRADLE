@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the spatial relationships and geometric properties in the diagram.",
+      "action": "reason",
+      "note": "Use the given information about the circle, diameter, chords, and angles to understand the geometric setup."
+    },
+    {
+      "intention": "Calculate the measure of angle F using the given angle AOF and geometric properties.",
+      "action": "python",
+      "code": "angle_AOF = 40\nangle_F = angle_AOF / 2"
+    },
+    {
+      "intention": "Map the calculated angle to the closest multiple-choice option.",
+      "action": "python",
+      "code": "map_angle_to_option(angle_F, [{'label': 'A', 'text': '20°'}, {'label': 'B', 'text': '35°'}, {'label': 'C', 'text': '40°'}, {'label': 'D', 'text': '55°'}])"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

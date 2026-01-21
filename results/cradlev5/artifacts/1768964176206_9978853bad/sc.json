@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects",
+      "purpose": "To count the number of bars with values less than 6.",
+      "how_to_use": "Use this skill to count the bars that meet the condition of having values less than 6."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_bar_values_from_chart",
+      "signature": "(chart_image_data)->list",
+      "purpose": "Extract the values of each bar from a bar chart image.",
+      "inputs": [
+        "chart_image_data"
+      ],
+      "outputs": "list of integers representing the values of each bar",
+      "edge_cases": [
+        "Bars with values exactly on the tick marks",
+        "Bars with values not aligned with tick marks"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_bars_A_to_E",
+          "expect": "[5, 3, 7, 2, 6]"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "bar chart",
+        "value extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_bar_values_from_chart",
+    "count_objects"
+  ]
+}

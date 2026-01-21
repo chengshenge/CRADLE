@@ -1,0 +1,48 @@
+{
+  "problem_state_summary": "The problem involves a visual representation where various objects are depicted. The task is to count the total number of objects and then subtract the number of small balls and blue rubber things from this total. The goal is to determine how many objects remain after these subtractions. The characteristics of 'small balls' and 'blue rubber things' need to be identified visually in the image. The problem requires an integer answer representing the remaining number of objects. The solution involves visual identification and counting of specific object types.",
+  "entities": [
+    "total_objects",
+    "small_balls",
+    "blue_rubber_things",
+    "remaining_objects"
+  ],
+  "unknowns": [
+    "total_objects",
+    "small_balls",
+    "blue_rubber_things",
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count total objects in the image",
+    "Identify and count small balls",
+    "Identify and count blue rubber things",
+    "Subtract counts of small balls and blue rubber things from total objects"
+  ],
+  "blockers": [
+    "The specific characteristics of 'small balls' and 'blue rubber things' need to be visually identified in the image."
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of object types"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "object counting",
+    "visual identification"
+  ]
+}

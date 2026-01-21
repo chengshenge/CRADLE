@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a geometric setup where a rubber band of original length 16 cm is fixed at both ends on a horizontal table. The midpoint of the rubber band is pulled vertically upwards by 6 cm, forming two right triangles. The task is to determine how much the rubber band is stretched due to this action. The diagram is crucial as it shows the rubber band forming two right triangles with marked segment lengths and vertical displacement. The problem requires calculating the new length of the rubber band and comparing it to the original length to find the stretch. The solution must map to one of the given multiple-choice options.",
+  "entities": [
+    "rubber band",
+    "midpoint",
+    "right triangles",
+    "segment AB",
+    "segment AM",
+    "segment BM",
+    "segment CM"
+  ],
+  "unknowns": [
+    "stretched_length"
+  ],
+  "required_operations": [
+    "Identify the geometric configuration from the diagram",
+    "Calculate the new length of the rubber band using the Pythagorean theorem",
+    "Determine the difference between the new length and the original length",
+    "Map the calculated stretch to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "stretched_length"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct interpretation of vertical displacement",
+    "verify right triangle formation"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "2cm"
+      },
+      {
+        "label": "B",
+        "text": "4cm"
+      },
+      {
+        "label": "C",
+        "text": "6cm"
+      },
+      {
+        "label": "D",
+        "text": "8cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "right triangle",
+    "Pythagorean theorem",
+    "multiple choice"
+  ]
+}

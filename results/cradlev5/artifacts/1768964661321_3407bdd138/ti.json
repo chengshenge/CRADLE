@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves analyzing a food web diagram to determine the impact of a decrease in the population of large roach on other species. The food web is a diagram that shows relationships between different species, including steelheads, stickleback fry, predatory insects, and large roach. The task is to predict the changes in populations of steelheads, stickleback fry, and predatory insects if the number of large roach decreases. The relationships in the food web are indicated by arrows, which suggest dependencies between species. The problem is presented as a multiple-choice question with four options, each describing a potential outcome for one of the species. The correct answer must be selected based on the understanding of the food web dynamics.",
+  "entities": [
+    "Steelheads",
+    "Stickleback Fry",
+    "Predatory Insects",
+    "Large Roach"
+  ],
+  "unknowns": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "required_operations": [
+    "Analyze the food web diagram",
+    "Determine relationships and dependencies",
+    "Predict impact of decrease in large roach population",
+    "Map prediction to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure arrows correctly indicate relationships"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "The population of steelheads would decrease."
+      },
+      {
+        "label": "B",
+        "text": "The population of stickleback fry would increase."
+      },
+      {
+        "label": "C",
+        "text": "The population of predatory insects would increase."
+      },
+      {
+        "label": "D",
+        "text": "The population of predatory insects would decrease."
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "food web",
+    "population dynamics",
+    "diagram analysis"
+  ]
+}

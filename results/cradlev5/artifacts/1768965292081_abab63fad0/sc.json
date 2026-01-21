@@ -1,0 +1,68 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_function_value_from_graph",
+      "signature": "(graph_image_data, x_value)->float",
+      "purpose": "Extract the y-value of a function from a graph at a specified x-value.",
+      "inputs": [
+        "graph_image_data",
+        "x_value"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "x_value is not clearly marked on the graph",
+        "graph has multiple lines or functions"
+      ],
+      "tests": [
+        {
+          "input": "(sample_graph_image_data, 3)",
+          "expect": "1.0"
+        },
+        {
+          "input": "(sample_graph_image_data, 5)",
+          "expect": "2.5"
+        }
+      ],
+      "tags": [
+        "graph analysis",
+        "function evaluation",
+        "image processing"
+      ]
+    },
+    {
+      "name": "map_value_to_option",
+      "signature": "(value, threshold, options)->str",
+      "purpose": "Map a numerical value to a multiple-choice option based on a threshold comparison.",
+      "inputs": [
+        "value",
+        "threshold",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "value is exactly equal to the threshold",
+        "options do not include a clear mapping for the comparison"
+      ],
+      "tests": [
+        {
+          "input": "(1.0, 0, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])",
+          "expect": "A"
+        },
+        {
+          "input": "(-1.0, 0, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "comparison",
+        "value mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_function_value_from_graph",
+    "map_value_to_option"
+  ]
+}

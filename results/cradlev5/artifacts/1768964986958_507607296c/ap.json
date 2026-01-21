@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The blocker is the 'maximum area under the curve for Firebrick'. We will proceed by calculating the area under the curve for Firebrick and comparing it to others."
+    },
+    {
+      "intention": "Calculate the area under the curve for Firebrick and other categories.",
+      "action": "python",
+      "code": "firebrick_area = calculate_area_under_curve('chart_image_data', 'Firebrick')\nblue_area = calculate_area_under_curve('chart_image_data', 'Blue')\ngreen_area = calculate_area_under_curve('chart_image_data', 'Green')\nyellow_area = calculate_area_under_curve('chart_image_data', 'Yellow')"
+    },
+    {
+      "intention": "Compare the area under the Firebrick curve to others to determine if it is the maximum.",
+      "action": "python",
+      "code": "is_firebrick_max = firebrick_area > max(blue_area, green_area, yellow_area)"
+    },
+    {
+      "intention": "Map the result to the correct multiple-choice option.",
+      "action": "python",
+      "code": "answer_option = 'A' if is_firebrick_max else 'B'"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {answer_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_blocks_with_specific_house_count",
+      "signature": "(table_image_data, target_house_count)->int",
+      "purpose": "To count the number of blocks that have a specific number of houses from a table image.",
+      "inputs": [
+        "table_image_data",
+        "target_house_count"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Table with no blocks having the target house count",
+        "Table with all blocks having the target house count",
+        "Table with missing or misaligned data"
+      ],
+      "tests": [
+        {
+          "input": "(sample_table_image_data, 36)",
+          "expect": 5
+        },
+        {
+          "input": "(sample_table_image_data, 0)",
+          "expect": 0
+        },
+        {
+          "input": "(sample_table_image_data, 100)",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "image processing",
+        "table interpretation",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_blocks_with_specific_house_count"
+  ]
+}

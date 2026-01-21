@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from the image and calculate the age gap.",
+      "action": "reason",
+      "note": "The ages of the two people are extracted from the image as 34 years and 29 years. The task is to calculate the age gap by subtracting the age of person 2 from the age of person 1."
+    },
+    {
+      "intention": "Calculate the age gap using the extracted ages.",
+      "action": "python",
+      "code": "age_gap = 34 - 29"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

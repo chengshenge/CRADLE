@@ -1,0 +1,48 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays the preference percentages of various objects across different categories. The task is to determine how many objects are preferred by more than 90 percent of people in at least one category. The chart includes a title, 'Object Preferences by Category', with the X-axis labeled as 'Objects' and the Y-axis labeled as 'Preference Percentage'. The Y-axis has ticks at intervals of 20%, ranging from 0% to 100%. The chart legend indicates three categories: Category A, Category B, and Category C. Key data points include Object 1 with 95% preference in Category A, Object 2 with 92% in Category B, and Object 3 with 88% in Category C. The goal is to count the number of objects with preference percentages exceeding 90% in any category.",
+  "entities": [
+    "Object 1",
+    "Object 2",
+    "Object 3",
+    "Category A",
+    "Category B",
+    "Category C"
+  ],
+  "unknowns": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "required_operations": [
+    "Read chart data",
+    "Identify objects with preference percentages over 90%",
+    "Count such objects"
+  ],
+  "blockers": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "risk_checks": [
+    "Verify Y-axis scale and tick spacing",
+    "Ensure correct legend mapping to categories",
+    "Check for interpolation errors"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "percentage",
+    "preference",
+    "counting"
+  ]
+}

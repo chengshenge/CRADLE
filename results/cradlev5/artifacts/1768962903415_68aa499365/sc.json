@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_highest_volume_marking",
+      "purpose": "To identify and read the marked measure of angle H from the diagram.",
+      "how_to_use": "Use this skill to process the image data and extract the numeric value marked for angle H."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the selected multiple-choice option as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_measure_to_option",
+      "signature": "(measure:int, options:list)->str",
+      "purpose": "To map the extracted measure of angle H to the correct multiple-choice option.",
+      "inputs": [
+        "measure",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "If the measure does not match any option, return an error or a default value."
+      ],
+      "tests": [
+        {
+          "input": "102, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "B"
+        },
+        {
+          "input": "97, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_highest_volume_marking",
+    "map_measure_to_option",
+    "format_final"
+  ]
+}

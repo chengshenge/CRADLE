@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves identifying and subtracting specific objects based on their attributes from a given list. The objects are described by their color, size, and material. The task is to subtract all objects that are big red metallic spheres and big brown matte things. After subtracting these objects, the goal is to determine how many objects remain. The problem requires careful reading of the object descriptions to ensure the correct objects are subtracted. The final answer should be an integer representing the number of objects left.",
+  "entities": [
+    "Big Red Metallic Sphere",
+    "Big Brown Matte Thing",
+    "Small Blue Plastic Cube",
+    "Medium Green Wooden Cylinder",
+    "Big Yellow Glass Pyramid"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify objects that are big red metallic spheres",
+    "Identify objects that are big brown matte things",
+    "Subtract identified objects from the total",
+    "Count remaining objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "Ensure correct identification of object attributes from text",
+    "Verify all objects are accounted for in subtraction"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "object counting",
+    "attribute identification",
+    "subtraction"
+  ]
+}

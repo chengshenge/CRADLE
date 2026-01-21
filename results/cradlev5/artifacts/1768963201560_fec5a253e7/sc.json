@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_chart_preferences",
+      "signature": "(image_data)->int",
+      "purpose": "To analyze a chart and count the number of objects with preference percentages exceeding 90% in any category.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects exceed 90% in any category",
+        "Multiple objects exceed 90% in multiple categories"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_3_objects_exceeding_90",
+          "expect": 2
+        },
+        {
+          "input": "image_data_with_no_objects_exceeding_90",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "percentage",
+        "preference",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_chart_preferences"
+  ]
+}

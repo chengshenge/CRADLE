@@ -1,0 +1,91 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with specific angles and side lengths mentioned, indicating the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem is about a geometric figure ABCD where AB = AC and angle CAB is 40 degrees. The task is to find the measure of angle D.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AB",
+        "value": "AC",
+        "unit": "",
+        "source": "text",
+        "note": "AB is equal to AC"
+      },
+      {
+        "name": "∠CAB",
+        "value": "40",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle CAB is 40 degrees"
+      }
+    ],
+    "unknown": [
+      "∠D"
+    ],
+    "relations": [
+      "AB = AC",
+      "∠CAB = 40°"
+    ],
+    "constraints": [
+      "ABCD is a quadrilateral"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "40°"
+      },
+      {
+        "label": "B",
+        "text": "50°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "ABCD nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle D in the given geometric figure based on the provided information about side lengths and angles."
+  ],
+  "problem_summary": "Determine the measure of angle D in quadrilateral ABCD where AB = AC and angle CAB is 40 degrees.",
+  "knowns": [
+    {
+      "name": "AB",
+      "value": "AC",
+      "unit": "",
+      "source": "text",
+      "note": "AB is equal to AC"
+    },
+    {
+      "name": "∠CAB",
+      "value": "40",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle CAB is 40 degrees"
+    }
+  ],
+  "asks": [
+    "∠D"
+  ],
+  "constraints": [
+    "ABCD is a quadrilateral"
+  ],
+  "visual_facts": [
+    "The diagram shows labels for points A, B, C, and D.",
+    "The diagram marks the relationship AB = AC.",
+    "The diagram marks angle CAB as 40 degrees."
+  ],
+  "ambiguity": [
+    "The exact configuration of the quadrilateral and the position of angle D are not specified in the text."
+  ]
+}

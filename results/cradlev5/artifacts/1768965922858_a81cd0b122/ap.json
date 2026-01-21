@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and understand the relationships in the food web diagram.",
+      "action": "reason",
+      "note": "The problem involves understanding the impact of algae dying on various species in a food web. The blockers are the unresolved impacts on crabs, limpets, dolphins, sea gulls, and star fish. We need to analyze the diagram to understand these relationships."
+    },
+    {
+      "intention": "Analyze the food web diagram to determine the impact of algae dying on each species.",
+      "action": "reason",
+      "note": "Algae are a primary producer in the food web. If all algae die, species that directly depend on them, such as crabs and limpets, will be affected first. This will have a cascading effect on other species in the food web."
+    },
+    {
+      "intention": "Determine the impact on crabs and limpets.",
+      "action": "reason",
+      "note": "Crabs and limpets are likely to decrease because they directly depend on algae for food. Without algae, their food source is removed, leading to a decrease in their population."
+    },
+    {
+      "intention": "Map the impact to the given options.",
+      "action": "python",
+      "code": "options = [{'label': 'A', 'text': 'Crabs and limpets will decrease'}, {'label': 'B', 'text': 'Dolphins will increase'}, {'label': 'C', 'text': 'Sea gulls will become extinct'}, {'label': 'D', 'text': 'Star fish will increase'}]\nselected_option = next(option['label'] for option in options if 'Crabs and limpets will decrease' in option['text'])"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

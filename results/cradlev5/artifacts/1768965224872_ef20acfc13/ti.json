@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves a set of objects that are visually represented in a diagram. The task is to identify and subtract specific objects based on their color, size, and material properties. Specifically, the problem requires subtracting all red matte cubes and all small green metal objects from the total set of objects. The goal is to determine how many objects remain after these subtractions. The problem is presented in a way that necessitates visual inspection to identify the objects that meet the given criteria. The final answer should be an integer representing the number of objects left.",
+  "entities": [
+    "red matte cubes",
+    "small green metal objects",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify red matte cubes in the diagram",
+    "Identify small green metal objects in the diagram",
+    "Count total objects",
+    "Subtract the count of red matte cubes from the total",
+    "Subtract the count of small green metal objects from the result"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "Ensure correct identification of objects by color, size, and material in the diagram",
+    "Verify that all relevant objects are counted and subtracted correctly"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual identification",
+    "subtraction",
+    "counting"
+  ]
+}

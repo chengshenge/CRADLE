@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart titled 'Values of Different Bars'. The chart has bars labeled A to E, each with a specific value. The task is to determine how many of these bars have values smaller than 6. The values of the bars are as follows: A has a value of 5, B has a value of 3, C has a value of 7, D has a value of 2, and E has a value of 6. The Y-axis is labeled 'Values' with ticks at 0, 2, 4, 6, 8, and 10. The X-axis is labeled 'Categories'. The goal is to count the number of bars with values less than 6.",
+  "entities": [
+    "Bar A",
+    "Bar B",
+    "Bar C",
+    "Bar D",
+    "Bar E"
+  ],
+  "unknowns": [
+    "number of bars with values smaller than 6"
+  ],
+  "required_operations": [
+    "Read values of each bar from the chart",
+    "Compare each bar's value to 6",
+    "Count bars with values less than 6"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify Y-axis scale and tick spacing",
+    "Ensure correct reading of bar values"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "counting",
+    "comparison"
+  ]
+}

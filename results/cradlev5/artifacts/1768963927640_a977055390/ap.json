@@ -1,0 +1,35 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠D. We will use the given information about the isosceles triangle and the properties of quadrilateral ABCD to find it."
+    },
+    {
+      "intention": "Use the diagram to understand the configuration of the quadrilateral and apply geometric principles.",
+      "action": "reason",
+      "note": "Since AB = AC, triangle ABC is isosceles with ∠CAB = 40°. Therefore, ∠ABC = ∠ACB. We need to find ∠D in quadrilateral ABCD."
+    },
+    {
+      "intention": "Calculate the angles in triangle ABC.",
+      "action": "python",
+      "code": "angle_ABC_ACB = (180 - 40) / 2"
+    },
+    {
+      "intention": "Calculate angle D using the sum of angles in quadrilateral ABCD.",
+      "action": "python",
+      "code": "angle_D = 360 - (40 + 2 * angle_ABC_ACB)"
+    },
+    {
+      "intention": "Map the calculated angle D to the correct multiple-choice option.",
+      "action": "python",
+      "code": "map_angle_to_option(angle_D, [{'label': 'A', 'text': '40°'}, {'label': 'B', 'text': '50°'}, {'label': 'C', 'text': '60°'}, {'label': 'D', 'text': '70°'}])"
+    },
+    {
+      "intention": "Normalize the final answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

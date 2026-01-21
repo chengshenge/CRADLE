@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves a geometric scenario where two straight lines, AB and CD, intersect at a point O. A line OD bisects the angle AOE. The angle BOC is given as 50 degrees. The task is to determine the measure of angle EOB. The problem is presented with a diagram that includes labels for points A, B, C, D, E, and O. The solution requires understanding the relationships between these angles and using the given information to find the unknown angle EOB.",
+  "entities": [
+    "∠BOC",
+    "∠EOB",
+    "∠AOE",
+    "OD",
+    "AB",
+    "CD",
+    "O"
+  ],
+  "unknowns": [
+    "∠EOB"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the geometric relationships",
+    "Use the fact that OD bisects ∠AOE",
+    "Apply angle properties to find ∠EOB"
+  ],
+  "blockers": [
+    "∠EOB"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify angle markers are clear and accurate",
+    "Check for any missing parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "50°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "70°"
+      },
+      {
+        "label": "D",
+        "text": "80°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "intersecting lines",
+    "angle bisector"
+  ]
+}

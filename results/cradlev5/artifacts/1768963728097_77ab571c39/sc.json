@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the age gap by subtracting the age of person 2 from the age of person 1.",
+      "how_to_use": "Use the expression '34 - 29' to compute the age gap."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_ages_from_image",
+      "signature": "(image_data)->tuple",
+      "purpose": "Extract ages of two individuals from an image containing text.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A tuple containing two integers representing the ages of the individuals.",
+      "edge_cases": [
+        "Image text is unclear or partially visible.",
+        "Ages are not in a recognizable format."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_ages_34_and_29",
+          "expect": "(34, 29)"
+        },
+        {
+          "input": "image_data_with_blurry_text",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "age calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "calc_numeric"
+  ]
+}

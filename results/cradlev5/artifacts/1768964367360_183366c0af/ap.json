@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the wettest month from the chart data.",
+      "action": "reason",
+      "note": "The task is to find the month with the highest rainfall value from the chart data provided in GTI_JSON."
+    },
+    {
+      "intention": "Extract rainfall values for each month from the chart.",
+      "action": "python",
+      "code": "rainfall_values = {'Aug': 110, 'Apr': 90, 'May': 95}"
+    },
+    {
+      "intention": "Determine the month with the highest rainfall.",
+      "action": "python",
+      "code": "wettest_month = max(rainfall_values, key=rainfall_values.get)"
+    },
+    {
+      "intention": "Map the wettest month to the corresponding option label.",
+      "action": "python",
+      "code": "option_mapping = {'Aug': 'A', 'Apr': 'B', 'May': 'C'}\nselected_option = option_mapping[wettest_month]"
+    },
+    {
+      "intention": "Format the final answer to match the required output format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

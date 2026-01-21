@@ -1,0 +1,44 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_highest_amount_from_chart",
+      "signature": "(image_data)->dict",
+      "purpose": "Extract the highest amount from a chart that includes multiple classes and measurement types.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary with keys 'class', 'measurement_type', and 'amount' representing the class and measurement type with the highest amount.",
+      "edge_cases": [
+        "All classes have the same highest amount",
+        "Chart data is unclear or ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_highest_amount",
+          "expect": {
+            "class": "Class C",
+            "measurement_type": "Volume",
+            "amount": 50
+          }
+        },
+        {
+          "input": "image_data_with_equal_highest_amounts",
+          "expect": {
+            "class": "Class A",
+            "measurement_type": "Length",
+            "amount": 50
+          }
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "maximum value",
+        "data interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_highest_amount_from_chart"
+  ]
+}

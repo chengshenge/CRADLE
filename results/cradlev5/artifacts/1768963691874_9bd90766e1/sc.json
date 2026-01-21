@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "compare_slopes",
+      "purpose": "To compare the values associated with Black and Deep Sky Blue to determine which is greater.",
+      "how_to_use": "Use the values extracted from the chart for Black and Deep Sky Blue as inputs to determine which is greater."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required by the task.",
+      "how_to_use": "Use the result of the comparison to format the answer as 'Answer: A' or 'Answer: B'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_chart_values",
+      "signature": "(image_data, colors)->dict",
+      "purpose": "Extract numerical values associated with specified colors from a chart.",
+      "inputs": [
+        "image_data",
+        "colors"
+      ],
+      "outputs": "A dictionary with colors as keys and their corresponding values as integers.",
+      "edge_cases": [
+        "Chart with missing labels",
+        "Colors not present in the chart"
+      ],
+      "tests": [
+        {
+          "input": "image_data, ['Black', 'Deep Sky Blue']",
+          "expect": "{'Black': 35, 'Deep Sky Blue': 25}"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "chart analysis",
+        "value extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_chart_values",
+    "compare_slopes",
+    "format_final"
+  ]
+}

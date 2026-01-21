@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects",
+      "purpose": "To count the number of objects remaining after subtraction.",
+      "how_to_use": "Use this skill to count the objects in the list after removing the specified objects."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_subtract_objects",
+      "signature": "(objects_list, attributes_to_subtract)->list",
+      "purpose": "Identify and subtract objects from a list based on specified attributes.",
+      "inputs": [
+        "objects_list",
+        "attributes_to_subtract"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "No objects match the attributes",
+        "All objects match the attributes"
+      ],
+      "tests": [
+        {
+          "input": "(['Big Red Metallic Sphere', 'Small Blue Plastic Cube'], ['Big Red Metallic Sphere'])",
+          "expect": "['Small Blue Plastic Cube']"
+        },
+        {
+          "input": "(['Big Red Metallic Sphere', 'Big Brown Matte Thing'], ['Big Red Metallic Sphere', 'Big Brown Matte Thing'])",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "object identification",
+        "list processing",
+        "subtraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_subtract_objects",
+    "count_objects"
+  ]
+}

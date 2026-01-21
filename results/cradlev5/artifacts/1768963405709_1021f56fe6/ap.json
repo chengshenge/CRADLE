@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the question that the experiment can best answer based on the description provided.",
+      "action": "reason",
+      "note": "The experiment involves comparing the average time it takes for a snowboard to slide down a hill with and without a layer of wax. The options involve different comparisons related to the presence and thickness of wax."
+    },
+    {
+      "intention": "Determine which option best matches the experiment's purpose.",
+      "action": "python",
+      "code": "def select_correct_option():\n    options = {\n        'A': \"Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?\",\n        'B': \"Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?\"\n    }\n    # The experiment compares times with and without wax, not different thicknesses of wax.\n    return 'B'\n\ncorrect_option = select_correct_option()"
+    },
+    {
+      "intention": "Output the selected option as the final answer.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

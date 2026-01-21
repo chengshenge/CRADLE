@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the value of r at the given angle theta from the polar chart.",
+      "action": "reason",
+      "note": "The problem requires finding the value of r when theta is 3*pi/2. The chart provides a key point at theta = 3*pi/2 with r = 2."
+    },
+    {
+      "intention": "Extract the value of r from the chart at the specified angle.",
+      "action": "python",
+      "code": "r_value = 2"
+    },
+    {
+      "intention": "Format the extracted value as the final answer.",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

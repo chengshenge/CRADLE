@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and confirm known values from the diagram.",
+      "action": "reason",
+      "note": "The problem requires calculating the perimeter of a rectangle using dimensions extracted from the diagram. The known dimensions are AB = 5 cm and BC = 3 cm."
+    },
+    {
+      "intention": "Calculate the perimeter of the rectangle using the known dimensions.",
+      "action": "python",
+      "code": "calculate_rectangle_perimeter(5, 3)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 16"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

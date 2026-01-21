@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with points, angles, and perpendicular lines, which suggests the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem involves a triangle ABC with a point D inside it. CD bisects angle ACB, BD is perpendicular to CD, angle A equals angle ABD, and angle DBC is 54 degrees. The task is to find the measure of angle A.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠DBC",
+        "value": "54",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "∠A"
+    ],
+    "relations": [
+      "CD bisects ∠ACB",
+      "BD ⊥ CD",
+      "∠A = ∠ABD"
+    ],
+    "constraints": [
+      "D is inside △ABC"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "36°"
+      },
+      {
+        "label": "B",
+        "text": "44°"
+      },
+      {
+        "label": "C",
+        "text": "27°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "D nouns 0 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle A using the given geometric relationships and angle measures."
+  ],
+  "problem_summary": "Find the measure of angle A in triangle ABC with point D inside, given that CD bisects angle ACB, BD is perpendicular to CD, angle A equals angle ABD, and angle DBC is 54 degrees.",
+  "knowns": [
+    {
+      "name": "∠DBC",
+      "value": "54",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement."
+    }
+  ],
+  "asks": [
+    "∠A"
+  ],
+  "constraints": [
+    "D is inside △ABC"
+  ],
+  "visual_facts": [
+    "Points labeled: A, B, C, D",
+    "Angle labels: ∠ACB, ∠ABD, ∠DBC",
+    "Line relationships: CD bisects ∠ACB, BD ⊥ CD"
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, and D are not specified, but their relationships are given."
+  ]
+}

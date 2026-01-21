@@ -1,0 +1,55 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_smoothness_levels",
+      "signature": "(smoothness_levels)->str",
+      "purpose": "Compare smoothness levels of different colors and determine if 'Medium Periwinkle' has the highest level.",
+      "inputs": [
+        "smoothness_levels"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "All colors have the same smoothness level",
+        "Smoothness levels are not provided for all colors"
+      ],
+      "tests": [
+        {
+          "input": {
+            "Medium Periwinkle": 8,
+            "Light Coral": 5,
+            "Pale Goldenrod": 6,
+            "Lavender Blush": 7
+          },
+          "expect": "yes"
+        },
+        {
+          "input": {
+            "Medium Periwinkle": 7,
+            "Light Coral": 8,
+            "Pale Goldenrod": 6,
+            "Lavender Blush": 7
+          },
+          "expect": "no"
+        },
+        {
+          "input": {
+            "Medium Periwinkle": 8,
+            "Light Coral": 8,
+            "Pale Goldenrod": 8,
+            "Lavender Blush": 8
+          },
+          "expect": "no"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "text analysis",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_smoothness_levels"
+  ]
+}

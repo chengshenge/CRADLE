@@ -1,0 +1,94 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects",
+      "purpose": "To count the number of people born after 1945.",
+      "how_to_use": "Use this skill to count the number of birth years greater than 1945 from the list of birth years extracted from the image."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_birth_years",
+      "signature": "(image_data)->list",
+      "purpose": "Extract birth years from an image containing names and birth years.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "Image is blurry or birth years are obscured.",
+        "Birth years are not in a standard format."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_birth_years",
+          "expect": [
+            "1947",
+            "1938",
+            "1950",
+            "1943",
+            "1949"
+          ]
+        },
+        {
+          "input": "image_data_with_obscured_birth_years",
+          "expect": []
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "birth year"
+      ]
+    },
+    {
+      "name": "compare_birth_years",
+      "signature": "(birth_years, threshold)->int",
+      "purpose": "Compare each birth year to a threshold and count how many are greater.",
+      "inputs": [
+        "birth_years",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All birth years are below the threshold.",
+        "All birth years are above the threshold."
+      ],
+      "tests": [
+        {
+          "input": {
+            "birth_years": [
+              "1947",
+              "1938",
+              "1950",
+              "1943",
+              "1949"
+            ],
+            "threshold": 1945
+          },
+          "expect": 3
+        },
+        {
+          "input": {
+            "birth_years": [
+              "1938",
+              "1943"
+            ],
+            "threshold": 1945
+          },
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "comparison",
+        "birth year",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_birth_years",
+    "compare_birth_years",
+    "count_objects"
+  ]
+}

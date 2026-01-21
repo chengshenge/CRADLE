@@ -1,0 +1,55 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison of quantities between two types of objects: 'big red rubber double buses' and 'big green things'. These objects are likely represented in a diagram, which is the focus of the analysis. The task is to determine if there are more 'big red rubber double buses' in front of a 'large red double bus' than 'big green things'. The terms used are not standard and require visual identification, indicating that the diagram is crucial for solving the problem. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The solution requires counting the objects in the diagram and comparing their quantities.",
+  "entities": [
+    "big red rubber double bus",
+    "big green thing",
+    "large red double bus"
+  ],
+  "unknowns": [
+    "number of big red rubber double buses",
+    "number of big green things"
+  ],
+  "required_operations": [
+    "Identify and count the 'big red rubber double buses' in front of the 'large red double bus'.",
+    "Identify and count the 'big green things'.",
+    "Compare the two quantities."
+  ],
+  "blockers": [
+    "number of big red rubber double buses",
+    "number of big green things"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram.",
+    "Verify that all relevant objects are visible and countable in the diagram."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual comparison",
+    "counting",
+    "diagram analysis",
+    "logic"
+  ]
+}

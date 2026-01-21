@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The task involves determining the number of countries with work hours exceeding 35. The blockers are related to extracting this information from the chart."
+    },
+    {
+      "intention": "Verify the y-axis scale and identify countries with work hours > 35.",
+      "action": "reason",
+      "note": "The y-axis ticks are 30, 32, 34, 36, 38, 40. We need to identify countries with work hours greater than 35 from the key points provided."
+    },
+    {
+      "intention": "Count the number of countries with work hours exceeding 35.",
+      "action": "python",
+      "code": "key_points = [{'label': 'Country A', 'x': '2012', 'y': 36}, {'label': 'Country B', 'x': '2014', 'y': 37}, {'label': 'Country C', 'x': '2015', 'y': 35.5}, {'label': 'Country D', 'x': '2013', 'y': 36.5}]\ncount = sum(1 for point in key_points if point['y'] > 35)\ncount"
+    },
+    {
+      "intention": "Provide the final answer as a single integer.",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

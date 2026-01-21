@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart titled 'Customer Satisfaction Survey Results' which displays the number of responses categorized as 'Satisfied' and 'Dissatisfied'. The chart's x-axis is labeled 'Categories' and the y-axis is labeled 'Number of Responses'. The legend indicates two categories: 'Satisfied' and 'Dissatisfied'. The key points extracted from the chart show that there are 120 'Satisfied' responses and 80 'Dissatisfied' responses. The task is to determine how many times the number of 'Dissatisfied' responses is more than the 'Satisfied' responses. The answer should be a floating-point number with one decimal place.",
+  "entities": [
+    "Number of Satisfied",
+    "Number of Dissatisfied"
+  ],
+  "unknowns": [
+    "Ratio of Dissatisfied to Satisfied"
+  ],
+  "required_operations": [
+    "Extract values from chart",
+    "Compute ratio of Dissatisfied to Satisfied",
+    "Format result as floating-point number with one decimal place"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify axis scale and tick spacing",
+    "Ensure correct legend mapping",
+    "Check for interpolation errors",
+    "Confirm units are consistent"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "ratio calculation",
+    "floating-point precision"
+  ]
+}

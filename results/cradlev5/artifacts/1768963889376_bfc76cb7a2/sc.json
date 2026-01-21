@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To identify and count the 'big red rubber double buses' in front of the 'large red double bus'.",
+      "how_to_use": "Use the skill with the image data, specifying 'large red double bus' as the reference object and 'big red rubber double bus' as the target object with the relationship type 'in front of'."
+    },
+    {
+      "name": "count_objects",
+      "purpose": "To count the number of 'big green things' and 'big red rubber double buses'.",
+      "how_to_use": "Use the skill with the list of identified objects to count their quantities."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_quantities",
+      "signature": "(quantity1, quantity2)->str",
+      "purpose": "To compare two quantities and determine if the first is greater than the second.",
+      "inputs": [
+        "quantity1",
+        "quantity2"
+      ],
+      "outputs": "Returns 'A' if quantity1 is greater, otherwise 'B'.",
+      "edge_cases": [
+        "If both quantities are equal, return 'B'."
+      ],
+      "tests": [
+        {
+          "input": "5, 3",
+          "expect": "A"
+        },
+        {
+          "input": "2, 4",
+          "expect": "B"
+        },
+        {
+          "input": "3, 3",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "count_objects",
+    "compare_quantities"
+  ]
+}

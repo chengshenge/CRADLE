@@ -1,0 +1,100 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_numerical_values_from_image",
+      "signature": "(image_data)->dict",
+      "purpose": "Extract numerical values associated with specific labels from an image.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary with labels as keys and their corresponding numerical values as values.",
+      "edge_cases": [
+        "Image contains multiple numbers for a single label",
+        "Labels are not clearly visible"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_sky_blue_135_and_web_maroon_128",
+          "expect": {
+            "Sky Blue": 135,
+            "Web Maroon": 128
+          }
+        },
+        {
+          "input": "image_data_with_no_labels",
+          "expect": {}
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "numerical value extraction"
+      ]
+    },
+    {
+      "name": "compare_numerical_values",
+      "signature": "(value1, value2)->str",
+      "purpose": "Compare two numerical values and return a string indicating if the first is less than the second.",
+      "inputs": [
+        "value1",
+        "value2"
+      ],
+      "outputs": "A string 'yes' if value1 is less than value2, otherwise 'no'.",
+      "edge_cases": [
+        "Values are equal",
+        "Negative values"
+      ],
+      "tests": [
+        {
+          "input": "135, 128",
+          "expect": "no"
+        },
+        {
+          "input": "100, 200",
+          "expect": "yes"
+        },
+        {
+          "input": "150, 150",
+          "expect": "no"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "numerical values"
+      ]
+    },
+    {
+      "name": "map_comparison_to_option",
+      "signature": "(comparison_result, options)->str",
+      "purpose": "Map the result of a comparison to the correct multiple-choice option.",
+      "inputs": [
+        "comparison_result",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "Comparison result does not match any option"
+      ],
+      "tests": [
+        {
+          "input": "'yes', [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "A"
+        },
+        {
+          "input": "'no', [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_numerical_values_from_image",
+    "compare_numerical_values",
+    "map_comparison_to_option"
+  ]
+}

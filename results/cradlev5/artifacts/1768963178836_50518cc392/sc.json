@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_quantities",
+      "signature": "(metallic_fighters:int, rubber_objects:int)->str",
+      "purpose": "Compare the number of metallic fighters and rubber objects and determine if there are fewer metallic fighters.",
+      "inputs": [
+        "metallic_fighters",
+        "rubber_objects"
+      ],
+      "outputs": "Return 'A' if there are fewer metallic fighters, otherwise 'B'.",
+      "edge_cases": [
+        "Equal number of metallic fighters and rubber objects."
+      ],
+      "tests": [
+        {
+          "input": "15, 20",
+          "expect": "A"
+        },
+        {
+          "input": "20, 15",
+          "expect": "B"
+        },
+        {
+          "input": "15, 15",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "logic",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_quantities"
+  ]
+}

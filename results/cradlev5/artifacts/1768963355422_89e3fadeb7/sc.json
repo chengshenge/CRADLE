@@ -1,0 +1,55 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To interpret the diagram and understand the geometric configuration of points A, B, C, and D.",
+      "how_to_use": "Use this skill to analyze the spatial relationships between the points and segments in the diagram."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform calculations needed to determine the length of segment CD.",
+      "how_to_use": "Use this skill to compute the length of CD using the geometric principles and relationships identified."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required multiple-choice format.",
+      "how_to_use": "Use this skill to return the final answer as an option label or exact value."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_right_triangle_diagram",
+      "signature": "(image_data)->dict",
+      "purpose": "To interpret diagrams involving right triangles and extract relevant geometric information.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary containing the positions of points, lengths of segments, and any relevant geometric properties.",
+      "edge_cases": [
+        "Diagrams with unclear labels or markings",
+        "Diagrams with additional irrelevant elements"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_right_triangle",
+          "expect": "{\"points\": {\"A\": [0, 0], \"B\": [10, 0], \"C\": [0, 10]}, \"segments\": {\"AB\": 10, \"AC\": 10, \"BC\": 14.14}, \"angles\": {\"ACB\": 90}}"
+        },
+        {
+          "input": "image_data_with_obscured_labels",
+          "expect": "{\"error\": \"Labels not clear\"}"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "right triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "interpret_right_triangle_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

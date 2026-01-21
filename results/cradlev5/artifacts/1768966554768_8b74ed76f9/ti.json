@@ -1,0 +1,52 @@
+{
+  "problem_state_summary": "The problem involves determining if the windows depicted in the diagram have a geometric shape that is common in most houses. The task requires visually identifying the shape of the windows and comparing it to known common geometric shapes found in residential architecture. The diagram includes labels for three windows, which are the focus of the analysis. The problem is presented as a multiple-choice question with two options: Yes or No. The ambiguity lies in the lack of specification of what geometric shapes are considered common in houses. The solution requires a decision based on visual inspection of the diagram.",
+  "entities": [
+    "Window 1",
+    "Window 2",
+    "Window 3"
+  ],
+  "unknowns": [
+    "geometric shape of windows"
+  ],
+  "required_operations": [
+    "Inspect the diagram to identify the shape of each window",
+    "Compare identified shapes to common geometric shapes in houses",
+    "Map the conclusion to one of the provided options"
+  ],
+  "blockers": [
+    "geometric shape of windows"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear for each window",
+    "Verify that the diagram accurately represents the windows' shapes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual analysis",
+    "multiple-choice"
+  ]
+}

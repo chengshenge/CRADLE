@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the ages of the two individuals from the image.",
+      "action": "reason",
+      "note": "The ages are extracted from the image text: Person 1 is 34 years old and Person 2 is 29 years old."
+    },
+    {
+      "intention": "Calculate the age gap between the two individuals.",
+      "action": "python",
+      "code": "age_gap = calc_numeric('34 - 29')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

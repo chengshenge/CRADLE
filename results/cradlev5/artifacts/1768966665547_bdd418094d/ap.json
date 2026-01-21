@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and ensure all necessary information is available.",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠A. We need to use the given relationships and known angles to find it."
+    },
+    {
+      "intention": "Map the diagram labels to the problem's geometric relationships.",
+      "action": "reason",
+      "note": "CD bisects ∠ACB, BD is perpendicular to CD, ∠A = ∠ABD, and ∠DBC = 54°."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠A using the given relationships and known angles.",
+      "action": "python",
+      "code": "from math import degrees, atan\nangle_DBC = 54\nangle_ACB = 2 * angle_DBC\nangle_ABD = angle_ACB / 2\nangle_A = angle_ABD"
+    },
+    {
+      "intention": "Map the calculated angle to the closest multiple-choice option.",
+      "action": "python",
+      "code": "map_angle_to_option(angle_A, [{'label': 'A', 'text': '36°'}, {'label': 'B', 'text': '44°'}, {'label': 'C', 'text': '27°'}, {'label': 'D', 'text': '54°'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

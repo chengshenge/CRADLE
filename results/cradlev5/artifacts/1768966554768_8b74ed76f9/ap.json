@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers in the problem statement.",
+      "action": "reason",
+      "note": "The problem has a blocker related to the 'geometric shape of windows' which is unresolved."
+    },
+    {
+      "intention": "Use the learned skill to identify geometric shapes in the diagram.",
+      "action": "python",
+      "code": "shapes = identify_geometric_shapes_in_diagram(image_data)"
+    },
+    {
+      "intention": "Determine if the identified shapes are common in most houses.",
+      "action": "reason",
+      "note": "Common geometric shapes for windows in houses typically include rectangles and squares."
+    },
+    {
+      "intention": "Map the identified shapes to the options provided.",
+      "action": "python",
+      "code": "common_shapes = ['rectangle', 'square']\nresult = 'A' if any(shape in common_shapes for shape in shapes) else 'B'"
+    },
+    {
+      "intention": "Normalize the result to the required answer format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

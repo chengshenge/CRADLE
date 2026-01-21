@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "read_bar_values_from_chart",
+      "purpose": "To extract the values of the largest and smallest bars from the bar chart image.",
+      "how_to_use": "Use this skill to read the bar values from the chart image data to identify the largest and smallest bar values."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To calculate the difference between the largest and smallest bar values.",
+      "how_to_use": "Use this skill to compute the difference between the largest and smallest bar values extracted from the chart."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a floating-point number with one decimal place.",
+      "how_to_use": "Use this skill to format the calculated difference as a floating-point number with one decimal place."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "read_bar_values_from_chart",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest and smallest bar values from the chart.",
+      "action": "reason",
+      "note": "Use the 'read_bar_values_from_chart' skill to extract the largest and smallest bar values from the chart image data."
+    },
+    {
+      "intention": "Extract the largest and smallest bar values.",
+      "action": "python",
+      "code": "largest_bar_value, smallest_bar_value = 50, 20"
+    },
+    {
+      "intention": "Calculate the difference between the largest and smallest bar values.",
+      "action": "reason",
+      "note": "Use the 'calc_numeric' skill to compute the difference between the largest and smallest bar values."
+    },
+    {
+      "intention": "Compute the difference.",
+      "action": "python",
+      "code": "difference = calc_numeric('50 - 20')"
+    },
+    {
+      "intention": "Format the final answer as a floating-point number with one decimal place.",
+      "action": "reason",
+      "note": "Use the 'format_final' skill to format the calculated difference as a floating-point number with one decimal place."
+    },
+    {
+      "intention": "Format the difference.",
+      "action": "python",
+      "code": "formatted_difference = format_final(f'{difference:.1f}')"
+    },
+    {
+      "intention": "Output the final answer.",
+      "action": "normalize",
+      "text": "Answer: 30.0"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

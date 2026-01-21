@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "Chase wants to purchase 4 kilograms of oval beads and 5 kilograms of star-shaped beads. The task is to determine the total cost of these beads. The prices per kilogram for each type of bead are provided in an image. Specifically, oval beads cost $3 per kilogram, and star-shaped beads cost $4 per kilogram. The problem requires calculating the total expenditure based on these weights and prices. The final answer should be an integer value representing the total cost in dollars.",
+  "entities": [
+    "oval beads weight",
+    "star-shaped beads weight",
+    "price per kg of oval beads",
+    "price per kg of star-shaped beads"
+  ],
+  "unknowns": [
+    "total cost"
+  ],
+  "required_operations": [
+    "Extract prices from image",
+    "Calculate cost for oval beads",
+    "Calculate cost for star-shaped beads",
+    "Sum the costs to find total"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "cost calculation",
+    "unit price"
+  ]
+}

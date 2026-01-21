@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects left after subtracting specific types of objects from a total. The image provides information about the total number of objects, as well as the counts of big matte balls and green rubber objects. The task is to subtract the number of big matte balls and green rubber objects from the total number of objects. The final result should be an integer representing the remaining objects. The problem requires basic arithmetic operations to find the solution. The image has been used to extract the necessary numerical values for the calculation.",
+  "entities": [
+    "total_objects",
+    "big_matte_balls",
+    "green_rubber_objects"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Extract total objects from image",
+    "Extract big matte balls from image",
+    "Extract green rubber objects from image",
+    "Subtract big matte balls and green rubber objects from total objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "subtraction",
+    "counting"
+  ]
+}

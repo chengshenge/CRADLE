@@ -1,0 +1,43 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves extracting numerical data related to semiconductor demand for computing and wireless in 2014, which is likely organized in a tabular format."
+  ],
+  "problem_understanding": "The problem asks for the total semiconductor demand for computing and wireless sectors in the year 2014.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "semiconductor demand for computing in 2014",
+      "semiconductor demand for wireless in 2014"
+    ],
+    "relations": [
+      "total demand = demand for computing + demand for wireless"
+    ],
+    "constraints": [
+      "The year of interest is 2014."
+    ],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "semiconductor demand total",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves summing up numerical values for specific categories in a given year, which is a straightforward arithmetic operation."
+  ],
+  "problem_summary": "Calculate the total semiconductor demand for computing and wireless sectors in 2014.",
+  "knowns": [],
+  "asks": [
+    "total semiconductor demand for computing and wireless in 2014"
+  ],
+  "constraints": [
+    "Year is 2014."
+  ],
+  "visual_facts": [
+    "The table contains headers: Year, Computing, Wireless.",
+    "For the year 2014, the demand for Computing is 150 and for Wireless is 200."
+  ],
+  "ambiguity": [
+    "The exact location of the relevant data in the table is unknown until OCR is performed."
+  ]
+}

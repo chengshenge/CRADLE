@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves a geometric diagram with labeled points and angles. The task is to find the measure of angle 3, denoted as m ∠3, using the information provided in the diagram. The diagram includes point labels A, B, C, and D, and angle labels ∠1, ∠2, and ∠3. The known angles are m ∠1 = 90° and m ∠2 = 52°. The goal is to determine the measure of angle 3 and select the correct option from the given choices: 28, 38, 52, or 62. The relationships between the angles are not explicitly provided, which may require additional reasoning based on the diagram's structure.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "∠1",
+    "∠2",
+    "∠3"
+  ],
+  "unknowns": [
+    "m ∠3"
+  ],
+  "required_operations": [
+    "Identify known angles in the diagram",
+    "Determine relationships between angles",
+    "Calculate m ∠3",
+    "Match calculated value to options"
+  ],
+  "blockers": [
+    "m ∠3"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "28"
+      },
+      {
+        "label": "B",
+        "text": "38"
+      },
+      {
+        "label": "C",
+        "text": "52"
+      },
+      {
+        "label": "D",
+        "text": "62"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle calculation",
+    "diagram interpretation"
+  ]
+}

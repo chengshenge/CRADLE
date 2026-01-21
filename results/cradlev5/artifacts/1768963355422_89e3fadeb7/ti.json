@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves a right triangle ABC with a right angle at C. Point D is the midpoint of segment AB, which has a length of 10 units. The task is to determine the length of segment CD. The diagram is crucial for understanding the geometric relationships between the points and segments. The problem is presented as a multiple-choice question with four options. The exact positions of points A, B, C, and D are not specified in the text and need to be interpreted from the diagram.",
+  "entities": [
+    "Point A",
+    "Point B",
+    "Point C",
+    "Point D",
+    "Segment AB",
+    "Angle ACB"
+  ],
+  "unknowns": [
+    "CD"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric configuration",
+    "Use the midpoint property of D on AB",
+    "Apply geometric principles to find the length of CD"
+  ],
+  "blockers": [
+    "CD"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "5"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "8"
+      },
+      {
+        "label": "D",
+        "text": "10"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "right triangle",
+    "midpoint",
+    "length calculation"
+  ]
+}

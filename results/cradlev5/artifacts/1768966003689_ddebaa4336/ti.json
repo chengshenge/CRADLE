@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The problem involves determining the value of r at a specific angle theta in a polar coordinate system. The angle theta is given as 3*pi/2 radians. The task is to find the corresponding value of r on a polar plot that shows the relationship between r and theta. The chart provided is titled 'Polar Plot of r vs. θ' and includes axes labeled with theta in radians and r. A key point on the chart indicates that at theta = 3*pi/2, the value of r is 2. The problem requires identifying this value from the chart and confirming it as the solution.",
+  "entities": [
+    "theta",
+    "r"
+  ],
+  "unknowns": [
+    "r"
+  ],
+  "required_operations": [
+    "Read the chart to find the value of r at theta = 3*pi/2"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for theta and r",
+    "Verify the legend mapping for r = f(θ)",
+    "Ensure correct interpretation of the key point at θ = 3π/2"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "polar coordinates",
+    "chart interpretation"
+  ]
+}

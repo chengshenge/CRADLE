@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_numerical_value_from_text",
+      "signature": "(text_data)->int",
+      "purpose": "Extract a specific numerical value from a given text, particularly when the text explicitly states the value.",
+      "inputs": [
+        "text_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Text contains multiple numbers, but only one is relevant.",
+        "Text includes numbers in different formats (e.g., spelled out, fractions)."
+      ],
+      "tests": [
+        {
+          "input": "The average miles per gallon for a city bus is 6.5.",
+          "expect": 6
+        },
+        {
+          "input": "The bus gets 6.5 miles per gallon on average.",
+          "expect": 6
+        },
+        {
+          "input": "Average MPG: 6.5",
+          "expect": 6
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "numerical value",
+        "fuel efficiency"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_numerical_value_from_text"
+  ]
+}

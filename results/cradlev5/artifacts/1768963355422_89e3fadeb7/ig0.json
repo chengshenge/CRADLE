@@ -1,0 +1,104 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a right triangle with specific points and lengths, which suggests a geometric diagram is present in the image."
+  ],
+  "problem_understanding": "The problem involves a right triangle ABC with a right angle at C. D is the midpoint of AB, and the length of AB is given. The task is to find the length of CD.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠ACB",
+        "value": "90",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Right angle at C"
+      },
+      {
+        "name": "D",
+        "value": "midpoint of AB",
+        "unit": "",
+        "source": "text",
+        "note": "D is the midpoint"
+      },
+      {
+        "name": "AB",
+        "value": "10",
+        "unit": "",
+        "source": "text",
+        "note": "Length of AB"
+      }
+    ],
+    "unknown": [
+      "CD"
+    ],
+    "relations": [
+      "D is the midpoint of AB",
+      "∠ACB = 90°"
+    ],
+    "constraints": [
+      "AB = 10"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "5"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "8"
+      },
+      {
+        "label": "D",
+        "text": "10"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "triangle has",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the length of a line segment in a geometric figure, which is a straightforward calculation once the necessary geometric properties are identified."
+  ],
+  "problem_summary": "In a right triangle ABC with ∠ACB = 90°, D is the midpoint of AB, and AB = 10. Find the length of CD.",
+  "knowns": [
+    {
+      "name": "∠ACB",
+      "value": "90",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Right angle at C"
+    },
+    {
+      "name": "D",
+      "value": "midpoint of AB",
+      "unit": "",
+      "source": "text",
+      "note": "D is the midpoint"
+    },
+    {
+      "name": "AB",
+      "value": "10",
+      "unit": "",
+      "source": "text",
+      "note": "Length of AB"
+    }
+  ],
+  "asks": [
+    "CD"
+  ],
+  "constraints": [
+    "AB = 10"
+  ],
+  "visual_facts": [
+    "Right triangle with a right angle at C",
+    "D is the midpoint of AB"
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, and D are not specified in the text and need to be interpreted from the diagram."
+  ]
+}

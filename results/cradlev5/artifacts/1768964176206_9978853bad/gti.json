@@ -1,0 +1,97 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar Chart Title: Values of Different Bars",
+    "X-axis Label: Categories",
+    "Y-axis Label: Values",
+    "Y-axis Ticks: 0, 2, 4, 6, 8, 10",
+    "Bars: A (5), B (3), C (7), D (2), E (6)"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Values of Different Bars",
+      "x_axis": {
+        "label": "Categories",
+        "unit": "",
+        "ticks": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E"
+        ]
+      },
+      "y_axis": {
+        "label": "Values",
+        "unit": "",
+        "ticks": [
+          "0",
+          "2",
+          "4",
+          "6",
+          "8",
+          "10"
+        ]
+      },
+      "legend": [],
+      "key_points": [
+        {
+          "label": "A",
+          "x": "A",
+          "y": "5",
+          "note": ""
+        },
+        {
+          "label": "B",
+          "x": "B",
+          "y": "3",
+          "note": ""
+        },
+        {
+          "label": "C",
+          "x": "C",
+          "y": "7",
+          "note": ""
+        },
+        {
+          "label": "D",
+          "x": "D",
+          "y": "2",
+          "note": ""
+        },
+        {
+          "label": "E",
+          "x": "E",
+          "y": "6",
+          "note": ""
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of bars with values smaller than 6"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart contains bars labeled A to E with corresponding values.",
+    "The task is to identify bars with values less than 6.",
+    "Bars B and D have values less than 6."
+  ]
+}

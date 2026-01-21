@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves determining which organism would be most affected if algae were eliminated. This requires understanding the dependency of various organisms on algae for survival or food. The organisms in question are Tilapia, Common water flea, Great diving beetle, and Tadpole. Each organism has a different level of dependency on algae, with some using it as a primary food source and others having a more varied diet. The task is to logically deduce which organism relies most heavily on algae. The problem is presented as a multiple-choice question with four options.",
+  "entities": [
+    "Tilapia",
+    "Common water flea",
+    "Great diving beetle",
+    "Tadpole"
+  ],
+  "unknowns": [
+    "organism most affected by elimination of algae"
+  ],
+  "required_operations": [
+    "Read text to understand organism dependencies",
+    "Identify organism with highest dependency on algae",
+    "Map finding to multiple-choice option"
+  ],
+  "blockers": [
+    "organism most affected by elimination of algae"
+  ],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Tilapia"
+      },
+      {
+        "label": "B",
+        "text": "Common water flea"
+      },
+      {
+        "label": "C",
+        "text": "Great diving beetle"
+      },
+      {
+        "label": "D",
+        "text": "Tadpole"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "dependency",
+    "multiple-choice"
+  ]
+}

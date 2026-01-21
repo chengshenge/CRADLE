@@ -1,0 +1,61 @@
+{
+  "problem_state_summary": "The problem involves understanding the relationship between pelicans and fish populations. It is presented as a multiple-choice question asking what happens to fish if the number of pelicans increases. The text suggests that pelicans feed on fish, and an increase in pelicans could lead to a decrease in fish populations due to higher predation. The task is to determine the effect on fish populations given this relationship. The problem is logical in nature, requiring an understanding of the cause-and-effect relationship between the two species. The options provided are decrease, nothing, increase, and none of the above.",
+  "entities": [
+    "pelicans",
+    "fish"
+  ],
+  "unknowns": [
+    "effect on fish population"
+  ],
+  "required_operations": [
+    "Understand the relationship between pelicans and fish",
+    "Determine the effect of increased pelican numbers on fish populations",
+    "Map the effect to one of the provided options"
+  ],
+  "blockers": [
+    "effect on fish population"
+  ],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "decrease"
+      },
+      {
+        "label": "B",
+        "text": "nothing"
+      },
+      {
+        "label": "C",
+        "text": "increase"
+      },
+      {
+        "label": "D",
+        "text": "none of the above"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "ecology",
+    "cause-and-effect"
+  ]
+}

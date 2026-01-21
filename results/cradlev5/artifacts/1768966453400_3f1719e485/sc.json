@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_by_properties",
+      "purpose": "To identify and count specific types of objects in the diagram based on their properties such as color, size, and material.",
+      "how_to_use": "Use this skill to identify yellow matte blocks and tiny brown cylinders in the image."
+    },
+    {
+      "name": "calculate_remaining_objects",
+      "purpose": "To calculate the remaining number of objects after subtracting the identified objects from the total.",
+      "how_to_use": "Use this skill to subtract the counts of yellow matte blocks and tiny brown cylinders from the total number of objects."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_image",
+      "signature": "(image_data, object_properties)->int",
+      "purpose": "To count the number of objects in an image based on specified properties.",
+      "inputs": [
+        "image_data",
+        "object_properties"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects match the properties",
+        "Multiple objects overlap"
+      ],
+      "tests": [
+        {
+          "input": "image_data, {'color': 'yellow', 'material': 'matte'}",
+          "expect": "5"
+        },
+        {
+          "input": "image_data, {'color': 'brown', 'size': 'tiny'}",
+          "expect": "3"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "property-based filtering"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_by_properties",
+    "calculate_remaining_objects"
+  ]
+}

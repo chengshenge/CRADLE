@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves determining whether 'Periwinkle' is the maximum among a set of values or categories. The question is presented in a text format, and it asks if 'Periwinkle' is the maximum. There are two options provided for the answer: (A) yes and (B) no. The context or set of values/categories among which 'Periwinkle' is to be compared is not specified, which introduces ambiguity. The task requires identifying and comparing values or categories related to 'Periwinkle' to determine if it is indeed the maximum. The problem is structured as a logic question, requiring a decision based on the provided options.",
+  "entities": [
+    "Periwinkle"
+  ],
+  "unknowns": [
+    "Is Periwinkle the maximum?"
+  ],
+  "required_operations": [
+    "Identify the context or set of values/categories for comparison",
+    "Determine if 'Periwinkle' is the maximum among them",
+    "Map the conclusion to the provided options"
+  ],
+  "blockers": [
+    "Is Periwinkle the maximum?"
+  ],
+  "risk_checks": [
+    "Ensure clarity on the context or set of values/categories for comparison",
+    "Check for any hidden conditions or footnotes in the text"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "comparison",
+    "text-based"
+  ]
+}

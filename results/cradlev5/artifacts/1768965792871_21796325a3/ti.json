@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays two lines, Line A and Line B, each representing data points over the years 2018 to 2022. The x-axis is labeled 'Year' and the y-axis is labeled 'Value'. The task is to determine which year shows the largest difference between the data points of these two lines. The chart provides specific data points for each year for both lines. The goal is to compute the difference between the data points of Line A and Line B for each year and identify the year with the maximum difference. This requires careful reading of the chart to ensure accurate extraction of data points.",
+  "entities": [
+    "Line A",
+    "Line B",
+    "Year",
+    "Value"
+  ],
+  "unknowns": [
+    "year with largest difference"
+  ],
+  "required_operations": [
+    "Read data points from chart",
+    "Compute difference between Line A and Line B for each year",
+    "Identify year with largest difference"
+  ],
+  "blockers": [
+    "year with largest difference"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing",
+    "Ensure correct legend mapping for Line A and Line B",
+    "Check for consistent units on y-axis"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "data comparison",
+    "yearly difference"
+  ]
+}

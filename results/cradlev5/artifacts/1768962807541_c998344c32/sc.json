@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to format the final answer string as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_highest_volume_marking",
+      "signature": "(image_data)->int",
+      "purpose": "Extract the highest volume marking from the image of a measuring cup.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image is blurry or markings are not clear",
+        "Markings are in an unexpected format"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_markings",
+          "expect": 2000
+        },
+        {
+          "input": "image_data_with_partial_markings",
+          "expect": 1500
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_highest_volume_marking",
+    "format_final"
+  ]
+}

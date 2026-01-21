@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining how many algorithms have accuracies higher than a specified threshold. A table is provided that lists several algorithms along with their respective accuracy values. The task is to count the number of algorithms whose accuracy exceeds the threshold of 9. The table includes four algorithms with their accuracies: Algorithm A with 8.5, Algorithm B with 9.2, Algorithm C with 9.7, and Algorithm D with 7.9. The problem requires identifying which of these accuracies are greater than 9 and counting them. The final answer should be an integer representing the count of such algorithms.",
+  "entities": [
+    "Algorithm A",
+    "Algorithm B",
+    "Algorithm C",
+    "Algorithm D",
+    "accuracy threshold"
+  ],
+  "unknowns": [
+    "number of algorithms with accuracy > 9"
+  ],
+  "required_operations": [
+    "Read the table to extract accuracy values",
+    "Compare each accuracy value to the threshold of 9",
+    "Count the number of algorithms with accuracy greater than 9"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure all rows in the table are correctly aligned with their headers",
+    "Verify that the accuracy values are correctly interpreted as decimals"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "table interpretation",
+    "comparison",
+    "counting"
+  ]
+}

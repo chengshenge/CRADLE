@@ -1,0 +1,49 @@
+{
+  "problem_state_summary": "The problem involves comparing the number of shiny buses to the number of matte things. The quantities are provided in the image as text, with 5 shiny buses and 8 matte things. The task is to determine if the number of shiny buses is less than the number of matte things. This is a straightforward comparison problem where the known values are directly extracted from the image. The problem is presented in a multiple-choice format, requiring the selection of the correct option based on the comparison. The final answer must be mapped to one of the given options.",
+  "entities": [
+    "number of shiny buses",
+    "number of matte things"
+  ],
+  "unknowns": [
+    "Is the number of shiny buses less than the number of matte things?"
+  ],
+  "required_operations": [
+    "Extract quantities from text",
+    "Compare the number of shiny buses to the number of matte things",
+    "Select the correct multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure text extraction is accurate",
+    "Verify that the comparison logic is correctly applied"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "logic",
+    "multiple-choice"
+  ]
+}

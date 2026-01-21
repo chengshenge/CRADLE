@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints in the problem.",
+      "action": "reason",
+      "note": "The problem involves identifying a missing picture that completes a sequence or pattern from a set of given options. The specific pattern or sequence rule is not explicitly stated and must be inferred from the images. The problem is presented as a multiple-choice question, and the final answer must be provided as an option letter."
+    },
+    {
+      "intention": "Analyze the sequence or pattern in the images to identify the missing picture.",
+      "action": "python",
+      "code": "missing_picture = identify_sequence_pattern(GTI_JSON['structured']['diagram']['labels'])"
+    },
+    {
+      "intention": "Map the identified correct image to one of the option labels.",
+      "action": "python",
+      "code": "correct_option = map_angle_to_option(missing_picture, INFO_JSON['math_elements_extracted']['options'])"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {correct_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

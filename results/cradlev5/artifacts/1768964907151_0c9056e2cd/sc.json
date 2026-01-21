@@ -1,0 +1,67 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_rectangle_dimensions_from_diagram",
+      "signature": "(image_data)->tuple",
+      "purpose": "Extract the length and width of a rectangle from a diagram image.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "tuple",
+      "edge_cases": [
+        "Image is blurry or unclear",
+        "Rectangle dimensions are not labeled"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_rectangle",
+          "expect": "(5, 3)"
+        },
+        {
+          "input": "image_data_with_no_rectangle",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "geometry",
+        "rectangle",
+        "dimension extraction"
+      ]
+    },
+    {
+      "name": "calculate_rectangle_perimeter",
+      "signature": "(length, width)->int",
+      "purpose": "Calculate the perimeter of a rectangle given its length and width.",
+      "inputs": [
+        "length",
+        "width"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Length or width is zero",
+        "Negative dimensions"
+      ],
+      "tests": [
+        {
+          "input": "(5, 3)",
+          "expect": "16"
+        },
+        {
+          "input": "(0, 3)",
+          "expect": "6"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "perimeter",
+        "calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_rectangle_dimensions_from_diagram",
+    "calculate_rectangle_perimeter"
+  ]
+}

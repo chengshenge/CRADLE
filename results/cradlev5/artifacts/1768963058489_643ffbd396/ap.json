@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The main blocker is the unknown area of square C. We need to use the Pythagorean relationship between the squares and the right triangle in the Pythagorean tree."
+    },
+    {
+      "intention": "Apply Pythagorean theorem to find the area of square C",
+      "action": "python",
+      "code": "from math import sqrt\nA = 5\nB = 3\nC = sqrt(A + B)"
+    },
+    {
+      "intention": "Map the calculated area to the closest multiple-choice option",
+      "action": "reason",
+      "note": "The calculated area of square C should be compared to the given options: 15, 13, 11, 8."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "python",
+      "code": "format_final('D')"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

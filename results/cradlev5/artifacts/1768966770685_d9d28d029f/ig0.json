@@ -1,0 +1,74 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with intersecting lines and angles, which suggests the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem involves intersecting lines AB and CD at point O, with OD bisecting angle AOE and angle BOC given as 50 degrees. The task is to find angle EOB.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠BOC",
+        "value": "50",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "∠EOB"
+    ],
+    "relations": [
+      "OD bisects ∠AOE",
+      "Lines AB and CD intersect at O"
+    ],
+    "constraints": [
+      "∠BOC = 50°"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "50°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "70°"
+      },
+      {
+        "label": "D",
+        "text": "80°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "5 nouns 2 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle EOB using the given information about intersecting lines and angle bisectors."
+  ],
+  "problem_summary": "Find the measure of angle EOB given that lines AB and CD intersect at O, OD bisects angle AOE, and angle BOC is 50 degrees.",
+  "knowns": [
+    {
+      "name": "∠BOC",
+      "value": "50",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "∠EOB"
+  ],
+  "constraints": [
+    "∠BOC = 50°"
+  ],
+  "visual_facts": [
+    "Lines AB and CD intersect at point O",
+    "OD bisects ∠AOE"
+  ],
+  "ambiguity": []
+}

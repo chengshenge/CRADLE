@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "A real estate agent conducted a survey of a neighborhood, counting the number of houses on each block. The task is to determine how many blocks have exactly 36 houses. The data is presented in a tabular format, listing blocks and their corresponding house counts. The problem requires identifying blocks with a specific house count, which is 36. The table provides the necessary information to perform this count. The final answer should be an integer representing the number of blocks with exactly 36 houses.",
+  "entities": [
+    "Block",
+    "Number of Houses"
+  ],
+  "unknowns": [
+    "number of blocks with exactly 36 houses"
+  ],
+  "required_operations": [
+    "Read the table to identify the number of houses per block",
+    "Count the number of blocks with exactly 36 houses"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure row and column alignment in the table",
+    "Verify the meaning of headers",
+    "Check for any missing or misaligned data in the table"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "table interpretation",
+    "integer answer"
+  ]
+}

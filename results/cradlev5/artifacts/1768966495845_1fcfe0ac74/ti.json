@@ -1,0 +1,52 @@
+{
+  "problem_state_summary": "The problem involves comparing the number of brown SUVs to the number of brown rubber school buses. The task is to determine if the number of brown SUVs is less than the number of brown rubber school buses. The known quantities are 15 brown SUVs and 20 brown rubber school buses. The problem is presented in a multiple-choice format with two options: Yes or No. The solution requires a simple comparison of these two numbers to determine the correct answer. The information needed for this comparison is extracted from the text region of the image.",
+  "entities": [
+    "number of brown SUVs",
+    "number of brown rubber school buses"
+  ],
+  "unknowns": [
+    "number of brown SUVs",
+    "number of brown rubber school buses"
+  ],
+  "required_operations": [
+    "Extract numerical data from text",
+    "Compare the two numbers",
+    "Map result to multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "multiple-choice",
+    "numerical data extraction"
+  ]
+}

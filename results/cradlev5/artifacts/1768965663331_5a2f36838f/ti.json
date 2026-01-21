@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart titled 'Sales Data for Q1'. The chart displays sales data for different products on the X-axis and sales values in thousands on the Y-axis. The task is to determine the difference between the largest and smallest bars in the chart. The largest bar corresponds to Product D with a value of 50 thousand, and the smallest bar corresponds to Product C with a value of 20 thousand. The difference between these two values needs to be calculated and expressed as a floating-point number with one decimal place. The final answer should be presented in this format.",
+  "entities": [
+    "largest_bar_value",
+    "smallest_bar_value",
+    "difference"
+  ],
+  "unknowns": [
+    "difference"
+  ],
+  "required_operations": [
+    "Identify the largest bar value from the chart",
+    "Identify the smallest bar value from the chart",
+    "Calculate the difference between the largest and smallest bar values",
+    "Express the result as a floating-point number with one decimal place"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify the axis scale and tick spacing to ensure accurate reading of bar values",
+    "Ensure no interpolation is needed as exact values are provided",
+    "Check for any units or legends that might affect interpretation"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "difference",
+    "sales data",
+    "arithmetic"
+  ]
+}

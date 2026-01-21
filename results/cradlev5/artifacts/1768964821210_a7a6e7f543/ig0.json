@@ -1,0 +1,90 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a figure with lines AB and AC, indicating a geometric relationship that needs to be understood from the diagram."
+  ],
+  "problem_understanding": "The problem is about finding the length of line AB given the ratio of lengths of lines AB and AC and the length of AC.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "Ratio of AB to AC",
+        "value": "2:5",
+        "unit": "",
+        "source": "text",
+        "note": "Given ratio of lengths"
+      },
+      {
+        "name": "Length of AC",
+        "value": "25",
+        "unit": "",
+        "source": "text",
+        "note": "Given length of line AC"
+      }
+    ],
+    "unknown": [
+      "Length of AB"
+    ],
+    "relations": [
+      "AB/AC = 2/5"
+    ],
+    "constraints": [
+      "AC = 25"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "10"
+      },
+      {
+        "label": "C",
+        "text": "15"
+      },
+      {
+        "label": "D",
+        "text": "18"
+      },
+      {
+        "label": "E",
+        "text": "20"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "5 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward as it involves using the given ratio and length to find the unknown length of line AB."
+  ],
+  "problem_summary": "Find the length of line AB given the ratio of AB to AC is 2:5 and AC is 25.",
+  "knowns": [
+    {
+      "name": "Ratio of AB to AC",
+      "value": "2:5",
+      "unit": "",
+      "source": "text",
+      "note": "Given ratio of lengths"
+    },
+    {
+      "name": "Length of AC",
+      "value": "25",
+      "unit": "",
+      "source": "text",
+      "note": "Given length of line AC"
+    }
+  ],
+  "asks": [
+    "Length of AB"
+  ],
+  "constraints": [
+    "AC = 25"
+  ],
+  "visual_facts": [
+    "The diagram shows lines AB and AC."
+  ],
+  "ambiguity": []
+}

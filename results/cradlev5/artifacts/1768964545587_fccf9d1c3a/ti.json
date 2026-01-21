@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves a scenario where there are a total of 50 objects. Among these, 15 are rubber balls and 10 are yellow shiny things. The task is to subtract the number of rubber balls and yellow shiny things from the total number of objects. The goal is to determine how many objects remain after these subtractions. The problem requires simple arithmetic operations to find the remaining number of objects. The information about the total number of objects, rubber balls, and yellow shiny things is extracted from the image. The final answer should be an integer representing the remaining objects.",
+  "entities": [
+    "total number of objects",
+    "number of rubber balls",
+    "number of yellow shiny things"
+  ],
+  "unknowns": [
+    "remaining number of objects"
+  ],
+  "required_operations": [
+    "Extract total number of objects from image",
+    "Extract number of rubber balls from image",
+    "Extract number of yellow shiny things from image",
+    "Subtract number of rubber balls from total",
+    "Subtract number of yellow shiny things from result"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure accurate identification of rubber balls and yellow shiny things from the image",
+    "Verify that the total number of objects is correctly extracted from the image"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "subtraction",
+    "object counting"
+  ]
+}

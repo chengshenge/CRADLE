@@ -1,0 +1,40 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects",
+      "purpose": "To count the total number of objects in the diagram and specific categories like brown blocks and large blue rubber things.",
+      "how_to_use": "Use this skill to count the objects in the image data after identifying them based on color and size."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_categorize_objects",
+      "signature": "(image_data, categories)->dict",
+      "purpose": "To identify and categorize objects in an image based on specified categories such as color and size.",
+      "inputs": [
+        "image_data",
+        "categories"
+      ],
+      "outputs": "A dictionary with categories as keys and lists of identified objects as values.",
+      "edge_cases": [
+        "Objects partially obscured or overlapping",
+        "Objects with similar colors but different sizes"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_various_objects, ['brown block', 'large blue rubber thing']",
+          "expect": "{'brown block': [obj1, obj2], 'large blue rubber thing': [obj3]}"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object categorization",
+        "visual analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_categorize_objects",
+    "count_objects"
+  ]
+}

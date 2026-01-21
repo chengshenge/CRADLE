@@ -1,0 +1,52 @@
+{
+  "problem_state_summary": "The problem involves a set of objects that are visually represented in a diagram. The task is to identify and subtract specific categories of objects: brown blocks and large blue rubber things. The goal is to determine how many objects remain after these subtractions. The problem requires counting objects based on their color and size, which are visually distinguishable in the diagram. The exact number of each type of object is not specified in the text and must be determined from the image. The final answer should be an integer representing the remaining objects.",
+  "entities": [
+    "total_objects",
+    "brown_blocks",
+    "large_blue_rubber_things",
+    "remaining_objects"
+  ],
+  "unknowns": [
+    "total_objects",
+    "brown_blocks",
+    "large_blue_rubber_things",
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count total objects in the diagram",
+    "Identify and count brown blocks",
+    "Identify and count large blue rubber things",
+    "Subtract brown blocks and large blue rubber things from total objects"
+  ],
+  "blockers": [
+    "total_objects",
+    "brown_blocks",
+    "large_blue_rubber_things",
+    "remaining_objects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct categorization of objects based on color and size"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual counting",
+    "subtraction",
+    "categorization"
+  ]
+}

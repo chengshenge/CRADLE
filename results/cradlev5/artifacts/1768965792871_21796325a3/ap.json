@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the year with the largest difference between data points of Line A and Line B.",
+      "action": "reason",
+      "note": "We need to calculate the difference between the data points of Line A and Line B for each year and find the year with the maximum difference."
+    },
+    {
+      "intention": "Calculate the differences for each year.",
+      "action": "python",
+      "code": "line_a_points = {'2018': 30, '2019': 50, '2020': 70, '2021': 60, '2022': 80}\nline_b_points = {'2018': 20, '2019': 40, '2020': 60, '2021': 50, '2022': 70}\ndifferences = {year: abs(line_a_points[year] - line_b_points[year]) for year in line_a_points}\nmax_difference_year = max(differences, key=differences.get)"
+    },
+    {
+      "intention": "Output the year with the largest difference.",
+      "action": "normalize",
+      "text": "Answer: 2022"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

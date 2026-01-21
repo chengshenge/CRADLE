@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "select_correct_option",
+      "purpose": "To select the correct multiple-choice option based on the identified pattern or relationship.",
+      "how_to_use": "Use this skill to map the logical conclusion about the effect of increased pelican numbers on fish populations to one of the provided options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_ecological_relationship",
+      "signature": "(entities, relationship_description)->str",
+      "purpose": "To analyze the ecological relationship between two species and determine the effect of changes in one species on the other.",
+      "inputs": [
+        "entities",
+        "relationship_description"
+      ],
+      "outputs": "The effect on the second entity as a string.",
+      "edge_cases": [
+        "If the relationship is not clearly defined, return 'unknown'.",
+        "If the effect is neutral, return 'no change'."
+      ],
+      "tests": [
+        {
+          "input": "(['pelicans', 'fish'], 'Pelicans feed on fish. An increase in pelicans leads to higher predation on fish.')",
+          "expect": "decrease"
+        },
+        {
+          "input": "(['wolves', 'deer'], 'Wolves hunt deer. An increase in wolves leads to more deer being hunted.')",
+          "expect": "decrease"
+        },
+        {
+          "input": "(['bees', 'flowers'], 'Bees pollinate flowers. An increase in bees leads to more pollination.')",
+          "expect": "increase"
+        }
+      ],
+      "tags": [
+        "ecology",
+        "cause-and-effect",
+        "relationship analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_ecological_relationship",
+    "select_correct_option"
+  ]
+}

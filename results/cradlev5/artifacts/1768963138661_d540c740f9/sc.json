@@ -1,0 +1,39 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_by_attributes",
+      "signature": "(image_data, color:str, size:str, texture:str)->int",
+      "purpose": "Count the number of objects in an image based on specified attributes such as color, size, and texture.",
+      "inputs": [
+        "image_data",
+        "color",
+        "size",
+        "texture"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects partially obscured or overlapping",
+        "Ambiguity in color shades or size definitions"
+      ],
+      "tests": [
+        {
+          "input": "(image_data, 'red', 'tiny', 'matte')",
+          "expect": "3"
+        },
+        {
+          "input": "(image_data, 'blue', 'large', 'glossy')",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "visual analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_by_attributes"
+  ]
+}

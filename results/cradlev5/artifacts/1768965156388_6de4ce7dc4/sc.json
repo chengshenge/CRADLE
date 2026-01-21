@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expression in python.",
+      "how_to_use": "Use this skill to perform arithmetic operations and comparisons on the roughness values to determine if Coral is the roughest."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Return exactly one line: Answer: ...",
+      "how_to_use": "Use this skill to format the final answer in the required format after determining if Coral is the roughest."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_roughness_values",
+      "signature": "(roughness_values)->str",
+      "purpose": "Compare roughness values of different materials to determine which one is the roughest.",
+      "inputs": [
+        "roughness_values"
+      ],
+      "outputs": "The label of the material with the highest roughness value.",
+      "edge_cases": [
+        "All materials have the same roughness value.",
+        "Only one material is provided."
+      ],
+      "tests": [
+        {
+          "input": "[('Coral', 7.5), ('Sandstone', 6.8), ('Granite', 5.9), ('Limestone', 6.2)]",
+          "expect": "Coral"
+        },
+        {
+          "input": "[('Coral', 7.5), ('Sandstone', 7.5)]",
+          "expect": "Coral"
+        },
+        {
+          "input": "[('Granite', 5.9)]",
+          "expect": "Granite"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "roughness",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_roughness_values",
+    "calc_numeric",
+    "format_final"
+  ]
+}

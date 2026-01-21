@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_highest_dependency",
+      "signature": "(organisms, dependencies)->str",
+      "purpose": "Identify which organism has the highest dependency on a given resource, such as algae.",
+      "inputs": [
+        "A list of organisms",
+        "A list of dependencies corresponding to each organism"
+      ],
+      "outputs": "The organism with the highest dependency",
+      "edge_cases": [
+        "All organisms have equal dependency",
+        "No organisms provided",
+        "Dependencies are not clearly defined"
+      ],
+      "tests": [
+        {
+          "input": "(['Tilapia', 'Water flea', 'Beetle', 'Tadpole'], [0.3, 0.9, 0.1, 0.5])",
+          "expect": "'Water flea'"
+        },
+        {
+          "input": "(['Tilapia', 'Water flea'], [0.5, 0.5])",
+          "expect": "'Tilapia'"
+        },
+        {
+          "input": "([], [])",
+          "expect": "''"
+        }
+      ],
+      "tags": [
+        "logic",
+        "dependency",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_highest_dependency"
+  ]
+}

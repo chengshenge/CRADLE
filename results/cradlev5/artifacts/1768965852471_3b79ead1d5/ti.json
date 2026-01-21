@@ -1,0 +1,38 @@
+{
+  "problem_state_summary": "The problem involves identifying a missing value in a sequence of numbers. The sequence provided is 2, 4, 6, ?, 10, where the question mark represents the missing value. The task is to determine the integer that fits into this sequence. The sequence appears to follow a simple arithmetic pattern, which needs to be identified to find the missing number. The problem is presented in a textual format, and the solution requires basic arithmetic reasoning. The final answer should be an integer that completes the sequence.",
+  "entities": [
+    "sequence",
+    "numbers"
+  ],
+  "unknowns": [
+    "missing value"
+  ],
+  "required_operations": [
+    "Identify the pattern in the sequence",
+    "Calculate the missing value based on the pattern"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the sequence pattern is correctly identified",
+    "Verify the arithmetic operations used to find the missing value"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "sequence",
+    "missing value"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the diagram and understand the configuration of quadrilateral ABCD.",
+      "how_to_use": "Use this skill to determine the spatial relationships between points A, B, C, and D in the diagram."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the calculated angle D to the correct multiple-choice option.",
+      "how_to_use": "Use this skill to match the calculated measure of angle D with the provided options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_isosceles_triangle",
+      "signature": "(AB, AC, angle_CAB)->angle_BAC",
+      "purpose": "To calculate the angles in an isosceles triangle given two equal sides and the included angle.",
+      "inputs": [
+        "AB",
+        "AC",
+        "angle_CAB"
+      ],
+      "outputs": "angle_BAC",
+      "edge_cases": [
+        "If AB or AC is zero, the calculation is invalid.",
+        "If angle_CAB is not between 0 and 180 degrees, the calculation is invalid."
+      ],
+      "tests": [
+        {
+          "input": "(5, 5, 40)",
+          "expect": "70"
+        },
+        {
+          "input": "(10, 10, 60)",
+          "expect": "60"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "isosceles triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "calculate_angle_in_isosceles_triangle",
+    "map_angle_to_option"
+  ]
+}

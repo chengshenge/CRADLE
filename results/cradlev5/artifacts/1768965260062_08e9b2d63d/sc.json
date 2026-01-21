@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_kinetic_energy_from_diagrams",
+      "signature": "(image_data)->str",
+      "purpose": "Analyze diagrams of gas samples to compare the average kinetic energy of particles based on visual cues.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Diagrams with unclear or ambiguous particle representations",
+        "Diagrams where particle movement is not visually indicated"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_particle_movement",
+          "expect": "Sample A"
+        },
+        {
+          "input": "image_data_with_equal_particle_representation",
+          "expect": "neither; the samples have the same temperature"
+        },
+        {
+          "input": "image_data_with_ambiguous_representation",
+          "expect": "Error: Ambiguous representation"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "kinetic energy",
+        "temperature",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_kinetic_energy_from_diagrams"
+  ]
+}

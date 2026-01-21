@@ -1,0 +1,49 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_average_times",
+      "signature": "(average_time_with_wax, average_time_without_wax)->str",
+      "purpose": "Determine which condition results in a shorter average time for the snowboard to slide down the hill.",
+      "inputs": [
+        "average_time_with_wax",
+        "average_time_without_wax"
+      ],
+      "outputs": "A string indicating whether the snowboard slides down faster with wax or without wax.",
+      "edge_cases": [
+        "Equal average times for both conditions."
+      ],
+      "tests": [
+        {
+          "input": {
+            "average_time_with_wax": 5.0,
+            "average_time_without_wax": 6.0
+          },
+          "expect": "with wax"
+        },
+        {
+          "input": {
+            "average_time_with_wax": 6.0,
+            "average_time_without_wax": 5.0
+          },
+          "expect": "without wax"
+        },
+        {
+          "input": {
+            "average_time_with_wax": 5.0,
+            "average_time_without_wax": 5.0
+          },
+          "expect": "equal"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "average time",
+        "experiment"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_average_times"
+  ]
+}

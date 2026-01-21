@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Determine the time word based on the clock diagram.",
+      "action": "reason",
+      "note": "Use the learned skill 'interpret_clock_diagram' to interpret the position of the clock hands and determine the time word that fits the sentence 'It is (_) after eight.'"
+    },
+    {
+      "intention": "Call the learned skill to interpret the clock diagram.",
+      "action": "python",
+      "code": "time_word = interpret_clock_diagram(image_data)"
+    },
+    {
+      "intention": "Map the interpreted time word to the correct option label.",
+      "action": "reason",
+      "note": "The interpreted time word should be mapped to one of the options: (A) half, (B) quarter, (C) o'clock, (D) quarter to, (E) quarter past."
+    },
+    {
+      "intention": "Normalize the answer to the required format.",
+      "action": "normalize",
+      "text": "Answer: E"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

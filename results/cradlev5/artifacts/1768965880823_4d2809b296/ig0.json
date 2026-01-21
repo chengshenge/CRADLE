@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves points and angles on a circle, which suggests a geometric configuration. Therefore, the relevant region to detect is the diagram."
+  ],
+  "problem_understanding": "The problem involves a circle with points A, B, C, and D on it, and point E on the extended line of AD. The angle ∠ABC is given, and the task is to find the degree of angle ∠CDE.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠ABC",
+        "value": "60.0",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "∠CDE"
+    ],
+    "relations": [
+      "Points A, B, C, and D are on circle O.",
+      "Point E is on the extended line of AD."
+    ],
+    "constraints": [
+      "The sum of angles in a triangle is 180 degrees.",
+      "Angles subtended by the same arc in a circle are equal."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "points are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle ∠CDE based on the given geometric configuration and known angle ∠ABC."
+  ],
+  "problem_summary": "Determine the degree of angle ∠CDE given that points A, B, C, and D are on circle O, point E is on the extended line of AD, and ∠ABC is 60 degrees.",
+  "knowns": [
+    {
+      "name": "∠ABC",
+      "value": "60.0",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle given in the problem statement."
+    }
+  ],
+  "asks": [
+    "∠CDE"
+  ],
+  "constraints": [
+    "The sum of angles in a triangle is 180 degrees.",
+    "Angles subtended by the same arc in a circle are equal."
+  ],
+  "visual_facts": [
+    "Points A, B, C, and D are on circle O.",
+    "Point E is on the extended line of AD."
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, D, and E are not specified, which may affect the interpretation of the geometric configuration."
+  ]
+}

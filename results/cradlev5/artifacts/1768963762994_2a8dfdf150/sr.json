@@ -1,0 +1,14 @@
+{
+  "answer_correct": false,
+  "issues_found": [
+    "Tool execution error in calculating AB and radius."
+  ],
+  "most_probable_cause": "arithmetic_error",
+  "fixes": [
+    "Recalculate AB as AC + BC = 8 + 15 = 23 inches.",
+    "Calculate radius as AB/2 = 23/2 = 11.5 inches.",
+    "Map 11.5 to the closest option, which is not available, indicating a possible error in options or calculation."
+  ],
+  "final_answer": "Answer: None",
+  "confidence": 0.7
+}

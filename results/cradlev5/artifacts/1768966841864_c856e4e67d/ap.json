@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and ensure all necessary data is available.",
+      "action": "reason",
+      "note": "There are no blockers or unresolved targets. We have the necessary data from the chart: 120 'Satisfied' and 80 'Dissatisfied'."
+    },
+    {
+      "intention": "Verify the axis scale and units from the chart.",
+      "action": "reason",
+      "note": "The y-axis is labeled 'Number of Responses' with ticks from 0 to 140. The values for 'Satisfied' and 'Dissatisfied' are 120 and 80, respectively."
+    },
+    {
+      "intention": "Calculate the ratio of 'Dissatisfied' to 'Satisfied' responses.",
+      "action": "python",
+      "code": "dissatisfied = 80\nsatisfied = 120\nratio = dissatisfied / satisfied"
+    },
+    {
+      "intention": "Format the result as a floating-point number with one decimal place.",
+      "action": "python",
+      "code": "formatted_ratio = format(ratio, '.1f')"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 0.7"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

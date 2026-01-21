@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The function type is not specified and must be inferred from the graph. We will analyze the graph for symmetry to determine if the function is odd or even."
+    },
+    {
+      "intention": "Use the learned skill to determine the function symmetry from the graph.",
+      "action": "python",
+      "code": "symmetry = determine_function_symmetry('5fae6361cdcc')"
+    },
+    {
+      "intention": "Map the determined symmetry to the corresponding multiple-choice option.",
+      "action": "python",
+      "code": "option = map_symmetry_to_option(symmetry, [{'label': 'A', 'text': 'odd'}, {'label': 'B', 'text': 'even'}])"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

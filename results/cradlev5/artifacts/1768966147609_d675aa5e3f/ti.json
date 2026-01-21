@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves a square labeled ABCD with an inscribed circle centered at point O. The task is to find the angle ∠AMK. Points M and K are located on sides AB and AD of the square, respectively. However, the exact positions of points M and K are not specified, which introduces ambiguity in determining the angle. The problem requires understanding the geometric properties of the square and the inscribed circle to compute the desired angle. The solution must be provided as a floating-point number with one decimal place.",
+  "entities": [
+    "ABCD",
+    "O",
+    "M",
+    "K"
+  ],
+  "unknowns": [
+    "∠AMK"
+  ],
+  "required_operations": [
+    "Identify the positions of points M and K on sides AB and AD",
+    "Use geometric properties of the square and circle to determine angle ∠AMK",
+    "Compute the angle ∠AMK",
+    "Express the angle as a floating-point number with one decimal place"
+  ],
+  "blockers": [
+    "∠AMK"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "square",
+    "inscribed circle"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays average weekly work hours by country over several years. The task is to determine how many countries have people working more than 35 hours per week. The chart includes a title, labeled axes, and a legend indicating different countries. Key data points are provided for specific countries and years. The goal is to count the number of countries where the work hours exceed 35, based on the chart data. The problem requires interpreting the chart to extract relevant information about work hours and countries. The final answer should be an integer representing the number of countries meeting the criteria.",
+  "entities": [
+    "Country A",
+    "Country B",
+    "Country C",
+    "Country D",
+    "Average Weekly Work Hours",
+    "Year"
+  ],
+  "unknowns": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "required_operations": [
+    "Read chart",
+    "Identify countries with work hours > 35",
+    "Count such countries"
+  ],
+  "blockers": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "risk_checks": [
+    "Check axis scale and tick spacing",
+    "Verify legend mapping to countries",
+    "Ensure correct interpretation of y-axis values",
+    "Check for interpolation needs between data points"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "data interpretation",
+    "work hours",
+    "country comparison"
+  ]
+}

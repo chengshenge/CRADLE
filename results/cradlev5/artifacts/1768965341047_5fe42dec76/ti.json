@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves identifying a missing picture that completes a sequence or pattern from a set of given options. The options are labeled A, B, C, D, E, and F. The task requires analyzing a diagram or set of images to determine the correct image that fits the pattern. The specific pattern or sequence rule is not explicitly stated and must be inferred from the images. The problem is presented as a multiple-choice question, and the final answer must be provided as an option letter. The task is primarily visual and involves logical reasoning to deduce the correct image.",
+  "entities": [
+    "Images A, B, C, D, E, F"
+  ],
+  "unknowns": [
+    "missing picture"
+  ],
+  "required_operations": [
+    "Analyze the sequence or pattern in the images",
+    "Identify the correct image that fits the pattern",
+    "Map the correct image to one of the option labels"
+  ],
+  "blockers": [
+    "missing picture"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ambiguity in pattern inference"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "pattern recognition",
+    "visual reasoning"
+  ]
+}

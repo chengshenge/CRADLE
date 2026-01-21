@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves identifying the highest amount measured by a class, as represented in a chart. The chart is titled 'Amounts Measured by Class' and includes three classes: Class A, Class B, and Class C. Each class measures three types of measurements: Length, Weight, and Volume. The Y-axis represents the amount in units, with ticks at intervals of 10 from 0 to 50. The task is to determine which class and measurement type combination yields the highest amount. This requires examining the key points provided for each class and measurement type to find the maximum value.",
+  "entities": [
+    "Class A",
+    "Class B",
+    "Class C",
+    "Length",
+    "Weight",
+    "Volume"
+  ],
+  "unknowns": [
+    "highest amount"
+  ],
+  "required_operations": [
+    "Read the chart to identify key points for each class and measurement type",
+    "Compare the amounts for each class and measurement type",
+    "Identify the highest amount from the compared values"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify the axis scale and tick spacing on the Y-axis",
+    "Ensure correct mapping of legend to chart data",
+    "Check for any interpolation errors in reading the chart values"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "maximum value",
+    "data interpretation"
+  ]
+}

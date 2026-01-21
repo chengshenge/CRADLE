@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the geometric relationships in the diagram.",
+      "action": "reason",
+      "note": "The problem involves intersecting lines AB and CD at point O, with OD bisecting angle AOE and angle BOC given as 50 degrees. We need to find angle EOB."
+    },
+    {
+      "intention": "Use the fact that OD bisects ∠AOE to find ∠EOB.",
+      "action": "python",
+      "code": "angle_AOE = 2 * 50  # Since OD bisects ∠AOE, ∠AOE = 2 * ∠BOC\nangle_EOB = angle_AOE - 50  # ∠EOB = ∠AOE - ∠BOC"
+    },
+    {
+      "intention": "Map the calculated angle to the correct multiple-choice option.",
+      "action": "python",
+      "code": "from learned_skill_catalog import map_angle_to_option\noptions = [{'label': 'A', 'text': '50°'}, {'label': 'B', 'text': '60°'}, {'label': 'C', 'text': '70°'}, {'label': 'D', 'text': '80°'}]\nanswer_label = map_angle_to_option(angle_EOB, options)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {answer_label}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

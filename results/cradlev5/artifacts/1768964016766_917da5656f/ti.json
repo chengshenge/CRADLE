@@ -1,0 +1,52 @@
+{
+  "problem_state_summary": "The problem involves determining whether a given function is continuous at each point. The function's graph is provided, labeled as 'Function Continuity Analysis', with the x-axis labeled as 'x' and the y-axis labeled as 'f(x)'. The x-axis has ticks at -2, -1, 0, 1, and 2, while the y-axis has ticks at -2, -1, 0, 1, and 2. Key points on the graph include (-1, 0), (0, 1), and (1, -1). The task is to analyze the graph to check for any discontinuities, such as breaks, jumps, or holes, at each point. The problem is presented as a multiple-choice question with two options: (A) Yes, the function is continuous at each point, or (B) No, the function is not continuous at each point.",
+  "entities": [
+    "function",
+    "x-axis",
+    "y-axis",
+    "key points"
+  ],
+  "unknowns": [
+    "continuity of the function"
+  ],
+  "required_operations": [
+    "Analyze the graph for breaks, jumps, or holes",
+    "Determine continuity at each point",
+    "Map conclusion to option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing",
+    "Ensure key points are accurately plotted",
+    "Verify no hidden discontinuities"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "continuity",
+    "graph analysis"
+  ]
+}

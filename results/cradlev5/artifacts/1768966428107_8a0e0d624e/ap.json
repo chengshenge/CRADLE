@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract the average miles per gallon for a city bus from the text.",
+      "action": "reason",
+      "note": "The text explicitly states the average miles per gallon for a city bus, which is 6.5."
+    },
+    {
+      "intention": "Convert the extracted value to an integer as required by the problem statement.",
+      "action": "python",
+      "code": "average_mpg = int(6.5)"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: 6"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

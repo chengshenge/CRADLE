@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the side length of the square from the diagram.",
+      "action": "reason",
+      "note": "The side length of the square is marked as 5 cm in the diagram, specifically segment AB."
+    },
+    {
+      "intention": "Calculate the perimeter of the square using the side length.",
+      "action": "python",
+      "code": "side_length = 5\nperimeter = 4 * side_length"
+    },
+    {
+      "intention": "Format the calculated perimeter into the required answer format.",
+      "action": "normalize",
+      "text": "Answer: 20"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

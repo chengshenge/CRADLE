@@ -1,0 +1,54 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To identify the spatial relationship between the small yellow aeroplane and the gray rubber objects in front of it.",
+      "how_to_use": "Use this skill to determine which objects are in front of the small yellow aeroplane by analyzing the spatial relationships in the diagram."
+    },
+    {
+      "name": "count_objects",
+      "purpose": "To count the number of gray rubber objects and big cyan matte fighters in the diagram.",
+      "how_to_use": "Use this skill to count the specific objects identified in the diagram based on their attributes."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_object_counts",
+      "signature": "(count1, count2)->str",
+      "purpose": "To compare two counts and determine which is greater.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "A string indicating which count is greater or if they are equal.",
+      "edge_cases": [
+        "Both counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "(5, 3)",
+          "expect": "count1 is greater"
+        },
+        {
+          "input": "(2, 2)",
+          "expect": "counts are equal"
+        },
+        {
+          "input": "(0, 4)",
+          "expect": "count2 is greater"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "counting",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "count_objects",
+    "compare_object_counts"
+  ]
+}

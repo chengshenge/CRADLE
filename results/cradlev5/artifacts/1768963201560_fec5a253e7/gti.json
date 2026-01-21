@@ -1,0 +1,83 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Title: Object Preferences by Category",
+    "X-axis label: Objects",
+    "Y-axis label: Preference Percentage",
+    "Y-axis ticks: 0%, 20%, 40%, 60%, 80%, 100%",
+    "Legend: Category A, Category B, Category C",
+    "Key points: Object 1 - Category A: 95%, Object 2 - Category B: 92%, Object 3 - Category C: 88%"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Object Preferences by Category",
+      "x_axis": {
+        "label": "Objects",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "Preference Percentage",
+        "unit": "%",
+        "ticks": [
+          "0%",
+          "20%",
+          "40%",
+          "60%",
+          "80%",
+          "100%"
+        ]
+      },
+      "legend": [
+        "Category A",
+        "Category B",
+        "Category C"
+      ],
+      "key_points": [
+        {
+          "label": "Object 1",
+          "x": "Object 1",
+          "y": "95%",
+          "note": "Category A"
+        },
+        {
+          "label": "Object 2",
+          "x": "Object 2",
+          "y": "92%",
+          "note": "Category B"
+        },
+        {
+          "label": "Object 3",
+          "x": "Object 3",
+          "y": "88%",
+          "note": "Category C"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of objects preferred by more than 90 percent of people in at least one category"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides information on the preference percentages of different objects across various categories.",
+    "The task is to identify objects with preference percentages exceeding 90% in any category."
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image_data, object_labels)->dict",
+      "purpose": "Identify specific objects in a diagram and count their occurrences based on spatial relationships.",
+      "inputs": [
+        "image_data",
+        "object_labels"
+      ],
+      "outputs": "A dictionary with object labels as keys and their counts as values.",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with similar appearance"
+      ],
+      "tests": [
+        {
+          "input": "(image_data, ['brown metal sedan', 'tiny gray bicycle', 'tiny green bicycle'])",
+          "expect": "{'brown metal sedan': 1, 'tiny gray bicycle': 3, 'tiny green bicycle': 1}"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection",
+        "counting",
+        "diagram analysis"
+      ]
+    },
+    {
+      "name": "compare_object_counts",
+      "signature": "(counts_dict, comparison_pairs)->str",
+      "purpose": "Compare counts of different objects and return a decision based on predefined conditions.",
+      "inputs": [
+        "counts_dict",
+        "comparison_pairs"
+      ],
+      "outputs": "A string indicating the result of the comparison, e.g., 'Yes' or 'No'.",
+      "edge_cases": [
+        "Equal counts",
+        "No objects found"
+      ],
+      "tests": [
+        {
+          "input": "({'tiny gray bicycles': 3, 'things left of green bicycle': 2}, [('tiny gray bicycles', '>', 'things left of green bicycle')])",
+          "expect": "Yes"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "decision making",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "compare_object_counts"
+  ]
+}

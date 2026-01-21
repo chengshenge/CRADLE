@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "Linda conducted an experiment where she applied a thin layer of wax to her snowboard and rode it down a hill, then removed the wax and repeated the ride. This process was repeated multiple times, alternating between having wax and not having wax. Her friend Bob timed each ride, and they calculated the average time for rides with wax and without wax. The task is to determine which question the experiment can best answer based on the description provided. The options involve comparing the time it takes for the snowboard to slide down the hill under different wax conditions.",
+  "entities": [
+    "Linda",
+    "Bob",
+    "snowboard",
+    "average time with wax",
+    "average time without wax"
+  ],
+  "unknowns": [
+    "correct option"
+  ],
+  "required_operations": [
+    "Read the passage",
+    "Understand the experiment setup",
+    "Identify the comparison being made",
+    "Select the correct option based on the experiment description"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?"
+      },
+      {
+        "label": "B",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "experiment",
+    "comparison",
+    "average time",
+    "wax",
+    "snowboard"
+  ]
+}

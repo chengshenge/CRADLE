@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from the image text.",
+      "action": "reason",
+      "note": "Use the 'extract_ages_from_image' skill to obtain the ages of Alice and Bob from the image."
+    },
+    {
+      "intention": "Extract ages using the skill.",
+      "action": "python",
+      "code": "ages = extract_ages_from_image({'text_lines': ['Alice: 30 years old', 'Bob: 25 years old']})"
+    },
+    {
+      "intention": "Calculate the age gap between Alice and Bob.",
+      "action": "reason",
+      "note": "Use the 'calc_numeric' skill to compute the age gap by subtracting Bob's age from Alice's age."
+    },
+    {
+      "intention": "Compute the age gap.",
+      "action": "python",
+      "code": "age_gap = calc_numeric('30 - 25')"
+    },
+    {
+      "intention": "Format the final answer.",
+      "action": "reason",
+      "note": "Use the 'format_final' skill to format the answer as a single line output."
+    },
+    {
+      "intention": "Output the final answer.",
+      "action": "python",
+      "code": "final_answer = format_final(age_gap)"
+    },
+    {
+      "intention": "Ensure the answer is correctly formatted.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

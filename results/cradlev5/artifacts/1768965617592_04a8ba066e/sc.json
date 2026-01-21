@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_sequence_pattern",
+      "purpose": "To identify the pattern or rule governing the sequence of numbers in the matrix.",
+      "how_to_use": "Use this skill to analyze the sequence of numbers in the matrix and determine the underlying pattern or rule."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to ensure the final answer is returned in the format: 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "select_correct_option",
+      "signature": "(pattern, options)->str",
+      "purpose": "To select the correct option that completes the matrix according to the identified pattern.",
+      "inputs": [
+        "pattern",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Multiple options fit the pattern",
+        "Pattern is ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "(\"arithmetic progression\", [\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"])",
+          "expect": "\"A\""
+        },
+        {
+          "input": "(\"geometric progression\", [\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"])",
+          "expect": "\"C\""
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "pattern recognition",
+        "option selection"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_sequence_pattern",
+    "select_correct_option",
+    "format_final"
+  ]
+}

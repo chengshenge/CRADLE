@@ -1,0 +1,51 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To analyze the food web diagram and determine the relationships and dependencies between species.",
+      "how_to_use": "Use the skill to identify the spatial relationships between the species in the food web diagram, focusing on the arrows that indicate dependencies."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for the multiple-choice question.",
+      "how_to_use": "Use the skill to format the selected option label as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_web_impact",
+      "signature": "(diagram_data, species_list, decrease_species)->dict",
+      "purpose": "To predict the impact on other species when the population of a specific species decreases in a food web.",
+      "inputs": [
+        "diagram_data",
+        "species_list",
+        "decrease_species"
+      ],
+      "outputs": "A dictionary mapping each species to its predicted population change.",
+      "edge_cases": [
+        "No arrows indicating dependencies",
+        "Circular dependencies in the food web"
+      ],
+      "tests": [
+        {
+          "input": "diagram_data with arrows, ['Steelheads', 'Stickleback Fry', 'Predatory Insects', 'Large Roach'], 'Large Roach'",
+          "expect": "{'Steelheads': 'decrease', 'Stickleback Fry': 'increase', 'Predatory Insects': 'increase'}"
+        },
+        {
+          "input": "diagram_data with no arrows, ['Steelheads', 'Stickleback Fry', 'Predatory Insects', 'Large Roach'], 'Large Roach'",
+          "expect": "{}"
+        }
+      ],
+      "tags": [
+        "food web",
+        "population dynamics",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "analyze_food_web_impact",
+    "format_final"
+  ]
+}

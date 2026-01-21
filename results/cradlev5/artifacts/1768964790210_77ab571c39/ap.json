@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the ages of Alice and Bob from the image text.",
+      "action": "reason",
+      "note": "The image contains text lines that specify the ages of two individuals, Alice and Bob, which are necessary to determine the age gap."
+    },
+    {
+      "intention": "Extract the ages of Alice and Bob from the image.",
+      "action": "python",
+      "code": "ages = extract_ages_from_image({'text_lines': ['Alice: 30 years', 'Bob: 25 years']})"
+    },
+    {
+      "intention": "Calculate the age gap between Alice and Bob.",
+      "action": "python",
+      "code": "age_gap = calc_numeric('30 - 25')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

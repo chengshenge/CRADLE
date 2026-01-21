@@ -1,0 +1,58 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_spatial_relationships",
+      "purpose": "To determine the positions of points M and K on sides AB and AD of the square.",
+      "how_to_use": "Use the image data and specify reference objects (AB, AD) and target objects (M, K) to identify their spatial relationships."
+    },
+    {
+      "name": "apply_circle_theorems",
+      "purpose": "To use geometric properties of the square and the inscribed circle to determine angle ∠AMK.",
+      "how_to_use": "Apply circle theorems using known angles and segments to calculate the desired angle."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the computed angle as a floating-point number with one decimal place.",
+      "how_to_use": "Use the computed angle as input to format it correctly."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_square_with_inscribed_circle",
+      "signature": "(square_side_length, point_M_position, point_K_position)->float",
+      "purpose": "To calculate the angle ∠AMK in a square with an inscribed circle given the positions of points M and K.",
+      "inputs": [
+        "square_side_length",
+        "point_M_position",
+        "point_K_position"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "M and K are at the same point",
+        "M and K are at the vertices of the square"
+      ],
+      "tests": [
+        {
+          "input": "4, 2, 2",
+          "expect": "45.0"
+        },
+        {
+          "input": "4, 0, 4",
+          "expect": "90.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "square",
+        "inscribed circle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_spatial_relationships",
+    "apply_circle_theorems",
+    "calculate_angle_in_square_with_inscribed_circle",
+    "format_final"
+  ]
+}
