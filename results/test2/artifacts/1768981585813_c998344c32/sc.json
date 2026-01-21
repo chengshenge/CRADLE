@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to return the final answer in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_from_image",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Extract the total volume from the text on the image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The total volume as a string.",
+      "edge_cases": [
+        "Image text is unclear or partially obscured.",
+        "Multiple volume values are present without clear indication of total."
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": "500 ml"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction",
+        "volume"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_from_image",
+    "format_final"
+  ]
+}

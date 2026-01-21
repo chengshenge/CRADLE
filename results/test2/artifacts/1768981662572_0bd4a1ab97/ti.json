@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects remaining after subtracting specific types of objects from a total. The image provides the total number of objects as well as the counts for large rubber spheres and big shiny cylinders. The task is to subtract the number of large rubber spheres and big shiny cylinders from the total number of objects. The final goal is to compute the remaining number of objects. The problem is presented in a text format, and the necessary numerical values have been extracted from the image. The solution requires basic arithmetic operations to find the answer.",
+  "entities": [
+    "total_objects",
+    "large_rubber_spheres",
+    "big_shiny_cylinders"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Extract total number of objects from text",
+    "Extract number of large rubber spheres from text",
+    "Extract number of big shiny cylinders from text",
+    "Subtract large rubber spheres and big shiny cylinders from total objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "subtraction",
+    "counting"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry, specifically angles and angle bisectors in a triangle, which suggests the need to examine a diagram."
+  ],
+  "problem_understanding": "The problem is about finding the angle ∠BOC in triangle △ABC, where OB and OC are angle bisectors, and ∠A is given as 110°.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠A",
+        "value": "110",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle A in triangle △ABC"
+      }
+    ],
+    "unknown": [
+      "∠BOC"
+    ],
+    "relations": [
+      "OB and OC are angle bisectors of ∠B and ∠C respectively."
+    ],
+    "constraints": [
+      "The sum of angles in a triangle is 180°."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "△ABC nouns 相交 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle ∠BOC using the given angle ∠A and the properties of angle bisectors in a triangle."
+  ],
+  "problem_summary": "Find the measure of angle ∠BOC in triangle △ABC, given that ∠A is 110° and OB, OC are angle bisectors.",
+  "knowns": [
+    {
+      "name": "∠A",
+      "value": "110",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle A in triangle △ABC"
+    }
+  ],
+  "asks": [
+    "∠BOC"
+  ],
+  "constraints": [
+    "The sum of angles in a triangle is 180°."
+  ],
+  "visual_facts": [
+    "OB and OC are angle bisectors.",
+    "Diagram labels: A, B, C, O"
+  ],
+  "ambiguity": [
+    "The problem does not specify the measures of angles B and C, but they can be inferred from the given information."
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the measure of angle H from the diagram.",
+    "note": "The diagram explicitly marks angle H as 102 degrees."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Match the measure of angle H to the correct multiple-choice option.",
+    "code": "match_option('102', [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+    "stdout": "B",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Format the final answer to match the expected output format.",
+    "code": "format_final('B')",
+    "stdout": "Answer: B",
+    "error": null
+  }
+]

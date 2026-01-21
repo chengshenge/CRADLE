@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure known as a Pythagorean tree, which consists of squares and right triangles. In this configuration, all quadrilaterals are squares, and all triangles are right triangles. The areas of two squares, A and B, are given as 5 and 3 square units, respectively. The task is to determine the area of the largest square, labeled C. This requires understanding the geometric relationships in the diagram, particularly how the areas of the squares relate to each other through the Pythagorean theorem. The problem is presented with multiple-choice options for the area of square C.",
+  "entities": [
+    "Area of square A",
+    "Area of square B",
+    "Area of square C"
+  ],
+  "unknowns": [
+    "Area of square C"
+  ],
+  "required_operations": [
+    "Identify the geometric relationship between squares A, B, and C",
+    "Apply the Pythagorean theorem to find the area of square C",
+    "Compare the calculated area with the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram",
+    "Verify that all triangles are marked as right triangles",
+    "Check for any missing or unclear labels in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "Pythagorean theorem",
+    "area calculation",
+    "multiple-choice"
+  ]
+}

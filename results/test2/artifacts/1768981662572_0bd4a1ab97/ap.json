@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the problem requirements and known values.",
+      "action": "reason",
+      "note": "The problem requires subtracting the number of large rubber spheres and big shiny cylinders from the total number of objects to find the remaining objects."
+    },
+    {
+      "intention": "Extract known values from the image.",
+      "action": "reason",
+      "note": "The image provides the following values: Total objects = 50, Large rubber spheres = 15, Big shiny cylinders = 10."
+    },
+    {
+      "intention": "Compute the remaining number of objects.",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric('50 - 15 - 10')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: 25"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

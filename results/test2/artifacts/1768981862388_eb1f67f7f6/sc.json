@@ -1,0 +1,33 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_next_object_in_sequence",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "Identify the next object in a sequence from a diagram by recognizing patterns.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "The label of the option that corresponds to the next object in the sequence.",
+      "edge_cases": [
+        "Ambiguous patterns",
+        "Multiple valid patterns"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "diagram analysis",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_next_object_in_sequence"
+  ]
+}

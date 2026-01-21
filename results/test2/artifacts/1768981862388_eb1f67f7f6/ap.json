@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the next object in the sequence using the learned skill.",
+      "action": "python",
+      "code": "identify_next_object_in_sequence('1912e7f3f535', [{'label': 'A', 'text': 'A'}, {'label': 'B', 'text': 'B'}, {'label': 'C', 'text': 'C'}, {'label': 'D', 'text': 'D'}, {'label': 'E', 'text': 'E'}])"
+    },
+    {
+      "intention": "Normalize the output to match the expected answer format.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

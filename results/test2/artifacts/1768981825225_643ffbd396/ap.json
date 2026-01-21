@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between the areas of squares A, B, and C using the Pythagorean theorem.",
+      "action": "reason",
+      "note": "In a Pythagorean tree, the area of the largest square (C) is the sum of the areas of the two smaller squares (A and B)."
+    },
+    {
+      "intention": "Calculate the area of square C using the known areas of squares A and B.",
+      "action": "python",
+      "code": "area_C = calc_numeric('5 + 3')"
+    },
+    {
+      "intention": "Determine the correct multiple-choice option based on the calculated area of square C.",
+      "action": "reason",
+      "note": "The calculated area of square C is 8. We need to match this with the given options."
+    },
+    {
+      "intention": "Format the final answer to match the multiple-choice format.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

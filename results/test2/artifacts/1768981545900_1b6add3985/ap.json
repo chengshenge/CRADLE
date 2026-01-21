@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and confirm the problem setup.",
+      "action": "reason",
+      "note": "The problem involves calculating the compression distance 'd' of a spring when a canister is stopped. The kinetic energy of the canister is converted into the potential energy of the spring. The diagram confirms that AB is the compression distance 'd'."
+    },
+    {
+      "intention": "Calculate the initial kinetic energy of the canister.",
+      "action": "python",
+      "code": "calc_numeric('0.5 * 0.40 * (0.50)**2')"
+    },
+    {
+      "intention": "Set the kinetic energy equal to the potential energy of the spring and solve for 'd'.",
+      "action": "python",
+      "code": "sympy_solve('0.5 * 750 * d**2 - 0.5 * 0.40 * (0.50)**2', 'd')"
+    },
+    {
+      "intention": "Format the final answer for the compression distance 'd'.",
+      "action": "python",
+      "code": "format_final(0.020)"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

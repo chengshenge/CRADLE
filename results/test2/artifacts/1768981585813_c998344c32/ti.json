@@ -1,0 +1,37 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup as indicated by text on an image. The measuring cup has volume markings at various levels, including 500 ml, 250 ml, 100 ml, and 50 ml. The total volume is explicitly labeled as 500 ml on the image. However, the question asks for the volume in grams, which is unusual since volume is typically measured in milliliters or liters. This discrepancy suggests a need to interpret the image correctly. The task is straightforward, requiring the reading of a specific value from the image.",
+  "entities": [
+    "measuring cup",
+    "total volume"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the total volume from the image text"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check for any hidden footnotes or additional text that might clarify the unit discrepancy."
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "unit discrepancy"
+  ]
+}
