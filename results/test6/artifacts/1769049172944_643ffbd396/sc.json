@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve equations to find the area of square C using the given areas of squares A and B.",
+      "how_to_use": "Use the geometric relationship in the Pythagorean tree to set up an equation and solve for the unknown area of square C."
+    },
+    {
+      "name": "map_measure_to_option",
+      "purpose": "Map the calculated area of square C to the correct multiple-choice option.",
+      "how_to_use": "Use the calculated area of square C and the provided options to determine the correct answer label."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use the selected option label to format the answer as required."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_area_pythagorean_tree",
+      "signature": "(area_A:float, area_B:float)->float",
+      "purpose": "Calculate the area of square C using the areas of squares A and B in a Pythagorean tree.",
+      "inputs": [
+        "area_A",
+        "area_B"
+      ],
+      "outputs": "Area of square C",
+      "edge_cases": [
+        "Non-positive areas for squares A or B",
+        "Non-standard Pythagorean tree configuration"
+      ],
+      "tests": [
+        {
+          "input": "5, 3",
+          "expect": "8"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "area calculation",
+        "Pythagorean tree"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_area_pythagorean_tree",
+    "sympy_solve",
+    "map_measure_to_option",
+    "format_final"
+  ]
+}

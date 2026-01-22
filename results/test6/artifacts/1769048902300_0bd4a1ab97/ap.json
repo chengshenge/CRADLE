@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify known values and relation",
+      "action": "reason",
+      "note": "We have 50 total objects, 15 large rubber spheres, and 10 big shiny cylinders."
+    },
+    {
+      "intention": "Compute remaining objects",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric('50 - 15 - 10')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 25"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

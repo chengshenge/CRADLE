@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Determine angles B and C using angle sum property.",
+      "action": "python",
+      "code": "angle_BC = 180 - 110; angle_B = angle_BC / 2; angle_C = angle_BC / 2"
+    },
+    {
+      "intention": "Calculate angle BOC using angle bisector properties.",
+      "action": "python",
+      "code": "angle_BOC = 180 - (angle_B + angle_C) / 2"
+    },
+    {
+      "intention": "Map calculated angle BOC to closest option.",
+      "action": "python",
+      "code": "options = {'A': 135, 'B': 140, 'C': 145, 'D': 150}; closest_option = min(options, key=lambda k: abs(options[k] - angle_BOC))"
+    },
+    {
+      "intention": "Format the final answer as the option label.",
+      "action": "normalize",
+      "text": "Answer: {closest_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

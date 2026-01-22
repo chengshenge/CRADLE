@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "read_angle_measure_from_diagram",
+      "purpose": "To interpret the position of the clock hands on the diagram.",
+      "how_to_use": "Use the image hash to extract the angle measurement of the clock hands."
+    },
+    {
+      "name": "map_measure_to_option",
+      "purpose": "To map the interpreted angle measurement to the correct time word option.",
+      "how_to_use": "Use the angle measurement and the multiple-choice options to determine the correct time word."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_time_word",
+      "signature": "(image_hash:str, sentence:str, options:[{\"label\":str, \"text\":str}])->str",
+      "purpose": "To interpret the time shown on a clock diagram and express it as a time word that fits a given sentence.",
+      "inputs": [
+        "image_hash",
+        "sentence",
+        "options"
+      ],
+      "outputs": "The label of the correct time word option.",
+      "edge_cases": [
+        "Clock hands are exactly on the hour or half-hour.",
+        "Ambiguous hand positions."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"77b300c1ce6d\", \"sentence\": \"It is (_) after eight\", \"options\": [{\"label\": \"A\", \"text\": \"half\"}, {\"label\": \"B\", \"text\": \"quarter\"}, {\"label\": \"C\", \"text\": \"o'clock\"}, {\"label\": \"D\", \"text\": \"quarter to\"}, {\"label\": \"E\", \"text\": \"quarter past\"}]}",
+          "expect": "E"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "time interpretation",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_measure_from_diagram",
+    "map_measure_to_option"
+  ]
+}

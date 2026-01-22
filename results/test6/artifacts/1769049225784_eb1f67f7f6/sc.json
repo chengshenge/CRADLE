@@ -1,0 +1,96 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Identify the pattern or rule governing a sequence of objects in a diagram.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The identified pattern or rule as a string.",
+      "edge_cases": [
+        "No discernible pattern",
+        "Multiple possible patterns"
+      ],
+      "tests": [
+        {
+          "input": "1912e7f3f535",
+          "expect": "Pattern: alternating shapes"
+        },
+        {
+          "input": "1912e7f3f535",
+          "expect": "Pattern: increasing size"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence",
+        "diagram"
+      ]
+    },
+    {
+      "name": "determine_next_object",
+      "signature": "(pattern:str, image_hash:str)->str",
+      "purpose": "Determine the next object in a sequence based on the identified pattern.",
+      "inputs": [
+        "pattern",
+        "image_hash"
+      ],
+      "outputs": "The next object in the sequence as a string.",
+      "edge_cases": [
+        "Ambiguous next object",
+        "Pattern does not apply to all objects"
+      ],
+      "tests": [
+        {
+          "input": "Pattern: alternating shapes, 1912e7f3f535",
+          "expect": "Next object: circle"
+        },
+        {
+          "input": "Pattern: increasing size, 1912e7f3f535",
+          "expect": "Next object: largest square"
+        }
+      ],
+      "tags": [
+        "sequence",
+        "pattern recognition",
+        "diagram"
+      ]
+    },
+    {
+      "name": "map_object_to_option",
+      "signature": "(object:str, options:[{\"label\":str, \"text\":str}])->str",
+      "purpose": "Map the determined next object to one of the provided option labels.",
+      "inputs": [
+        "object",
+        "options"
+      ],
+      "outputs": "The label of the option that corresponds to the determined object.",
+      "edge_cases": [
+        "Object does not match any option",
+        "Multiple options match the object"
+      ],
+      "tests": [
+        {
+          "input": "Next object: circle, [{\"label\": \"A\", \"text\": \"A\"}, {\"label\": \"B\", \"text\": \"B\"}]",
+          "expect": "A"
+        },
+        {
+          "input": "Next object: largest square, [{\"label\": \"C\", \"text\": \"C\"}, {\"label\": \"D\", \"text\": \"D\"}]",
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "mapping",
+        "sequence"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "determine_next_object",
+    "map_object_to_option"
+  ]
+}

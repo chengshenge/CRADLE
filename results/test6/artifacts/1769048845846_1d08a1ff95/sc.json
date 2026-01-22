@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve equations to find the unknown angle BOC using the properties of triangles and angle bisectors.",
+      "how_to_use": "Use sympy_solve to solve the equation derived from the angle sum property and angle bisector properties to find ∠BOC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use format_final to return the answer as the option label corresponding to the calculated angle."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A:int, options:list)->str",
+      "purpose": "Calculate the measure of angle BOC where OB and OC are angle bisectors in triangle ABC.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "If angle A is not provided or options are not valid, return an error."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "sympy_solve",
+    "format_final"
+  ]
+}

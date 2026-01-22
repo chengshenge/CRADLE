@@ -1,0 +1,65 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_angle_measure_from_diagram",
+      "signature": "(image_hash:str, angle_label:str)->int",
+      "purpose": "Extract the measure of a specified angle from a geometric diagram.",
+      "inputs": [
+        "image_hash",
+        "angle_label"
+      ],
+      "outputs": "The measure of the specified angle as an integer.",
+      "edge_cases": [
+        "If the angle label is not found, return an error or a specific value indicating not found."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f6272c7a7609\", \"angle_label\": \"H\"}",
+          "expect": "102"
+        },
+        {
+          "input": "{\"image_hash\": \"f6272c7a7609\", \"angle_label\": \"X\"}",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "geometry",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_measure_to_option",
+      "signature": "(measure:int, options:[{\"label\":str, \"text\":str}])->str",
+      "purpose": "Map a given measure to the correct multiple-choice option.",
+      "inputs": [
+        "measure",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "If the measure does not match any option, return an error or a specific value indicating no match."
+      ],
+      "tests": [
+        {
+          "input": "{\"measure\": 102, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "B"
+        },
+        {
+          "input": "{\"measure\": 110, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "geometry",
+        "angle measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_measure_from_diagram",
+    "map_measure_to_option"
+  ]
+}

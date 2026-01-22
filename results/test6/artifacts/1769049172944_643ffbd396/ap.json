@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the geometric relationship in the Pythagorean tree",
+      "action": "reason",
+      "note": "Use the areas of squares A and B to compute the area of square C."
+    },
+    {
+      "intention": "Calculate the area of square C using known areas",
+      "action": "python",
+      "code": "area_A = 5; area_B = 3; area_C = calculate_area_pythagorean_tree(area_A, area_B)"
+    },
+    {
+      "intention": "Map the calculated area to the correct multiple-choice option",
+      "action": "python",
+      "code": "option_label = map_measure_to_option(area_C, [{'label': 'A', 'text': '15'}, {'label': 'B', 'text': '13'}, {'label': 'C', 'text': '11'}, {'label': 'D', 'text': '8'}])"
+    },
+    {
+      "intention": "Format the final answer for output",
+      "action": "normalize",
+      "text": "Answer: {option_label}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

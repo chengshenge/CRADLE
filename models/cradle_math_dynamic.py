@@ -4,7 +4,7 @@ import os
 import re
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, ClassVar
 import logging
 import uuid
 import traceback
@@ -884,6 +884,19 @@ class CradleMathDynamicAgent:
     image_steps: Optional[List[str]] = None
     json_max_retries: int = 1
 
+    # Stage-specific LLM controls.
+    # Some backbones expose get_response(..., max_tokens=..., temperature=...).
+    # We pass these kwargs opportunistically (ignored if unsupported).
+    STAGE_LLM_KWARGS: ClassVar[Dict[str, Dict[str, Any]]] = {
+        # AP outputs can be long; give it more room but also constrain output schema in the prompt.
+        "AP": {"max_tokens": 1200, "temperature": 0},
+    }
+
+    # Stage-specific JSON retry budget (number of retries after the first attempt).
+    # AP is the most fragile stage (nested JSON with steps); allow more retries.
+    STAGE_JSON_MAX_RETRIES: ClassVar[Dict[str, int]] = {
+        "AP": 3,
+    }
     _JSON_RULES = (
         "\n\n[STRICT_OUTPUT_RULES]\n"
         "- Output RAW JSON only.\n"
@@ -1182,6 +1195,12 @@ Schema:
 }
 
 Additional constraints:
+- Keep the JSON SMALL to reduce truncation risk:
+  - steps length <= 4 (prefer 2-4).
+  - Each "intention" <= 80 characters.
+  - Each "note" <= 120 characters (or omit "note" entirely).
+  - Each python "code" MUST be a single line. If multiple statements are needed, use ';' to separate.
+  - Do not include any keys other than: steps, final_format, and within each step only: intention, action, (note|code|text).
 - steps length <= MAX_STEPS
 - python code should not import heavy libraries; use basic math only.
 - If an equivalent helper exists in SELECTED_SKILLS/LEARNED_SKILL_CATALOG, call it instead of rewriting complex logic.
@@ -1399,13 +1418,35 @@ Return STRICT JSON:
         attach = self._should_attach_image(step, need_image)
         wrapped = self._wrap_prompt(step, prompt, obs, attach)
         img = obs.image if attach else None
-        return self.backbone.get_response(user_prompt=wrapped, decoded_image=img)
 
+        # Stage-specific kwargs (e.g., max_tokens/temperature) passed opportunistically.
+        kwargs: Dict[str, Any] = {}
+        try:
+            stage_kwargs = getattr(self, "STAGE_LLM_KWARGS", {}).get(step, {})
+            if stage_kwargs:
+                try:
+                    import inspect  # module-scope import; NOT executed inside safe_exec
+                    sig = inspect.signature(self.backbone.get_response)
+                    for k, v in stage_kwargs.items():
+                        if k in sig.parameters:
+                            kwargs[k] = v
+                except Exception:
+                    # If signature introspection fails, try passing kwargs directly.
+                    kwargs.update(stage_kwargs)
+        except Exception:
+            kwargs = {}
+
+        try:
+            return self.backbone.get_response(user_prompt=wrapped, decoded_image=img, **kwargs)
+        except TypeError:
+            # Backbone does not support extra kwargs.
+            return self.backbone.get_response(user_prompt=wrapped, decoded_image=img)
     def _llm_call_json(self, step: str, prompt: str, obs: Observation, need_image: bool) -> Dict[str, Any]:
         self._ensure_logging()
         last = ""
         attach_image = self._should_attach_image(step, need_image)
-        for attempt in range(self.json_max_retries + 1):
+        max_retries = getattr(self, 'STAGE_JSON_MAX_RETRIES', {}).get(step, self.json_max_retries)
+        for attempt in range(max_retries + 1):
             p = prompt
             if attempt > 0:
                 p = prompt + "\n\n[REMINDER] Output RAW JSON only. No code fences. Strings must be single-line."

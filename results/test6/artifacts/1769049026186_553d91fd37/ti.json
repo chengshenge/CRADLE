@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves a geometric diagram with points labeled A, B, C, and D. Segments AC, CB, and DB are marked, with given lengths for CB and DB. The point D is specified as the midpoint of segment AC. The task is to determine the length of segment AC using the provided information. The problem is presented as a multiple-choice question with four options. The known values are CB = 4.0 cm and DB = 7.0 cm, and the relationship that D is the midpoint of AC implies that AD = DC. The exact positions of the points are not specified, which could affect the interpretation of the diagram.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "AC",
+    "CB",
+    "DB"
+  ],
+  "unknowns": [
+    "Length of AC"
+  ],
+  "required_operations": [
+    "Identify D as the midpoint of AC",
+    "Use the midpoint property to set AD = DC",
+    "Calculate AC as 2 * AD"
+  ],
+  "blockers": [
+    "Length of AC"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure D is correctly identified as the midpoint of AC"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "6cm"
+      },
+      {
+        "label": "B",
+        "text": "7cm"
+      },
+      {
+        "label": "C",
+        "text": "4cm"
+      },
+      {
+        "label": "D",
+        "text": "5cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "midpoint",
+    "length calculation",
+    "multiple-choice"
+  ]
+}

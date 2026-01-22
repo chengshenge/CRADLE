@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the length of segment AC using the midpoint property.",
+      "how_to_use": "Use calc_numeric to compute AC as 2 * AD, where AD is derived from the known values."
+    },
+    {
+      "name": "map_measure_to_option",
+      "purpose": "Map the calculated length of AC to the correct multiple-choice option.",
+      "how_to_use": "Use map_measure_to_option with the calculated length and the provided options to determine the correct answer."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use format_final to return the answer in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_midpoint_and_calculate",
+      "signature": "(known_values:dict, midpoint_relation:str)->float",
+      "purpose": "Identify the midpoint in a geometric diagram and calculate the length of a segment using the midpoint property.",
+      "inputs": [
+        "known_values",
+        "midpoint_relation"
+      ],
+      "outputs": "Length of the segment",
+      "edge_cases": [
+        "Incorrect identification of midpoint",
+        "Incorrect known values"
+      ],
+      "tests": [
+        {
+          "input": "{\"CB\": 4.0, \"DB\": 7.0}, \"D is the midpoint of AC\"",
+          "expect": "8.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "midpoint",
+        "length calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_midpoint_and_calculate",
+    "calc_numeric",
+    "map_measure_to_option",
+    "format_final"
+  ]
+}

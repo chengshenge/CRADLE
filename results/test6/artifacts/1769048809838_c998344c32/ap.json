@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest volume marking from the image.",
+      "action": "reason",
+      "note": "The largest volume marking on the measuring cup is likely the total volume."
+    },
+    {
+      "intention": "Use the learned skill to read the largest volume marking.",
+      "action": "python",
+      "code": "total_volume = read_volume_markings('11905bd8ff0d')"
+    },
+    {
+      "intention": "Normalize the total volume as the final answer.",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

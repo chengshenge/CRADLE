@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is likely indicated by text on the image. The image contains various volume measurements in milliliters (ml), with the largest value being 500 ml. The task is to identify the total volume from these markings. The unit specified in the question is grams (g), which is unusual for volume, suggesting a potential need for interpretation. The problem requires reading a specific value from the image, and the answer should be an integer. The total volume is likely the largest value indicated on the measuring cup.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read volume markings from the image",
+    "Identify the largest volume marking",
+    "Interpret the largest marking as the total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of units since grams (g) is unusual for volume",
+    "Verify that the largest volume marking is correctly identified as the total volume"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation"
+  ]
+}

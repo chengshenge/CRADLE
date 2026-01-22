@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify known values and relation",
+    "note": "We have 50 total objects, 15 large rubber spheres, and 10 big shiny cylinders."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Compute remaining objects",
+    "code": "remaining_objects = calc_numeric('50 - 15 - 10')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: 25"
+  }
+]

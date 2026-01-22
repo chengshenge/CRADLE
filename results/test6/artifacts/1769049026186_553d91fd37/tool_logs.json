@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify D as the midpoint of AC",
+    "note": "D is the midpoint of AC, so AD = DC."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate length of AC using midpoint property",
+    "code": "AD = 7.0; AC = 2 * AD",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map calculated AC length to multiple-choice option",
+    "code": "option = map_measure_to_option(AC, [{'label': 'A', 'text': '6cm'}, {'label': 'B', 'text': '7cm'}, {'label': 'C', 'text': '4cm'}, {'label': 'D', 'text': '5cm'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: B"
+  }
+]

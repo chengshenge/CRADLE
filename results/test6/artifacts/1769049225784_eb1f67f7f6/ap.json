@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify pattern in sequence using diagram",
+      "action": "reason",
+      "note": "Use the learned skill to identify the pattern in the sequence of objects."
+    },
+    {
+      "intention": "Determine next object based on identified pattern",
+      "action": "python",
+      "code": "pattern = identify_pattern_in_sequence('1912e7f3f535'); next_object = determine_next_object(pattern, '1912e7f3f535')"
+    },
+    {
+      "intention": "Map determined object to option label",
+      "action": "normalize",
+      "text": "Answer: {next_object}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

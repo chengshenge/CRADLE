@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the time word using the clock diagram.",
+    "note": "Use the interpret_clock_time_word skill to determine the time word from the clock diagram."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Call the interpret_clock_time_word skill.",
+    "code": "time_word = interpret_clock_time_word('77b300c1ce6d', 'It is (_) after eight.', [{'label': 'A', 'text': 'half'}, {'label': 'B', 'text': 'quarter'}, {'label': 'C', 'text': 'o\\'clock'}, {'label': 'D', 'text': 'quarter to'}, {'label': 'E', 'text': 'quarter past'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the final answer.",
+    "text": "Answer: {time_word}"
+  }
+]

@@ -1,0 +1,69 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_diagram",
+      "signature": "(image_hash:str, object_label:str, reference_object_label:str, side:str)->int",
+      "purpose": "Count the number of specified objects on a particular side of a reference object in a diagram.",
+      "inputs": [
+        "image_hash",
+        "object_label",
+        "reference_object_label",
+        "side"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects found",
+        "Reference object not found",
+        "Objects on both sides"
+      ],
+      "tests": [
+        {
+          "input": "('d7c548b2c54a', 'tiny gray bicycle', 'brown metal sedan', 'left')",
+          "expect": "3"
+        },
+        {
+          "input": "('d7c548b2c54a', 'tiny green bicycle', 'brown metal sedan', 'left')",
+          "expect": "1"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "spatial reasoning"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and return 'Yes' if the first is greater, otherwise 'No'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "(3, 2)",
+          "expect": "Yes"
+        },
+        {
+          "input": "(1, 1)",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_diagram",
+    "compare_counts"
+  ]
+}
