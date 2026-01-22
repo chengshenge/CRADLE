@@ -1,0 +1,39 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves counting objects with specific attributes (large rubber spheres and big shiny cylinders), which suggests the image contains a diagram or illustration of these objects."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting specific types of objects (large rubber spheres and big shiny cylinders) from a total set of objects depicted in the image.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "total_objects",
+      "large_rubber_spheres",
+      "big_shiny_cylinders"
+    ],
+    "relations": [
+      "remaining_objects = total_objects - large_rubber_spheres - big_shiny_cylinders"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying and counting specific objects based on their attributes, which requires visual inspection of the image."
+  ],
+  "problem_summary": "Count the total number of objects, subtract the number of large rubber spheres and big shiny cylinders, and determine how many objects are left.",
+  "knowns": [],
+  "asks": [
+    "remaining_objects"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains various objects, including spheres and cylinders with different attributes."
+  ],
+  "ambiguity": [
+    "The specific attributes of 'large', 'rubber', 'big', and 'shiny' need to be visually identified in the image."
+  ]
+}

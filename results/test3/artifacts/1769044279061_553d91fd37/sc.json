@@ -1,0 +1,145 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_segment_length_from_diagram",
+      "signature": "(image_data)->dict",
+      "purpose": "Extract segment lengths from a geometric diagram.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "A dictionary with segment labels as keys and their lengths as values.",
+      "edge_cases": [
+        "Segments not clearly labeled",
+        "Overlapping segments"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_labels",
+          "expect": {
+            "CB": 4,
+            "DB": 7
+          }
+        },
+        {
+          "input": "image_data_with_no_labels",
+          "expect": {}
+        }
+      ],
+      "tags": [
+        "geometry",
+        "segment length",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "calculate_ac_length",
+      "signature": "(cb_length:int, db_length:int)->int",
+      "purpose": "Calculate the length of segment AC using the midpoint property of D.",
+      "inputs": [
+        "cb_length",
+        "db_length"
+      ],
+      "outputs": "The length of segment AC.",
+      "edge_cases": [
+        "Negative segment lengths",
+        "Zero segment lengths"
+      ],
+      "tests": [
+        {
+          "input": {
+            "cb_length": 4,
+            "db_length": 7
+          },
+          "expect": 8
+        },
+        {
+          "input": {
+            "cb_length": 0,
+            "db_length": 0
+          },
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "geometry",
+        "midpoint",
+        "segment calculation"
+      ]
+    },
+    {
+      "name": "map_length_to_option",
+      "signature": "(length:int, options:list)->str",
+      "purpose": "Map the calculated length of AC to the correct multiple-choice option.",
+      "inputs": [
+        "length",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "Length not matching any option",
+        "Multiple options with the same length"
+      ],
+      "tests": [
+        {
+          "input": {
+            "length": 8,
+            "options": [
+              {
+                "label": "A",
+                "text": "6cm"
+              },
+              {
+                "label": "B",
+                "text": "7cm"
+              },
+              {
+                "label": "C",
+                "text": "8cm"
+              },
+              {
+                "label": "D",
+                "text": "5cm"
+              }
+            ]
+          },
+          "expect": "C"
+        },
+        {
+          "input": {
+            "length": 5,
+            "options": [
+              {
+                "label": "A",
+                "text": "6cm"
+              },
+              {
+                "label": "B",
+                "text": "7cm"
+              },
+              {
+                "label": "C",
+                "text": "4cm"
+              },
+              {
+                "label": "D",
+                "text": "5cm"
+              }
+            ]
+          },
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_segment_length_from_diagram",
+    "calculate_ac_length",
+    "map_length_to_option"
+  ]
+}

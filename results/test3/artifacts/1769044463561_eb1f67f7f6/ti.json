@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves identifying the next object in a sequence of labeled objects. The sequence is presented in a diagram with labels A, B, C, D, and E. The task is to determine the pattern or rule governing the sequence to predict the next object. The problem is presented as a multiple-choice question with options labeled A through E. The pattern or rule is not explicitly stated, adding an element of ambiguity to the task. The solution requires recognizing the pattern from the visual elements provided in the diagram.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "unknowns": [
+    "next object in sequence"
+  ],
+  "required_operations": [
+    "Identify pattern in sequence",
+    "Determine next object based on pattern",
+    "Map to correct option"
+  ],
+  "blockers": [
+    "next object in sequence"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "pattern recognition",
+    "sequence",
+    "logic",
+    "multiple-choice"
+  ]
+}

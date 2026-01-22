@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image_data, attributes)->int",
+      "purpose": "Identify and count objects in an image based on specified attributes.",
+      "inputs": [
+        "image_data",
+        "attributes"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects match the attributes",
+        "Multiple objects with similar attributes"
+      ],
+      "tests": [
+        {
+          "input": "(image_data, {'size': 'large', 'material': 'rubber'})",
+          "expect": "3"
+        },
+        {
+          "input": "(image_data, {'size': 'big', 'appearance': 'shiny'})",
+          "expect": "2"
+        }
+      ],
+      "tags": [
+        "image interpretation",
+        "object counting",
+        "attribute identification"
+      ]
+    },
+    {
+      "name": "subtract_counts",
+      "signature": "(total:int, subtractions:list)->int",
+      "purpose": "Subtract a list of counts from a total count.",
+      "inputs": [
+        "total",
+        "subtractions"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Subtractions list is empty",
+        "Total is less than sum of subtractions"
+      ],
+      "tests": [
+        {
+          "input": "(10, [3, 2])",
+          "expect": "5"
+        },
+        {
+          "input": "(5, [1, 1, 1])",
+          "expect": "2"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "count manipulation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "subtract_counts"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The problem requires determining the length of AC, with D as the midpoint. The length of AC is currently unresolved."
+    },
+    {
+      "intention": "Use the midpoint property to find AC",
+      "action": "reason",
+      "note": "Since D is the midpoint of AC, the length of AD is equal to DC. Therefore, AC = 2 * AD."
+    },
+    {
+      "intention": "Calculate the length of AC using the midpoint property",
+      "action": "python",
+      "code": "AD = 7.0  # Since DB = 7.0 and D is the midpoint of AC, AD = DB\nAC = 2 * AD"
+    },
+    {
+      "intention": "Map the calculated length of AC to the closest option",
+      "action": "python",
+      "code": "options = [{'label': 'A', 'text': '6cm'}, {'label': 'B', 'text': '7cm'}, {'label': 'C', 'text': '4cm'}, {'label': 'D', 'text': '5cm'}]\nselected_option = next(option['label'] for option in options if option['text'] == f'{int(AC)}cm')"
+    },
+    {
+      "intention": "Provide the final answer in the required format",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

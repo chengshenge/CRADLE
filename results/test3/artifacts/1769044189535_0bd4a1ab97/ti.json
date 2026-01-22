@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves a diagram that contains various objects, including spheres and cylinders with different attributes. The task is to identify and count specific objects based on their attributes: large rubber spheres and big shiny cylinders. The goal is to subtract these specific objects from the total number of objects depicted in the image. The final objective is to determine how many objects remain after these subtractions. The problem requires visual inspection to identify the attributes of the objects, as no specific text or labels were extracted from the image. The answer must be provided as an integer value.",
+  "entities": [
+    "total_objects",
+    "large_rubber_spheres",
+    "big_shiny_cylinders"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count total objects in the diagram",
+    "Identify and count large rubber spheres",
+    "Identify and count big shiny cylinders",
+    "Subtract the counts of large rubber spheres and big shiny cylinders from the total objects",
+    "Determine the number of remaining objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of 'large', 'rubber', 'big', and 'shiny' attributes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual identification",
+    "counting",
+    "subtraction"
+  ]
+}

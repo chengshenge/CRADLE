@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "The problem involves a spatial arrangement depicted in a diagram. It requires comparing the number of tiny gray bicycles located on the left side of a brown metal sedan with the number of objects positioned to the left of a tiny green bicycle. The task is to determine which of these two quantities is greater. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The diagram is expected to contain visual elements such as a brown metal sedan, tiny gray bicycles, and a tiny green bicycle. The exact number of these objects and their positions need to be determined from the image to answer the question correctly.",
+  "entities": [
+    "tiny gray bicycles",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Identify the brown metal sedan in the diagram",
+    "Count the tiny gray bicycles on the left side of the brown metal sedan",
+    "Identify the tiny green bicycle in the diagram",
+    "Count the objects to the left of the tiny green bicycle",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of the brown metal sedan, tiny gray bicycles, and tiny green bicycle"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial reasoning",
+    "comparison",
+    "diagram interpretation"
+  ]
+}

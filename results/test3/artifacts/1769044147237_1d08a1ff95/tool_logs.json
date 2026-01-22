@@ -1,0 +1,42 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Determine the sum of angles B and C using the angle sum property of triangle ABC.",
+    "note": "Since ∠A = 110°, use the constraint ∠A + ∠B + ∠C = 180° to find ∠B + ∠C."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate the sum of angles B and C.",
+    "code": "angle_BC_sum = 180 - 110",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "reason",
+    "intention": "Use the properties of angle bisectors to find ∠BOC.",
+    "note": "The angle bisectors of angles B and C intersect at O, so ∠BOC = 90° + (∠B + ∠C) / 2."
+  },
+  {
+    "i": 3,
+    "action": "python",
+    "intention": "Calculate the measure of angle BOC.",
+    "code": "angle_BOC = 90 + angle_BC_sum / 2",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 4,
+    "action": "reason",
+    "intention": "Map the calculated angle BOC to the closest multiple-choice option.",
+    "note": "Compare the calculated angle_BOC with the given options to find the closest match."
+  },
+  {
+    "i": 5,
+    "action": "normalize",
+    "intention": "Format the final answer as a multiple-choice option.",
+    "text": "Answer: C"
+  }
+]

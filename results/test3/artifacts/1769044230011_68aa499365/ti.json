@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram contains labeled points and angles, including angle H, which is specifically marked with a measure of 102 degrees. The task is to identify this measure and select the correct option from the given choices. The options provided are 97, 102, 107, and 122 degrees. The measure of angle H is already known from the diagram, which simplifies the task. The problem is a straightforward geometry question requiring the selection of the correct option based on the diagram's information.",
+  "entities": [
+    "m∠H",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Read the diagram to identify the measure of angle H",
+    "Map the identified measure to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct",
+    "Verify angle markers are accurately interpreted"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram interpretation"
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_angle_from_diagram",
+      "signature": "(image_data)->int",
+      "purpose": "Extract the measure of a specific angle from a geometric diagram.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Diagram is unclear or angle is not marked.",
+        "Multiple angles are marked, requiring disambiguation."
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_angle_102",
+          "expect": 102
+        },
+        {
+          "input": "image_data_with_no_marked_angle",
+          "expect": "error or specific handling"
+        },
+        {
+          "input": "image_data_with_multiple_angles",
+          "expect": "disambiguation or error"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle:int, options:list)->str",
+      "purpose": "Map the extracted angle measure to the correct multiple-choice option.",
+      "inputs": [
+        "angle",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Angle does not match any option.",
+        "Options list is empty."
+      ],
+      "tests": [
+        {
+          "input": {
+            "angle": 102,
+            "options": [
+              {
+                "label": "A",
+                "text": "97"
+              },
+              {
+                "label": "B",
+                "text": "102"
+              },
+              {
+                "label": "C",
+                "text": "107"
+              },
+              {
+                "label": "D",
+                "text": "122"
+              }
+            ]
+          },
+          "expect": "B"
+        },
+        {
+          "input": {
+            "angle": 105,
+            "options": [
+              {
+                "label": "A",
+                "text": "97"
+              },
+              {
+                "label": "B",
+                "text": "102"
+              },
+              {
+                "label": "C",
+                "text": "107"
+              },
+              {
+                "label": "D",
+                "text": "122"
+              }
+            ]
+          },
+          "expect": "error or specific handling"
+        },
+        {
+          "input": {
+            "angle": 102,
+            "options": []
+          },
+          "expect": "error or specific handling"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_angle_from_diagram",
+    "map_angle_to_option"
+  ]
+}

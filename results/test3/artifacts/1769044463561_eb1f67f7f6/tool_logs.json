@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the pattern in the sequence of objects labeled A, B, C, D, and E.",
+    "note": "The task is to determine the next object in the sequence based on a pattern or rule. The sequence is presented in a diagram with labels A, B, C, D, and E."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Use the learned skill to identify the pattern in the sequence.",
+    "code": "next_object = identify_pattern_in_sequence({'labels': ['A', 'B', 'C', 'D', 'E']})",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Map the identified next object to the correct multiple-choice option.",
+    "text": "Answer: {next_object}"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the total volume from the volume markings extracted from the diagram.",
+      "how_to_use": "Use this skill to perform any necessary arithmetic operations to determine the total volume based on the markings."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for the multiple-choice question.",
+      "how_to_use": "Use this skill to format the computed total volume into the required answer format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_volume_markings",
+      "signature": "(image_data)->int",
+      "purpose": "To interpret the volume markings from the diagram and determine the total volume of the measuring cup.",
+      "inputs": [
+        "image_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Unclear markings",
+        "Non-standard units"
+      ],
+      "tests": [
+        {
+          "input": "image_data_with_clear_markings",
+          "expect": 500
+        },
+        {
+          "input": "image_data_with_blurry_markings",
+          "expect": "error or best guess"
+        }
+      ],
+      "tags": [
+        "image interpretation",
+        "volume calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_volume_markings",
+    "calc_numeric",
+    "format_final"
+  ]
+}

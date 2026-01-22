@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The unresolved target is the 'time word'. We need to interpret the clock hands to determine the time word that fits the sentence 'It is (_) after eight.'"
+    },
+    {
+      "intention": "Interpret the angle of the clock hands from the diagram.",
+      "action": "python",
+      "code": "angle = interpret_angle_from_diagram(GTI_JSON['structured']['diagram'])"
+    },
+    {
+      "intention": "Map the interpreted angle to the correct time word option.",
+      "action": "python",
+      "code": "time_word_option = map_angle_to_option(angle, INFO_JSON['math_elements_extracted']['options'])"
+    },
+    {
+      "intention": "Output the final answer as the option label.",
+      "action": "normalize",
+      "text": "Answer: {time_word_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

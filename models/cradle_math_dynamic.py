@@ -423,44 +423,188 @@ def make_safe_context() -> Dict[str, Any]:
         return _safe_eval_arith_expr(expr)
 
     def sympy_solve(eqs, vars):
-        """Solve algebraic equation(s) using sympy when available.
+        """Solve algebraic equation(s).
 
-        eqs: str like "lhs = rhs" (or list[str])
-        vars: str or list[str] variable names, e.g. "d" or ["x","y"]
+        - If sympy is available, use it.
+        - If sympy is NOT available, provide a lightweight fallback for the
+          common MathVista case: a *single-variable* equation that is linear
+          or quadratic in that variable.
+
+        Args:
+          eqs: str like "lhs = rhs" OR an expression f(x) where f(x)=0.
+               Also accepts list[str] but fallback supports only one equation.
+          vars: variable name string (e.g. "d") or list with one variable.
+        Returns:
+          For 1-var: list of numeric roots (float).
+          For multi-var: sympy dicts if sympy available, else raises.
         """
-        if sp is None:
-            raise RuntimeError("sympy not available in this environment")
+        # -----------------------------
+        # Sympy path (if available)
+        # -----------------------------
+        if sp is not None:
+            # vars -> list of symbols
+            if isinstance(vars, str):
+                var_names = [vars]
+            else:
+                var_names = list(vars)
+            syms = [sp.Symbol(v) for v in var_names]
 
-        # vars -> list of symbols
+            def _one_eq(s: str):
+                t = (s or "").strip()
+                if "=" in t:
+                    lhs, rhs = t.split("=", 1)
+                    return sp.Eq(sp.sympify(lhs), sp.sympify(rhs))
+                return sp.Eq(sp.sympify(t), 0)
+
+            if isinstance(eqs, str):
+                eq_list = [_one_eq(eqs)]
+            else:
+                eq_list = [_one_eq(x) for x in list(eqs)]
+
+            sol = sp.solve(eq_list, syms, dict=True)
+
+            # Normalize a common single-var case into a simple list/number
+            if len(syms) == 1:
+                v = syms[0]
+                vals = [d[v] for d in sol if v in d]
+                if not vals:
+                    return sol
+                return vals
+            return sol
+
+        # -----------------------------
+        # Fallback path (no sympy)
+        # -----------------------------
+        # Only support 1-variable, 1-equation fallback.
         if isinstance(vars, str):
-            var_names = [vars]
+            var_name = vars.strip()
         else:
-            var_names = list(vars)
-        syms = [sp.Symbol(v) for v in var_names]
+            var_name = (list(vars)[0] if vars else "x").strip()
 
-        def _one_eq(s: str):
-            s = (s or "").strip()
-            if "=" in s:
-                lhs, rhs = s.split("=", 1)
-                return sp.Eq(sp.sympify(lhs), sp.sympify(rhs))
-            # if already expression, treat as == 0
-            return sp.Eq(sp.sympify(s), 0)
+        if not var_name:
+            var_name = "x"
 
-        if isinstance(eqs, str):
-            eq_list = [_one_eq(eqs)]
+        if isinstance(eqs, (list, tuple)):
+            if len(eqs) != 1:
+                raise RuntimeError("sympy not available; fallback supports a single equation only")
+            eqs = eqs[0]
+
+        s = (eqs or "").strip()
+        if not s:
+            raise ValueError("empty equation")
+
+        # Convert "lhs = rhs" to "(lhs)-(rhs)" (equals zero)
+        if "=" in s:
+            lhs, rhs = s.split("=", 1)
+            expr = f"({lhs})-({rhs})"
         else:
-            eq_list = [_one_eq(x) for x in list(eqs)]
+            expr = s
 
-        sol = sp.solve(eq_list, syms, dict=True)
+        # Safe AST evaluator for numeric expressions with one variable + math.*
+        allowed_binops = (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow)
+        allowed_unops = (ast.UAdd, ast.USub)
 
-        # Normalize a common single-var case into a simple list/number
-        if len(syms) == 1:
-            v = syms[0]
-            vals = [d[v] for d in sol if v in d]
-            if not vals:
-                return sol
-            return vals
-        return sol
+        def _eval_with_var(expr_str: str, xval: float) -> float:
+            tree = ast.parse(expr_str, mode="eval")
+
+            def _ev(node: ast.AST) -> float:
+                if isinstance(node, ast.Expression):
+                    return _ev(node.body)
+                if isinstance(node, ast.Constant):
+                    if isinstance(node.value, (int, float)):
+                        return float(node.value)
+                    raise ValueError("non-numeric constant")
+                if isinstance(node, ast.Name):
+                    if node.id == var_name:
+                        return float(xval)
+                    # allow math constants like pi, e
+                    if hasattr(math, node.id):
+                        v = getattr(math, node.id)
+                        if isinstance(v, (int, float)):
+                            return float(v)
+                    raise ValueError(f"unknown name: {node.id}")
+                if isinstance(node, ast.BinOp) and isinstance(node.op, allowed_binops):
+                    a = _ev(node.left)
+                    b = _ev(node.right)
+                    if isinstance(node.op, ast.Add):
+                        return a + b
+                    if isinstance(node.op, ast.Sub):
+                        return a - b
+                    if isinstance(node.op, ast.Mult):
+                        return a * b
+                    if isinstance(node.op, ast.Div):
+                        return a / b
+                    if isinstance(node.op, ast.FloorDiv):
+                        return a // b
+                    if isinstance(node.op, ast.Mod):
+                        return a % b
+                    if isinstance(node.op, ast.Pow):
+                        return a ** b
+                if isinstance(node, ast.UnaryOp) and isinstance(node.op, allowed_unops):
+                    v = _ev(node.operand)
+                    return +v if isinstance(node.op, ast.UAdd) else -v
+                if isinstance(node, ast.Call):
+                    # allow math.<func>(...)
+                    if isinstance(node.func, ast.Name) and hasattr(math, node.func.id):
+                        fn = getattr(math, node.func.id)
+                    elif isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id == "math":
+                        fn = getattr(math, node.func.attr, None)
+                    else:
+                        fn = None
+                    if fn is None or not callable(fn):
+                        raise ValueError("unsafe function call")
+                    args = [_ev(a) for a in node.args]
+                    return float(fn(*args))
+                if isinstance(node, ast.Attribute):
+                    # allow "math.pi" etc.
+                    if isinstance(node.value, ast.Name) and node.value.id == "math" and hasattr(math, node.attr):
+                        v = getattr(math, node.attr)
+                        if isinstance(v, (int, float)):
+                            return float(v)
+                    raise ValueError("unsafe attribute")
+                raise ValueError(f"unsupported node: {type(node).__name__}")
+
+            return float(_ev(tree))
+
+        # Fit linear/quadratic coefficients by sampling f(0), f(1), f(2)
+        f0 = _eval_with_var(expr, 0.0)
+        f1 = _eval_with_var(expr, 1.0)
+        f2 = _eval_with_var(expr, 2.0)
+
+        a = (f2 - 2.0 * f1 + f0) / 2.0
+        c = f0
+        b = f1 - a - c
+
+        eps = 1e-12
+        roots: List[float] = []
+
+        if abs(a) < eps:
+            # linear: b*x + c = 0
+            if abs(b) < eps:
+                roots = []
+            else:
+                roots = [(-c) / b]
+        else:
+            disc = b * b - 4.0 * a * c
+            if disc >= -1e-12:
+                disc = max(0.0, disc)
+                sd = math.sqrt(disc)
+                roots = [(-b + sd) / (2.0 * a), (-b - sd) / (2.0 * a)]
+            else:
+                roots = []
+
+        # Choose a "best" root for downstream formatting: prefer smallest positive real.
+        best = None
+        pos = [r for r in roots if isinstance(r, (int, float)) and math.isfinite(r) and r > 0]
+        if pos:
+            best = min(pos)
+        elif roots:
+            best = roots[0]
+
+        if best is not None:
+            ctx["_last_solution"] = float(best)
+
+        return roots
 
     def format_final(ans) -> str:
         """Return exactly one line in MathVista style: Answer: ..."""
@@ -472,12 +616,30 @@ def make_safe_context() -> Dict[str, Any]:
                 a = float(a.evalf())
         except Exception:
             pass
-        return f"Answer: {a}"
+
+        # If AP hard-codes a rounded number but we have a computed last solution,
+        # prefer the computed one when they differ significantly.
+        try:
+            sol = ctx.get("_last_solution", None)
+            if isinstance(sol, (int, float)) and isinstance(a, (int, float)) and math.isfinite(sol) and math.isfinite(a):
+                rel = abs(a - sol) / max(abs(sol), 1e-12)
+                is_rounded = abs(a * 1000 - round(a * 1000)) < 1e-9  # ~3dp
+                if rel > 0.15 and is_rounded:
+                    a = float(sol)
+        except Exception:
+            pass
+
+        # Default numeric formatting: 4 significant digits (keeps MathVista tolerant).
+        if isinstance(a, (int, float)) and math.isfinite(a):
+            a_str = f"{float(a):.4g}"
+        else:
+            a_str = str(a)
+
+        return f"Answer: {a_str}"
 
     ctx["calc_numeric"] = calc_numeric
     ctx["sympy_solve"] = sympy_solve
     ctx["format_final"] = format_final
-
     return ctx
 
 
@@ -969,6 +1131,11 @@ You are given:
 - MEMORY_SNIPPETS: prior similar patterns (optional).
 
 Your job: output an executable reasoning plan that produces a SINGLE-LINE candidate answer string.
+
+HARD RULES (to avoid silent wrong answers):
+- Never hard-code the final numeric answer (e.g., format_final(0.02)) unless it was computed in a previous python step.
+- If you solve an equation or compute a value, ASSIGN it to a variable (e.g., d_val = ...) and use that variable in format_final(d_val).
+- If a tool call fails (e.g., solver unavailable), fall back to direct algebra or numeric computation using only python + math.
 Do NOT output the final answer directly in normal text; instead produce steps that compute it and then a normalize step.
 
 CRITICAL: You MUST explicitly use:

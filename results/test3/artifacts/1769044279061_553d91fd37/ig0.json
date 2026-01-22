@@ -1,0 +1,106 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with specific points and lengths mentioned, indicating a need to examine a diagram for spatial relationships."
+  ],
+  "problem_understanding": "The problem involves finding the length of AC given that D is the midpoint of AC and specific lengths for CB and DB are provided.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "CB",
+        "value": "4.0",
+        "unit": "cm",
+        "source": "text",
+        "note": "Length of segment CB"
+      },
+      {
+        "name": "DB",
+        "value": "7.0",
+        "unit": "cm",
+        "source": "text",
+        "note": "Length of segment DB"
+      },
+      {
+        "name": "D",
+        "value": "midpoint",
+        "unit": "",
+        "source": "text",
+        "note": "D is the midpoint of AC"
+      }
+    ],
+    "unknown": [
+      "Length of AC"
+    ],
+    "relations": [
+      "D is the midpoint of AC"
+    ],
+    "constraints": [
+      "CB = 4.0",
+      "DB = 7.0",
+      "D is the midpoint of AC"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "6cm"
+      },
+      {
+        "label": "B",
+        "text": "7cm"
+      },
+      {
+        "label": "C",
+        "text": "4cm"
+      },
+      {
+        "label": "D",
+        "text": "5cm"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "lengths are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the length of AC using the given geometric properties and relationships."
+  ],
+  "problem_summary": "Determine the length of AC given that D is the midpoint of AC, CB = 4.0, and DB = 7.0.",
+  "knowns": [
+    {
+      "name": "CB",
+      "value": "4.0",
+      "unit": "cm",
+      "source": "text",
+      "note": "Length of segment CB"
+    },
+    {
+      "name": "DB",
+      "value": "7.0",
+      "unit": "cm",
+      "source": "text",
+      "note": "Length of segment DB"
+    },
+    {
+      "name": "D",
+      "value": "midpoint",
+      "unit": "",
+      "source": "text",
+      "note": "D is the midpoint of AC"
+    }
+  ],
+  "asks": [
+    "Length of AC"
+  ],
+  "constraints": [
+    "CB = 4.0",
+    "DB = 7.0",
+    "D is the midpoint of AC"
+  ],
+  "visual_facts": [
+    "Diagram likely shows points A, B, C, D and their spatial relationships."
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, D are not specified in the text and need to be inferred from the diagram."
+  ]
+}

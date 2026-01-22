@@ -1,0 +1,84 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "signature": "(diagram_data)->str",
+      "purpose": "Identify the pattern or rule governing a sequence of objects in a diagram.",
+      "inputs": [
+        "diagram_data"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Ambiguous patterns that could fit multiple rules",
+        "Incomplete sequences with missing elements"
+      ],
+      "tests": [
+        {
+          "input": "diagram_data_with_clear_pattern",
+          "expect": "pattern_description"
+        },
+        {
+          "input": "diagram_data_with_ambiguous_pattern",
+          "expect": "ambiguous"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "map_pattern_to_option",
+      "signature": "(pattern:str, options:list)->str",
+      "purpose": "Map the identified pattern to the correct multiple-choice option.",
+      "inputs": [
+        "pattern",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Patterns that match multiple options",
+        "Options that do not match any pattern"
+      ],
+      "tests": [
+        {
+          "input": {
+            "pattern": "pattern_A",
+            "options": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ]
+          },
+          "expect": "A"
+        },
+        {
+          "input": {
+            "pattern": "pattern_not_in_options",
+            "options": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ]
+          },
+          "expect": "none"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "map_pattern_to_option"
+  ]
+}

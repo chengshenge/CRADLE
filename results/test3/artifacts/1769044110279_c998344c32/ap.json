@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the total volume of the measuring cup from the diagram.",
+      "action": "reason",
+      "note": "The diagram of the measuring cup includes volume markings at 500 ml, 250 ml, 100 ml, and 50 ml. The task is to determine the total volume from these markings."
+    },
+    {
+      "intention": "Interpret the volume markings to find the total volume.",
+      "action": "python",
+      "code": "total_volume_ml = 500  # The largest marking on the measuring cup indicates the total volume."
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

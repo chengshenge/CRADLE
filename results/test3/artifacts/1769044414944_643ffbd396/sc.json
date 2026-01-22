@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the area of square C using the Pythagorean relationship between squares A, B, and C.",
+      "how_to_use": "Use the formula for the Pythagorean tree: area_C = area_A + area_B."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to return the answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_area_to_option",
+      "signature": "(area:int, options:list)->str",
+      "purpose": "To map the calculated area of square C to the correct multiple-choice option.",
+      "inputs": [
+        "area",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "If the area does not match any option, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "8, [{'label': 'A', 'text': '15'}, {'label': 'B', 'text': '13'}, {'label': 'C', 'text': '11'}, {'label': 'D', 'text': '8'}]",
+          "expect": "D"
+        },
+        {
+          "input": "13, [{'label': 'A', 'text': '15'}, {'label': 'B', 'text': '13'}, {'label': 'C', 'text': '11'}, {'label': 'D', 'text': '8'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calc_numeric",
+    "map_area_to_option",
+    "format_final"
+  ]
+}

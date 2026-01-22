@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expression in python.",
+      "how_to_use": "Use to perform arithmetic calculations needed to find unknown angles."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve equations using sp in python if available.",
+      "how_to_use": "Use to solve equations derived from angle properties."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Return exactly one line: Answer: ...",
+      "how_to_use": "Use to format the final answer in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A, options)->str",
+      "purpose": "Calculate the angle formed by the intersection of two angle bisectors in a triangle.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The correct option label for the angle BOC.",
+      "edge_cases": [
+        "If angle A is not provided or invalid, return an error.",
+        "If options do not contain the correct answer, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "sympy_solve",
+    "calc_numeric",
+    "format_final"
+  ]
+}
