@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the type of triangle and calculate angle D",
+    "note": "AB = AC implies triangle ABC is isosceles with ∠CAB = 40°."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate angle D using triangle properties",
+    "code": "angle_ABC = 180 - 2 * 40; angle_D = 180 - angle_ABC",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map calculated angle D to the closest option",
+    "code": "option_label = map_length_to_option(angle_D, [{'label': 'A', 'text': '40°'}, {'label': 'B', 'text': '50°'}, {'label': 'C', 'text': '60°'}, {'label': 'D', 'text': '70°'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer as the option label",
+    "text": "Answer: {option_label}"
+  }
+]

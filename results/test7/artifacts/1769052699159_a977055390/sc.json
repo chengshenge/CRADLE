@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "Map the calculated angle to one of the provided multiple-choice options.",
+      "how_to_use": "Use the calculated angle as the length input and the multiple-choice options to find the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_D",
+      "signature": "(AB_length, AC_length, angle_CAB)->angle_D",
+      "purpose": "Calculate the measure of angle D in a quadrilateral given specific conditions.",
+      "inputs": [
+        "AB_length",
+        "AC_length",
+        "angle_CAB"
+      ],
+      "outputs": "angle_D",
+      "edge_cases": [
+        "If the quadrilateral type is not specified, assume it is a cyclic quadrilateral if possible."
+      ],
+      "tests": [
+        {
+          "input": "(5, 5, 40)",
+          "expect": "60"
+        },
+        {
+          "input": "(7, 7, 40)",
+          "expect": "60"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "quadrilateral"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_D",
+    "map_length_to_option"
+  ]
+}

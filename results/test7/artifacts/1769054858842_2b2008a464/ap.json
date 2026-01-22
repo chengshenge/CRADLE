@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify countries exceeding 35 hours",
+      "action": "reason",
+      "note": "Use the chart to identify countries where work hours exceed 35."
+    },
+    {
+      "intention": "Count countries exceeding threshold",
+      "action": "python",
+      "code": "countries_exceeding_35 = ['Country A', 'Country B', 'Country C', 'Country D']; count = len(countries_exceeding_35)"
+    },
+    {
+      "intention": "Provide final answer",
+      "action": "normalize",
+      "text": "Answer: 4"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

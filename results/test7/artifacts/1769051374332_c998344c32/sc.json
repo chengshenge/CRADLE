@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line.",
+      "how_to_use": "Use this skill to format the final answer after determining the total volume from the diagram."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_volume_markings",
+      "signature": "(image)->int",
+      "purpose": "Identify the highest volume marking on a measuring cup from a diagram.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Blurry image",
+        "Obscured markings",
+        "Non-standard units"
+      ],
+      "tests": [
+        {
+          "input": "image_with_clear_markings",
+          "expect": 500
+        },
+        {
+          "input": "image_with_obscured_markings",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_volume_markings",
+    "format_final"
+  ]
+}

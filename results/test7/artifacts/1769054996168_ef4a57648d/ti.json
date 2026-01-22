@@ -1,0 +1,54 @@
+{
+  "problem_state_summary": "The problem involves analyzing a table to determine if there is a shortage or surplus at a price of $790. The table provides data on price, quantity demanded, and quantity supplied at various price points. The task is to compare the quantity demanded and quantity supplied at the specified price to determine the economic condition. The known value is the price of $790, and the unknown is whether there is a shortage or surplus at this price. The table is the primary source of data for this analysis, and the answer must be mapped to one of the given options: shortage or surplus.",
+  "entities": [
+    "Price ($)",
+    "Quantity Demanded",
+    "Quantity Supplied"
+  ],
+  "unknowns": [
+    "shortage or surplus"
+  ],
+  "required_operations": [
+    "Read the table to find the row corresponding to the price of $790",
+    "Compare the quantity demanded and quantity supplied at this price",
+    "Determine if there is a shortage (demand > supply) or surplus (supply > demand)",
+    "Map the result to the correct option label"
+  ],
+  "blockers": [
+    "shortage or surplus"
+  ],
+  "risk_checks": [
+    "Ensure row alignment for price $790",
+    "Verify correct interpretation of 'Quantity Demanded' and 'Quantity Supplied' columns",
+    "Check for any missing data points at the price of $790"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "economics",
+    "supply and demand",
+    "table analysis"
+  ]
+}

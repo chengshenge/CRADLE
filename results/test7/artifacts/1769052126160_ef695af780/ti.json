@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart that displays the heights of three categories: A, B, and C. The task is to determine if the sum of the heights of the two smallest bars is greater than the height of the largest bar. The heights of the bars are given as 15 cm for Category A, 20 cm for Category B, and 35 cm for Category C. The question asks whether the sum of the smallest two bars exceeds the height of the largest bar. The problem is presented in a multiple-choice format with two options: Yes or No. The solution requires reading the chart, performing a sum operation, and comparing the result to the largest bar's height.",
+  "entities": [
+    "Height of Category A",
+    "Height of Category B",
+    "Height of Category C"
+  ],
+  "unknowns": [
+    "sum of smallest two bars",
+    "height of largest bar"
+  ],
+  "required_operations": [
+    "Identify the two smallest bars",
+    "Sum the heights of the two smallest bars",
+    "Compare the sum to the height of the largest bar"
+  ],
+  "blockers": [
+    "sum of smallest two bars",
+    "height of largest bar"
+  ],
+  "risk_checks": [
+    "Verify Y-axis scale and tick spacing",
+    "Ensure correct mapping of bar heights to categories",
+    "Check for any missing legend or units"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "comparison",
+    "sum",
+    "multiple choice"
+  ]
+}

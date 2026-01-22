@@ -1,0 +1,70 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_region",
+      "signature": "(image, region)->int",
+      "purpose": "Count the number of objects in a specified region of an image.",
+      "inputs": [
+        "image",
+        "region"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Region is not clearly defined",
+        "Objects are partially obscured"
+      ],
+      "tests": [
+        {
+          "input": "(image_with_objects, 'behind the jet')",
+          "expect": "5"
+        },
+        {
+          "input": "(image_with_objects, 'left of the sedan')",
+          "expect": "3"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "counting",
+        "spatial reasoning"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1, count2)->str",
+      "purpose": "Compare two counts and return 'Yes' if the first is less than the second, otherwise 'No'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "(3, 5)",
+          "expect": "Yes"
+        },
+        {
+          "input": "(5, 3)",
+          "expect": "No"
+        },
+        {
+          "input": "(4, 4)",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_region",
+    "compare_counts"
+  ]
+}

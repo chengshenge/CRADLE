@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Verify the y-coordinate at x = 3 from the chart.",
+      "action": "reason",
+      "note": "The chart shows a key point at x = 3, y = 1."
+    },
+    {
+      "intention": "Compare the y-coordinate value with 0.",
+      "action": "python",
+      "code": "is_greater = compare_chart_values(1, 0)"
+    },
+    {
+      "intention": "Map the comparison result to the correct option.",
+      "action": "python",
+      "code": "answer = 'A' if is_greater else 'B'"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

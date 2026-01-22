@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison between two groups of objects: 'big red rubber double buss' and 'big green things'. The task is to determine if there are more 'big red rubber double buss' in front of a 'large red double bus' than 'big green things'. This requires identifying and counting these objects in a diagram. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The visual context is crucial as the definitions of the objects are not clear from the text alone. The problem is essentially a logic-based comparison task that relies on visual inspection.",
+  "entities": [
+    "big red rubber double buss",
+    "big green things",
+    "large red double bus"
+  ],
+  "unknowns": [
+    "number of big red rubber double buss",
+    "number of big green things"
+  ],
+  "required_operations": [
+    "Identify 'big red rubber double buss' in the diagram",
+    "Count the 'big red rubber double buss' in front of the 'large red double bus'",
+    "Identify 'big green things' in the diagram",
+    "Count the 'big green things'",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of big red rubber double buss",
+    "number of big green things"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram",
+    "Verify any angle or length markers that might indicate object boundaries",
+    "Check for parallel/perpendicular indicators that might affect object placement"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "visual comparison",
+    "counting",
+    "diagram analysis"
+  ]
+}

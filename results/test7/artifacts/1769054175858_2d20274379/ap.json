@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify and count objects to subtract",
+      "action": "reason",
+      "note": "Use the identify_objects_by_characteristics skill to find big matte balls and green rubber objects."
+    },
+    {
+      "intention": "Subtract identified objects and count remaining",
+      "action": "python",
+      "code": "big_matte_balls = identify_objects_by_characteristics('image', ['big', 'matte']); green_rubber_objects = identify_objects_by_characteristics('image', ['green', 'rubber']); total_objects = count_objects_in_region('image', 'diagram'); remaining_objects = total_objects - len(big_matte_balls) - len(green_rubber_objects)"
+    },
+    {
+      "intention": "Output the final count of remaining objects",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

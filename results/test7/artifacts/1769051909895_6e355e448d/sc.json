@@ -1,0 +1,90 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_chain_dependency",
+      "signature": "(organisms, relationships)->most_affected",
+      "purpose": "Determine which organism is most affected by the removal of a key organism in a food chain.",
+      "inputs": [
+        "List of organisms",
+        "Food chain relationships"
+      ],
+      "outputs": "Organism most affected",
+      "edge_cases": [
+        "All organisms equally affected",
+        "No direct dependency on the removed organism"
+      ],
+      "tests": [
+        {
+          "input": {
+            "organisms": [
+              "Algae",
+              "Tilapia",
+              "Common water flea",
+              "Great diving beetle",
+              "Tadpole"
+            ],
+            "relationships": {
+              "Algae": [
+                "Common water flea",
+                "Tadpole"
+              ],
+              "Common water flea": [
+                "Great diving beetle"
+              ],
+              "Tadpole": [
+                "Tilapia"
+              ]
+            }
+          },
+          "expect": "Common water flea"
+        },
+        {
+          "input": {
+            "organisms": [
+              "Algae",
+              "Fish",
+              "Bird"
+            ],
+            "relationships": {
+              "Algae": [
+                "Fish"
+              ],
+              "Fish": [
+                "Bird"
+              ]
+            }
+          },
+          "expect": "Fish"
+        },
+        {
+          "input": {
+            "organisms": [
+              "Plant",
+              "Herbivore",
+              "Carnivore"
+            ],
+            "relationships": {
+              "Plant": [
+                "Herbivore"
+              ],
+              "Herbivore": [
+                "Carnivore"
+              ]
+            }
+          },
+          "expect": "Herbivore"
+        }
+      ],
+      "tags": [
+        "logic",
+        "food chain",
+        "ecosystem",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_chain_dependency"
+  ]
+}

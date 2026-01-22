@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the organism most affected by algae elimination.",
+      "action": "reason",
+      "note": "Analyze the food chain relationships involving algae."
+    },
+    {
+      "intention": "Determine dependency of each organism on algae.",
+      "action": "python",
+      "code": "food_chains = {'Common water flea': 1, 'Great diving beetle': 2, 'Tadpole': 1, 'Tilapia': 1}; most_dependent = min(food_chains, key=food_chains.get)"
+    },
+    {
+      "intention": "Map the most dependent organism to the correct option.",
+      "action": "python",
+      "code": "options = {'Tilapia': 'A', 'Common water flea': 'B', 'Great diving beetle': 'C', 'Tadpole': 'D'}; answer = options[most_dependent]"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

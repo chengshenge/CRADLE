@@ -1,0 +1,79 @@
+{
+  "selected_skills": [
+    {
+      "name": "compare_chart_values",
+      "purpose": "To compare each bar value with the number 6 to determine if it is smaller.",
+      "how_to_use": "Use this skill to compare each extracted bar value from the chart with the number 6."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_values_less_than_threshold",
+      "signature": "(values, threshold)->int",
+      "purpose": "To count the number of values in a list that are less than a given threshold.",
+      "inputs": [
+        "values",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All values are greater than or equal to the threshold",
+        "All values are less than the threshold",
+        "Empty list of values"
+      ],
+      "tests": [
+        {
+          "input": {
+            "values": [
+              5,
+              3,
+              7,
+              2,
+              6
+            ],
+            "threshold": 6
+          },
+          "expect": 3
+        },
+        {
+          "input": {
+            "values": [
+              7,
+              8,
+              9
+            ],
+            "threshold": 6
+          },
+          "expect": 0
+        },
+        {
+          "input": {
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "threshold": 6
+          },
+          "expect": 3
+        },
+        {
+          "input": {
+            "values": [],
+            "threshold": 6
+          },
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "counting",
+        "comparison",
+        "list processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_chart_values",
+    "count_values_less_than_threshold"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship and compute AC",
+      "action": "reason",
+      "note": "D is the midpoint of AC, so AD = DC. AC = 2 * AD."
+    },
+    {
+      "intention": "Calculate the length of AC",
+      "action": "python",
+      "code": "AD = 7.0; AC = 2 * AD"
+    },
+    {
+      "intention": "Map calculated length to option",
+      "action": "python",
+      "code": "option = map_length_to_option(AC, [{'label': 'A', 'text': '6cm'}, {'label': 'B', 'text': '7cm'}, {'label': 'C', 'text': '4cm'}, {'label': 'D', 'text': '5cm'}])"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

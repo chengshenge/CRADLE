@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Extract and compute remaining objects",
+      "action": "python",
+      "code": "total_objects = 50; large_rubber_spheres = 15; big_shiny_cylinders = 10; remaining_objects = total_objects - large_rubber_spheres - big_shiny_cylinders"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 25"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

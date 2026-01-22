@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify rows with exactly 36 houses",
+    "note": "We need to count the number of rows in the table where the 'Number of Houses' is 36."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Count blocks with 36 houses",
+    "code": "blocks_with_36 = sum(1 for row in GTI_JSON['structured']['table']['rows'] if row['cells'][1]['text'] == '36')",
+    "stdout": "",
+    "error": "name 'GTI_JSON' is not defined"
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the final count",
+    "text": "Answer: {blocks_with_36}"
+  }
+]

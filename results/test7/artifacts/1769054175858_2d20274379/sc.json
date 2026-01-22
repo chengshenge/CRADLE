@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_by_characteristics",
+      "purpose": "To identify and count objects with specific attributes such as 'big', 'matte', 'green', and 'rubber' from the diagram.",
+      "how_to_use": "Use this skill to identify objects in the image that match the given characteristics and return a list of these objects."
+    },
+    {
+      "name": "count_objects_in_region",
+      "purpose": "To count the number of objects remaining in the diagram after specific objects have been subtracted.",
+      "how_to_use": "Use this skill to count the total number of objects in the specified region of the image after performing the necessary subtractions."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "subtract_objects_by_characteristics",
+      "signature": "(total_objects, objects_to_subtract)->remaining_objects",
+      "purpose": "To subtract objects with specific characteristics from a total set of objects.",
+      "inputs": [
+        "total_objects",
+        "objects_to_subtract"
+      ],
+      "outputs": "remaining_objects",
+      "edge_cases": [
+        "No objects match the characteristics to subtract.",
+        "All objects match the characteristics to subtract."
+      ],
+      "tests": [
+        {
+          "input": "[{'id': 1, 'attributes': ['big', 'matte']}, {'id': 2, 'attributes': ['small', 'shiny']}], [{'id': 1, 'attributes': ['big', 'matte']}]",
+          "expect": "[{'id': 2, 'attributes': ['small', 'shiny']}]"
+        },
+        {
+          "input": "[{'id': 1, 'attributes': ['big', 'matte']}, {'id': 2, 'attributes': ['big', 'matte']}], [{'id': 1, 'attributes': ['big', 'matte']}, {'id': 2, 'attributes': ['big', 'matte']}]",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "object subtraction",
+        "visual analysis",
+        "attributes"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_by_characteristics",
+    "subtract_objects_by_characteristics",
+    "count_objects_in_region"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "Linda and Bob conducted an experiment to determine the effect of wax on the time it takes for a snowboard to slide down a hill. Linda applied a thin layer of wax to her snowboard and timed her descent down the hill. She then removed the wax and repeated the process, alternating between having wax and not having wax on the snowboard. The goal was to calculate the average time for each condition and compare them. The experiment aims to answer a specific question about the effect of wax on the snowboard's performance. The task is to identify which question the experiment is designed to answer based on the given options.",
+  "entities": [
+    "Linda",
+    "Bob",
+    "snowboard",
+    "wax",
+    "average time with wax",
+    "average time without wax"
+  ],
+  "unknowns": [
+    "correct option"
+  ],
+  "required_operations": [
+    "Read the passage",
+    "Understand the experiment setup",
+    "Identify the question the experiment answers",
+    "Map the answer to the correct option"
+  ],
+  "blockers": [
+    "correct option"
+  ],
+  "risk_checks": [
+    "Ensure understanding of the difference between presence of wax and thickness of wax",
+    "Verify that the experiment description matches the options provided"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?"
+      },
+      {
+        "label": "B",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "experiment",
+    "comparison",
+    "average time",
+    "wax effect",
+    "multiple choice"
+  ]
+}

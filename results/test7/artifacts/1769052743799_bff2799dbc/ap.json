@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the arc length of the sector",
+      "action": "python",
+      "code": "arc_length = calc_numeric('(120.0/360) * 2 * math.pi * 6.0')"
+    },
+    {
+      "intention": "Map the calculated arc length to the given options",
+      "action": "python",
+      "code": "option_label = map_length_to_option(arc_length, [{'label': 'A', 'text': '2πcm'}, {'label': 'B', 'text': '3πcm'}, {'label': 'C', 'text': '4πcm'}, {'label': 'D', 'text': '5πcm'}])"
+    },
+    {
+      "intention": "Output the final answer as the option label",
+      "action": "normalize",
+      "text": "Answer: {option_label}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

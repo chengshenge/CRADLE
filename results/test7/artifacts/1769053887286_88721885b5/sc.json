@@ -1,0 +1,41 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the calculated length of segment EF to the correct multiple-choice option.",
+      "how_to_use": "Use the calculated length of EF and the provided options to determine the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_length_EF_in_rhombus",
+      "signature": "(AB_length, AC_length)->EF_length",
+      "purpose": "Calculate the length of segment EF in a rhombus where E and F are midpoints of sides AB and AD.",
+      "inputs": [
+        "AB_length",
+        "AC_length"
+      ],
+      "outputs": "EF_length",
+      "edge_cases": [
+        "Ensure E and F are correctly identified as midpoints.",
+        "Verify that the input lengths are consistent with the properties of a rhombus."
+      ],
+      "tests": [
+        {
+          "input": "5, 6",
+          "expect": "3.5"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "rhombus",
+        "midpoint",
+        "length calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_length_EF_in_rhombus",
+    "map_length_to_option"
+  ]
+}

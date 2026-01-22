@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "A real estate agent has counted the number of houses on each block in a neighborhood. The task is to determine how many blocks have exactly 36 houses. The data is likely presented in a table format, where each row represents a block and the number of houses on that block. The problem requires identifying and counting the blocks that meet the condition of having exactly 36 houses. The table headers are 'Block' and 'Number of Houses', and specific blocks with their corresponding number of houses are listed. The goal is to count the entries in the table where the number of houses is exactly 36.",
+  "entities": [
+    "Block",
+    "Number of Houses"
+  ],
+  "unknowns": [
+    "number of blocks with exactly 36 houses"
+  ],
+  "required_operations": [
+    "Read the table",
+    "Identify rows where the number of houses is 36",
+    "Count the number of such rows"
+  ],
+  "blockers": [
+    "number of blocks with exactly 36 houses"
+  ],
+  "risk_checks": [
+    "Ensure row/column alignment is correct",
+    "Verify header meaning",
+    "Check for any missing or misaligned data"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "table analysis",
+    "data interpretation"
+  ]
+}

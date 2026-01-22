@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from image and calculate age gap",
+      "action": "reason",
+      "note": "Use extracted ages from GTI_JSON to compute the age gap."
+    },
+    {
+      "intention": "Calculate the age gap using extracted ages",
+      "action": "python",
+      "code": "age_person_1 = 34; age_person_2 = 29; age_gap = age_person_1 - age_person_2"
+    },
+    {
+      "intention": "Format the final answer as required",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract dimensions from diagram",
+      "action": "reason",
+      "note": "Use the known dimensions from the diagram: length AB = 5 cm, width BC = 3 cm."
+    },
+    {
+      "intention": "Calculate perimeter using formula",
+      "action": "python",
+      "code": "length = 5; width = 3; perimeter = 2 * (length + width)"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 16"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

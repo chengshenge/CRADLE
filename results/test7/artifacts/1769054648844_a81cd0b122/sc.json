@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "analyze_food_web_impact",
+      "purpose": "To analyze the food web diagram and predict the impact of algae removal on various species.",
+      "how_to_use": "Use the diagram and the list of species to determine the impact of algae removal on each species."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_impact_to_option",
+      "signature": "(impact_predictions, options)->option_label",
+      "purpose": "To map the predicted impacts on species to the given multiple-choice options.",
+      "inputs": [
+        "impact_predictions",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "If multiple options seem correct, select the most comprehensive one."
+      ],
+      "tests": [
+        {
+          "input": "{\"crabs\": \"decrease\", \"limpets\": \"decrease\", \"dolphins\": \"no change\", \"sea gulls\": \"no change\", \"star fish\": \"no change\"}, [{\"label\": \"A\", \"text\": \"Crabs and limpets will decrease\"}, {\"label\": \"B\", \"text\": \"Dolphins will increase\"}, {\"label\": \"C\", \"text\": \"Sea gulls will become extinct\"}, {\"label\": \"D\", \"text\": \"Star fish will increase\"}]",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "food web",
+        "ecology"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_web_impact",
+    "map_impact_to_option"
+  ]
+}

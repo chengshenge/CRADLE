@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the correct question the experiment answers",
+      "action": "reason",
+      "note": "The experiment compares average times with and without wax, not thickness."
+    },
+    {
+      "intention": "Determine the correct option based on experiment description",
+      "action": "python",
+      "code": "correct_option = 'B'"
+    },
+    {
+      "intention": "Output the correct option",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

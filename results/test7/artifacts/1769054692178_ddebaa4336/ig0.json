@@ -1,0 +1,57 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining the value of r at a specific angle theta, which suggests a polar plot or graph is involved."
+  ],
+  "problem_understanding": "The problem asks for the value of r at a specific angle theta, indicating a polar coordinate system or a graph that plots r against theta.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "theta",
+        "value": "3*pi/2",
+        "unit": "radians",
+        "source": "text",
+        "note": "The angle at which the value of r is to be determined."
+      }
+    ],
+    "unknown": [
+      "r"
+    ],
+    "relations": [
+      "r is a function of theta"
+    ],
+    "constraints": [
+      "theta is given in radians"
+    ],
+    "options": []
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "value nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to find the value of r corresponding to a given theta on a chart, which is a direct lookup task."
+  ],
+  "problem_summary": "Determine the value of r at theta = 3*pi/2 from a chart or graph.",
+  "knowns": [
+    {
+      "name": "theta",
+      "value": "3*pi/2",
+      "unit": "radians",
+      "source": "text",
+      "note": "The angle at which the value of r is to be determined."
+    }
+  ],
+  "asks": [
+    "r at theta = 3*pi/2"
+  ],
+  "constraints": [
+    "theta is given in radians"
+  ],
+  "visual_facts": [
+    "The chart likely plots r as a function of theta."
+  ],
+  "ambiguity": [
+    "The specific type of chart or graph is not described in the prompt."
+  ]
+}

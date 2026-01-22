@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves analyzing a diagram or image to count objects based on specific characteristics. The task is to subtract all brown blocks and large blue rubber things from the total number of objects in the image. The goal is to determine how many objects remain after these subtractions. The problem requires identifying objects by color and size, which suggests a need for careful visual analysis. The exact definitions of 'large' and 'rubber things' are not provided, which may introduce some ambiguity. The final answer should be an integer representing the number of objects left.",
+  "entities": [
+    "brown blocks",
+    "large blue rubber things",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify and count all objects in the image",
+    "Subtract the number of brown blocks",
+    "Subtract the number of large blue rubber things",
+    "Determine the remaining number of objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of 'large' and 'rubber things'"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual analysis",
+    "counting",
+    "subtraction"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison of two groups of objects based on their color and type. Specifically, it asks whether the number of gray rubber objects located in front of a small yellow aeroplane is greater than the number of big cyan matte fighters. The task requires visually identifying and counting these specific objects in a diagram. The problem is presented in a multiple-choice format with two options: 'Yes' or 'No'. The exact numbers of these objects are not provided in the text and must be determined from the diagram. The problem is essentially a comparison of quantities based on visual inspection.",
+  "entities": [
+    "gray rubber objects",
+    "small yellow aeroplane",
+    "big cyan matte fighters"
+  ],
+  "unknowns": [
+    "number of gray rubber objects",
+    "number of big cyan matte fighters"
+  ],
+  "required_operations": [
+    "Identify gray rubber objects in front of the small yellow aeroplane",
+    "Count the gray rubber objects",
+    "Identify big cyan matte fighters",
+    "Count the big cyan matte fighters",
+    "Compare the two counts"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of object types and colors"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual comparison",
+    "counting",
+    "geometry",
+    "multiple-choice"
+  ]
+}

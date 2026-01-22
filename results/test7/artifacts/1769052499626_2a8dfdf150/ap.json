@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the diameter AB using AC and BC",
+      "action": "python",
+      "code": "AB_length = calc_numeric('8 + 15')"
+    },
+    {
+      "intention": "Determine the radius of the circle",
+      "action": "python",
+      "code": "radius = AB_length / 2"
+    },
+    {
+      "intention": "Map the calculated radius to the given options",
+      "action": "python",
+      "code": "option_label = map_length_to_option(radius, [{'label': 'A', 'text': '7.5'}, {'label': 'B', 'text': '8'}, {'label': 'C', 'text': '8.5'}, {'label': 'D', 'text': '17'}])"
+    },
+    {
+      "intention": "Output the final answer as the option label",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart titled 'Monthly Sales Data' which displays sales figures for two products, A and B, over the months of January to May. The task is to determine the difference between the largest and smallest bar values in the chart. The chart provides sales data in thousands, with specific values for each product in each month. The largest and smallest bar values need to be identified from the chart, and their difference calculated. The chart includes a legend to distinguish between Product A and Product B, and the Y-axis is labeled with sales values ranging from 0 to 50 in increments of 10. The exact values of the bars are not provided in the prompt but are available in the image.",
+  "entities": [
+    "Product A",
+    "Product B",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May"
+  ],
+  "unknowns": [
+    "largest bar value",
+    "smallest bar value"
+  ],
+  "required_operations": [
+    "Identify largest bar value from chart",
+    "Identify smallest bar value from chart",
+    "Compute difference between largest and smallest values"
+  ],
+  "blockers": [
+    "largest bar value",
+    "smallest bar value"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on Y-axis",
+    "Ensure correct legend mapping for Product A and B",
+    "Check for interpolation errors in reading bar heights"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "difference",
+    "sales data",
+    "visual analysis"
+  ]
+}

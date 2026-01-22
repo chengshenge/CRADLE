@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_angle_from_diagram",
+      "purpose": "To extract the measure of angle BCH from the diagram.",
+      "how_to_use": "Use this skill to analyze the diagram and determine the measure of angle BCH."
+    },
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the extracted angle to one of the provided multiple-choice options.",
+      "how_to_use": "Use this skill to match the calculated angle to the closest option provided in the multiple-choice answers."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_BCH",
+      "signature": "(diagram_image, known_angles, parallel_lines)->angle_BCH",
+      "purpose": "To calculate the measure of angle BCH using geometric principles and the given diagram.",
+      "inputs": [
+        "diagram_image",
+        "known_angles",
+        "parallel_lines"
+      ],
+      "outputs": "angle_BCH",
+      "edge_cases": [
+        "If the diagram is unclear, the calculation might be inaccurate.",
+        "If parallel lines are not correctly identified, the angle calculation may be incorrect."
+      ],
+      "tests": [
+        {
+          "input": "diagram_image_with_60_degree_angle_and_parallel_lines",
+          "expect": "angle_BCH_calculated_correctly"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation",
+        "parallel lines",
+        "bisector"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_angle_from_diagram",
+    "calculate_angle_BCH",
+    "map_angle_to_option"
+  ]
+}

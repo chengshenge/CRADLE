@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_chart_for_maximum_value",
+      "signature": "(chart_image)->max_value",
+      "purpose": "To analyze a chart and determine the maximum value represented on it.",
+      "inputs": [
+        "chart_image"
+      ],
+      "outputs": "max_value",
+      "edge_cases": [
+        "Chart with no clear maximum value",
+        "Multiple maximum values",
+        "Ambiguous chart labels"
+      ],
+      "tests": [
+        {
+          "input": "chart_with_clear_maximum",
+          "expect": "50"
+        },
+        {
+          "input": "chart_with_multiple_maxima",
+          "expect": "50"
+        },
+        {
+          "input": "chart_with_ambiguous_labels",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "maximum value",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_chart_for_maximum_value"
+  ]
+}

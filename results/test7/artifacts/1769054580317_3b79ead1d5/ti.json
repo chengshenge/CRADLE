@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves determining a missing value, specifically the tax amount, from a set of financial data. The image provides information about a total cost of $45.99, a discount of 10%, and a final price of $41.39. The task is to compute the tax amount that would reconcile these figures. The problem is presented in a textual format, suggesting that the necessary information is embedded within the text. The missing value is explicitly identified as the tax amount, which is crucial for completing the financial calculation. The context implies a straightforward arithmetic operation to find the missing tax amount based on the given prices and discount. The problem requires careful reading of the text to ensure all relevant numerical data is considered in the calculation.",
+  "entities": [
+    "total cost",
+    "discount",
+    "final price",
+    "tax amount"
+  ],
+  "unknowns": [
+    "missing value",
+    "Tax amount"
+  ],
+  "required_operations": [
+    "Read total cost, discount, and final price from text",
+    "Calculate the pre-discount price",
+    "Determine the tax amount needed to reach the final price"
+  ],
+  "blockers": [
+    "Tax amount"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of currency and percentage",
+    "Check for any hidden conditions or footnotes in the text"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "financial calculation",
+    "missing value"
+  ]
+}

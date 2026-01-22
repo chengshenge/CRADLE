@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays average weekly work hours by country over several years. The task is to determine how many countries have people working more than 35 hours on average. The chart includes a y-axis representing average weekly hours and an x-axis representing years from 2010 to 2020. The legend identifies four countries: Country A, Country B, Country C, and Country D. Key points on the chart indicate when each country crosses the 35-hour threshold. The goal is to count the number of countries that exceed this threshold at any point over the years.",
+  "entities": [
+    "Country A",
+    "Country B",
+    "Country C",
+    "Country D",
+    "Average Weekly Hours",
+    "Year"
+  ],
+  "unknowns": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "required_operations": [
+    "Read the chart to identify countries",
+    "Check each country's work hours against the 35-hour threshold",
+    "Count the number of countries exceeding 35 hours"
+  ],
+  "blockers": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "risk_checks": [
+    "Verify y-axis scale and tick spacing for accuracy",
+    "Ensure correct mapping of legend to chart lines",
+    "Check interpolation between data points for accuracy"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "data interpretation",
+    "threshold comparison"
+  ]
+}

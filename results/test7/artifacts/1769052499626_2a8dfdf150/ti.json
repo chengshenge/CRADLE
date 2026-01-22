@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a circle with a diameter labeled as AB. The lengths of segments AC and BC are given as 8 inches and 15 inches, respectively. The task is to find the radius of the circle. The circle's diameter AB is a straight line, and point C is on the circle. The problem provides multiple-choice options for the radius. The solution requires understanding the geometric relationship between the diameter and the radius of the circle.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "AB",
+    "AC",
+    "BC",
+    "circle"
+  ],
+  "unknowns": [
+    "Radius of the circle"
+  ],
+  "required_operations": [
+    "Identify AB as the diameter",
+    "Use the relation AC + BC = AB",
+    "Calculate AB",
+    "Determine the radius as half of AB",
+    "Map the calculated radius to the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: ensure AB is marked as a diameter",
+    "diagram: verify lengths of AC and BC are correctly marked"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "7.5"
+      },
+      {
+        "label": "B",
+        "text": "8"
+      },
+      {
+        "label": "C",
+        "text": "8.5"
+      },
+      {
+        "label": "D",
+        "text": "17"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "diameter",
+    "radius",
+    "multiple-choice"
+  ]
+}

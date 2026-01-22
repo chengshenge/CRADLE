@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform arithmetic operations to calculate the remaining number of objects.",
+      "how_to_use": "Use calc_numeric to subtract the number of large rubber spheres and big shiny cylinders from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use format_final to return the final answer as a single line string."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_numbers_from_text",
+      "signature": "(text:str, entities:list)->dict",
+      "purpose": "Extract specific numerical values from a given text based on provided entity names.",
+      "inputs": [
+        "text",
+        "entities"
+      ],
+      "outputs": "A dictionary with entity names as keys and extracted numbers as values.",
+      "edge_cases": [
+        "Text does not contain all entities",
+        "Text contains multiple numbers for an entity"
+      ],
+      "tests": [
+        {
+          "input": "('There are 50 objects, including 15 large rubber spheres and 10 big shiny cylinders.', ['total_objects', 'large_rubber_spheres', 'big_shiny_cylinders'])",
+          "expect": "{'total_objects': 50, 'large_rubber_spheres': 15, 'big_shiny_cylinders': 10}"
+        },
+        {
+          "input": "('No objects mentioned.', ['total_objects'])",
+          "expect": "{}"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "number extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_numbers_from_text",
+    "calc_numeric",
+    "format_final"
+  ]
+}

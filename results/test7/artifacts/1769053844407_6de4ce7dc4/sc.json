@@ -1,0 +1,54 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract roughness values from the attached image.",
+      "how_to_use": "Use this skill to extract text from the image to obtain roughness values for Coral, Granite, Marble, and Sandstone."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform numerical comparison of roughness values.",
+      "how_to_use": "Use this skill to compare the extracted roughness values numerically to determine if Coral has the highest roughness."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer in the required multiple-choice format.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: A' or 'Answer: B' based on the comparison result."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_roughness_values",
+      "signature": "(roughness_values)->bool",
+      "purpose": "Determine if Coral has the highest roughness value among the given materials.",
+      "inputs": [
+        "A list of roughness values for Coral, Granite, Marble, and Sandstone."
+      ],
+      "outputs": "A boolean indicating if Coral is the roughest.",
+      "edge_cases": [
+        "All materials have the same roughness value.",
+        "Coral has the lowest roughness value."
+      ],
+      "tests": [
+        {
+          "input": "[7.5, 6.8, 5.9, 6.0]",
+          "expect": "true"
+        },
+        {
+          "input": "[6.8, 7.5, 5.9, 6.0]",
+          "expect": "false"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "roughness"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "compare_roughness_values",
+    "calc_numeric",
+    "format_final"
+  ]
+}

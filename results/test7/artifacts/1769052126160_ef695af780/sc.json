@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as summing the heights of the two smallest bars and comparing it to the largest bar.",
+      "how_to_use": "Use this skill to calculate the sum of the heights of Category A and Category B, and then compare it to the height of Category C."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required output format.",
+      "how_to_use": "Use this skill to format the result of the comparison into the specified answer format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_sum_to_largest",
+      "signature": "(heights)->str",
+      "purpose": "To determine if the sum of the two smallest heights is greater than the largest height.",
+      "inputs": [
+        "A list of heights for categories A, B, and C."
+      ],
+      "outputs": "A string indicating 'Yes' or 'No'.",
+      "edge_cases": [
+        "All heights are equal.",
+        "Two heights are equal and the third is different."
+      ],
+      "tests": [
+        {
+          "input": "[15, 20, 35]",
+          "expect": "No"
+        },
+        {
+          "input": "[10, 10, 25]",
+          "expect": "No"
+        },
+        {
+          "input": "[10, 15, 20]",
+          "expect": "Yes"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "sum",
+        "multiple choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calc_numeric",
+    "compare_sum_to_largest",
+    "format_final"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "problem_state_summary": "The problem involves determining the value of r at a specific angle theta, which is 3*pi/2 radians. This suggests a polar plot or graph is involved, where r is plotted as a function of theta. The chart is titled 'Polar Plot of r vs. θ' and has the x-axis labeled as θ (radians) with ticks at 0, π/2, π, 3π/2, 2π, and the y-axis labeled as r with ticks at -2, -1, 0, 1, 2. The legend indicates that r is a function of θ. The task is to find the value of r at θ = 3π/2, which is marked on the chart as key point A with r = -1.",
+  "entities": [
+    "theta",
+    "r"
+  ],
+  "unknowns": [
+    "r"
+  ],
+  "required_operations": [
+    "Read the chart to find the value of r at theta = 3*pi/2."
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing on the chart.",
+    "Verify legend mapping for r = f(θ).",
+    "Ensure correct interpolation if needed."
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "polar coordinates",
+    "chart reading",
+    "function evaluation"
+  ]
+}

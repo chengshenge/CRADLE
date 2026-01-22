@@ -1,0 +1,57 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading names and birth years from the image to determine how many people were born after the end of World War II."
+  ],
+  "problem_understanding": "The task is to count the number of people whose birth years are after 1945, the end of World War II.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "End of World War II",
+        "value": "1945",
+        "unit": "year",
+        "source": "text",
+        "note": "The year marking the end of World War II."
+      }
+    ],
+    "unknown": [
+      "Number of people born after 1945"
+    ],
+    "relations": [
+      "A person is considered born after World War II if their birth year is greater than 1945."
+    ],
+    "constraints": [
+      "Only consider people whose birth years are listed in the image."
+    ],
+    "options": []
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "people count",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves counting the number of people based on their birth years, which requires reading and comparing numerical data."
+  ],
+  "problem_summary": "Count the number of people born after 1945 based on the birth years listed in the image.",
+  "knowns": [
+    {
+      "name": "End of World War II",
+      "value": "1945",
+      "unit": "year",
+      "source": "text",
+      "note": "The year marking the end of World War II."
+    }
+  ],
+  "asks": [
+    "Number of people born after 1945"
+  ],
+  "constraints": [
+    "Only consider people whose birth years are listed in the image."
+  ],
+  "visual_facts": [
+    "The image contains names and birth years of people."
+  ],
+  "ambiguity": [
+    "The image must be clear enough to read the birth years accurately."
+  ]
+}

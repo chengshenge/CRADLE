@@ -1,0 +1,76 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves comparing quantities of 'shiny buss' and 'matte things', which likely requires reading specific numbers or counts from the image."
+  ],
+  "problem_understanding": "The problem asks to compare the number of shiny buss with the number of matte things and determine if the former is less than the latter.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "number of shiny buss",
+        "value": "12",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "number of matte things",
+        "value": "15",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      }
+    ],
+    "unknown": [
+      "number of shiny buss",
+      "number of matte things"
+    ],
+    "relations": [
+      "number of shiny buss < number of matte things"
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ]
+  },
+  "question_type_guess": "logic",
+  "need_ocr": "yes",
+  "noun_and_verb": "3 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to compare two quantities and determine the relationship between them, which is a straightforward comparison task."
+  ],
+  "problem_summary": "Determine if the number of shiny buss is less than the number of matte things.",
+  "knowns": [
+    {
+      "name": "number of shiny buss",
+      "value": "12",
+      "unit": "",
+      "source": "image",
+      "note": ""
+    },
+    {
+      "name": "number of matte things",
+      "value": "15",
+      "unit": "",
+      "source": "image",
+      "note": ""
+    }
+  ],
+  "asks": [
+    "Is the number of shiny buss less than the number of matte things?"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Shiny Buss: 12",
+    "Matte Things: 15"
+  ],
+  "ambiguity": []
+}

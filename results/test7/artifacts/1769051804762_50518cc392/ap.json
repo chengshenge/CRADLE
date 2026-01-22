@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Compare the number of metallic fighters and rubber objects",
+      "action": "reason",
+      "note": "We need to determine if there are fewer metallic fighters than rubber objects."
+    },
+    {
+      "intention": "Perform the comparison using extracted values",
+      "action": "python",
+      "code": "metallic_fighters = 15; rubber_objects = 20; comparison_result = metallic_fighters < rubber_objects"
+    },
+    {
+      "intention": "Map the comparison result to the correct option",
+      "action": "python",
+      "code": "answer_option = 'A' if comparison_result else 'B'"
+    },
+    {
+      "intention": "Output the final answer in the required format",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

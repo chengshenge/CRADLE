@@ -1,0 +1,74 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram includes labeled points A through H and several known angle measures: m∠A = 45°, m∠B = 90°, m∠C = 135°, m∠D = 150°, m∠E = 60°, m∠F = 75°, and m∠G = 120°. The task is to find the measure of angle H, which is currently unknown. The problem is presented in a multiple-choice format with four options. The correct measure of angle H must be selected from these options.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "m∠A",
+    "m∠B",
+    "m∠C",
+    "m∠D",
+    "m∠E",
+    "m∠F",
+    "m∠G"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the geometric relationships",
+    "Determine the measure of angle H using known angles and geometric principles",
+    "Map the calculated measure to one of the provided options"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct",
+    "Verify angle markers are clear and accurate",
+    "Check for any parallel or perpendicular indicators that might affect angle calculations"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram analysis",
+    "multiple-choice"
+  ]
+}

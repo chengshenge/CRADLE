@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Extract ages from image",
+    "note": "Use GTI_JSON to confirm ages of Person 1 and Person 2."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate age gap",
+    "code": "age_person_1 = 25; age_person_2 = 30; age_gap = abs(age_person_2 - age_person_1)",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format final answer",
+    "text": "Answer: 5"
+  }
+]

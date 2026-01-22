@@ -1,0 +1,71 @@
+{
+  "problem_state_summary": "The problem involves analyzing a food web diagram to determine the impact of a decrease in the large roach population on other species. The food web includes species such as steelheads, stickleback fry, predatory insects, algae, zooplankton, small fish, and birds. Arrows in the diagram indicate the relationships between these species. The task is to predict how the populations of steelheads, stickleback fry, and predatory insects would be affected by the change in the large roach population. The problem is presented as a multiple-choice question with four options, each suggesting a different outcome for the populations of these species.",
+  "entities": [
+    "Steelheads",
+    "Stickleback Fry",
+    "Predatory Insects",
+    "Large Roach",
+    "Algae",
+    "Zooplankton",
+    "Small Fish",
+    "Birds"
+  ],
+  "unknowns": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "required_operations": [
+    "Analyze the food web diagram",
+    "Identify relationships between species",
+    "Predict impact of decreased large roach population on other species",
+    "Map prediction to multiple-choice options"
+  ],
+  "blockers": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure arrows correctly indicate relationships between species"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "The population of steelheads would decrease."
+      },
+      {
+        "label": "B",
+        "text": "The population of stickleback fry would increase."
+      },
+      {
+        "label": "C",
+        "text": "The population of predatory insects would increase."
+      },
+      {
+        "label": "D",
+        "text": "The population of predatory insects would decrease."
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "food web",
+    "population dynamics",
+    "ecology",
+    "diagram analysis"
+  ]
+}

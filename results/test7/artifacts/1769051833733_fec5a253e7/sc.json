@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_chart_preferences",
+      "signature": "(chart_data)->int",
+      "purpose": "To analyze a chart and determine the number of objects preferred by more than 90% of people in at least one category.",
+      "inputs": [
+        "chart_data"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All objects have preferences below 90%",
+        "Multiple categories have preferences above 90% for the same object"
+      ],
+      "tests": [
+        {
+          "input": "chart_data_with_one_object_above_90",
+          "expect": 1
+        },
+        {
+          "input": "chart_data_with_no_objects_above_90",
+          "expect": 0
+        },
+        {
+          "input": "chart_data_with_multiple_objects_above_90",
+          "expect": 2
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "percentage threshold",
+        "preference analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_chart_preferences"
+  ]
+}

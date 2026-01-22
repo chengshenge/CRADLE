@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects_in_region",
+      "purpose": "To count the number of specific objects in a given region of an image.",
+      "how_to_use": "Use this skill to count 'big red rubber double buss' and 'big green things' in the diagram."
+    },
+    {
+      "name": "compare_chart_values",
+      "purpose": "To compare two numerical values and determine which is greater.",
+      "how_to_use": "Use this skill to compare the counts of 'big red rubber double buss' and 'big green things'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_count_to_option",
+      "signature": "(count1, count2, options)->str",
+      "purpose": "Map the result of a count comparison to a multiple-choice option.",
+      "inputs": [
+        "count1",
+        "count2",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "If counts are equal, ensure a default option is selected."
+      ],
+      "tests": [
+        {
+          "input": "3, 2, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "A"
+        },
+        {
+          "input": "1, 4, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_region",
+    "compare_chart_values",
+    "map_count_to_option"
+  ]
+}

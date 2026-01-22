@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the calculated radius to the given multiple-choice options.",
+      "how_to_use": "Use the calculated radius as the input length and the provided options to find the correct option label."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic calculations needed to determine the diameter and radius of the circle.",
+      "how_to_use": "Use this skill to calculate the sum of AC and BC to find AB, and then divide AB by 2 to find the radius."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_diameter_from_segments",
+      "signature": "(AC_length, BC_length)->AB_length",
+      "purpose": "To calculate the diameter of the circle using the lengths of segments AC and BC.",
+      "inputs": [
+        "AC_length",
+        "BC_length"
+      ],
+      "outputs": "AB_length",
+      "edge_cases": [
+        "If either AC_length or BC_length is zero, the function should return zero."
+      ],
+      "tests": [
+        {
+          "input": "8, 15",
+          "expect": "23"
+        },
+        {
+          "input": "0, 15",
+          "expect": "15"
+        },
+        {
+          "input": "8, 0",
+          "expect": "8"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "diameter"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_diameter_from_segments",
+    "calc_numeric",
+    "map_length_to_option"
+  ]
+}

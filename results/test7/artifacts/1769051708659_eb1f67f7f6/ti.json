@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves identifying the next object in a sequence, which suggests a pattern recognition task typically involving visual elements such as shapes or diagrams. The task is to determine which object follows a given sequence of objects, likely involving pattern recognition or sequence analysis. The specific pattern or rule governing the sequence is not explicitly stated and must be inferred from the visual information. The problem is presented as a multiple-choice question with five options labeled A to E. The objective is to select the correct option that represents the next object in the sequence. The sequence of objects is shown in a diagram, but no specific text or labels were found in the diagram to aid in identifying the pattern. The options for the next object in the sequence were extracted as they are crucial for solving the problem.",
+  "entities": [
+    "sequence of objects"
+  ],
+  "unknowns": [
+    "next object in sequence"
+  ],
+  "required_operations": [
+    "Identify pattern in sequence",
+    "Predict next object based on pattern",
+    "Map prediction to one of the given options"
+  ],
+  "blockers": [
+    "next object in sequence"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "pattern recognition",
+    "sequence analysis",
+    "multiple-choice"
+  ]
+}

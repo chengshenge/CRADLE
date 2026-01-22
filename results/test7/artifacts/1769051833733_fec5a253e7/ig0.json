@@ -1,0 +1,41 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining preferences of objects by people, which is likely represented in a chart or graph format showing percentages."
+  ],
+  "problem_understanding": "The problem asks for the number of objects that are preferred by more than 90 percent of people in at least one category.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects preferred by more than 90 percent of people in at least one category"
+    ],
+    "relations": [
+      "An object is counted if it is preferred by more than 90 percent of people in at least one category."
+    ],
+    "constraints": [
+      "Preference percentage must be greater than 90% for at least one category."
+    ],
+    "options": []
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects are preferred",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying and counting objects based on a percentage threshold, which is typically visualized in a chart."
+  ],
+  "problem_summary": "Determine the number of objects preferred by more than 90% of people in at least one category.",
+  "knowns": [],
+  "asks": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "constraints": [
+    "Preference percentage must be greater than 90% for at least one category."
+  ],
+  "visual_facts": [
+    "The chart likely shows objects and their preference percentages across different categories."
+  ],
+  "ambiguity": [
+    "The specific categories and objects are not mentioned in the prompt, requiring image analysis."
+  ]
+}

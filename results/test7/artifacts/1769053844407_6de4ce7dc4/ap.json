@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Compare roughness values to determine if Coral is the roughest.",
+      "action": "python",
+      "code": "roughness_values = [7.5, 6.8, 5.9, 6.2]; is_coral_roughest = max(roughness_values) == 7.5"
+    },
+    {
+      "intention": "Format the final answer based on the comparison result.",
+      "action": "python",
+      "code": "answer = 'A' if is_coral_roughest else 'B'; formatted_answer = format_final(answer)"
+    },
+    {
+      "intention": "Output the formatted answer.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

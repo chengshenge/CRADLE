@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a geometric configuration with points A, B, C, and D, and segments AC, CB, and DB. The task is to find the length of segment AC given that D is the midpoint of AC. The lengths of segments CB and DB are provided as 4.0 cm and 7.0 cm, respectively. The diagram is crucial for understanding the spatial relationships and confirming the midpoint condition. The problem is presented as a multiple-choice question with four options for the length of AC. The solution requires using the given information about midpoints and segment lengths to determine the correct length of AC.",
+  "entities": [
+    "Point A",
+    "Point B",
+    "Point C",
+    "Point D",
+    "Segment AC",
+    "Segment CB",
+    "Segment DB"
+  ],
+  "unknowns": [
+    "Length of AC"
+  ],
+  "required_operations": [
+    "Examine the diagram to confirm the midpoint relationship",
+    "Use the midpoint property to establish a relationship between AD and DC",
+    "Calculate the total length of AC using the midpoint property",
+    "Map the calculated length to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "Length of AC"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct in the diagram",
+    "Verify the midpoint relationship is visually represented",
+    "Check for any missing or unclear segment labels"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "6cm"
+      },
+      {
+        "label": "B",
+        "text": "7cm"
+      },
+      {
+        "label": "C",
+        "text": "4cm"
+      },
+      {
+        "label": "D",
+        "text": "5cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "midpoint",
+    "segment length",
+    "multiple-choice"
+  ]
+}

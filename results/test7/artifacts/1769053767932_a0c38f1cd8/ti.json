@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a circle with center O, where AB is the diameter and CD is a chord. The angle ∠ADC is given as 26 degrees. The task is to find the degree of angle ∠CAB. The problem is presented with a diagram that includes points A, B, C, and D on the circle. The exact positions of these points are not specified in the text, which may affect the interpretation of the diagram. The problem is a multiple-choice question with four options provided for the degree of angle ∠CAB.",
+  "entities": [
+    "Circle ⊙O",
+    "Diameter AB",
+    "Chord CD",
+    "Point A",
+    "Point B",
+    "Point C",
+    "Point D",
+    "∠ADC"
+  ],
+  "unknowns": [
+    "∠CAB"
+  ],
+  "required_operations": [
+    "Examine the diagram to understand the geometric configuration",
+    "Use properties of circles and inscribed angles to calculate ∠CAB",
+    "Map the calculated angle to one of the provided options"
+  ],
+  "blockers": [
+    "∠CAB"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram",
+    "Verify angle markers are correctly interpreted",
+    "Check for any missing parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "26°"
+      },
+      {
+        "label": "B",
+        "text": "74°"
+      },
+      {
+        "label": "C",
+        "text": "64°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "inscribed angle",
+    "multiple-choice"
+  ]
+}

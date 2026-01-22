@@ -1,0 +1,53 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves finding the perimeter of a square, which is a geometric shape. Therefore, the relevant region to detect is 'diagram'."
+  ],
+  "problem_understanding": "The problem asks for the perimeter of a square, which requires understanding the side length of the square from the image.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "side length",
+        "value": "5",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from the diagram as the length of segment AB."
+      }
+    ],
+    "unknown": [
+      "perimeter of the square"
+    ],
+    "relations": [
+      "Perimeter of a square = 4 * side length"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "perimeter nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward as it involves identifying the side length of the square from the diagram and using the formula for the perimeter of a square."
+  ],
+  "problem_summary": "Determine the perimeter of a square using its side length from the diagram.",
+  "knowns": [
+    {
+      "name": "side length",
+      "value": "5",
+      "unit": "cm",
+      "source": "image",
+      "note": "Extracted from the diagram as the length of segment AB."
+    }
+  ],
+  "asks": [
+    "perimeter of the square"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains a diagram of a square with labeled points A, B, C, and D. The side length AB is marked as 5 cm."
+  ],
+  "ambiguity": [
+    "The side length of the square is not provided in the text and must be extracted from the image."
+  ]
+}

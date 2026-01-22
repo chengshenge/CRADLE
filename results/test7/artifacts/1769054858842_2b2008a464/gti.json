@@ -1,0 +1,88 @@
+{
+  "region_used": "chart",
+  "information": [],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Average Weekly Work Hours by Country",
+      "x_axis": {
+        "label": "Year",
+        "unit": "",
+        "ticks": [
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020"
+        ]
+      },
+      "y_axis": {
+        "label": "Average Weekly Hours",
+        "unit": "hours",
+        "ticks": [
+          "30",
+          "32",
+          "34",
+          "36",
+          "38",
+          "40",
+          "42",
+          "44"
+        ]
+      },
+      "legend": [
+        "Country A",
+        "Country B",
+        "Country C",
+        "Country D"
+      ],
+      "key_points": [
+        {
+          "label": "Country A",
+          "x": "2015",
+          "y": "36",
+          "note": "Crosses 35 hours"
+        },
+        {
+          "label": "Country B",
+          "x": "2017",
+          "y": "37",
+          "note": "Crosses 35 hours"
+        },
+        {
+          "label": "Country C",
+          "x": "2018",
+          "y": "38",
+          "note": "Crosses 35 hours"
+        },
+        {
+          "label": "Country D",
+          "x": "2019",
+          "y": "39",
+          "note": "Crosses 35 hours"
+        }
+      ]
+    },
+    "table": null,
+    "diagram": null
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of countries with people working more than 35 hours"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides data on average weekly work hours by country over several years. The task is to identify countries where the average exceeds 35 hours, which is indicated by the key points crossing the 35-hour mark on the y-axis."
+  ]
+}

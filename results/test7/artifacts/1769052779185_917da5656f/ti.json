@@ -1,0 +1,54 @@
+{
+  "problem_state_summary": "The problem involves determining whether a given function is continuous at each point. This requires analyzing the graph of the function, which is provided. The graph is titled 'Graph of f(x)' and includes key points that may indicate discontinuities. The x-axis is labeled 'x' with ticks at -3, -2, -1, 0, 1, 2, and 3, while the y-axis is labeled 'f(x)' with ticks at -2, -1, 0, 1, and 2. Key points on the graph include an open circle at x = -2, y = 1, a closed circle at x = 0, y = 0, and an open circle at x = 2, y = -1. The task is to determine if the function is continuous at each point, which involves checking if the limit of the function as it approaches each point from both sides is equal to the function's value at that point.",
+  "entities": [
+    "function",
+    "x-axis",
+    "y-axis",
+    "key points"
+  ],
+  "unknowns": [
+    "continuity of the function"
+  ],
+  "required_operations": [
+    "Analyze the graph of the function",
+    "Identify key points and their characteristics",
+    "Determine if the function is continuous at each key point"
+  ],
+  "blockers": [
+    "continuity of the function"
+  ],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accuracy",
+    "Verify open and closed circles at key points",
+    "Ensure correct interpretation of graph features"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "continuity",
+    "graph analysis"
+  ]
+}

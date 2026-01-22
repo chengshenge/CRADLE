@@ -1,0 +1,49 @@
+{
+  "problem_state_summary": "The problem involves comparing the quantities of 'shiny buss' and 'matte things'. The image provides the counts for these items: 12 shiny buss and 15 matte things. The task is to determine if the number of shiny buss is less than the number of matte things. This is a straightforward comparison problem where the known values are directly extracted from the image. The problem is presented in a multiple-choice format with two options: 'Yes' or 'No'. The final answer must be mapped to one of these options.",
+  "entities": [
+    "number of shiny buss",
+    "number of matte things"
+  ],
+  "unknowns": [
+    "Is the number of shiny buss less than the number of matte things?"
+  ],
+  "required_operations": [
+    "Extract counts from image",
+    "Compare the two quantities",
+    "Map result to multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct extraction of numbers from text",
+    "Verify that the comparison is based on the correct values"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "logic",
+    "multiple-choice"
+  ]
+}

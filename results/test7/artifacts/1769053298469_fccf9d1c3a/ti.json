@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves a diagram that likely contains various objects, including rubber balls and yellow shiny things. The task is to count these specific types of objects and subtract them from the total number of objects depicted in the image. The goal is to determine how many objects remain after these subtractions. The problem requires visual identification and counting of objects, followed by arithmetic subtraction. The exact number of each type of object is not specified in the text and must be determined from the image. The final answer should be an integer representing the remaining objects.",
+  "entities": [
+    "total_objects",
+    "rubber_balls",
+    "yellow_shiny_things"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count total objects in the diagram",
+    "Count rubber balls",
+    "Count yellow shiny things",
+    "Subtract rubber balls and yellow shiny things from total objects"
+  ],
+  "blockers": [
+    "total_objects",
+    "rubber_balls",
+    "yellow_shiny_things"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure all object types are correctly identified and counted"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "visual identification",
+    "subtraction",
+    "counting"
+  ]
+}

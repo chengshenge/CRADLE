@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Compare the number of shiny buss and matte things.",
+      "action": "reason",
+      "note": "We need to determine if 12 shiny buss is less than 15 matte things."
+    },
+    {
+      "intention": "Use map_count_to_option to determine the correct option.",
+      "action": "python",
+      "code": "result = map_count_to_option(12, 15, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])"
+    },
+    {
+      "intention": "Output the final answer based on the comparison.",
+      "action": "normalize",
+      "text": "Answer: {result}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

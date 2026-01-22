@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the new length of the rubber band using Pythagorean theorem",
+      "action": "python",
+      "code": "AM = 8; CM = 6; CD = math.sqrt(AM**2 + CM**2); stretched_length = 2 * CD"
+    },
+    {
+      "intention": "Determine the amount of stretch by comparing new and original lengths",
+      "action": "python",
+      "code": "original_length = 16; stretch_amount = stretched_length - original_length"
+    },
+    {
+      "intention": "Map the calculated stretch amount to the closest option",
+      "action": "python",
+      "code": "option = map_length_to_option(stretch_amount, [{'label': 'A', 'text': '2cm'}, {'label': 'B', 'text': '4cm'}, {'label': 'C', 'text': '6cm'}, {'label': 'D', 'text': '8cm'}])"
+    },
+    {
+      "intention": "Output the final answer as the option label",
+      "action": "normalize",
+      "text": "Answer: {option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

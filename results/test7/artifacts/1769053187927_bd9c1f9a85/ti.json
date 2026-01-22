@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "Chase wants to purchase a total of 9 kilograms of beads, consisting of 4 kilograms of oval beads and 5 kilograms of star-shaped beads. The cost per kilogram for oval beads is $3, and for star-shaped beads, it is $4. The task is to calculate the total expenditure in dollars for these beads. The problem requires basic arithmetic operations to determine the total cost. The final answer should be an integer value representing the total cost in dollars.",
+  "entities": [
+    "oval beads weight",
+    "star-shaped beads weight",
+    "cost per kg of oval beads",
+    "cost per kg of star-shaped beads"
+  ],
+  "unknowns": [
+    "total cost"
+  ],
+  "required_operations": [
+    "Multiply the weight of oval beads by their cost per kg",
+    "Multiply the weight of star-shaped beads by their cost per kg",
+    "Add the two results to find the total cost"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure currency is consistently in dollars",
+    "Verify integer constraint for the final answer"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "cost calculation",
+    "integer answer"
+  ]
+}

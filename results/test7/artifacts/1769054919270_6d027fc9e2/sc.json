@@ -1,0 +1,70 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_highest_accuracy_model",
+      "signature": "(chart_image, pretrain_loss_value)->model_name",
+      "purpose": "Identify the model with the highest accuracy score at a specific pretrain loss value from a chart.",
+      "inputs": [
+        "chart_image",
+        "pretrain_loss_value"
+      ],
+      "outputs": "model_name",
+      "edge_cases": [
+        "Multiple models with the same highest accuracy score",
+        "Pretrain loss value not clearly marked on the chart"
+      ],
+      "tests": [
+        {
+          "input": "chart_image_with_models, 1.80",
+          "expect": "RFT U13B"
+        },
+        {
+          "input": "chart_image_with_models, 2.00",
+          "expect": "SFT"
+        },
+        {
+          "input": "chart_image_with_models, 1.50",
+          "expect": "ICL"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "model comparison",
+        "accuracy score"
+      ]
+    },
+    {
+      "name": "map_model_to_option",
+      "signature": "(model_name, options)->option_label",
+      "purpose": "Map the identified model name to the corresponding option label in a multiple-choice question.",
+      "inputs": [
+        "model_name",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Model name not present in options",
+        "Multiple options for the same model name"
+      ],
+      "tests": [
+        {
+          "input": "RFT U13B, [{'label': 'A', 'text': 'ICL'}, {'label': 'B', 'text': 'SFT'}, {'label': 'C', 'text': 'SFT 1/8'}, {'label': 'D', 'text': 'RFT k=100'}, {'label': 'E', 'text': 'RFT k=25'}, {'label': 'F', 'text': 'RET k=6'}, {'label': 'G', 'text': 'RFT U13B'}]",
+          "expect": "G"
+        },
+        {
+          "input": "SFT, [{'label': 'A', 'text': 'ICL'}, {'label': 'B', 'text': 'SFT'}, {'label': 'C', 'text': 'SFT 1/8'}, {'label': 'D', 'text': 'RFT k=100'}, {'label': 'E', 'text': 'RFT k=25'}, {'label': 'F', 'text': 'RET k=6'}, {'label': 'G', 'text': 'RFT U13B'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "model mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_highest_accuracy_model",
+    "map_model_to_option"
+  ]
+}

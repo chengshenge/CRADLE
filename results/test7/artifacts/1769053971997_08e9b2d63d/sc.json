@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_kinetic_energy_from_diagrams",
+      "signature": "(diagram_image)->str",
+      "purpose": "To compare the average kinetic energy of gas particles in two samples based on their visual representation in diagrams.",
+      "inputs": [
+        "diagram_image"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Diagrams with unclear particle movement",
+        "Diagrams with identical particle distribution"
+      ],
+      "tests": [
+        {
+          "input": "image_with_sample_A_faster",
+          "expect": "sample A"
+        },
+        {
+          "input": "image_with_sample_B_faster",
+          "expect": "sample B"
+        },
+        {
+          "input": "image_with_identical_samples",
+          "expect": "neither"
+        }
+      ],
+      "tags": [
+        "kinetic energy",
+        "temperature",
+        "gas particles",
+        "diagram comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_kinetic_energy_from_diagrams"
+  ]
+}

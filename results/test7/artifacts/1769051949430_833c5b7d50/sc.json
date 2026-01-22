@@ -1,0 +1,43 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_items_with_sales_below_threshold",
+      "signature": "(table, threshold)->int",
+      "purpose": "Count the number of items in a table that have sales figures below a specified threshold in at least one store.",
+      "inputs": [
+        "table",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All sales figures are above the threshold",
+        "All sales figures are below the threshold",
+        "Some stores have missing sales figures"
+      ],
+      "tests": [
+        {
+          "input": "([[10, 3, 6], [7, 8, 2], [5, 5, 5]], 5)",
+          "expect": 2
+        },
+        {
+          "input": "([[6, 6, 6], [7, 7, 7], [8, 8, 8]], 5)",
+          "expect": 0
+        },
+        {
+          "input": "([[4, 4, 4], [3, 3, 3], [2, 2, 2]], 5)",
+          "expect": 3
+        }
+      ],
+      "tags": [
+        "table",
+        "sales figures",
+        "comparison",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_items_with_sales_below_threshold"
+  ]
+}

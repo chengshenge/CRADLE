@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the wettest month from the chart",
+    "note": "The chart indicates that August has the highest rainfall."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map the identified month to the given options",
+    "code": "wettest_month = 'August'; options = {'A': 'August', 'B': 'April', 'C': 'May'}; answer = [key for key, value in options.items() if value == wettest_month][0]",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the final answer in the required format",
+    "text": "Answer: A"
+  }
+]

@@ -1,0 +1,114 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_angle_in_circle",
+      "signature": "(angle_AOF, diagram)->angle_F",
+      "purpose": "To determine the measure of an angle in a circle using given angles and geometric relationships.",
+      "inputs": [
+        "angle_AOF",
+        "diagram"
+      ],
+      "outputs": "angle_F",
+      "edge_cases": [
+        "Diagram is not clear",
+        "Angle markers are missing or incorrect"
+      ],
+      "tests": [
+        {
+          "input": {
+            "angle_AOF": 40,
+            "diagram": "valid_diagram_with_circle_and_chords"
+          },
+          "expect": "angle_F_value"
+        },
+        {
+          "input": {
+            "angle_AOF": 0,
+            "diagram": "valid_diagram_with_circle_and_chords"
+          },
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "angle",
+        "diagram"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_F, options)->str",
+      "purpose": "To map the calculated angle to the correct multiple-choice option.",
+      "inputs": [
+        "angle_F",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Angle does not match any option",
+        "Multiple options match the angle"
+      ],
+      "tests": [
+        {
+          "input": {
+            "angle_F": 40,
+            "options": [
+              {
+                "label": "A",
+                "text": "20°"
+              },
+              {
+                "label": "B",
+                "text": "35°"
+              },
+              {
+                "label": "C",
+                "text": "40°"
+              },
+              {
+                "label": "D",
+                "text": "55°"
+              }
+            ]
+          },
+          "expect": "C"
+        },
+        {
+          "input": {
+            "angle_F": 25,
+            "options": [
+              {
+                "label": "A",
+                "text": "20°"
+              },
+              {
+                "label": "B",
+                "text": "35°"
+              },
+              {
+                "label": "C",
+                "text": "40°"
+              },
+              {
+                "label": "D",
+                "text": "55°"
+              }
+            ]
+          },
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "geometry",
+        "angle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_angle_in_circle",
+    "map_angle_to_option"
+  ]
+}

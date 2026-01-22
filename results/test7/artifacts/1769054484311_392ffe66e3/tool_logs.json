@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Determine effect of pelican increase on fish",
+    "note": "The text indicates that an increase in pelicans leads to a decrease in fish due to predation."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map effect to multiple-choice option",
+    "code": "effect = 'decrease'; options = [{'label': 'A', 'text': 'decrease'}, {'label': 'B', 'text': 'nothing'}, {'label': 'C', 'text': 'increase'}, {'label': 'D', 'text': 'none of the above'}]; answer = next(opt['label'] for opt in options if opt['text'] == effect)",
+    "stdout": "",
+    "error": "name 'next' is not defined"
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the final answer",
+    "text": "Answer: A"
+  }
+]

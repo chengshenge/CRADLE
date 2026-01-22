@@ -1,0 +1,71 @@
+{
+  "problem_state_summary": "The problem involves a geometric configuration with a right triangle where one of the angles is 60°. The vertex A of this 60° angle and the right angle vertex C are positioned on two parallel lines, FG and DE, respectively. The hypotenuse AB of the triangle bisects the angle CAG and intersects the line DE at point H. The task is to determine the measure of angle BCH. The diagram provides labels for points and lines, and marks the known angle and parallel lines. The relationships between the elements are noted, and the options for the unknown angle are provided.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "angle CAG",
+    "lines FG and DE",
+    "angle BCH"
+  ],
+  "unknowns": [
+    "angle BCH"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric configuration",
+    "Apply geometric principles to find the measure of angle BCH",
+    "Map the calculated angle to one of the provided options"
+  ],
+  "blockers": [
+    "angle BCH"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "parallel lines",
+    "bisector",
+    "right triangle"
+  ]
+}

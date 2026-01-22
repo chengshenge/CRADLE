@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify and count objects in the image",
+      "action": "reason",
+      "note": "Use the skill to count total objects, brown blocks, and large blue rubber things."
+    },
+    {
+      "intention": "Count total objects and specific types",
+      "action": "python",
+      "code": "total_objects = count_objects_in_region('image', 'all'); brown_blocks = count_objects_in_region('image', 'brown blocks'); large_blue_rubber_things = count_objects_in_region('image', 'large blue rubber things')"
+    },
+    {
+      "intention": "Calculate remaining objects",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric(f'{total_objects} - {brown_blocks} - {large_blue_rubber_things}')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

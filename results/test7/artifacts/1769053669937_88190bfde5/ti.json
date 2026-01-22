@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves a visual task where the user must count objects depicted in an image. Specifically, the task requires identifying and subtracting objects that are small and those that are blue rubber. The goal is to determine how many objects remain after these subtractions. The image likely contains various objects that need to be categorized by size and color/material. The criteria for what constitutes 'small' and 'blue rubber' must be visually determined from the image. The problem is essentially a counting and subtraction task based on visual characteristics.",
+  "entities": [
+    "total objects",
+    "small balls",
+    "blue rubber things"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify total number of objects in the image",
+    "Identify and count small balls",
+    "Identify and count blue rubber things",
+    "Subtract small balls and blue rubber things from total objects"
+  ],
+  "blockers": [
+    "The exact criteria for 'small' and 'blue rubber' need to be visually determined from the image."
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of size and color/material"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual counting",
+    "subtraction",
+    "object identification"
+  ]
+}

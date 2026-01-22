@@ -1,0 +1,38 @@
+{
+  "problem_state_summary": "The problem involves determining the number of dots in each group when 4 dots are divided into 2 equal groups. The total number of dots is given as 4, and the task is to find out how many dots are in each group. The problem is straightforward and requires simple division to solve. The answer must be an integer, as specified by the constraints. The problem is presented in text form, and no additional visual information is needed. The solution involves dividing the total number of dots by the number of groups to find the number of dots per group.",
+  "entities": [
+    "total_dots",
+    "dots_per_group"
+  ],
+  "unknowns": [
+    "dots_per_group"
+  ],
+  "required_operations": [
+    "Identify total number of dots",
+    "Divide total dots by number of groups",
+    "Ensure result is an integer"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check for integer result as per constraints"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "division",
+    "integer constraint"
+  ]
+}

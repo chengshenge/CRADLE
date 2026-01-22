@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the calculated length of segment CD to the corresponding multiple-choice option.",
+      "how_to_use": "Use the calculated length of CD and the provided options to determine the correct option label."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations required to find the length of segment CD.",
+      "how_to_use": "Use this skill to calculate the length of CD using geometric properties of the right triangle."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_length_CD",
+      "signature": "(AB_length, right_angle_at_C)->CD_length",
+      "purpose": "To calculate the length of segment CD in a right triangle where D is the midpoint of AB.",
+      "inputs": [
+        "AB_length",
+        "right_angle_at_C"
+      ],
+      "outputs": "CD_length",
+      "edge_cases": [
+        "Ensure correct handling when AB is not horizontal or vertical."
+      ],
+      "tests": [
+        {
+          "input": "10, true",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "right triangle",
+        "length calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_length_CD",
+    "calc_numeric",
+    "map_length_to_option"
+  ]
+}

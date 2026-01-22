@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves determining whether the value of a function f at x = 3 is greater than 0. A graph of the function f(x) is provided, with the x-axis labeled as 'x' and the y-axis labeled as 'f(x)'. The x-axis has ticks at 0, 1, 2, 3, 4, and 5, while the y-axis has ticks at -2, -1, 0, 1, 2, and 3. A key point on the graph is identified at x = 3, y = 1. The task is to check if the y-coordinate at x = 3 is greater than 0. The problem is presented as a multiple-choice question with options 'Yes' and 'No'.",
+  "entities": [
+    "f(x)",
+    "x",
+    "y"
+  ],
+  "unknowns": [
+    "f(3)"
+  ],
+  "required_operations": [
+    "Read the y-coordinate at x = 3 from the graph",
+    "Compare the y-coordinate to 0",
+    "Map the result to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart",
+    "Ensure correct interpretation of the y-coordinate at x = 3"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "function evaluation",
+    "graph interpretation",
+    "multiple choice"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relevant geometric configuration",
+      "action": "reason",
+      "note": "Use the diagram to understand the circle and line configuration with points A, B, C, D, and E."
+    },
+    {
+      "intention": "Extract angle ∠CDE from the diagram",
+      "action": "python",
+      "code": "angle_CDE = 180 - 60; angle_CDE"
+    },
+    {
+      "intention": "Map the calculated angle to the provided options",
+      "action": "python",
+      "code": "map_angle_to_option(angle_CDE, [{'label': 'A', 'text': '30°'}, {'label': 'B', 'text': '45°'}, {'label': 'C', 'text': '60°'}, {'label': 'D', 'text': '70°'}])"
+    },
+    {
+      "intention": "Normalize the final answer",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

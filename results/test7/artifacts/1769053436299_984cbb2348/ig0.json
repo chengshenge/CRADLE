@@ -1,0 +1,53 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves counting objects based on their color and type, which suggests a need to visually identify and count specific items in the image."
+  ],
+  "problem_understanding": "The problem asks to compare the number of gray rubber objects in front of a small yellow aeroplane with the number of big cyan matte fighters.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of gray rubber objects",
+      "number of big cyan matte fighters"
+    ],
+    "relations": [
+      "number of gray rubber objects > number of big cyan matte fighters"
+    ],
+    "constraints": [
+      "gray rubber objects must be in front of the small yellow aeroplane",
+      "big cyan matte fighters must be counted"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "number nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires counting and comparing quantities of specific objects based on their color and type, which involves visual identification."
+  ],
+  "problem_summary": "Compare the number of gray rubber objects in front of a small yellow aeroplane with the number of big cyan matte fighters.",
+  "knowns": [],
+  "asks": [
+    "Is the number of gray rubber objects greater than the number of big cyan matte fighters?"
+  ],
+  "constraints": [
+    "Gray rubber objects must be in front of the small yellow aeroplane.",
+    "Count the big cyan matte fighters."
+  ],
+  "visual_facts": [
+    "Presence of a small yellow aeroplane, gray rubber objects, and big cyan matte fighters."
+  ],
+  "ambiguity": [
+    "The exact number of objects is not provided and must be visually determined."
+  ]
+}

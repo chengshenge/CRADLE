@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the angle ∠AMK from the diagram.",
+      "action": "reason",
+      "note": "Use the extract_angle_from_diagram skill to find ∠AMK."
+    },
+    {
+      "intention": "Extract the angle ∠AMK using the provided skill.",
+      "action": "python",
+      "code": "angle_AMK = extract_angle_from_diagram('diagram_image')"
+    },
+    {
+      "intention": "Format the extracted angle to one decimal place.",
+      "action": "python",
+      "code": "formatted_angle = round(angle_AMK, 1)"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: {formatted_angle}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

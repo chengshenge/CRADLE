@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves determining the impact on the population of adult spiders if all spider eggs are eaten by predators. The scenario is presented in a multiple-choice format, where the reader must deduce the logical outcome of such an event. The question asks what would happen to the adult spider population under the condition that no new spiders can hatch due to the absence of eggs. The options provided suggest various outcomes for the adult spider population, including remaining the same, doubling, decreasing, or increasing. The task requires understanding the life cycle of spiders and the dependency of adult population sustainability on the hatching of new spiders. The problem is purely text-based and does not involve any numerical calculations or visual data interpretation.",
+  "entities": [
+    "adult spider population",
+    "spider eggs",
+    "predators"
+  ],
+  "unknowns": [
+    "effect on adult spider population"
+  ],
+  "required_operations": [
+    "Read the scenario",
+    "Understand the dependency of adult population on eggs",
+    "Logically deduce the outcome",
+    "Map the deduction to a multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check for multi-line conditions in text",
+    "Ensure understanding of logical implications"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Adult spider population would remain the same"
+      },
+      {
+        "label": "B",
+        "text": "Adult spider population would double."
+      },
+      {
+        "label": "C",
+        "text": "Adults spider population would decrease"
+      },
+      {
+        "label": "D",
+        "text": "Adult spider population would increase."
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "population dynamics",
+    "multiple-choice"
+  ]
+}

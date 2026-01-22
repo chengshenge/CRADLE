@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves a collection of objects depicted in a diagram, each with specific attributes such as size, material, and color. The task is to identify and subtract objects that are big and matte, as well as those that are green and rubber. After these subtractions, the goal is to count the number of remaining objects. The problem requires visual identification of these attributes from the diagram to perform the necessary subtractions. The final answer should be an integer representing the count of objects left after the specified subtractions.",
+  "entities": [
+    "big matte balls",
+    "green rubber objects",
+    "remaining objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify big matte balls in the diagram",
+    "Identify green rubber objects in the diagram",
+    "Subtract identified objects from the total",
+    "Count the remaining objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping for 'big', 'matte', 'green', 'rubber' in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "subtraction",
+    "visual identification",
+    "counting",
+    "attributes"
+  ]
+}

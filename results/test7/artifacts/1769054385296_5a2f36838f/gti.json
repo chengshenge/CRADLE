@@ -1,0 +1,133 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar Chart Title: Monthly Sales Data",
+    "X-axis Label: Months",
+    "Y-axis Label: Sales (in thousands)",
+    "Legend: Product A, Product B",
+    "X-axis Ticks: January, February, March, April, May",
+    "Y-axis Ticks: 0, 10, 20, 30, 40, 50",
+    "Key Points: January - Product A: 30, Product B: 20; February - Product A: 40, Product B: 25; March - Product A: 35, Product B: 30; April - Product A: 45, Product B: 35; May - Product A: 50, Product B: 40"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Monthly Sales Data",
+      "x_axis": {
+        "label": "Months",
+        "unit": "",
+        "ticks": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May"
+        ]
+      },
+      "y_axis": {
+        "label": "Sales",
+        "unit": "in thousands",
+        "ticks": [
+          "0",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      },
+      "legend": [
+        "Product A",
+        "Product B"
+      ],
+      "key_points": [
+        {
+          "label": "January",
+          "x": "January",
+          "y": "30",
+          "note": "Product A"
+        },
+        {
+          "label": "January",
+          "x": "January",
+          "y": "20",
+          "note": "Product B"
+        },
+        {
+          "label": "February",
+          "x": "February",
+          "y": "40",
+          "note": "Product A"
+        },
+        {
+          "label": "February",
+          "x": "February",
+          "y": "25",
+          "note": "Product B"
+        },
+        {
+          "label": "March",
+          "x": "March",
+          "y": "35",
+          "note": "Product A"
+        },
+        {
+          "label": "March",
+          "x": "March",
+          "y": "30",
+          "note": "Product B"
+        },
+        {
+          "label": "April",
+          "x": "April",
+          "y": "45",
+          "note": "Product A"
+        },
+        {
+          "label": "April",
+          "x": "April",
+          "y": "35",
+          "note": "Product B"
+        },
+        {
+          "label": "May",
+          "x": "May",
+          "y": "50",
+          "note": "Product A"
+        },
+        {
+          "label": "May",
+          "x": "May",
+          "y": "40",
+          "note": "Product B"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "largest bar value",
+      "smallest bar value"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides monthly sales data for two products, A and B, across five months.",
+    "The task is to identify the largest and smallest sales values from the chart and calculate their difference.",
+    "The values are clearly marked on the chart, allowing for easy extraction of the required data."
+  ]
+}

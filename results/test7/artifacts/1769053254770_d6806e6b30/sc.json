@@ -1,0 +1,53 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "deduce_population_outcome",
+      "signature": "(scenario, options)->str",
+      "purpose": "To deduce the logical outcome of a population scenario based on given conditions and map it to a multiple-choice option.",
+      "inputs": [
+        "scenario",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "All options are logically incorrect",
+        "Scenario is ambiguous"
+      ],
+      "tests": [
+        {
+          "input": {
+            "scenario": "If all spider eggs are eaten by predators, what happens to the adult spider population?",
+            "options": [
+              {
+                "label": "A",
+                "text": "Adult spider population would remain the same"
+              },
+              {
+                "label": "B",
+                "text": "Adult spider population would double."
+              },
+              {
+                "label": "C",
+                "text": "Adults spider population would decrease"
+              },
+              {
+                "label": "D",
+                "text": "Adult spider population would increase."
+              }
+            ]
+          },
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "logic",
+        "population dynamics",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "deduce_population_outcome"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify birth years from image text",
+      "action": "reason",
+      "note": "Extract birth years from the image text to determine how many are after 1945."
+    },
+    {
+      "intention": "Count people born after 1945",
+      "action": "python",
+      "code": "birth_years = [1938, 1946, 1950, 1944, 1947]; count_after_1945 = sum(1 for year in birth_years if year > 1945)"
+    },
+    {
+      "intention": "Provide the final count as the answer",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

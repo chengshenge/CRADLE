@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between angles in the circle.",
+      "action": "reason",
+      "note": "Use the property that an inscribed angle is half the central angle subtending the same arc."
+    },
+    {
+      "intention": "Calculate the angle ∠CAB using the given ∠ADC.",
+      "action": "python",
+      "code": "angle_ADC = 26; angle_CAB = 90 - angle_ADC"
+    },
+    {
+      "intention": "Map the calculated angle to the provided options.",
+      "action": "python",
+      "code": "answer = map_angle_to_option(angle_CAB, [{'label': 'A', 'text': '26°'}, {'label': 'B', 'text': '74°'}, {'label': 'C', 'text': '64°'}, {'label': 'D', 'text': '54°'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,41 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves determining the number of items sold in different quantities across stores, which suggests a tabular format with rows and columns representing items and their sales figures."
+  ],
+  "problem_understanding": "The problem asks for the number of items that have sold less than 5 units in at least one store. This implies checking sales figures for each item across multiple stores and counting those that meet the condition.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of items sold less than 5 units in at least one store"
+    ],
+    "relations": [
+      "An item is counted if it has a sales figure less than 5 in any of the stores."
+    ],
+    "constraints": [
+      "Sales figures must be checked for each store for each item."
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "items nouns sold verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires scanning through a table to identify and count items based on a specific sales condition."
+  ],
+  "problem_summary": "Determine the number of items that have sold less than 5 units in at least one store.",
+  "knowns": [],
+  "asks": [
+    "number of items sold less than 5 units in at least one store"
+  ],
+  "constraints": [
+    "Sales figures must be checked for each store for each item."
+  ],
+  "visual_facts": [
+    "The table contains sales figures for items across different stores."
+  ],
+  "ambiguity": [
+    "The specific layout of the table and how sales figures are organized is not described in the prompt."
+  ]
+}

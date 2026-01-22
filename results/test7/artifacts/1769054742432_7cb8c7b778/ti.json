@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves a square inscribed in a circle. The circle has an area of 18π square units. The task is to find the length of a side of the square. The relationship between the circle and the square is crucial, as the square is inscribed within the circle. The problem is presented in a multiple-choice format with four options. The solution requires understanding the geometric relationship between the circle and the square.",
+  "entities": [
+    "Area of circle",
+    "Side of square"
+  ],
+  "unknowns": [
+    "Length of a side of the square"
+  ],
+  "required_operations": [
+    "Determine the radius of the circle from its area",
+    "Use the radius to find the diameter of the circle",
+    "Relate the diameter of the circle to the diagonal of the square",
+    "Calculate the side length of the square from its diagonal"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "3 \\sqrt 2"
+      },
+      {
+        "label": "C",
+        "text": "6"
+      },
+      {
+        "label": "D",
+        "text": "6 \\sqrt 2"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "null",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "square",
+    "inscribed",
+    "area",
+    "multiple-choice"
+  ]
+}

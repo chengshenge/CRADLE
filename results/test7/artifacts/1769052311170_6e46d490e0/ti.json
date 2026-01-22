@@ -1,0 +1,53 @@
+{
+  "problem_state_summary": "The problem involves determining if 'Periwinkle' is the maximum among a set of values or categories. The values associated with different categories are provided: Periwinkle has a value of 45, Azure has 30, Cyan has 25, and Teal has 20. The task is to compare these values to identify if Periwinkle holds the maximum value. The problem is presented in a multiple-choice format with two options: 'yes' or 'no'. The context or set of values/categories to compare is not specified in the prompt, but the extracted information suggests a straightforward comparison. The problem requires reading and comparing the given values to make a decision.",
+  "entities": [
+    "Periwinkle",
+    "Azure",
+    "Cyan",
+    "Teal"
+  ],
+  "unknowns": [
+    "Is Periwinkle the maximum?"
+  ],
+  "required_operations": [
+    "Read values associated with each category",
+    "Compare values to determine the maximum",
+    "Map the result to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "maximum",
+    "multiple-choice"
+  ]
+}

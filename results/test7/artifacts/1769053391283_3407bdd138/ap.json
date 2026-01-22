@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify relationships in the food web diagram",
+      "action": "reason",
+      "note": "Analyze the diagram to understand how a decrease in large roach affects other species."
+    },
+    {
+      "intention": "Predict impact using learned skill",
+      "action": "python",
+      "code": "impact_predictions = analyze_food_web_impact('diagram', ['Steelheads', 'Stickleback Fry', 'Predatory Insects'], 'decrease in Large Roach')"
+    },
+    {
+      "intention": "Map prediction to multiple-choice option",
+      "action": "python",
+      "code": "selected_option = map_prediction_to_option(impact_predictions, [{'label': 'A', 'text': 'The population of steelheads would decrease.'}, {'label': 'B', 'text': 'The population of stickleback fry would increase.'}, {'label': 'C', 'text': 'The population of predatory insects would increase.'}, {'label': 'D', 'text': 'The population of predatory insects would decrease.'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {selected_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

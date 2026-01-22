@@ -1,0 +1,49 @@
+{
+  "problem_state_summary": "The problem involves a square ABCD with an inscribed circle centered at O. The task is to find the angle ∠AMK. The diagram is expected to show a square with an inscribed circle, and the labels for points A, B, C, D, O, M, and K are crucial for identifying the geometric configuration needed to determine the angle ∠AMK. The exact positions of points A, M, and K are not specified in the text, which may affect the determination of the angle. The problem requires understanding the geometric configuration of a square and an inscribed circle to determine the angle ∠AMK. The final answer should be a floating-point number with one decimal place.",
+  "entities": [
+    "ABCD",
+    "O",
+    "A",
+    "B",
+    "C",
+    "D",
+    "M",
+    "K"
+  ],
+  "unknowns": [
+    "∠AMK"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the geometric configuration.",
+    "Identify the positions of points A, M, and K.",
+    "Calculate the angle ∠AMK based on the geometric properties of the square and the inscribed circle."
+  ],
+  "blockers": [
+    "∠AMK"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "square",
+    "inscribed circle"
+  ]
+}

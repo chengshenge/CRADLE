@@ -1,0 +1,94 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_chart_data_points",
+      "signature": "(chart_image, line_label)->list",
+      "purpose": "Extract data points for a specified line from a chart image.",
+      "inputs": [
+        "chart_image",
+        "line_label"
+      ],
+      "outputs": "list of data points",
+      "edge_cases": [
+        "Chart with overlapping lines",
+        "Lines with similar colors"
+      ],
+      "tests": [
+        {
+          "input": "(chart_image, 'Line A')",
+          "expect": "[10, 20, 30, 40, 50, 60]"
+        },
+        {
+          "input": "(chart_image, 'Line B')",
+          "expect": "[15, 25, 35, 45, 55, 65]"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data extraction",
+        "image processing"
+      ]
+    },
+    {
+      "name": "compute_yearly_difference",
+      "signature": "(data_points_A, data_points_B)->list",
+      "purpose": "Compute the yearly differences between two sets of data points.",
+      "inputs": [
+        "data_points_A",
+        "data_points_B"
+      ],
+      "outputs": "list of differences",
+      "edge_cases": [
+        "Data points with negative values",
+        "Data points with zero values"
+      ],
+      "tests": [
+        {
+          "input": "([10, 20, 30], [5, 15, 25])",
+          "expect": "[5, 5, 5]"
+        },
+        {
+          "input": "([50, 60, 70], [40, 50, 60])",
+          "expect": "[10, 10, 10]"
+        }
+      ],
+      "tags": [
+        "data comparison",
+        "difference calculation"
+      ]
+    },
+    {
+      "name": "identify_max_difference_year",
+      "signature": "(differences, years)->int",
+      "purpose": "Identify the year with the maximum difference from a list of differences.",
+      "inputs": [
+        "differences",
+        "years"
+      ],
+      "outputs": "year with maximum difference",
+      "edge_cases": [
+        "Multiple years with the same maximum difference"
+      ],
+      "tests": [
+        {
+          "input": "([5, 10, 15], [2015, 2016, 2017])",
+          "expect": "2017"
+        },
+        {
+          "input": "([10, 20, 20], [2018, 2019, 2020])",
+          "expect": "2019"
+        }
+      ],
+      "tags": [
+        "year identification",
+        "maximum difference"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_chart_data_points",
+    "compute_yearly_difference",
+    "identify_max_difference_year"
+  ]
+}

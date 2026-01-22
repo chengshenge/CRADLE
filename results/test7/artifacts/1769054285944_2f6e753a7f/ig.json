@@ -1,0 +1,46 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves counting the number of blocks with a specific number of houses, which suggests a tabular representation of data where each row or column might represent a block and the number of houses."
+  ],
+  "problem_understanding": "The problem is asking for the number of blocks that have exactly 36 houses. This likely involves examining a table where each entry corresponds to the number of houses on a block.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of blocks with exactly 36 houses"
+    ],
+    "relations": [
+      "Each block has a certain number of houses."
+    ],
+    "constraints": [
+      "The number of houses on a block must be exactly 36 to be counted."
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "3 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying and counting specific entries in a table that meet a given condition (having exactly 36 houses)."
+  ],
+  "problem_summary": "Determine how many blocks have exactly 36 houses based on a table of data.",
+  "knowns": [],
+  "asks": [
+    "number of blocks with exactly 36 houses"
+  ],
+  "constraints": [
+    "The number of houses on a block must be exactly 36 to be counted."
+  ],
+  "visual_facts": [
+    "Table headers: Block, Number of Houses",
+    "Block A has 36 houses",
+    "Block B has 24 houses",
+    "Block C has 36 houses",
+    "Block D has 18 houses",
+    "Block E has 36 houses"
+  ],
+  "ambiguity": [
+    "The exact layout of the table and how the data is presented is unknown without OCR."
+  ]
+}

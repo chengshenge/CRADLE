@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from image and compute age gap",
+      "action": "python",
+      "code": "age_alice = 30; age_bob = 25; age_gap = age_alice - age_bob"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

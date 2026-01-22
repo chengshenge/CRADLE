@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "Blockers: number of tiny gray bicycles and things to the left of the tiny green bicycle."
+    },
+    {
+      "intention": "Count objects in the diagram based on labels.",
+      "action": "python",
+      "code": "tiny_gray_bicycles_left_of_sedan = 3; things_left_of_green_bicycle = 2"
+    },
+    {
+      "intention": "Compare the counts and map to the correct option.",
+      "action": "python",
+      "code": "comparison_result = tiny_gray_bicycles_left_of_sedan > things_left_of_green_bicycle; option = map_length_to_option(comparison_result, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])"
+    },
+    {
+      "intention": "Output the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

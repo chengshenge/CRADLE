@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract dimensions of the rectangle from the diagram image.",
+      "how_to_use": "Use this skill to obtain the lengths of sides AB and BC from the image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the perimeter of the rectangle using the extracted dimensions.",
+      "how_to_use": "Apply the formula 2 * (length + width) using the extracted lengths."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the calculated perimeter as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

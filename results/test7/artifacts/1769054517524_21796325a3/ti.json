@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart titled 'Annual Data Comparison' that displays two lines, Line A and Line B, representing data points over the years 2015 to 2020. The task is to determine which year shows the largest difference in data points between these two lines. The chart has an x-axis labeled 'Year' with ticks for each year from 2015 to 2020, and a y-axis labeled 'Value' with ticks ranging from 0 to 100. The legend identifies the two lines as Line A and Line B. The specific data points for each line are provided for each year. The goal is to compute the difference between the data points of Line A and Line B for each year and identify the year with the maximum difference.",
+  "entities": [
+    "Line A",
+    "Line B",
+    "Year",
+    "Value"
+  ],
+  "unknowns": [
+    "year with largest difference"
+  ],
+  "required_operations": [
+    "Read chart data points for Line A and Line B",
+    "Compute differences between Line A and Line B for each year",
+    "Identify the year with the largest difference"
+  ],
+  "blockers": [
+    "year with largest difference"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing for accuracy",
+    "Ensure correct legend mapping for Line A and Line B",
+    "Check for consistent units on the y-axis"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "data comparison",
+    "yearly difference"
+  ]
+}

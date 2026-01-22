@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the perimeter of a square. The square is depicted in a diagram with labeled points A, B, C, and D. The side length of the square, specifically segment AB, is marked as 5 cm in the diagram. The task requires calculating the perimeter using the known side length. The formula for the perimeter of a square is 4 times the side length. The problem does not provide the side length in the text, so it must be extracted from the image. The final answer should be an integer value representing the perimeter.",
+  "entities": [
+    "square",
+    "side length",
+    "perimeter"
+  ],
+  "unknowns": [
+    "perimeter of the square"
+  ],
+  "required_operations": [
+    "Extract side length from diagram",
+    "Apply perimeter formula: Perimeter = 4 * side length",
+    "Compute the perimeter"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "perimeter",
+    "square",
+    "diagram"
+  ]
+}

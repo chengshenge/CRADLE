@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves analyzing a table that displays sales figures for various items across different stores. The task is to determine how many items have sold less than 5 units in at least one store. This requires examining the sales figures for each item across all stores and counting those that meet the specified condition. The table includes headers for items and stores, with specific sales figures provided for each item-store combination. The goal is to identify and count the items that have at least one store with sales figures below 5 units. The problem is presented in a tabular format, which suggests that the data is organized in rows and columns, with each row representing an item and each column representing a store. The solution requires an integer answer, indicating the number of items that meet the condition.",
+  "entities": [
+    "Item 1",
+    "Item 2",
+    "Item 3",
+    "Store A",
+    "Store B",
+    "Store C"
+  ],
+  "unknowns": [
+    "number of items sold less than 5 units in at least one store"
+  ],
+  "required_operations": [
+    "Read table headers and rows",
+    "Check sales figures for each item across all stores",
+    "Count items with sales figures less than 5 in any store"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct row and column alignment",
+    "Verify header meanings",
+    "Check for any missing or misaligned data in the table"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "table",
+    "sales figures",
+    "comparison",
+    "counting"
+  ]
+}

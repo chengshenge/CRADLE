@@ -1,0 +1,31 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects_in_region",
+      "purpose": "To count the total number of objects in the image.",
+      "how_to_use": "Use this skill to determine the total number of objects present in the specified region of the image."
+    },
+    {
+      "name": "identify_objects_by_characteristics",
+      "purpose": "To identify and count objects based on specific characteristics such as size and color/material.",
+      "how_to_use": "Use this skill to identify and count objects that are 'small' and 'blue rubber' in the image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as subtraction.",
+      "how_to_use": "Use this skill to subtract the counts of small balls and blue rubber things from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use this skill to format the final count of objects left after subtraction."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "count_objects_in_region",
+    "identify_objects_by_characteristics",
+    "calc_numeric",
+    "format_final"
+  ]
+}

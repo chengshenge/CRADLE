@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves analyzing a list of people with their birth years provided in an image. The task is to determine how many of these individuals were born after the end of World War II, which is marked by the year 1945. The image contains names and corresponding birth years, and the goal is to count the number of people whose birth year is greater than 1945. The extracted information from the image includes names and birth years such as John Doe - 1938, Jane Smith - 1946, Alice Johnson - 1950, Bob Brown - 1944, and Charlie Davis - 1947. The task requires reading and comparing these birth years to the year 1945 to find the count of people born after this year. The final answer should be an integer representing this count.",
+  "entities": [
+    "John Doe",
+    "Jane Smith",
+    "Alice Johnson",
+    "Bob Brown",
+    "Charlie Davis"
+  ],
+  "unknowns": [
+    "Number of people born after 1945"
+  ],
+  "required_operations": [
+    "Read birth years from image",
+    "Compare each birth year to 1945",
+    "Count how many are greater than 1945"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the image text is clear enough to accurately read birth years"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "comparison",
+    "birth year",
+    "World War II"
+  ]
+}

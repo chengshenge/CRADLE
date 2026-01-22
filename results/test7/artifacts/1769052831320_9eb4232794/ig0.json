@@ -1,0 +1,80 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with specific points, lines, and angles related to a circle. The image likely contains a diagram illustrating these elements."
+  ],
+  "problem_understanding": "The problem involves a circle with diameter AB, chords EF and EB, and specific points and angles. The task is to find the measure of angle F given angle AOF is 40°.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠AOF",
+        "value": "40",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "∠F"
+    ],
+    "relations": [
+      "AB is the diameter of ⊙O",
+      "EF and EB are chords of ⊙O",
+      "E is the midpoint of FEB",
+      "EF intersects AB at C",
+      "OF is connected"
+    ],
+    "constraints": [
+      "E is the midpoint of FEB",
+      "AB is the diameter"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "20°"
+      },
+      {
+        "label": "B",
+        "text": "35°"
+      },
+      {
+        "label": "C",
+        "text": "40°"
+      },
+      {
+        "label": "D",
+        "text": "55°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "8 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle F using the given geometric relationships and the provided angle measure."
+  ],
+  "problem_summary": "Find the measure of angle F in a circle with given geometric relationships and angle AOF = 40°.",
+  "knowns": [
+    {
+      "name": "∠AOF",
+      "value": "40",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement."
+    }
+  ],
+  "asks": [
+    "∠F"
+  ],
+  "constraints": [
+    "E is the midpoint of FEB",
+    "AB is the diameter"
+  ],
+  "visual_facts": [
+    "Diagram likely shows circle ⊙O with diameter AB, chords EF and EB, and points E, F, C, O."
+  ],
+  "ambiguity": [
+    "The exact positions and relationships of points E, F, C, and O need to be visually confirmed from the diagram."
+  ]
+}

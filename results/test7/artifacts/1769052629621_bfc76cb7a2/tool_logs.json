@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify and count objects in the diagram",
+    "note": "Use the count_objects_in_region skill to count 'big red rubber double buss' and 'big green things'."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Count 'big red rubber double buss' and 'big green things'",
+    "code": "count_red_buss = count_objects_in_region('image', 'big red rubber double buss'); count_green_things = count_objects_in_region('image', 'big green things')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Compare the counts and map to option",
+    "code": "answer_option = map_count_to_option(count_red_buss, count_green_things, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer",
+    "text": "Answer: {answer_option}"
+  }
+]

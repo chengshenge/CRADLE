@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the rate of change using the formula (September wait time - August wait time) / (September - August).",
+      "how_to_use": "Use calc_numeric to evaluate the expression (85 - 80) / 1 to find the rate of change in minutes per month."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use format_final to return the result in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_values_from_table",
+      "signature": "(table_image, months)->list",
+      "purpose": "Extract specific values from a table image based on given month names.",
+      "inputs": [
+        "table_image",
+        "months"
+      ],
+      "outputs": "list of extracted values",
+      "edge_cases": [
+        "Table is not clear or values are misaligned.",
+        "Month names are not found in the table."
+      ],
+      "tests": [
+        {
+          "input": "table_image with months ['August', 'September']",
+          "expect": "[80, 85]"
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "data extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_values_from_table",
+    "calc_numeric",
+    "format_final"
+  ]
+}

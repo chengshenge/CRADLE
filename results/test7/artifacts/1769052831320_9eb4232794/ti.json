@@ -1,0 +1,68 @@
+{
+  "problem_state_summary": "The problem involves a circle with center O and diameter AB. Chords EF and EB are present, with point E being the midpoint of FEB. The chord EF intersects the diameter AB at point C. The angle AOF is given as 40 degrees. The task is to determine the measure of angle F. The problem is presented with a diagram that illustrates these geometric relationships. The solution requires understanding the relationships between the given elements and using the provided angle to find the unknown angle F.",
+  "entities": [
+    "Circle ⊙O",
+    "Diameter AB",
+    "Chords EF",
+    "Chords EB",
+    "Point E",
+    "Point F",
+    "Point C",
+    "Point O",
+    "Angle AOF"
+  ],
+  "unknowns": [
+    "∠F"
+  ],
+  "required_operations": [
+    "Identify geometric relationships from the diagram",
+    "Use the given angle AOF to find angle F",
+    "Apply circle theorems or properties to solve for ∠F"
+  ],
+  "blockers": [
+    "∠F"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "20°"
+      },
+      {
+        "label": "B",
+        "text": "35°"
+      },
+      {
+        "label": "C",
+        "text": "40°"
+      },
+      {
+        "label": "D",
+        "text": "55°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "angle",
+    "diagram"
+  ]
+}

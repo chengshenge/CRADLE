@@ -1,0 +1,19 @@
+{
+  "selected_skills": [
+    {
+      "name": "compare_chart_values",
+      "purpose": "To compare the average weekly work hours of each country against the 35-hour threshold.",
+      "how_to_use": "Use this skill to determine if the average weekly work hours for each country exceed 35 hours at any point on the chart."
+    },
+    {
+      "name": "count_objects_in_region",
+      "purpose": "To count the number of countries that exceed the 35-hour threshold.",
+      "how_to_use": "Use this skill to count the number of countries identified by the compare_chart_values skill that exceed the threshold."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "compare_chart_values",
+    "count_objects_in_region"
+  ]
+}

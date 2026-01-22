@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle 3 from a geometric diagram. The diagram is labeled with points A, B, C, and D, and includes several angles. Angle 3 is specifically marked with a value of 38 degrees. The task is to identify the correct measure of angle 3 from the given options. The options provided are 28, 38, 52, and 62 degrees. The problem is a multiple-choice question, and the final answer must be presented as an option label. The context of angle 3 within the diagram is not fully clear without visual inspection.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "angle 3"
+  ],
+  "unknowns": [
+    "m ∠3"
+  ],
+  "required_operations": [
+    "Inspect diagram",
+    "Identify angle 3",
+    "Determine measure of angle 3",
+    "Map measure to option"
+  ],
+  "blockers": [
+    "m ∠3"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "28"
+      },
+      {
+        "label": "B",
+        "text": "38"
+      },
+      {
+        "label": "C",
+        "text": "52"
+      },
+      {
+        "label": "D",
+        "text": "62"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "multiple-choice"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric configuration with angles and lines, specifically mentioning points, lines, and angles in a triangle. This suggests the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem involves a right triangle with a 60° angle, where the vertex A of the 60° angle and the right angle vertex C are on two parallel lines FG and DE, respectively. The hypotenuse AB bisects angle CAG and intersects line DE at point H. The task is to find the measure of angle BCH.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "angle CAG",
+        "value": "60",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given as part of the right triangle."
+      },
+      {
+        "name": "lines FG and DE",
+        "value": "parallel",
+        "unit": "",
+        "source": "text",
+        "note": "Given as parallel lines."
+      }
+    ],
+    "unknown": [
+      "angle BCH"
+    ],
+    "relations": [
+      "AB bisects angle CAG",
+      "A is on line FG",
+      "C is on line DE",
+      "H is the intersection of AB and DE"
+    ],
+    "constraints": [
+      "FG and DE are parallel"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "8 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of a specific angle in a geometric configuration, which requires understanding the relationships between the given elements and applying geometric principles."
+  ],
+  "problem_summary": "Determine the measure of angle BCH in a geometric configuration involving a right triangle with a 60° angle, where the hypotenuse bisects another angle and intersects a parallel line.",
+  "knowns": [
+    {
+      "name": "angle CAG",
+      "value": "60",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given as part of the right triangle."
+    },
+    {
+      "name": "lines FG and DE",
+      "value": "parallel",
+      "unit": "",
+      "source": "text",
+      "note": "Given as parallel lines."
+    }
+  ],
+  "asks": [
+    "angle BCH"
+  ],
+  "constraints": [
+    "FG and DE are parallel"
+  ],
+  "visual_facts": [
+    "Diagram labels: A, B, C, D, E, F, G, H",
+    "Marked angle: CAG = 60°",
+    "Parallel lines: FG and DE",
+    "AB bisects angle CAG",
+    "A is on line FG",
+    "C is on line DE",
+    "H is the intersection of AB and DE"
+  ],
+  "ambiguity": [
+    "The exact positions of points and lines need to be interpreted from the diagram."
+  ]
+}

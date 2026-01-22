@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves comparing the derivative of a function f(x) at two different points, x=2 and x=5. The task is to determine whether the derivative at x=2 is larger than, equal to, or smaller than the derivative at x=5. The function f(x) is represented graphically, and the derivatives at these points correspond to the slopes of the tangent lines at these points on the graph. The graph includes key points at (2, 1) and (5, -1), and the x-axis and y-axis are labeled with tick marks. The exact values of the derivatives are not provided, requiring interpretation from the graph. The problem is presented in a multiple-choice format with three options to choose from.",
+  "entities": [
+    "f(x)",
+    "x=2",
+    "x=5"
+  ],
+  "unknowns": [
+    "derivative of f(x) at x=2",
+    "derivative of f(x) at x=5"
+  ],
+  "required_operations": [
+    "Read the graph of f(x)",
+    "Determine the slope of the tangent line at x=2",
+    "Determine the slope of the tangent line at x=5",
+    "Compare the slopes to choose the correct option"
+  ],
+  "blockers": [
+    "derivative of f(x) at x=2",
+    "derivative of f(x) at x=5"
+  ],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accurate slope estimation",
+    "Ensure correct interpretation of graph for derivative comparison"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "larger than"
+      },
+      {
+        "label": "B",
+        "text": "equal to"
+      },
+      {
+        "label": "C",
+        "text": "smaller than"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "derivative",
+    "graph interpretation",
+    "multiple-choice"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_function_symmetry",
+      "signature": "(graph_image)->str",
+      "purpose": "Determine if a function is odd or even based on its graphical representation.",
+      "inputs": [
+        "graph_image"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Graph with no clear symmetry",
+        "Graph with noise or distortion"
+      ],
+      "tests": [
+        {
+          "input": "image_with_odd_function",
+          "expect": "odd"
+        },
+        {
+          "input": "image_with_even_function",
+          "expect": "even"
+        },
+        {
+          "input": "image_with_no_symmetry",
+          "expect": "neither"
+        }
+      ],
+      "tags": [
+        "function analysis",
+        "graph interpretation",
+        "symmetry",
+        "odd or even function"
+      ]
+    },
+    {
+      "name": "map_symmetry_to_option",
+      "signature": "(symmetry, options)->str",
+      "purpose": "Map the determined symmetry of a function to the corresponding multiple-choice option.",
+      "inputs": [
+        "symmetry",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Symmetry not matching any option",
+        "Multiple options for a single symmetry"
+      ],
+      "tests": [
+        {
+          "input": [
+            "odd",
+            [
+              {
+                "label": "A",
+                "text": "odd"
+              },
+              {
+                "label": "B",
+                "text": "even"
+              }
+            ]
+          ],
+          "expect": "A"
+        },
+        {
+          "input": [
+            "even",
+            [
+              {
+                "label": "A",
+                "text": "odd"
+              },
+              {
+                "label": "B",
+                "text": "even"
+              }
+            ]
+          ],
+          "expect": "B"
+        },
+        {
+          "input": [
+            "neither",
+            [
+              {
+                "label": "A",
+                "text": "odd"
+              },
+              {
+                "label": "B",
+                "text": "even"
+              }
+            ]
+          ],
+          "expect": "none"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "function analysis",
+        "symmetry"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_function_symmetry",
+    "map_symmetry_to_option"
+  ]
+}

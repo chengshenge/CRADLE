@@ -1,0 +1,115 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar Chart Title: Heights of Bars",
+    "X-axis label: Categories",
+    "Y-axis label: Height",
+    "Y-axis unit: cm",
+    "Y-axis ticks: 0, 10, 20, 30, 40, 50",
+    "Legend: None",
+    "Key points: Category A - 15 cm, Category B - 20 cm, Category C - 35 cm"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Heights of Bars",
+      "x_axis": {
+        "label": "Categories",
+        "unit": "",
+        "ticks": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "y_axis": {
+        "label": "Height",
+        "unit": "cm",
+        "ticks": [
+          "0",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      },
+      "legend": [],
+      "key_points": [
+        {
+          "label": "A",
+          "x": "A",
+          "y": "15",
+          "note": "Category A height"
+        },
+        {
+          "label": "B",
+          "x": "B",
+          "y": "20",
+          "note": "Category B height"
+        },
+        {
+          "label": "C",
+          "x": "C",
+          "y": "35",
+          "note": "Category C height"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "Height of Category A",
+        "value": "15",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from bar chart"
+      },
+      {
+        "name": "Height of Category B",
+        "value": "20",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from bar chart"
+      },
+      {
+        "name": "Height of Category C",
+        "value": "35",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from bar chart"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "unresolved_targets": [
+      "sum of smallest two bars",
+      "height of largest bar"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides the heights of three categories, which are necessary to determine the sum of the smallest two bars and compare it to the largest bar."
+  ]
+}

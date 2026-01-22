@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify known angles and use sum property",
+      "action": "reason",
+      "note": "Use the sum of angles around point E to find ∠C."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠C",
+      "action": "python",
+      "code": "angle_C = 360 - 35 - 105"
+    },
+    {
+      "intention": "Map calculated angle to closest option",
+      "action": "python",
+      "code": "option = map_length_to_option(angle_C, [{'label': 'A', 'text': '60°'}, {'label': 'B', 'text': '70°'}, {'label': 'C', 'text': '80°'}, {'label': 'D', 'text': '85°'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

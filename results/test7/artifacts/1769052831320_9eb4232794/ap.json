@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify relevant geometric relationships",
+      "action": "reason",
+      "note": "Use the given angle AOF = 40° and circle properties to find ∠F."
+    },
+    {
+      "intention": "Calculate angle F using circle properties",
+      "action": "python",
+      "code": "angle_F = 90 - 40"
+    },
+    {
+      "intention": "Map calculated angle to multiple-choice option",
+      "action": "python",
+      "code": "angle_option = map_angle_to_option(angle_F, [{'label': 'A', 'text': '20°'}, {'label': 'B', 'text': '35°'}, {'label': 'C', 'text': '40°'}, {'label': 'D', 'text': '55°'}])"
+    },
+    {
+      "intention": "Provide final answer in required format",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,55 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the radius of the circle from its area and use it to find the diameter.",
+      "how_to_use": "Use calc_numeric to calculate the radius from the area formula: radius = sqrt(area/π). Then calculate the diameter as 2 * radius."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "To solve for the side length of the square using the relationship between the circle's diameter and the square's diagonal.",
+      "how_to_use": "Use sympy_solve to solve the equation relating the diagonal of the square (which is the diameter of the circle) to the side length of the square."
+    },
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the calculated side length of the square to the correct multiple-choice option.",
+      "how_to_use": "Use map_length_to_option to match the calculated side length with the given options and return the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_side_length_of_square",
+      "signature": "(diameter)->side_length",
+      "purpose": "To calculate the side length of a square given its diagonal (diameter of the circle).",
+      "inputs": [
+        "diameter"
+      ],
+      "outputs": "side_length",
+      "edge_cases": [
+        "Ensure the diameter is positive.",
+        "Handle cases where the diameter is a non-integer."
+      ],
+      "tests": [
+        {
+          "input": "6",
+          "expect": "3 * sqrt(2)"
+        },
+        {
+          "input": "12",
+          "expect": "6 * sqrt(2)"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "square",
+        "diagonal",
+        "side length"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calc_numeric",
+    "sympy_solve",
+    "map_length_to_option"
+  ]
+}

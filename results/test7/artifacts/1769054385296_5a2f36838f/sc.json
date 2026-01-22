@@ -1,0 +1,55 @@
+{
+  "selected_skills": [
+    {
+      "name": "compare_chart_values",
+      "purpose": "To compare values extracted from a chart to identify the largest and smallest bar values.",
+      "how_to_use": "Use this skill to determine which bar in the chart has the largest and smallest values by comparing their heights."
+    },
+    {
+      "name": "extract_text_from_image",
+      "purpose": "To extract numerical values from the chart image.",
+      "how_to_use": "Use this skill to extract the exact sales values from the bar chart image for further analysis."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the difference between the largest and smallest bar values.",
+      "how_to_use": "Use this skill to calculate the difference once the largest and smallest values are identified."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_extreme_values_in_chart",
+      "signature": "(chart_image)->(largest_value, smallest_value)",
+      "purpose": "To identify the largest and smallest values in a bar chart.",
+      "inputs": [
+        "chart_image"
+      ],
+      "outputs": "(largest_value, smallest_value)",
+      "edge_cases": [
+        "Bars with similar heights",
+        "Bars with non-integer values"
+      ],
+      "tests": [
+        {
+          "input": "chart_image_with_distinct_values",
+          "expect": "(50, 10)"
+        },
+        {
+          "input": "chart_image_with_close_values",
+          "expect": "(45, 40)"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "extreme values",
+        "visual analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "identify_extreme_values_in_chart",
+    "compare_chart_values",
+    "calc_numeric"
+  ]
+}

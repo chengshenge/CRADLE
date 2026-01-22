@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify rows with exactly 36 houses",
+      "action": "reason",
+      "note": "We need to count the number of rows in the table where the 'Number of Houses' is 36."
+    },
+    {
+      "intention": "Count blocks with 36 houses",
+      "action": "python",
+      "code": "blocks_with_36 = sum(1 for row in GTI_JSON['structured']['table']['rows'] if row['cells'][1]['text'] == '36')"
+    },
+    {
+      "intention": "Output the final count",
+      "action": "normalize",
+      "text": "Answer: {blocks_with_36}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves determining whether there are fewer metallic fighters than rubber objects. The quantities of these items are provided in the image, with 15 metallic fighters and 20 rubber objects. The task is to compare these two numbers to answer the question. The problem is presented in a multiple-choice format, requiring the selection of the correct option based on the comparison. The known values are extracted from the image, and the problem is straightforward as it involves a simple comparison. The final answer must be mapped to one of the provided options.",
+  "entities": [
+    "number of metallic fighters",
+    "number of rubber objects"
+  ],
+  "unknowns": [],
+  "required_operations": [
+    "Extract numbers from image",
+    "Compare number of metallic fighters to number of rubber objects",
+    "Select correct multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct extraction of numbers from text",
+    "Verify that the comparison logic is applied correctly"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "extraction",
+    "multiple-choice"
+  ]
+}

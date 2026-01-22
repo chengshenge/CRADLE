@@ -1,0 +1,90 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with specific angles and side lengths mentioned, indicating the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem involves a geometric figure ABCD where AB equals AC and angle CAB is 40 degrees. The task is to find the measure of angle D.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AB",
+        "value": "AC",
+        "unit": "",
+        "source": "text",
+        "note": "AB equals AC"
+      },
+      {
+        "name": "∠CAB",
+        "value": "40",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle CAB is 40 degrees"
+      }
+    ],
+    "unknown": [
+      "∠D"
+    ],
+    "relations": [
+      "AB = AC",
+      "∠CAB = 40°"
+    ],
+    "constraints": [
+      "ABCD is a quadrilateral"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "40°"
+      },
+      {
+        "label": "B",
+        "text": "50°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "ABCD nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying the measure of angle D in a geometric figure based on given side and angle information."
+  ],
+  "problem_summary": "In quadrilateral ABCD, AB equals AC and angle CAB is 40 degrees. Determine the measure of angle D.",
+  "knowns": [
+    {
+      "name": "AB",
+      "value": "AC",
+      "unit": "",
+      "source": "text",
+      "note": "AB equals AC"
+    },
+    {
+      "name": "∠CAB",
+      "value": "40",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle CAB is 40 degrees"
+    }
+  ],
+  "asks": [
+    "∠D"
+  ],
+  "constraints": [
+    "ABCD is a quadrilateral"
+  ],
+  "visual_facts": [
+    "AB = AC",
+    "∠CAB = 40°"
+  ],
+  "ambiguity": [
+    "The problem does not specify the type of quadrilateral, which may affect the calculation of angle D."
+  ]
+}

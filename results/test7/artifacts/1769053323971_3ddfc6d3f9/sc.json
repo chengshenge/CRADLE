@@ -1,0 +1,42 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_angle_to_option",
+      "purpose": "To map the determined angle measure to the correct multiple-choice option.",
+      "how_to_use": "Use the angle measure and the provided options to find the corresponding option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_angle_from_diagram",
+      "signature": "(diagram_image)->angle",
+      "purpose": "To extract the measure of a specific angle from a geometric diagram.",
+      "inputs": [
+        "diagram_image"
+      ],
+      "outputs": "angle",
+      "edge_cases": [
+        "Diagram is unclear or angle markers are ambiguous."
+      ],
+      "tests": [
+        {
+          "input": "diagram_with_angle_38",
+          "expect": "38"
+        },
+        {
+          "input": "diagram_with_no_clear_angle",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "angle extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_angle_from_diagram",
+    "map_angle_to_option"
+  ]
+}

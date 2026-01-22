@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "purpose": "To identify the pattern or rule governing the matrix.",
+      "how_to_use": "Use this skill to analyze the sequence of numbers in the matrix and determine the underlying pattern."
+    },
+    {
+      "name": "map_prediction_to_option",
+      "purpose": "To map the identified pattern to one of the given multiple-choice options.",
+      "how_to_use": "Use this skill to match the completed matrix pattern with the provided options and select the correct one."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "complete_matrix_based_on_pattern",
+      "signature": "(matrix, pattern)->completed_matrix",
+      "purpose": "To complete the matrix by filling in the missing elements based on the identified pattern.",
+      "inputs": [
+        "matrix",
+        "pattern"
+      ],
+      "outputs": "completed_matrix",
+      "edge_cases": [
+        "Matrix with no missing elements",
+        "Pattern not applicable to all rows/columns"
+      ],
+      "tests": [
+        {
+          "input": "([[1, 2, 3], [4, 5, None]], 'arithmetic progression')",
+          "expect": "[[1, 2, 3], [4, 5, 6]]"
+        },
+        {
+          "input": "([[None, 2, 3], [4, 5, 6]], 'arithmetic progression')",
+          "expect": "[[1, 2, 3], [4, 5, 6]]"
+        }
+      ],
+      "tags": [
+        "matrix completion",
+        "pattern recognition"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "complete_matrix_based_on_pattern",
+    "map_prediction_to_option"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with points and angles on a circle, and the image likely contains a diagram illustrating these elements."
+  ],
+  "problem_understanding": "The problem involves a circle with points A, B, C, and D on it, and point E on the extended line of AD. The angle ∠ABC is given, and the task is to find the degree of angle ∠CDE.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠ABC",
+        "value": "60.0",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "∠CDE"
+    ],
+    "relations": [
+      "Points A, B, C, and D are on circle O",
+      "Point E is on the extended line of AD"
+    ],
+    "constraints": [
+      "Points are on a circle",
+      "E is on the extended line of AD"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "points are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle ∠CDE based on the given angle ∠ABC and the geometric configuration of the points on the circle."
+  ],
+  "problem_summary": "Determine the degree of angle ∠CDE given that ∠ABC is 60° and points A, B, C, and D are on circle O with point E on the extended line of AD.",
+  "knowns": [
+    {
+      "name": "∠ABC",
+      "value": "60.0",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "∠CDE"
+  ],
+  "constraints": [
+    "Points are on a circle",
+    "E is on the extended line of AD"
+  ],
+  "visual_facts": [
+    "Diagram likely shows points A, B, C, D on a circle and point E on the extended line of AD"
+  ],
+  "ambiguity": [
+    "The exact position of point E relative to the circle and line AD is not specified in the text."
+  ]
+}

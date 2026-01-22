@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify angle 3 in the diagram",
+    "note": "Angle 3 is marked with a value of 38 degrees in the diagram."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map angle measure to option",
+    "code": "angle_measure = 38; options = [{'label': 'A', 'text': '28'}, {'label': 'B', 'text': '38'}, {'label': 'C', 'text': '52'}, {'label': 'D', 'text': '62'}]; selected_option = next(opt['label'] for opt in options if int(opt['text']) == angle_measure)",
+    "stdout": "",
+    "error": "name 'next' is not defined"
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the correct option",
+    "text": "Answer: B"
+  }
+]

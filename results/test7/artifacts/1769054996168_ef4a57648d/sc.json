@@ -1,0 +1,81 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_shortage_or_surplus",
+      "signature": "(price, table_data)->str",
+      "purpose": "Determine if there is a shortage or surplus at a given price by comparing quantity demanded and quantity supplied.",
+      "inputs": [
+        "price",
+        "table_data"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Price not found in table",
+        "Equal quantity demanded and supplied"
+      ],
+      "tests": [
+        {
+          "input": {
+            "price": 790,
+            "table_data": [
+              {
+                "price": 790,
+                "quantity_demanded": 600,
+                "quantity_supplied": 550
+              }
+            ]
+          },
+          "expect": "shortage"
+        },
+        {
+          "input": {
+            "price": 790,
+            "table_data": [
+              {
+                "price": 790,
+                "quantity_demanded": 550,
+                "quantity_supplied": 600
+              }
+            ]
+          },
+          "expect": "surplus"
+        },
+        {
+          "input": {
+            "price": 790,
+            "table_data": [
+              {
+                "price": 790,
+                "quantity_demanded": 600,
+                "quantity_supplied": 600
+              }
+            ]
+          },
+          "expect": "equal"
+        },
+        {
+          "input": {
+            "price": 800,
+            "table_data": [
+              {
+                "price": 790,
+                "quantity_demanded": 600,
+                "quantity_supplied": 550
+              }
+            ]
+          },
+          "expect": "price not found"
+        }
+      ],
+      "tags": [
+        "economics",
+        "supply and demand",
+        "table analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_shortage_or_surplus"
+  ]
+}

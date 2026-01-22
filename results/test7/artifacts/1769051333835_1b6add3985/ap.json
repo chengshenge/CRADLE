@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Set up energy conservation equation",
+      "action": "reason",
+      "note": "The initial kinetic energy of the canister is converted into the potential energy of the spring."
+    },
+    {
+      "intention": "Calculate initial kinetic energy",
+      "action": "python",
+      "code": "m = 0.40; v = 0.50; k = 750; KE_initial = 0.5 * m * v**2"
+    },
+    {
+      "intention": "Solve for spring compression distance d",
+      "action": "python",
+      "code": "PE_spring = KE_initial; d_val = sympy_solve(f'0.5*{k}*d**2 - {PE_spring}', 'd')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {d_val:.1f}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the angle to calculate",
+      "action": "reason",
+      "note": "We need to find angle BCH using the given geometric configuration."
+    },
+    {
+      "intention": "Extract angle BCH from diagram",
+      "action": "python",
+      "code": "angle_BCH = extract_angle_from_diagram('diagram_image')"
+    },
+    {
+      "intention": "Map angle to multiple-choice option",
+      "action": "python",
+      "code": "option_label = map_angle_to_option(angle_BCH, [{'label': 'A', 'text': '60°'}, {'label': 'B', 'text': '45°'}, {'label': 'C', 'text': '30°'}, {'label': 'D', 'text': '25°'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {option_label}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

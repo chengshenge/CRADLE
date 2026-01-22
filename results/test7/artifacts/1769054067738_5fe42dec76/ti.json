@@ -1,0 +1,69 @@
+{
+  "problem_state_summary": "The problem involves identifying a missing picture that completes a sequence or pattern in a diagram. The image contains a series of diagrams that follow a specific sequence or pattern. The task is to analyze this sequence and determine which of the provided options (A to F) logically completes it. The problem is presented as a multiple-choice question, where each option represents a potential candidate for the missing picture. The specific nature of the sequence or pattern is not described in the prompt, adding an element of ambiguity. The missing picture must logically follow the sequence or pattern established by the existing diagrams.",
+  "entities": [
+    "sequence",
+    "pattern",
+    "diagrams"
+  ],
+  "unknowns": [
+    "missing picture"
+  ],
+  "required_operations": [
+    "Analyze the sequence or pattern in the diagrams",
+    "Determine the logical continuation of the sequence",
+    "Map the continuation to one of the provided options"
+  ],
+  "blockers": [
+    "missing picture"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "pattern recognition",
+    "sequence analysis"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify key point for limit calculation",
+      "action": "reason",
+      "note": "The key point near x = -1 is (x, y) = (-1, 2)."
+    },
+    {
+      "intention": "Determine limit from graph",
+      "action": "python",
+      "code": "limit_value = 2"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

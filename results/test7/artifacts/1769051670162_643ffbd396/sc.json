@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve the equation derived from the Pythagorean tree properties to find the area of square C.",
+      "how_to_use": "Use sympy_solve to solve the equation C = A + B where A and B are the areas of squares A and B, respectively."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use format_final to return the answer in the format: Answer: [option label]."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_area_of_square_C",
+      "signature": "(area_A, area_B)->area_C",
+      "purpose": "Calculate the area of square C using the Pythagorean tree properties.",
+      "inputs": [
+        "area_A",
+        "area_B"
+      ],
+      "outputs": "area_C",
+      "edge_cases": [
+        "Ensure that the areas provided are positive numbers."
+      ],
+      "tests": [
+        {
+          "input": {
+            "area_A": 5,
+            "area_B": 3
+          },
+          "expect": 8
+        }
+      ],
+      "tags": [
+        "geometry",
+        "Pythagorean tree",
+        "area calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_area_of_square_C",
+    "sympy_solve",
+    "format_final"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves analyzing a table to determine if there is a shortage or surplus at a given price. Therefore, the relevant region to detect is 'table'."
+  ],
+  "problem_understanding": "The problem asks to determine whether there is a shortage or surplus at a price of $790 by analyzing a table.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "price",
+        "value": "790",
+        "unit": "dollars",
+        "source": "text",
+        "note": "The price at which to determine shortage or surplus."
+      }
+    ],
+    "unknown": [
+      "shortage or surplus"
+    ],
+    "relations": [
+      "The table likely contains data on supply and demand at various prices."
+    ],
+    "constraints": [
+      "The analysis is based on the data provided in the table."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ]
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "table shows",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires reading and interpreting data from a table to determine the economic condition at a specific price."
+  ],
+  "problem_summary": "Determine if there is a shortage or surplus at a price of $790 using the data in the table.",
+  "knowns": [
+    {
+      "name": "price",
+      "value": "790",
+      "unit": "dollars",
+      "source": "text",
+      "note": "The price at which to determine shortage or surplus."
+    }
+  ],
+  "asks": [
+    "Determine if there is a shortage or surplus at $790."
+  ],
+  "constraints": [
+    "The analysis is based on the data provided in the table."
+  ],
+  "visual_facts": [
+    "Price ($): 700, Quantity Demanded: 200, Quantity Supplied: 150",
+    "Price ($): 800, Quantity Demanded: 250, Quantity Supplied: 200",
+    "Price ($): 900, Quantity Demanded: 300, Quantity Supplied: 250",
+    "Price ($): 1000, Quantity Demanded: 350, Quantity Supplied: 300",
+    "Price ($): 1100, Quantity Demanded: 400, Quantity Supplied: 350",
+    "Price ($): 1200, Quantity Demanded: 450, Quantity Supplied: 400",
+    "Price ($): 1300, Quantity Demanded: 500, Quantity Supplied: 450",
+    "Price ($): 1400, Quantity Demanded: 550, Quantity Supplied: 500",
+    "Price ($): 1500, Quantity Demanded: 600, Quantity Supplied: 550"
+  ],
+  "ambiguity": [
+    "The specific data points in the table are not provided in the prompt."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves a diagram that depicts a small metal jet and a tiny sedan, along with other tiny objects. The task is to determine if the number of tiny objects located behind the small metal jet is less than the number of tiny objects situated to the left of the tiny sedan. This requires spatial reasoning to identify and count the relevant objects in the diagram. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The exact definitions of 'behind' and 'left of' are not specified, which may introduce ambiguity in interpreting the diagram.",
+  "entities": [
+    "small metal jet",
+    "tiny sedan",
+    "tiny objects"
+  ],
+  "unknowns": [
+    "number of tiny objects behind the small metal jet",
+    "number of tiny things left of the tiny sedan"
+  ],
+  "required_operations": [
+    "Identify the small metal jet and tiny sedan in the diagram",
+    "Count the number of tiny objects behind the small metal jet",
+    "Count the number of tiny objects left of the tiny sedan",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny objects behind the small metal jet",
+    "number of tiny things left of the tiny sedan"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ambiguity in 'behind' and 'left of' definitions"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial reasoning",
+    "counting",
+    "comparison"
+  ]
+}

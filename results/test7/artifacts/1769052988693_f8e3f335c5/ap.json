@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Determine function symmetry from graph",
+      "action": "reason",
+      "note": "Check if f(x) = f(-x) for even or f(-x) = -f(x) for odd using key points."
+    },
+    {
+      "intention": "Use learned skill to determine symmetry",
+      "action": "python",
+      "code": "symmetry = determine_function_symmetry('5fae6361cdcc')"
+    },
+    {
+      "intention": "Map symmetry result to multiple-choice option",
+      "action": "python",
+      "code": "answer = map_symmetry_to_option(symmetry, [{'label': 'A', 'text': 'odd'}, {'label': 'B', 'text': 'even'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {answer}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

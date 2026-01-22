@@ -1,0 +1,43 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves extracting data from a table to determine the rate of change in average wait time between two months."
+  ],
+  "problem_understanding": "The problem asks for the rate of change in average wait time between August and September, which requires data from a table showing monthly wait times.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "rate of change between August and September"
+    ],
+    "relations": [
+      "rate of change = (wait time in September - wait time in August) / (September - August)"
+    ],
+    "constraints": [
+      "The rate of change should be expressed in minutes per month."
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "administrator tracked",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires reading specific values from a table and performing a simple arithmetic operation to find the rate of change."
+  ],
+  "problem_summary": "Determine the rate of change in average wait time between August and September using data from a table.",
+  "knowns": [],
+  "asks": [
+    "rate of change between August and September"
+  ],
+  "constraints": [
+    "Express the rate of change in minutes per month."
+  ],
+  "visual_facts": [
+    "The table contains monthly average wait times.",
+    "August: 80 minutes",
+    "September: 85 minutes"
+  ],
+  "ambiguity": [
+    "The exact values for August and September need to be extracted from the table."
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "python",
+    "intention": "Calculate the arc length of the sector",
+    "code": "arc_length = calc_numeric('(120.0/360) * 2 * math.pi * 6.0')",
+    "stdout": "",
+    "error": "disallowed node: Attribute"
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map the calculated arc length to the given options",
+    "code": "option_label = map_length_to_option(arc_length, [{'label': 'A', 'text': '2πcm'}, {'label': 'B', 'text': '3πcm'}, {'label': 'C', 'text': '4πcm'}, {'label': 'D', 'text': '5πcm'}])",
+    "stdout": "",
+    "error": "name 'arc_length' is not defined"
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Output the final answer as the option label",
+    "text": "Answer: {option_label}"
+  }
+]

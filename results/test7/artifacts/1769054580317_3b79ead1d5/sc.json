@@ -1,0 +1,65 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract text from the attached image to obtain financial data.",
+      "how_to_use": "Use this skill to extract the total cost, discount, and final price from the image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform arithmetic calculations to determine the missing tax amount.",
+      "how_to_use": "Use this skill to calculate the pre-discount price and the tax amount needed to reach the final price."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for presentation.",
+      "how_to_use": "Use this skill to format the calculated tax amount into a readable answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_tax_amount",
+      "signature": "(total_cost, discount, final_price)->tax_amount",
+      "purpose": "Calculate the tax amount based on the total cost, discount, and final price.",
+      "inputs": [
+        "total_cost",
+        "discount",
+        "final_price"
+      ],
+      "outputs": "tax_amount",
+      "edge_cases": [
+        "Ensure discount is applied correctly before calculating tax.",
+        "Handle cases where the discount or tax results in negative values."
+      ],
+      "tests": [
+        {
+          "input": {
+            "total_cost": 45.99,
+            "discount": 0.1,
+            "final_price": 41.39
+          },
+          "expect": 0.0
+        },
+        {
+          "input": {
+            "total_cost": 100.0,
+            "discount": 0.2,
+            "final_price": 88.0
+          },
+          "expect": 8.0
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "financial calculation",
+        "tax calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calculate_tax_amount",
+    "calc_numeric",
+    "format_final"
+  ]
+}

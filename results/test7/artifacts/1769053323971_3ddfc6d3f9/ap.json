@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify angle 3 in the diagram",
+      "action": "reason",
+      "note": "Angle 3 is marked with a value of 38 degrees in the diagram."
+    },
+    {
+      "intention": "Map angle measure to option",
+      "action": "python",
+      "code": "angle_measure = 38; options = [{'label': 'A', 'text': '28'}, {'label': 'B', 'text': '38'}, {'label': 'C', 'text': '52'}, {'label': 'D', 'text': '62'}]; selected_option = next(opt['label'] for opt in options if int(opt['text']) == angle_measure)"
+    },
+    {
+      "intention": "Output the correct option",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

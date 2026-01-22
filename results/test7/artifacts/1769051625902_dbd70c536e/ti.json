@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves analyzing a diagram to compare the number of tiny gray bicycles located on the left side of a brown metal sedan with the number of objects positioned to the left of a tiny green bicycle. The task requires identifying and counting specific objects and their spatial relationships within the image. The question is presented in a multiple-choice format, asking whether the number of tiny gray bicycles is greater than the number of things to the left of the tiny green bicycle. The image likely contains a brown metal sedan, tiny gray bicycles, and a tiny green bicycle, and the exact number of these objects and their positions need to be determined from the image. The problem is essentially a spatial comparison task that requires careful observation of the diagram.",
+  "entities": [
+    "tiny gray bicycle",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Identify the tiny gray bicycles and the brown metal sedan in the diagram",
+    "Count the number of tiny gray bicycles on the left side of the brown metal sedan",
+    "Identify the tiny green bicycle in the diagram",
+    "Count the number of things to the left of the tiny green bicycle",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping for tiny gray bicycles, brown metal sedan, and tiny green bicycle",
+    "Verify spatial relationships and positions are accurately interpreted from the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial reasoning",
+    "diagram analysis"
+  ]
+}

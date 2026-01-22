@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure, specifically a rhombus ABCD. Points E and F are the midpoints of sides AB and AD, respectively. The lengths of AB and AC are given as 5 and 6 units. The task is to find the length of segment EF. The problem is presented with a diagram that labels the points and marks the given lengths. The solution requires understanding the properties of a rhombus and using the given information to calculate the length of EF. The problem is multiple-choice, with four options provided for the length of EF.",
+  "entities": [
+    "AB",
+    "AC",
+    "E",
+    "F",
+    "EF"
+  ],
+  "unknowns": [
+    "EF"
+  ],
+  "required_operations": [
+    "Identify midpoints E and F on AB and AD",
+    "Use properties of rhombus to relate given lengths",
+    "Calculate length of EF using geometric relations"
+  ],
+  "blockers": [
+    "EF"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure E and F are correctly identified as midpoints",
+    "verify marked lengths of AB and AC"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "4"
+      },
+      {
+        "label": "B",
+        "text": "5"
+      },
+      {
+        "label": "C",
+        "text": "5.5"
+      },
+      {
+        "label": "D",
+        "text": "6"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "rhombus",
+    "midpoint",
+    "diagram"
+  ]
+}

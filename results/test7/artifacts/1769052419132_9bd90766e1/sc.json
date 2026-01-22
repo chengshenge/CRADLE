@@ -1,0 +1,70 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_chart_values",
+      "signature": "(value1, value2)->bool",
+      "purpose": "To compare two numerical values extracted from a chart and determine if the first is greater than the second.",
+      "inputs": [
+        "value1",
+        "value2"
+      ],
+      "outputs": "bool",
+      "edge_cases": [
+        "Both values are equal",
+        "One or both values are negative"
+      ],
+      "tests": [
+        {
+          "input": "35, 25",
+          "expect": "true"
+        },
+        {
+          "input": "25, 35",
+          "expect": "false"
+        },
+        {
+          "input": "30, 30",
+          "expect": "false"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "chart",
+        "visual analysis"
+      ]
+    },
+    {
+      "name": "map_comparison_to_option",
+      "signature": "(comparison_result, options)->str",
+      "purpose": "To map the result of a comparison to a multiple-choice option.",
+      "inputs": [
+        "comparison_result",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Comparison result is neither true nor false",
+        "Options list is empty"
+      ],
+      "tests": [
+        {
+          "input": "true, [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "A"
+        },
+        {
+          "input": "false, [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_chart_values",
+    "map_comparison_to_option"
+  ]
+}

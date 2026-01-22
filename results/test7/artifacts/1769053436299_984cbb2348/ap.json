@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify and count objects in the diagram",
+      "action": "reason",
+      "note": "Use skills to identify gray rubber objects and big cyan matte fighters."
+    },
+    {
+      "intention": "Count gray rubber objects and big cyan matte fighters",
+      "action": "python",
+      "code": "gray_rubber_count = count_objects_in_region('gray rubber objects in front of small yellow aeroplane'); cyan_matte_count = count_objects_in_region('big cyan matte fighters')"
+    },
+    {
+      "intention": "Map the comparison result to the correct option",
+      "action": "python",
+      "code": "result_option = map_count_to_option(gray_rubber_count, cyan_matte_count, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {result_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

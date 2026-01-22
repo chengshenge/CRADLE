@@ -1,0 +1,42 @@
+{
+  "selected_skills": [
+    {
+      "name": "compare_chart_values",
+      "purpose": "To compare the y-coordinate value at x = 3 with 0 to determine if it is greater.",
+      "how_to_use": "Use the skill to input the y-coordinate value at x = 3 and 0, and get a boolean result indicating if the y-coordinate is greater than 0."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "map_boolean_to_option",
+      "signature": "(boolean_value, options)->str",
+      "purpose": "To map a boolean result to the corresponding multiple-choice option.",
+      "inputs": [
+        "boolean_value",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "If boolean_value is neither True nor False, return an error or default option."
+      ],
+      "tests": [
+        {
+          "input": "True, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "A"
+        },
+        {
+          "input": "False, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "boolean mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_chart_values",
+    "map_boolean_to_option"
+  ]
+}

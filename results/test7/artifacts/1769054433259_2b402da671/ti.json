@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves a comparison between two colors, Sky Blue and Web Maroon, using a chart. The chart is titled 'Color Comparison Chart' and has an X-axis labeled 'Colors' and a Y-axis labeled 'Value'. The values for Sky Blue and Web Maroon are extracted from the chart, with Sky Blue having a value of 45 and Web Maroon having a value of 60. The task is to determine if the value of Sky Blue is less than the value of Web Maroon. The problem is presented as a multiple-choice question with two options: 'yes' or 'no'. The solution requires comparing the numerical values associated with each color to answer the question correctly.",
+  "entities": [
+    "Sky Blue",
+    "Web Maroon"
+  ],
+  "unknowns": [
+    "Is Sky Blue less than Web Maroon?"
+  ],
+  "required_operations": [
+    "Read values from chart",
+    "Compare values of Sky Blue and Web Maroon",
+    "Map result to multiple-choice options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart",
+    "Ensure correct legend mapping for Sky Blue and Web Maroon",
+    "Check for any interpolation issues in the chart"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "chart analysis",
+    "multiple-choice"
+  ]
+}

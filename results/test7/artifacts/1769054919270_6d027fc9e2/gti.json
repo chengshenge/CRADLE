@@ -1,0 +1,146 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Title: Model Performance",
+    "X-axis label: Pretrain Loss",
+    "Y-axis label: Accuracy Score",
+    "Legend: ICL, SFT, SFT 1/8, RFT k=100, RFT k=25, RET k=6, RFT U13B",
+    "X-axis ticks: 1.0, 1.5, 1.8, 2.0, 2.5",
+    "Y-axis ticks: 70, 75, 80, 85, 90, 95"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Model Performance",
+      "x_axis": {
+        "label": "Pretrain Loss",
+        "unit": "",
+        "ticks": [
+          "1.0",
+          "1.5",
+          "1.8",
+          "2.0",
+          "2.5"
+        ]
+      },
+      "y_axis": {
+        "label": "Accuracy Score",
+        "unit": "",
+        "ticks": [
+          "70",
+          "75",
+          "80",
+          "85",
+          "90",
+          "95"
+        ]
+      },
+      "legend": [
+        "ICL",
+        "SFT",
+        "SFT 1/8",
+        "RFT k=100",
+        "RFT k=25",
+        "RET k=6",
+        "RFT U13B"
+      ],
+      "key_points": [
+        {
+          "label": "ICL",
+          "x": "1.8",
+          "y": "85",
+          "note": ""
+        },
+        {
+          "label": "SFT",
+          "x": "1.8",
+          "y": "80",
+          "note": ""
+        },
+        {
+          "label": "SFT 1/8",
+          "x": "1.8",
+          "y": "82",
+          "note": ""
+        },
+        {
+          "label": "RFT k=100",
+          "x": "1.8",
+          "y": "88",
+          "note": ""
+        },
+        {
+          "label": "RFT k=25",
+          "x": "1.8",
+          "y": "86",
+          "note": ""
+        },
+        {
+          "label": "RET k=6",
+          "x": "1.8",
+          "y": "84",
+          "note": ""
+        },
+        {
+          "label": "RFT U13B",
+          "x": "1.8",
+          "y": "87",
+          "note": ""
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "ICL"
+      },
+      {
+        "label": "B",
+        "text": "SFT"
+      },
+      {
+        "label": "C",
+        "text": "SFT 1/8"
+      },
+      {
+        "label": "D",
+        "text": "RFT k=100"
+      },
+      {
+        "label": "E",
+        "text": "RFT k=25"
+      },
+      {
+        "label": "F",
+        "text": "RET k=6"
+      },
+      {
+        "label": "G",
+        "text": "RFT U13B"
+      }
+    ],
+    "unresolved_targets": [
+      "Model with highest Acc score"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides the necessary information to determine the model with the highest accuracy score at a pretrain loss of 1.80.",
+    "The legend and key points on the chart indicate the performance of each model at the specified pretrain loss."
+  ]
+}

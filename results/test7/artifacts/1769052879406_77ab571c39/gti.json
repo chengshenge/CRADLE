@@ -1,0 +1,64 @@
+{
+  "region_used": "text",
+  "information": [
+    "Age of Person 1: 34",
+    "Age of Person 2: 29"
+  ],
+  "structured": {
+    "text_lines": [
+      "Age of Person 1: 34",
+      "Age of Person 2: 29"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "age of person 1",
+        "value": "34",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text"
+      },
+      {
+        "name": "age of person 2",
+        "value": "29",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The image clearly shows the ages of two people, which are necessary to determine the age gap. The ages are extracted as text from the image."
+  ]
+}

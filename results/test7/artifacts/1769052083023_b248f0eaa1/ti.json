@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart titled 'Class Measurements' to determine the highest amount measured by a class. The chart has an x-axis labeled 'Measurement Type' with ticks for 'Length', 'Weight', and 'Volume', and a y-axis labeled 'Amount' with ticks ranging from 0 to 50. The chart includes a legend for 'Class A' and 'Class B'. Key points on the chart indicate that Class A has a measurement of 45 for Length, while Class B has a measurement of 50 for Weight, which is the highest overall. The task is to identify this highest amount, which is a straightforward extraction from the chart. The units of measurement are unspecified, adding a layer of ambiguity to the problem.",
+  "entities": [
+    "Class A",
+    "Class B",
+    "Length",
+    "Weight",
+    "Volume"
+  ],
+  "unknowns": [
+    "highest amount"
+  ],
+  "required_operations": [
+    "Read chart",
+    "Identify key points",
+    "Determine maximum value"
+  ],
+  "blockers": [
+    "highest amount"
+  ],
+  "risk_checks": [
+    "Check axis scale",
+    "Verify tick spacing",
+    "Ensure legend mapping",
+    "Confirm units"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "maximum value",
+    "class measurement"
+  ]
+}

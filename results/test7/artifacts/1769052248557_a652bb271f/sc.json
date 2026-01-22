@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_graph_for_derivative_comparison",
+      "signature": "(graph_image, point1, point2, options)->option_label",
+      "purpose": "To interpret a graph and compare the derivatives (slopes of tangent lines) at two given points, selecting the correct multiple-choice option.",
+      "inputs": [
+        "graph_image",
+        "point1",
+        "point2",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Graph with unclear tangent lines",
+        "Points with very similar slopes"
+      ],
+      "tests": [
+        {
+          "input": "graph_image, (2, 1), (5, -1), [{'label': 'A', 'text': 'larger than'}, {'label': 'B', 'text': 'equal to'}, {'label': 'C', 'text': 'smaller than'}]",
+          "expect": "A"
+        },
+        {
+          "input": "graph_image, (3, 2), (6, 0), [{'label': 'A', 'text': 'larger than'}, {'label': 'B', 'text': 'equal to'}, {'label': 'C', 'text': 'smaller than'}]",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "calculus",
+        "derivative",
+        "graph interpretation",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_graph_for_derivative_comparison"
+  ]
+}

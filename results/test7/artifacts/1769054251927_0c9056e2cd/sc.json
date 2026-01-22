@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_side_length_from_diagram",
+      "purpose": "Extract the dimensions of the rectangle from the diagram.",
+      "how_to_use": "Use this skill to obtain the length and width of the rectangle from the diagram image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the perimeter of the rectangle using the extracted dimensions.",
+      "how_to_use": "Apply the formula 2*(length + width) using the extracted dimensions to compute the perimeter."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the computed perimeter into the required answer format."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_side_length_from_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

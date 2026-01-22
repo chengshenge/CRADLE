@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract ages from the image.",
+      "how_to_use": "Use this skill to extract the text containing ages from the provided image."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the absolute difference between the extracted ages.",
+      "how_to_use": "Use this skill to calculate the absolute difference between the two ages extracted from the image."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer.",
+      "how_to_use": "Use this skill to format the computed age gap into the required answer format."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

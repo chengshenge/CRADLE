@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves determining if 'Coral' is the roughest among a set of materials. The roughness values for Coral and other materials such as Granite, Marble, and Sandstone are provided. The task is to compare these roughness values to ascertain if Coral has the highest roughness value. The roughness values are extracted from text lines, and the problem is presented in a multiple-choice format. The criteria for 'roughest' is based on the numerical roughness values provided. The final answer must be mapped to one of the given options.",
+  "entities": [
+    "Coral",
+    "Granite",
+    "Marble",
+    "Sandstone"
+  ],
+  "unknowns": [
+    "Is Coral the roughest?"
+  ],
+  "required_operations": [
+    "Extract roughness values from text",
+    "Compare roughness values of Coral with Granite, Marble, and Sandstone",
+    "Determine if Coral has the highest roughness value"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "roughness",
+    "multiple-choice"
+  ]
+}

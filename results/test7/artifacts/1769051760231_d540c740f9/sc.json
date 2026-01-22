@@ -1,0 +1,97 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_image",
+      "signature": "(image)->int",
+      "purpose": "Count the total number of objects in the provided image.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image with overlapping objects",
+        "Objects partially out of frame"
+      ],
+      "tests": [
+        {
+          "input": "image_with_5_objects",
+          "expect": 5
+        },
+        {
+          "input": "image_with_no_objects",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "counting"
+      ]
+    },
+    {
+      "name": "identify_and_count_colored_objects",
+      "signature": "(image, color)->int",
+      "purpose": "Identify and count the number of objects of a specific color in the image.",
+      "inputs": [
+        "image",
+        "color"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects with multiple colors",
+        "Color shades and lighting effects"
+      ],
+      "tests": [
+        {
+          "input": "image_with_3_red_objects, 'red'",
+          "expect": 3
+        },
+        {
+          "input": "image_with_no_red_objects, 'red'",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "color identification",
+        "counting"
+      ]
+    },
+    {
+      "name": "identify_and_count_objects_by_size_and_texture",
+      "signature": "(image, size, texture)->int",
+      "purpose": "Identify and count the number of objects of a specific size and texture in the image.",
+      "inputs": [
+        "image",
+        "size",
+        "texture"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Ambiguous size definitions",
+        "Texture affected by lighting"
+      ],
+      "tests": [
+        {
+          "input": "image_with_2_tiny_matte_objects, 'tiny', 'matte'",
+          "expect": 2
+        },
+        {
+          "input": "image_with_no_tiny_matte_objects, 'tiny', 'matte'",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "size identification",
+        "texture identification",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_image",
+    "identify_and_count_colored_objects",
+    "identify_and_count_objects_by_size_and_texture"
+  ]
+}

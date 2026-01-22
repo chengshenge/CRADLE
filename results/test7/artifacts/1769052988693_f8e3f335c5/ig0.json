@@ -1,0 +1,47 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining if a function is odd or even, which typically requires analyzing a graph or plot of the function."
+  ],
+  "problem_understanding": "The task is to determine whether a given function is odd or even based on its graphical representation.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "function type"
+    ],
+    "relations": [
+      "A function is even if f(x) = f(-x) for all x in the domain.",
+      "A function is odd if f(-x) = -f(x) for all x in the domain."
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "odd"
+      },
+      {
+        "label": "B",
+        "text": "even"
+      }
+    ]
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "function is",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying symmetry properties of the function's graph to classify it as odd or even."
+  ],
+  "problem_summary": "Determine if the function shown in the image is odd or even.",
+  "knowns": [],
+  "asks": [
+    "Determine if the function is odd or even."
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The function's graph needs to be analyzed for symmetry."
+  ],
+  "ambiguity": [
+    "The function's equation is not provided, so the decision must be based solely on the graph."
+  ]
+}

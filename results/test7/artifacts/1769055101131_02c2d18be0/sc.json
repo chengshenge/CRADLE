@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_side_length_from_diagram",
+      "purpose": "To extract the side length of the square from the diagram.",
+      "how_to_use": "Use this skill to determine the side length of the square from the provided diagram image."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "To solve equations related to the geometric configuration.",
+      "how_to_use": "Use this skill to solve for x using the equations derived from the geometric properties of the square and the tangent line."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required.",
+      "how_to_use": "Use this skill to format the calculated value of x into the required answer format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "determine_tangency_relationship",
+      "signature": "(square_side_length, diagram_image)->equation",
+      "purpose": "To determine the equation representing the tangency relationship between the square and the line.",
+      "inputs": [
+        "square_side_length",
+        "diagram_image"
+      ],
+      "outputs": "equation",
+      "edge_cases": [
+        "Line not clearly tangent",
+        "Square not fully visible"
+      ],
+      "tests": [
+        {
+          "input": "5, <image_with_square_and_tangent_line>",
+          "expect": "x = 5"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "tangency",
+        "equation derivation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_side_length_from_diagram",
+    "determine_tangency_relationship",
+    "sympy_solve",
+    "format_final"
+  ]
+}

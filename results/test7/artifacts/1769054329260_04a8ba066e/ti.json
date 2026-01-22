@@ -1,0 +1,71 @@
+{
+  "problem_state_summary": "The problem involves completing a matrix that is represented in a tabular format. The table has headers labeled A, B, C, D, E, and F, and contains four rows with numerical values. The task is to identify a pattern or rule governing the matrix to determine the missing elements. The matrix must be completed according to this specific pattern or rule. The options provided are labeled A through F, and the correct option must be selected based on the completed matrix. The specific pattern or rule is not provided in the prompt and must be inferred from the image.",
+  "entities": [
+    "matrix",
+    "headers A, B, C, D, E, F",
+    "rows with numerical values"
+  ],
+  "unknowns": [
+    "missing elements in the matrix"
+  ],
+  "required_operations": [
+    "Analyze the table structure",
+    "Identify the pattern or rule governing the matrix",
+    "Determine the missing elements",
+    "Map the completed matrix to one of the given options"
+  ],
+  "blockers": [
+    "missing elements in the matrix"
+  ],
+  "risk_checks": [
+    "row/column alignment",
+    "header meaning",
+    "units",
+    "totals vs per-item"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "matrix completion",
+    "pattern recognition",
+    "multiple choice"
+  ]
+}

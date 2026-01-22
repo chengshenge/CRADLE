@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify relationships in the food web diagram",
+    "note": "Use the diagram to determine which species are directly affected by algae removal."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Predict impact of algae removal on species",
+    "code": "impact_predictions = analyze_food_web_impact('diagram', ['Crabs', 'Limpets', 'Dolphins', 'Sea Gulls', 'Star Fish'], 'Algae removal')",
+    "stdout": "",
+    "error": "string indices must be integers, not 'str'"
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map predicted impacts to options",
+    "code": "option_label = map_impact_to_option(impact_predictions, [{'label': 'A', 'text': 'Crabs and limpets will decrease'}, {'label': 'B', 'text': 'Dolphins will increase'}, {'label': 'C', 'text': 'Sea gulls will become extinct'}, {'label': 'D', 'text': 'Star fish will increase'}])",
+    "stdout": "",
+    "error": "name 'map_impact_to_option' is not defined"
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer",
+    "text": "Answer: A"
+  }
+]

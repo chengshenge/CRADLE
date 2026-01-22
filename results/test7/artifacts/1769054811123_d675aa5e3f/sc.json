@@ -1,0 +1,51 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_angle_from_diagram",
+      "purpose": "To extract the angle ∠AMK from the provided diagram image.",
+      "how_to_use": "Use this skill to analyze the diagram image and extract the angle ∠AMK."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to format the extracted angle into the required output format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_square_with_inscribed_circle",
+      "signature": "(square_image, points)->angle",
+      "purpose": "To calculate the angle ∠AMK in a square with an inscribed circle using the positions of points A, M, and K.",
+      "inputs": [
+        "square_image",
+        "points"
+      ],
+      "outputs": "angle",
+      "edge_cases": [
+        "Points A, M, and K are collinear.",
+        "Points M and K coincide."
+      ],
+      "tests": [
+        {
+          "input": "square_image_with_inscribed_circle, {'A': (0,0), 'M': (1,1), 'K': (2,2)}",
+          "expect": "45.0"
+        },
+        {
+          "input": "square_image_with_inscribed_circle, {'A': (0,0), 'M': (0,1), 'K': (1,0)}",
+          "expect": "90.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle",
+        "square",
+        "inscribed circle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_angle_from_diagram",
+    "calculate_angle_in_square_with_inscribed_circle",
+    "format_final"
+  ]
+}

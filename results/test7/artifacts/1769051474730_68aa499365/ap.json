@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the sum of angles in the diagram",
+      "action": "reason",
+      "note": "The sum of all angles around a point is 360 degrees. Use this to find m∠H."
+    },
+    {
+      "intention": "Calculate the measure of angle H",
+      "action": "python",
+      "code": "total_angle = 360; known_angles = [45, 90, 135, 150, 60, 75, 120]; m_angle_H = total_angle - sum(known_angles)"
+    },
+    {
+      "intention": "Map calculated angle to the closest option",
+      "action": "reason",
+      "note": "Compare m_angle_H with options: 97, 102, 107, 122."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

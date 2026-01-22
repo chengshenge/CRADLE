@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify objects with preference > 90% in any category",
+      "action": "reason",
+      "note": "Check each object's preference percentages across categories."
+    },
+    {
+      "intention": "Count objects meeting the preference threshold",
+      "action": "python",
+      "code": "preferences = [{'A': 95, 'B': 85, 'C': 90}, {'A': 88, 'B': 92, 'C': 91}, {'A': 89, 'B': 87, 'C': 93}]; count = sum(1 for obj in preferences if any(p > 90 for p in obj.values()))"
+    },
+    {
+      "intention": "Output the count of objects",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

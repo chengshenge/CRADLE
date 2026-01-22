@@ -1,0 +1,50 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "determine_limit_from_graph",
+      "signature": "(graph_image, approach_value)->int",
+      "purpose": "Determine the limit of a function as x approaches a specific value using a graph.",
+      "inputs": [
+        "graph_image",
+        "approach_value"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Graph is not clear near the approach value",
+        "Multiple y-values near the approach value"
+      ],
+      "tests": [
+        {
+          "input": {
+            "graph_image": "image_with_clear_limit",
+            "approach_value": -1
+          },
+          "expect": 2
+        },
+        {
+          "input": {
+            "graph_image": "image_with_ambiguous_limit",
+            "approach_value": -1
+          },
+          "expect": "error or specific handling"
+        },
+        {
+          "input": {
+            "graph_image": "image_with_no_limit",
+            "approach_value": -1
+          },
+          "expect": "error or specific handling"
+        }
+      ],
+      "tags": [
+        "calculus",
+        "limit",
+        "graph analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_limit_from_graph"
+  ]
+}

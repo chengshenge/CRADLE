@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify pattern in sequence",
+      "action": "reason",
+      "note": "Use the learned skill to identify the pattern in the sequence of objects."
+    },
+    {
+      "intention": "Predict next object based on pattern",
+      "action": "python",
+      "code": "pattern = identify_pattern_in_sequence([]); next_object = predict_next_object(pattern, [])"
+    },
+    {
+      "intention": "Map prediction to one of the given options",
+      "action": "python",
+      "code": "option_label = map_prediction_to_option(next_object, [{'label': 'A', 'text': 'A'}, {'label': 'B', 'text': 'B'}, {'label': 'C', 'text': 'C'}, {'label': 'D', 'text': 'D'}, {'label': 'E', 'text': 'E'}])"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: {option_label}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

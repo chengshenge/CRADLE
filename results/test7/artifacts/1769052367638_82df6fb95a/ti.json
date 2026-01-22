@@ -1,0 +1,53 @@
+{
+  "problem_state_summary": "The problem involves determining whether 'Medium Periwinkle' is the smoothest among a set of colors. The smoothness levels for different colors are provided in the text. The task is to compare these smoothness levels to ascertain if 'Medium Periwinkle' has the highest level. The smoothness levels are as follows: Medium Periwinkle has a level of 8, Light Blue has a level of 6, Sky Blue has a level of 7, and Deep Blue has a level of 5. The question is presented in a multiple-choice format, requiring a selection between 'yes' or 'no'. The term 'smoothest' is subjective and requires context from the image to ensure accurate interpretation.",
+  "entities": [
+    "Medium Periwinkle",
+    "Light Blue",
+    "Sky Blue",
+    "Deep Blue"
+  ],
+  "unknowns": [
+    "smoothness of Medium Periwinkle"
+  ],
+  "required_operations": [
+    "Read smoothness levels from text",
+    "Compare smoothness levels",
+    "Determine if Medium Periwinkle is the smoothest"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "smoothness",
+    "multiple-choice"
+  ]
+}

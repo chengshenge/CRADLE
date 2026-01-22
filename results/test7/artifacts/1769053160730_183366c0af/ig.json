@@ -1,0 +1,57 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves identifying the wettest month from a graph, which suggests the presence of a plot or chart showing monthly rainfall data."
+  ],
+  "problem_understanding": "The problem asks to determine which month is the wettest on average in Christchurch using a graph.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "wettest month"
+    ],
+    "relations": [
+      "The graph shows average rainfall data for each month."
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "August"
+      },
+      {
+        "label": "B",
+        "text": "April"
+      },
+      {
+        "label": "C",
+        "text": "May"
+      }
+    ]
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "month is",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to interpret the graph to find the month with the highest average rainfall."
+  ],
+  "problem_summary": "Determine the wettest month on average in Christchurch using a graph.",
+  "knowns": [],
+  "asks": [
+    "wettest month"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The graph displays average rainfall data for each month.",
+    "Title: Average Monthly Rainfall in Christchurch",
+    "X-axis label: Month",
+    "Y-axis label: Rainfall",
+    "Y-axis unit: mm",
+    "X-axis ticks: January, February, March, April, May, June, July, August, September, October, November, December",
+    "Y-axis ticks: 0, 20, 40, 60, 80, 100, 120",
+    "August has the highest rainfall"
+  ],
+  "ambiguity": [
+    "The specific values or labels on the graph are not provided in the prompt."
+  ]
+}

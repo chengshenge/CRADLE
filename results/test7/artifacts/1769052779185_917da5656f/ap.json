@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify potential discontinuities from the graph",
+      "action": "reason",
+      "note": "Check key points for open/closed circles indicating discontinuities."
+    },
+    {
+      "intention": "Determine continuity at key points",
+      "action": "python",
+      "code": "is_continuous = False if any(point['note'] == 'Open circle' for point in [{'x': -2, 'y': 1, 'note': 'Open circle'}, {'x': 0, 'y': 0, 'note': 'Closed circle'}, {'x': 2, 'y': -1, 'note': 'Open circle'}]) else True"
+    },
+    {
+      "intention": "Map continuity result to option",
+      "action": "python",
+      "code": "answer = 'A' if is_continuous else 'B'"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

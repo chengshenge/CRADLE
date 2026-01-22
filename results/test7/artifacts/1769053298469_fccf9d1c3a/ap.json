@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and count objects",
+      "action": "reason",
+      "note": "Blockers: total_objects, rubber_balls, yellow_shiny_things. Use count_objects_in_region to count these."
+    },
+    {
+      "intention": "Count objects in the diagram",
+      "action": "python",
+      "code": "total_objects = count_objects_in_region('image', 'total'); rubber_balls = count_objects_in_region('image', 'rubber balls'); yellow_shiny_things = count_objects_in_region('image', 'yellow shiny things')"
+    },
+    {
+      "intention": "Calculate remaining objects",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric(f'{total_objects} - {rubber_balls} - {yellow_shiny_things}')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

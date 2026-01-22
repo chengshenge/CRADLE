@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays the average monthly rainfall in Christchurch. The task is to determine which month is the wettest on average. The chart includes a title, labeled axes, and monthly rainfall data. The x-axis represents the months of the year, while the y-axis indicates the rainfall in millimeters. The problem requires identifying the month with the highest rainfall value from the chart. The options provided for the wettest month are August, April, and May. The chart indicates that August has the highest rainfall, making it the wettest month.",
+  "entities": [
+    "average monthly rainfall",
+    "Christchurch",
+    "months",
+    "rainfall in mm"
+  ],
+  "unknowns": [
+    "wettest month"
+  ],
+  "required_operations": [
+    "read chart",
+    "identify month with highest rainfall",
+    "map to option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "axis scale",
+    "tick spacing",
+    "units"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "August"
+      },
+      {
+        "label": "B",
+        "text": "April"
+      },
+      {
+        "label": "C",
+        "text": "May"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart interpretation",
+    "rainfall data",
+    "monthly analysis"
+  ]
+}

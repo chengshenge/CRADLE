@@ -1,0 +1,77 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find the length of AC using the midpoint property.",
+      "how_to_use": "Use to calculate the length of AC by doubling the length of AD or DC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use to return the final answer as 'Answer: X' where X is the option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "verify_midpoint_relationship",
+      "signature": "(diagram)->bool",
+      "purpose": "Verify that point D is the midpoint of segment AC in the diagram.",
+      "inputs": [
+        "diagram"
+      ],
+      "outputs": "bool",
+      "edge_cases": [
+        "Diagram is unclear or mislabeled",
+        "Midpoint is not visually represented"
+      ],
+      "tests": [
+        {
+          "input": "clear_diagram_with_midpoint",
+          "expect": true
+        },
+        {
+          "input": "unclear_diagram",
+          "expect": false
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram analysis"
+      ]
+    },
+    {
+      "name": "map_length_to_option",
+      "signature": "(length, options)->str",
+      "purpose": "Map the calculated length of AC to one of the multiple-choice options.",
+      "inputs": [
+        "length",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Length does not match any option",
+        "Multiple options match the length"
+      ],
+      "tests": [
+        {
+          "input": "(6, [{'label': 'A', 'text': '6cm'}, {'label': 'B', 'text': '7cm'}, {'label': 'C', 'text': '4cm'}, {'label': 'D', 'text': '5cm'}])",
+          "expect": "A"
+        },
+        {
+          "input": "(5, [{'label': 'A', 'text': '6cm'}, {'label': 'B', 'text': '7cm'}, {'label': 'C', 'text': '4cm'}, {'label': 'D', 'text': '5cm'}])",
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "verify_midpoint_relationship",
+    "calc_numeric",
+    "map_length_to_option",
+    "format_final"
+  ]
+}

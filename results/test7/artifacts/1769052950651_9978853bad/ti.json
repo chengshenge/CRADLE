@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart to determine how many bars have values smaller than 6. The chart is titled 'Bar Chart of Values' and has categories labeled on the x-axis and numerical values on the y-axis. The x-axis categories are labeled A, B, C, D, and E, and the y-axis has ticks from 0 to 10. The key points extracted from the chart indicate that the values for these categories are A=5, B=3, C=7, D=2, and E=6. The task is to count the number of bars with values less than 6, which requires reading the chart accurately.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+  ],
+  "unknowns": [
+    "number of bars with values smaller than 6"
+  ],
+  "required_operations": [
+    "Read values from the chart",
+    "Compare each value to 6",
+    "Count the number of values less than 6"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify y-axis scale and tick spacing",
+    "Ensure accurate reading of bar values",
+    "Check for any potential interpolation issues"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "value comparison",
+    "counting"
+  ]
+}

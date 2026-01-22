@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the ratio and known length",
+    "note": "The ratio of AB to AC is 2:5 and AC is 25."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate the length of AB using the ratio",
+    "code": "AB_length = 2/5 * 25",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map calculated length to multiple-choice options",
+    "code": "option_label = map_length_to_option(AB_length, [{'label': 'A', 'text': '8'}, {'label': 'B', 'text': '10'}, {'label': 'C', 'text': '15'}, {'label': 'D', 'text': '18'}, {'label': 'E', 'text': '20'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer as an option label",
+    "text": "Answer: B"
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_experiment_question",
+      "signature": "(experiment_description, options)->option_label",
+      "purpose": "Identify which question the experiment is designed to answer based on the given options.",
+      "inputs": [
+        "experiment_description",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Options are very similar in wording",
+        "Experiment description is ambiguous"
+      ],
+      "tests": [
+        {
+          "input": {
+            "experiment_description": "Linda applied a thin layer of wax to her snowboard and timed her descent down the hill. She then removed the wax and repeated the process, alternating between having wax and not having wax on the snowboard.",
+            "options": [
+              {
+                "label": "A",
+                "text": "Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?"
+              },
+              {
+                "label": "B",
+                "text": "Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?"
+              }
+            ]
+          },
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "experiment",
+        "comparison",
+        "multiple choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_experiment_question"
+  ]
+}

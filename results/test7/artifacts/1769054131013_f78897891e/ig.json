@@ -1,0 +1,91 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric setup with a rubber band being stretched, which is best represented by a diagram."
+  ],
+  "problem_understanding": "A rubber band of length 16 cm is fixed at both ends on a horizontal surface. The midpoint is pulled vertically upwards by 6 cm. The task is to determine how much the rubber band is stretched.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "original_length",
+        "value": "16",
+        "unit": "cm",
+        "source": "text",
+        "note": "Length of the rubber band when unstretched."
+      },
+      {
+        "name": "vertical_displacement",
+        "value": "6",
+        "unit": "cm",
+        "source": "text",
+        "note": "Vertical distance the midpoint is pulled upwards."
+      }
+    ],
+    "unknown": [
+      "stretched_length"
+    ],
+    "relations": [
+      "The rubber band forms two right triangles when the midpoint is pulled up."
+    ],
+    "constraints": [
+      "The rubber band is fixed at both ends and only the midpoint is moved."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "2cm"
+      },
+      {
+        "label": "B",
+        "text": "4cm"
+      },
+      {
+        "label": "C",
+        "text": "6cm"
+      },
+      {
+        "label": "D",
+        "text": "8cm"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "rubber band is stretched",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves understanding the geometric change in the rubber band when the midpoint is pulled upwards."
+  ],
+  "problem_summary": "Determine the amount by which a 16 cm rubber band is stretched when its midpoint is pulled 6 cm vertically upwards.",
+  "knowns": [
+    {
+      "name": "original_length",
+      "value": "16",
+      "unit": "cm",
+      "source": "text",
+      "note": "Length of the rubber band when unstretched."
+    },
+    {
+      "name": "vertical_displacement",
+      "value": "6",
+      "unit": "cm",
+      "source": "text",
+      "note": "Vertical distance the midpoint is pulled upwards."
+    }
+  ],
+  "asks": [
+    "stretched_length"
+  ],
+  "constraints": [
+    "The rubber band is fixed at both ends and only the midpoint is moved."
+  ],
+  "visual_facts": [
+    "The rubber band forms two right triangles when the midpoint is pulled up.",
+    "Diagram labels: A, B, C, D, M",
+    "Marked lengths: AB = 16 cm, AM = 8 cm, BM = 8 cm, CM = 6 cm",
+    "Marked relations: AM = BM, CM is vertical"
+  ],
+  "ambiguity": [
+    "The exact method to calculate the stretch is not specified, but it involves geometric reasoning."
+  ]
+}

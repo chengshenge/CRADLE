@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the pattern in the sequence of diagrams.",
+      "action": "reason",
+      "note": "Use the identify_pattern_in_sequence skill to analyze the diagrams."
+    },
+    {
+      "intention": "Predict the next object in the sequence.",
+      "action": "python",
+      "code": "pattern = identify_pattern_in_sequence([]); next_object = predict_next_object(pattern, [])"
+    },
+    {
+      "intention": "Map the predicted object to the correct option.",
+      "action": "python",
+      "code": "correct_option = map_prediction_to_option(next_object, [{'label': 'A', 'text': 'A'}, {'label': 'B', 'text': 'B'}, {'label': 'C', 'text': 'C'}, {'label': 'D', 'text': 'D'}, {'label': 'E', 'text': 'E'}, {'label': 'F', 'text': 'F'}])"
+    },
+    {
+      "intention": "Output the final answer as the option label.",
+      "action": "normalize",
+      "text": "Answer: {correct_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify red matte cubes and small green metal objects",
+    "note": "Use the diagram to identify and count the specified objects."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Count total objects and subtract identified objects",
+    "code": "total_objects = count_objects_in_region('diagram', 'all'); red_matte_cubes = identify_objects_by_characteristics('diagram', 'Red Matte Cube'); small_green_metal_objects = identify_objects_by_characteristics('diagram', 'Small Green Metal Object'); remaining_objects = total_objects - len(red_matte_cubes) - len(small_green_metal_objects)",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: {remaining_objects}"
+  }
+]

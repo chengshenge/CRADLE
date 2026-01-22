@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information",
+      "action": "reason",
+      "note": "The highest amount is unresolved, but the chart provides key points."
+    },
+    {
+      "intention": "Extract the highest amount from the chart",
+      "action": "reason",
+      "note": "Class B's Weight at 50 is the highest amount on the chart."
+    },
+    {
+      "intention": "Normalize the final answer",
+      "action": "normalize",
+      "text": "Answer: 50"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

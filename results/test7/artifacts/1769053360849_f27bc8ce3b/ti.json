@@ -1,0 +1,40 @@
+{
+  "problem_state_summary": "The problem involves identifying and summing the digits located on either end of a sign in the corner of an image. The task is to read these digits and compute their sum. The image contains text, and the digits '123' and '456' have been extracted from the image. The problem requires determining the sum of these two numbers. The exact location of the 'corner' and the 'sign' is not specified, but it is assumed to be visually identifiable. The task is straightforward and involves basic arithmetic operations.",
+  "entities": [
+    "digits on either end of the sign"
+  ],
+  "unknowns": [
+    "sum of the digits on either end of the sign"
+  ],
+  "required_operations": [
+    "Identify digits on either end of the sign",
+    "Sum the identified digits"
+  ],
+  "blockers": [
+    "digits on either end of the sign"
+  ],
+  "risk_checks": [
+    "Ensure correct identification of digits from the image",
+    "Verify that the digits '123' and '456' are indeed on either end of the sign"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "image interpretation",
+    "digit identification"
+  ]
+}

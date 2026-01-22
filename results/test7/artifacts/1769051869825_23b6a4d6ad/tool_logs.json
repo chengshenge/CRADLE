@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers and proceed with grounded information",
+    "note": "Blockers: number of tiny objects behind the jet and left of the sedan."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Count objects behind the jet and left of the sedan",
+    "code": "behind_jet = count_objects_in_region('image', 'behind the small metal jet'); left_of_sedan = count_objects_in_region('image', 'left of the tiny sedan')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Compare the counts and determine the answer",
+    "code": "answer = 'A' if behind_jet < left_of_sedan else 'B'",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer",
+    "text": "Answer: {answer}"
+  }
+]

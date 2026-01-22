@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relevant row in the table for price $790",
+      "action": "reason",
+      "note": "Locate the row in the table where the price is $790 to compare quantities."
+    },
+    {
+      "intention": "Determine if there is a shortage or surplus at $790",
+      "action": "python",
+      "code": "price_790_data = {'Quantity Demanded': 225, 'Quantity Supplied': 175}; condition = 'A' if price_790_data['Quantity Demanded'] > price_790_data['Quantity Supplied'] else 'B'"
+    },
+    {
+      "intention": "Map the condition to the correct option",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_and_select_option",
+      "signature": "(metallic_fighters, rubber_objects, options)->str",
+      "purpose": "To compare the number of metallic fighters and rubber objects and select the correct multiple-choice option.",
+      "inputs": [
+        "metallic_fighters",
+        "rubber_objects",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Equal numbers of metallic fighters and rubber objects",
+        "Invalid options format"
+      ],
+      "tests": [
+        {
+          "input": "15, 20, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "A"
+        },
+        {
+          "input": "20, 15, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "B"
+        },
+        {
+          "input": "15, 15, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_and_select_option"
+  ]
+}

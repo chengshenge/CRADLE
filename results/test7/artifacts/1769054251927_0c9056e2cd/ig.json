@@ -1,0 +1,67 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves finding the perimeter of a rectangle, which is a geometric shape. Therefore, the relevant region to detect is 'diagram'."
+  ],
+  "problem_understanding": "The problem asks for the perimeter of a rectangle, which requires understanding the dimensions of the rectangle from the image.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "length of AB",
+        "value": "5",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from diagram"
+      },
+      {
+        "name": "width of BC",
+        "value": "3",
+        "unit": "cm",
+        "source": "image",
+        "note": "Extracted from diagram"
+      }
+    ],
+    "unknown": [
+      "perimeter of the rectangle"
+    ],
+    "relations": [
+      "Perimeter of a rectangle is calculated as 2*(length + width)."
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "2 nouns 1 verb",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward as it involves extracting the dimensions of the rectangle from the diagram and using the formula for perimeter."
+  ],
+  "problem_summary": "Determine the perimeter of a rectangle using its dimensions from the diagram.",
+  "knowns": [
+    {
+      "name": "length of AB",
+      "value": "5",
+      "unit": "cm",
+      "source": "image",
+      "note": "Extracted from diagram"
+    },
+    {
+      "name": "width of BC",
+      "value": "3",
+      "unit": "cm",
+      "source": "image",
+      "note": "Extracted from diagram"
+    }
+  ],
+  "asks": [
+    "perimeter of the rectangle"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The rectangle's dimensions are: AB = 5 cm, BC = 3 cm."
+  ],
+  "ambiguity": [
+    "The dimensions of the rectangle are not provided in the text and must be extracted from the image."
+  ]
+}

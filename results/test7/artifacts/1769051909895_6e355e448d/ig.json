@@ -1,0 +1,56 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves identifying the organism most affected by the elimination of algae, which likely requires reading information about the food chain or ecosystem from the image."
+  ],
+  "problem_understanding": "The problem asks which organism would be most affected if algae were eliminated, implying a need to understand the food chain or ecosystem relationships involving algae.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "organism most affected if algae is eliminated"
+    ],
+    "relations": [
+      "algae is part of the food chain or ecosystem"
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "Tilapia"
+      },
+      {
+        "label": "B",
+        "text": "Common water flea"
+      },
+      {
+        "label": "C",
+        "text": "Great diving beetle"
+      },
+      {
+        "label": "D",
+        "text": "Tadpole"
+      }
+    ]
+  },
+  "question_type_guess": "logic",
+  "need_ocr": "yes",
+  "noun_and_verb": "organism nouns affected verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the organism most affected by the removal of algae, which requires understanding the ecological role of algae and its connections to the listed organisms."
+  ],
+  "problem_summary": "Identify which organism would be most affected by the elimination of algae from an ecosystem.",
+  "knowns": [],
+  "asks": [
+    "organism most affected if algae is eliminated"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Food Chain: Algae -> Common water flea -> Great diving beetle",
+    "Food Chain: Algae -> Tadpole",
+    "Food Chain: Algae -> Tilapia"
+  ],
+  "ambiguity": [
+    "The specific relationships between algae and the listed organisms are not provided in the prompt, requiring image analysis."
+  ]
+}

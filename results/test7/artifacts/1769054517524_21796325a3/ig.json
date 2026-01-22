@@ -1,0 +1,43 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves comparing data points between two lines, which suggests the presence of a plot or graph."
+  ],
+  "problem_understanding": "The task is to identify the year with the largest difference between data points on two lines in a chart.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "year with largest difference"
+    ],
+    "relations": [
+      "difference between data points on two lines"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "year nouns showed verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying a specific year based on visual data comparison, which is a straightforward lookup task."
+  ],
+  "problem_summary": "Identify the year with the largest difference between two lines on a chart.",
+  "knowns": [],
+  "asks": [
+    "year with largest difference"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Two lines on a chart representing data points over years.",
+    "Chart title: Annual Data Comparison",
+    "X-axis labeled 'Year' with ticks: 2015, 2016, 2017, 2018, 2019, 2020",
+    "Y-axis labeled 'Value' with ticks: 0, 20, 40, 60, 80, 100",
+    "Legend: Line A, Line B",
+    "Key points for Line A: (2015, 30), (2016, 50), (2017, 70), (2018, 60), (2019, 80), (2020, 90)",
+    "Key points for Line B: (2015, 20), (2016, 40), (2017, 60), (2018, 50), (2019, 70), (2020, 85)"
+  ],
+  "ambiguity": [
+    "The specific data points and years are not provided in the text and need to be extracted from the image."
+  ]
+}

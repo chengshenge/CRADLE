@@ -1,0 +1,44 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves counting objects based on their attributes such as color, size, and material. The image likely contains a list or description of objects with these attributes, which would be in text form."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting objects based on specific attributes (big red metallic spheres and big brown matte things) and then counting the remaining objects.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects left"
+    ],
+    "relations": [
+      "Subtract big red metallic spheres",
+      "Subtract big brown matte things"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects nouns subtract verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying and counting objects based on their attributes, which requires reading and interpreting text data from the image."
+  ],
+  "problem_summary": "Identify and subtract objects based on specific attributes and count the remaining objects.",
+  "knowns": [
+    "Big red metallic spheres: 5",
+    "Big brown matte things: 3",
+    "Total objects: 20"
+  ],
+  "asks": [
+    "number of objects left"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Big red metallic spheres: 5",
+    "Big brown matte things: 3",
+    "Total objects: 20"
+  ],
+  "ambiguity": [
+    "The specific attributes of the objects need to be identified from the image text."
+  ]
+}

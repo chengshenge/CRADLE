@@ -1,0 +1,64 @@
+{
+  "region_used": "chart",
+  "information": [],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Class Measurements",
+      "x_axis": {
+        "label": "Measurement Type",
+        "unit": "",
+        "ticks": [
+          "Length",
+          "Weight",
+          "Volume"
+        ]
+      },
+      "y_axis": {
+        "label": "Amount",
+        "unit": "units",
+        "ticks": [
+          "0",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      },
+      "legend": [
+        "Class A",
+        "Class B"
+      ],
+      "key_points": [
+        {
+          "label": "Class A - Length",
+          "x": "Length",
+          "y": "45",
+          "note": "Highest for Class A"
+        },
+        {
+          "label": "Class B - Weight",
+          "x": "Weight",
+          "y": "50",
+          "note": "Highest overall"
+        }
+      ]
+    },
+    "table": null,
+    "diagram": null
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "highest amount"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart displays different types of measurements taken by the class, with the y-axis representing the amount in unspecified units. The task is to identify the highest amount, which is indicated by the key points on the chart."
+  ]
+}

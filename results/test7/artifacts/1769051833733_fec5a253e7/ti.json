@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays the preferences of various objects by people, categorized into different groups. The chart's title is 'Preferences of Objects by People', with the X-axis labeled as 'Objects' and the Y-axis labeled as 'Percentage'. The Y-axis has ticks at intervals of 20%, ranging from 0% to 100%. The chart includes a legend indicating three categories: Category A, Category B, and Category C. The task is to determine how many objects are preferred by more than 90% of people in at least one of these categories. The key points from the chart indicate the percentage preferences for three objects across the categories. The solution requires identifying objects that meet the preference threshold and counting them.",
+  "entities": [
+    "Object 1",
+    "Object 2",
+    "Object 3",
+    "Category A",
+    "Category B",
+    "Category C"
+  ],
+  "unknowns": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "required_operations": [
+    "Read chart data",
+    "Identify objects with preference > 90% in any category",
+    "Count such objects"
+  ],
+  "blockers": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "risk_checks": [
+    "Verify Y-axis scale and tick spacing",
+    "Ensure correct legend mapping to categories",
+    "Check for interpolation errors in percentage values"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "percentage threshold",
+    "preference analysis"
+  ]
+}

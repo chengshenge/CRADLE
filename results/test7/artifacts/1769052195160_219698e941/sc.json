@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_birth_years_after",
+      "signature": "(birth_years, threshold_year)->int",
+      "purpose": "Count how many birth years are greater than a given threshold year.",
+      "inputs": [
+        "birth_years",
+        "threshold_year"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All birth years are before the threshold year.",
+        "All birth years are after the threshold year.",
+        "Some birth years are exactly the threshold year."
+      ],
+      "tests": [
+        {
+          "input": "([1938, 1946, 1950, 1944, 1947], 1945)",
+          "expect": "3"
+        },
+        {
+          "input": "([1938, 1944, 1945], 1945)",
+          "expect": "0"
+        },
+        {
+          "input": "([1946, 1950, 1947], 1945)",
+          "expect": "3"
+        }
+      ],
+      "tags": [
+        "counting",
+        "comparison",
+        "birth year"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_birth_years_after"
+  ]
+}

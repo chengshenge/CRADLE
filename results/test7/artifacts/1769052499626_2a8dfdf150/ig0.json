@@ -1,0 +1,91 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with references to a circle, diameter, and line segments. A diagram is likely present to illustrate these elements."
+  ],
+  "problem_understanding": "The problem involves finding the radius of a circle given that AB is a diameter and the lengths of AC and BC are provided.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AC",
+        "value": "8",
+        "unit": "inches",
+        "source": "text",
+        "note": "Length of segment AC"
+      },
+      {
+        "name": "BC",
+        "value": "15",
+        "unit": "inches",
+        "source": "text",
+        "note": "Length of segment BC"
+      }
+    ],
+    "unknown": [
+      "Radius of the circle"
+    ],
+    "relations": [
+      "AB is a diameter of the circle",
+      "AC + BC = AB"
+    ],
+    "constraints": [
+      "AB is a straight line",
+      "C is a point on the circle"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "7.5"
+      },
+      {
+        "label": "B",
+        "text": "8"
+      },
+      {
+        "label": "C",
+        "text": "8.5"
+      },
+      {
+        "label": "D",
+        "text": "17"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "circle nouns find verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the radius of the circle using the given lengths of segments and the fact that AB is a diameter."
+  ],
+  "problem_summary": "Find the radius of a circle given that AB is a diameter, AC is 8 inches, and BC is 15 inches.",
+  "knowns": [
+    {
+      "name": "AC",
+      "value": "8",
+      "unit": "inches",
+      "source": "text",
+      "note": "Length of segment AC"
+    },
+    {
+      "name": "BC",
+      "value": "15",
+      "unit": "inches",
+      "source": "text",
+      "note": "Length of segment BC"
+    }
+  ],
+  "asks": [
+    "Radius of the circle"
+  ],
+  "constraints": [
+    "AB is a straight line",
+    "C is a point on the circle"
+  ],
+  "visual_facts": [
+    "AB is a diameter of the circle"
+  ],
+  "ambiguity": [
+    "The exact position of point C on the circle is not specified, but it is implied to be on the circle."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify items with sales less than 5 in any store",
+      "action": "reason",
+      "note": "Check each item's sales figures across all stores and count those with any figure less than 5."
+    },
+    {
+      "intention": "Count items meeting the condition",
+      "action": "python",
+      "code": "sales_data = [[3, 7, 2], [6, 4, 5], [8, 3, 6]]; count = sum(1 for item in sales_data if any(sale < 5 for sale in item))"
+    },
+    {
+      "intention": "Output the final count",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

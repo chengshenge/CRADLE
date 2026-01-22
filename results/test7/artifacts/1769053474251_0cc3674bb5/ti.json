@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves a collection of objects with specific attributes such as color, size, and material. The task is to subtract certain groups of objects based on these attributes and determine how many objects remain. Specifically, there are 5 big red metallic spheres and 3 big brown matte things. The total number of objects initially is 20. The goal is to subtract the specified groups from the total and find the remaining count. The problem requires careful reading of the text to identify the correct groups to subtract. The final answer should be an integer representing the number of objects left.",
+  "entities": [
+    "big red metallic spheres",
+    "big brown matte things",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify the number of big red metallic spheres",
+    "Identify the number of big brown matte things",
+    "Subtract these numbers from the total number of objects",
+    "Calculate the remaining number of objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "Ensure correct subtraction of specified object groups",
+    "Verify total count of objects before subtraction"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "subtraction",
+    "counting",
+    "attributes",
+    "objects"
+  ]
+}

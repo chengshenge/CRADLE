@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the highest volume marking on the measuring cup.",
+    "note": "The diagram shows volume markings up to 500 ml, indicating the total volume capacity."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Convert the volume from ml to grams if necessary.",
+    "code": "total_volume_ml = 500; total_volume_g = total_volume_ml",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer as a single line.",
+    "text": "Answer: 500"
+  }
+]

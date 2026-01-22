@@ -1,0 +1,30 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the geometric properties and calculate CD",
+    "note": "Use the fact that D is the midpoint of AB and AB = 10 to find CD."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate the length of CD using midpoint property",
+    "code": "AB_length = 10; CD_length = AB_length / 2",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map the calculated length to the correct option",
+    "code": "option = map_length_to_option(CD_length, [{'label': 'A', 'text': '5'}, {'label': 'B', 'text': '6'}, {'label': 'C', 'text': '8'}, {'label': 'D', 'text': '10'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Output the final answer as the option label",
+    "text": "Answer: A"
+  }
+]

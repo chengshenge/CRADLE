@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves determining which organism would be most affected by the elimination of algae from an ecosystem. The question is presented in a multiple-choice format with four options: Tilapia, Common water flea, Great diving beetle, and Tadpole. The problem requires understanding the food chain relationships involving algae and the listed organisms. The visual information suggests that algae is a part of the food chain, directly affecting the Common water flea, Great diving beetle, Tadpole, and Tilapia. The task is to identify which of these organisms would be most impacted by the removal of algae, based on their ecological connections. The problem is primarily logic-based, requiring analysis of the food chain data provided.",
+  "entities": [
+    "Algae",
+    "Tilapia",
+    "Common water flea",
+    "Great diving beetle",
+    "Tadpole"
+  ],
+  "unknowns": [
+    "organism most affected if algae is eliminated"
+  ],
+  "required_operations": [
+    "Analyze food chain relationships",
+    "Determine dependency of each organism on algae",
+    "Identify organism most affected by algae removal"
+  ],
+  "blockers": [
+    "organism most affected if algae is eliminated"
+  ],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Tilapia"
+      },
+      {
+        "label": "B",
+        "text": "Common water flea"
+      },
+      {
+        "label": "C",
+        "text": "Great diving beetle"
+      },
+      {
+        "label": "D",
+        "text": "Tadpole"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "food chain",
+    "ecosystem",
+    "multiple-choice"
+  ]
+}

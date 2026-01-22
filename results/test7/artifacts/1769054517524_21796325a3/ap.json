@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the year with the largest difference between Line A and Line B.",
+      "action": "reason",
+      "note": "Compute differences for each year and find the maximum."
+    },
+    {
+      "intention": "Compute differences between Line A and Line B for each year.",
+      "action": "python",
+      "code": "differences = {2015: 30-20, 2016: 50-40, 2017: 70-60, 2018: 60-50, 2019: 80-70, 2020: 90-85}; max_year = max(differences, key=differences.get)"
+    },
+    {
+      "intention": "Output the year with the largest difference.",
+      "action": "normalize",
+      "text": "Answer: 2019"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

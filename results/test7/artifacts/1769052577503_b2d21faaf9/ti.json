@@ -1,0 +1,68 @@
+{
+  "problem_state_summary": "The problem involves a circle with two intersecting chords, AB and CD, at point E. The angles ∠D and ∠AEC are given as 35° and 105° respectively. The task is to find the measure of angle ∠C. The problem is presented with a diagram that includes points A, B, C, D, and E, and the intersection of the chords at E. The sum of angles around point E is 360 degrees, which is a key relation to solve the problem. The problem is multiple-choice with four options provided for the measure of angle ∠C.",
+  "entities": [
+    "Circle",
+    "Chords AB",
+    "Chords CD",
+    "Point E",
+    "∠D",
+    "∠AEC",
+    "∠C"
+  ],
+  "unknowns": [
+    "∠C"
+  ],
+  "required_operations": [
+    "Identify the given angles and their positions in the diagram",
+    "Use the property that the sum of angles around point E is 360 degrees",
+    "Calculate the measure of angle ∠C using the given angles and the sum property",
+    "Map the calculated angle to one of the provided options"
+  ],
+  "blockers": [
+    "∠C"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify angle markers are correctly interpreted",
+    "Check for any missing or unclear angle indicators in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "70°"
+      },
+      {
+        "label": "C",
+        "text": "80°"
+      },
+      {
+        "label": "D",
+        "text": "85°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "chords",
+    "angles",
+    "multiple-choice"
+  ]
+}

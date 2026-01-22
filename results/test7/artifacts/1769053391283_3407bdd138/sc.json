@@ -1,0 +1,100 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_web_impact",
+      "signature": "(diagram, species, change)->impact_predictions",
+      "purpose": "Analyze a food web diagram to predict the impact of a change in one species' population on others.",
+      "inputs": [
+        "diagram",
+        "species",
+        "change"
+      ],
+      "outputs": "impact_predictions",
+      "edge_cases": [
+        "No direct relationship between species",
+        "Multiple indirect relationships affecting predictions"
+      ],
+      "tests": [
+        {
+          "input": {
+            "diagram": "food_web_image",
+            "species": [
+              "Steelheads",
+              "Stickleback Fry",
+              "Predatory Insects"
+            ],
+            "change": {
+              "species": "Large Roach",
+              "type": "decrease"
+            }
+          },
+          "expect": {
+            "Steelheads": "decrease",
+            "Stickleback Fry": "increase",
+            "Predatory Insects": "increase"
+          }
+        }
+      ],
+      "tags": [
+        "food web",
+        "population dynamics",
+        "ecology",
+        "diagram analysis"
+      ]
+    },
+    {
+      "name": "map_impact_to_option",
+      "signature": "(impact_predictions, options)->option_label",
+      "purpose": "Map the predicted impacts on species populations to a multiple-choice option.",
+      "inputs": [
+        "impact_predictions",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Multiple options match predictions",
+        "No options match predictions"
+      ],
+      "tests": [
+        {
+          "input": {
+            "impact_predictions": {
+              "Steelheads": "decrease",
+              "Stickleback Fry": "increase",
+              "Predatory Insects": "increase"
+            },
+            "options": [
+              {
+                "label": "A",
+                "text": "The population of steelheads would decrease."
+              },
+              {
+                "label": "B",
+                "text": "The population of stickleback fry would increase."
+              },
+              {
+                "label": "C",
+                "text": "The population of predatory insects would increase."
+              },
+              {
+                "label": "D",
+                "text": "The population of predatory insects would decrease."
+              }
+            ]
+          },
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "population dynamics",
+        "ecology"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_web_impact",
+    "map_impact_to_option"
+  ]
+}

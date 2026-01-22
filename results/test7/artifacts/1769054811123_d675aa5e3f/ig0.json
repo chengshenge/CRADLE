@@ -1,0 +1,71 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with references to a square and an inscribed circle, suggesting the need to analyze a diagram for shapes, angles, and labels."
+  ],
+  "problem_understanding": "The problem involves a square ABCD with an inscribed circle centered at O. The task is to find the angle ∠AMK.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "ABCD",
+        "value": "square",
+        "unit": "",
+        "source": "text",
+        "note": "The shape of the figure."
+      },
+      {
+        "name": "O",
+        "value": "center of inscribed circle",
+        "unit": "",
+        "source": "text",
+        "note": "The center of the circle inscribed in the square."
+      }
+    ],
+    "unknown": [
+      "∠AMK"
+    ],
+    "relations": [
+      "O is the center of the circle inscribed in square ABCD."
+    ],
+    "constraints": [
+      "ABCD is a square."
+    ],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "square is, circle is, center is, angle find",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The problem requires understanding the geometric configuration of a square and an inscribed circle to determine the angle ∠AMK."
+  ],
+  "problem_summary": "Determine the angle ∠AMK in a square ABCD with an inscribed circle centered at O.",
+  "knowns": [
+    {
+      "name": "ABCD",
+      "value": "square",
+      "unit": "",
+      "source": "text",
+      "note": "The shape of the figure."
+    },
+    {
+      "name": "O",
+      "value": "center of inscribed circle",
+      "unit": "",
+      "source": "text",
+      "note": "The center of the circle inscribed in the square."
+    }
+  ],
+  "asks": [
+    "∠AMK"
+  ],
+  "constraints": [
+    "ABCD is a square."
+  ],
+  "visual_facts": [
+    "The diagram likely shows a square with an inscribed circle and relevant points/angles."
+  ],
+  "ambiguity": [
+    "The exact positions of points A, M, and K are not specified in the text."
+  ]
+}

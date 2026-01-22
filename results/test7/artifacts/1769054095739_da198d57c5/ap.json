@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract side length from diagram",
+      "action": "reason",
+      "note": "The side length of the square is extracted from the diagram as 5 cm."
+    },
+    {
+      "intention": "Calculate perimeter using side length",
+      "action": "python",
+      "code": "side_length = 5; perimeter = calc_numeric('4 * {}'.format(side_length))"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 20"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

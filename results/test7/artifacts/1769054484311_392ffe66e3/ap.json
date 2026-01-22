@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Determine effect of pelican increase on fish",
+      "action": "reason",
+      "note": "The text indicates that an increase in pelicans leads to a decrease in fish due to predation."
+    },
+    {
+      "intention": "Map effect to multiple-choice option",
+      "action": "python",
+      "code": "effect = 'decrease'; options = [{'label': 'A', 'text': 'decrease'}, {'label': 'B', 'text': 'nothing'}, {'label': 'C', 'text': 'increase'}, {'label': 'D', 'text': 'none of the above'}]; answer = next(opt['label'] for opt in options if opt['text'] == effect)"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the limit of a function as x approaches -1. The image provided contains a graph of the function, which is essential for analyzing the behavior of the function near x = -1. The x-axis is labeled as 'x' and the y-axis as 'f(x)', with ticks ranging from -3 to 3 on both axes. A key point on the graph is identified at (x, y) = (-1, 2), which is crucial for understanding the function's behavior at x = -1. The task is to find the limit, which must be an integer, based on the graph's information. The problem is a typical calculus question requiring graph analysis to determine the limit.",
+  "entities": [
+    "x",
+    "f(x)"
+  ],
+  "unknowns": [
+    "limit as x approaches -1"
+  ],
+  "required_operations": [
+    "Read the graph to identify the behavior of the function near x = -1",
+    "Determine the y-value the function approaches as x approaches -1",
+    "Ensure the answer is an integer"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart",
+    "Ensure correct interpretation of the key point near x = -1",
+    "Check for any interpolation needed between points"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "limit",
+    "graph analysis"
+  ]
+}

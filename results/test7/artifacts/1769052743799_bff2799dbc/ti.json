@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves a geometric transformation where a sector of a circle with a central angle of 120 degrees and a radius of 6 cm is rolled into a conical bottomless paper cap. The task is to calculate the bottom perimeter of this conical cap. The arc length of the sector becomes the circumference of the base of the cone. The problem provides multiple-choice options for the perimeter. The diagram shows the sector with labels O, A, B, and marked lengths OA and OB as 6 cm, with the angle AOB marked as 120 degrees. The problem does not specify if the cone is perfect or if there are additional constraints on the shape.",
+  "entities": [
+    "central angle",
+    "radius",
+    "arc length",
+    "bottom perimeter"
+  ],
+  "unknowns": [
+    "bottom perimeter of the paper cap"
+  ],
+  "required_operations": [
+    "Calculate the arc length of the sector",
+    "Use the arc length as the circumference of the base of the cone",
+    "Compare the calculated perimeter with the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "2πcm"
+      },
+      {
+        "label": "B",
+        "text": "3πcm"
+      },
+      {
+        "label": "C",
+        "text": "4πcm"
+      },
+      {
+        "label": "D",
+        "text": "5πcm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "conical transformation",
+    "sector",
+    "perimeter calculation"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading words/numbers from the image to determine the ages of two people."
+  ],
+  "problem_understanding": "The problem asks for the age gap between two people shown in the image, requiring extraction of their ages.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "age of person 1",
+        "value": "34",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 1: Age 34'"
+      },
+      {
+        "name": "age of person 2",
+        "value": "29",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text line 'Person 2: Age 29'"
+      }
+    ],
+    "unknown": [
+      "age of person 1",
+      "age of person 2"
+    ],
+    "relations": [
+      "age gap = age of person 1 - age of person 2"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "age gap asks",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to find the difference between two ages, which is a simple arithmetic operation."
+  ],
+  "problem_summary": "Determine the age gap between two people by extracting their ages from the image.",
+  "knowns": [
+    {
+      "name": "age of person 1",
+      "value": "34",
+      "unit": "years",
+      "source": "image",
+      "note": "Extracted from text line 'Person 1: Age 34'"
+    },
+    {
+      "name": "age of person 2",
+      "value": "29",
+      "unit": "years",
+      "source": "image",
+      "note": "Extracted from text line 'Person 2: Age 29'"
+    }
+  ],
+  "asks": [
+    "age gap between two people"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Person 1: Age 34",
+    "Person 2: Age 29"
+  ],
+  "ambiguity": [
+    "The image must contain the ages of two people, but it is not specified how these ages are presented."
+  ]
+}

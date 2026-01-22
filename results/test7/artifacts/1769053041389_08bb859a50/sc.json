@@ -1,0 +1,56 @@
+{
+  "selected_skills": [
+    {
+      "name": "count_objects_in_region",
+      "purpose": "To count the total number of objects in the image and identify specific objects based on characteristics like color and size.",
+      "how_to_use": "Use this skill to analyze the image and count all objects, then specifically count brown blocks and large blue rubber things."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as subtraction to determine the remaining number of objects.",
+      "how_to_use": "Use this skill to subtract the number of brown blocks and large blue rubber things from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to present the final count of remaining objects in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_by_characteristics",
+      "signature": "(image, characteristics)->list",
+      "purpose": "To identify and list objects in an image based on specific characteristics such as color and size.",
+      "inputs": [
+        "image",
+        "characteristics"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "Objects partially obscured or overlapping",
+        "Ambiguity in defining characteristics like 'large'"
+      ],
+      "tests": [
+        {
+          "input": "image_with_various_objects, {'color': 'brown', 'type': 'block'}",
+          "expect": "list_of_brown_blocks"
+        },
+        {
+          "input": "image_with_various_objects, {'color': 'blue', 'size': 'large', 'material': 'rubber'}",
+          "expect": "list_of_large_blue_rubber_things"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object identification",
+        "visual analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_region",
+    "identify_objects_by_characteristics",
+    "calc_numeric",
+    "format_final"
+  ]
+}

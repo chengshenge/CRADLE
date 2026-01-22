@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the number of objects to subtract",
+    "note": "Subtract 5 big red metallic spheres and 3 big brown matte things from 20 total objects."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate the remaining number of objects",
+    "code": "remaining_objects = calc_numeric('20 - (5 + 3)')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: 12"
+  }
+]

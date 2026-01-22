@@ -1,0 +1,93 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "signature": "(sequence_images)->pattern",
+      "purpose": "Identify the pattern or rule governing a sequence of visual objects.",
+      "inputs": [
+        "sequence_images"
+      ],
+      "outputs": "pattern",
+      "edge_cases": [
+        "No discernible pattern",
+        "Multiple possible patterns"
+      ],
+      "tests": [
+        {
+          "input": "['img1', 'img2', 'img3']",
+          "expect": "pattern1"
+        },
+        {
+          "input": "['imgA', 'imgB', 'imgC']",
+          "expect": "pattern2"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence analysis"
+      ]
+    },
+    {
+      "name": "predict_next_object",
+      "signature": "(pattern, sequence_images)->next_object",
+      "purpose": "Predict the next object in a sequence based on the identified pattern.",
+      "inputs": [
+        "pattern",
+        "sequence_images"
+      ],
+      "outputs": "next_object",
+      "edge_cases": [
+        "Ambiguous prediction",
+        "Pattern does not apply"
+      ],
+      "tests": [
+        {
+          "input": "('pattern1', ['img1', 'img2', 'img3'])",
+          "expect": "img4"
+        },
+        {
+          "input": "('pattern2', ['imgA', 'imgB', 'imgC'])",
+          "expect": "imgD"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence analysis"
+      ]
+    },
+    {
+      "name": "map_prediction_to_option",
+      "signature": "(next_object, options)->option_label",
+      "purpose": "Map the predicted next object to one of the given multiple-choice options.",
+      "inputs": [
+        "next_object",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "No matching option",
+        "Multiple matching options"
+      ],
+      "tests": [
+        {
+          "input": "('img4', [{'label': 'A', 'text': 'A'}, {'label': 'B', 'text': 'B'}])",
+          "expect": "A"
+        },
+        {
+          "input": "('imgD', [{'label': 'C', 'text': 'C'}, {'label': 'D', 'text': 'D'}])",
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "pattern recognition"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "predict_next_object",
+    "map_prediction_to_option"
+  ]
+}

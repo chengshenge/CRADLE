@@ -1,0 +1,69 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_smoothness_levels",
+      "signature": "(smoothness_levels, target_color)->bool",
+      "purpose": "Determine if the target color has the highest smoothness level among a set of colors.",
+      "inputs": [
+        "smoothness_levels: A dictionary with color names as keys and their smoothness levels as values.",
+        "target_color: The color to check for being the smoothest."
+      ],
+      "outputs": "A boolean indicating if the target color is the smoothest.",
+      "edge_cases": [
+        "All colors have the same smoothness level.",
+        "The target color is not in the smoothness levels dictionary."
+      ],
+      "tests": [
+        {
+          "input": "{\"Medium Periwinkle\": 8, \"Light Blue\": 6, \"Sky Blue\": 7, \"Deep Blue\": 5}, 'Medium Periwinkle'",
+          "expect": "true"
+        },
+        {
+          "input": "{\"Medium Periwinkle\": 8, \"Light Blue\": 8, \"Sky Blue\": 8, \"Deep Blue\": 8}, 'Medium Periwinkle'",
+          "expect": "false"
+        },
+        {
+          "input": "{\"Light Blue\": 6, \"Sky Blue\": 7, \"Deep Blue\": 5}, 'Medium Periwinkle'",
+          "expect": "false"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "smoothness",
+        "multiple-choice"
+      ]
+    },
+    {
+      "name": "map_boolean_to_option",
+      "signature": "(is_smoothest, options)->str",
+      "purpose": "Map the boolean result of the smoothness comparison to the corresponding multiple-choice option.",
+      "inputs": [
+        "is_smoothest: A boolean indicating if the target color is the smoothest.",
+        "options: A list of multiple-choice options."
+      ],
+      "outputs": "The label of the option that corresponds to the boolean result.",
+      "edge_cases": [
+        "The options list does not contain 'yes' or 'no'."
+      ],
+      "tests": [
+        {
+          "input": "true, [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "'A'"
+        },
+        {
+          "input": "false, [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "'B'"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_smoothness_levels",
+    "map_boolean_to_option"
+  ]
+}

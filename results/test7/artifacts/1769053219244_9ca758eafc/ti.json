@@ -1,0 +1,40 @@
+{
+  "problem_state_summary": "The problem involves an administrator at the Department of Motor Vehicles (DMV) who tracked the average wait time from month to month. The task is to determine the rate of change in average wait time between August and September. The data is presented in a table that lists the average wait times for each month. The specific values for August and September are 80 minutes and 85 minutes, respectively. The rate of change needs to be calculated in terms of minutes per month. The problem requires extracting these values from the table and performing a simple arithmetic operation to find the rate of change.",
+  "entities": [
+    "August wait time",
+    "September wait time"
+  ],
+  "unknowns": [
+    "rate of change between August and September"
+  ],
+  "required_operations": [
+    "Extract wait time for August from table",
+    "Extract wait time for September from table",
+    "Compute rate of change using the formula (September wait time - August wait time) / (September - August)"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct row alignment for August and September in the table",
+    "Verify that the units are consistent and in minutes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "rate of change",
+    "table interpretation",
+    "arithmetic operation"
+  ]
+}

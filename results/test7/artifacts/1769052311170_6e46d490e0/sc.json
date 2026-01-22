@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute and compare the numeric values associated with each category.",
+      "how_to_use": "Use this skill to evaluate and compare the values: 45, 30, 25, and 20."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required output format.",
+      "how_to_use": "Use this skill to format the answer as 'Answer: A' or 'Answer: B' based on the comparison result."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_values_and_map_to_option",
+      "signature": "(values, options)->str",
+      "purpose": "To compare a list of numeric values and determine if the first value is the maximum, then map the result to a multiple-choice option.",
+      "inputs": [
+        "values",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "All values are equal",
+        "First value is not the maximum"
+      ],
+      "tests": [
+        {
+          "input": "[45, 30, 25, 20], [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "A"
+        },
+        {
+          "input": "[30, 45, 25, 20], [{'label': 'A', 'text': 'yes'}, {'label': 'B', 'text': 'no'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "maximum",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_values_and_map_to_option",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_function_continuity",
+      "signature": "(graph_image, key_points)->continuity_results",
+      "purpose": "Determine the continuity of a function at specified key points using its graph.",
+      "inputs": [
+        "graph_image",
+        "key_points"
+      ],
+      "outputs": "continuity_results",
+      "edge_cases": [
+        "Graph with no key points",
+        "Graph with all points continuous",
+        "Graph with all points discontinuous"
+      ],
+      "tests": [
+        {
+          "input": {
+            "graph_image": "image1",
+            "key_points": [
+              {
+                "x": -2,
+                "y": 1,
+                "type": "open"
+              },
+              {
+                "x": 0,
+                "y": 0,
+                "type": "closed"
+              },
+              {
+                "x": 2,
+                "y": -1,
+                "type": "open"
+              }
+            ]
+          },
+          "expect": {
+            "-2": "discontinuous",
+            "0": "continuous",
+            "2": "discontinuous"
+          }
+        },
+        {
+          "input": {
+            "graph_image": "image2",
+            "key_points": []
+          },
+          "expect": {}
+        },
+        {
+          "input": {
+            "graph_image": "image3",
+            "key_points": [
+              {
+                "x": 1,
+                "y": 1,
+                "type": "closed"
+              }
+            ]
+          },
+          "expect": {
+            "1": "continuous"
+          }
+        }
+      ],
+      "tags": [
+        "calculus",
+        "continuity",
+        "graph analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_function_continuity"
+  ]
+}

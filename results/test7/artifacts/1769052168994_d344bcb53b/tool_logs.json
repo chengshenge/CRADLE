@@ -1,0 +1,22 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Determine the number of dots per group.",
+    "note": "Divide total dots by number of groups to find dots per group."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Compute dots per group using division.",
+    "code": "dots_per_group = calc_numeric('4/2')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer.",
+    "text": "Answer: 2"
+  }
+]

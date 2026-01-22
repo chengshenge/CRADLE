@@ -1,0 +1,79 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart titled 'Model Performance' to determine which model has the highest accuracy score when the pretrain loss is exactly 1.80. The chart includes a legend with several models: ICL, SFT, SFT 1/8, RFT k=100, RFT k=25, RET k=6, and RFT U13B. The x-axis represents Pretrain Loss with ticks at 1.0, 1.5, 1.8, 2.0, and 2.5, while the y-axis represents Accuracy Score with ticks at 70, 75, 80, 85, 90, and 95. Key points on the chart indicate the accuracy scores of each model at a pretrain loss of 1.8. The task is to identify the model with the highest accuracy score at this specific pretrain loss value and map it to the corresponding option label.",
+  "entities": [
+    "ICL",
+    "SFT",
+    "SFT 1/8",
+    "RFT k=100",
+    "RFT k=25",
+    "RET k=6",
+    "RFT U13B",
+    "Pretrain Loss",
+    "Accuracy Score"
+  ],
+  "unknowns": [
+    "Model with highest Acc score"
+  ],
+  "required_operations": [
+    "Read chart to find accuracy scores at Pretrain Loss 1.80",
+    "Identify model with highest accuracy score",
+    "Map model to option label"
+  ],
+  "blockers": [
+    "Model with highest Acc score"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing for accurate reading",
+    "Ensure correct legend mapping to models",
+    "Check interpolation between ticks if needed"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "ICL"
+      },
+      {
+        "label": "B",
+        "text": "SFT"
+      },
+      {
+        "label": "C",
+        "text": "SFT 1/8"
+      },
+      {
+        "label": "D",
+        "text": "RFT k=100"
+      },
+      {
+        "label": "E",
+        "text": "RFT k=25"
+      },
+      {
+        "label": "F",
+        "text": "RET k=6"
+      },
+      {
+        "label": "G",
+        "text": "RFT U13B"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "model comparison",
+    "accuracy score"
+  ]
+}

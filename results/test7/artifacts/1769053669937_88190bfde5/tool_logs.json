@@ -1,0 +1,28 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify total number of objects in the image",
+    "note": "Use the count_objects_in_region skill to determine the total number of objects."
+  },
+  {
+    "i": 1,
+    "action": "reason",
+    "intention": "Identify and count small balls and blue rubber things",
+    "note": "Use the identify_objects_by_characteristics skill to count small balls and blue rubber things."
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Subtract small balls and blue rubber things from total objects",
+    "code": "total_objects = count_objects_in_region('image', 'diagram'); small_balls = identify_objects_by_characteristics('image', 'small'); blue_rubber_things = identify_objects_by_characteristics('image', 'blue rubber'); objects_left = calc_numeric(f'{total_objects} - {small_balls} - {blue_rubber_things}')",
+    "stdout": "",
+    "error": "disallowed node: List"
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: {objects_left}"
+  }
+]

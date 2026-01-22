@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_length_to_option",
+      "purpose": "To map the determined time word to one of the provided multiple-choice options.",
+      "how_to_use": "Use the skill to match the interpreted time word with the correct option label from the multiple-choice options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_hands",
+      "signature": "(hour_hand_position, minute_hand_position)->str",
+      "purpose": "Interpret the positions of the clock hands to determine the time word that fits 'It is (_) after eight.'",
+      "inputs": [
+        "hour_hand_position",
+        "minute_hand_position"
+      ],
+      "outputs": "time_word",
+      "edge_cases": [
+        "When the minute hand is exactly on a quarter mark.",
+        "When the hour hand is exactly on an hour mark."
+      ],
+      "tests": [
+        {
+          "input": "(8, 15)",
+          "expect": "quarter past"
+        },
+        {
+          "input": "(8, 30)",
+          "expect": "half"
+        },
+        {
+          "input": "(8, 0)",
+          "expect": "o'clock"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "time interpretation",
+        "clock reading"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_hands",
+    "map_length_to_option"
+  ]
+}

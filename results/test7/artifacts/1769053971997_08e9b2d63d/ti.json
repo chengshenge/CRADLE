@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves two diagrams showing pure samples of gas in identical closed, rigid containers. Each colored ball in the diagrams represents one gas particle. The task is to compare the average kinetic energies and temperatures of the particles in each sample. Both samples have the same number of particles. The problem asks which sample has the higher temperature, with the understanding that average kinetic energy is related to temperature. The options provided are: neither sample has a higher temperature, sample A has a higher temperature, or sample B has a higher temperature.",
+  "entities": [
+    "Sample A",
+    "Sample B",
+    "gas particles"
+  ],
+  "unknowns": [
+    "average kinetic energy of sample A",
+    "average kinetic energy of sample B",
+    "temperature of sample A",
+    "temperature of sample B"
+  ],
+  "required_operations": [
+    "Visually compare the diagrams to assess the distribution and movement of gas particles",
+    "Determine the average kinetic energy of particles in each sample",
+    "Relate average kinetic energy to temperature",
+    "Map findings to the provided options"
+  ],
+  "blockers": [
+    "average kinetic energy of sample A",
+    "average kinetic energy of sample B",
+    "temperature of sample A",
+    "temperature of sample B"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram",
+    "Verify that the visual representation accurately reflects differences in kinetic energy"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "neither; the samples have the same temperature"
+      },
+      {
+        "label": "B",
+        "text": "sample A"
+      },
+      {
+        "label": "C",
+        "text": "sample B"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "kinetic energy",
+    "temperature",
+    "gas particles",
+    "diagram comparison"
+  ]
+}
