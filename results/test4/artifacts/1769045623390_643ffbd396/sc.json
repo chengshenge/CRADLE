@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to apply the Pythagorean theorem and find the area of square C.",
+      "how_to_use": "Use to calculate the area of square C using the relationship between the areas of squares A, B, and C."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use to return the final answer as an option label or exact value as instructed."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_pythagorean_tree_diagram",
+      "signature": "(image)->dict",
+      "purpose": "Extract and interpret geometric relationships from a Pythagorean tree diagram.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "Dictionary containing areas of squares and relationships between them.",
+      "edge_cases": [
+        "Diagrams with missing labels",
+        "Non-standard configurations"
+      ],
+      "tests": [
+        {
+          "input": "image_with_standard_pythagorean_tree",
+          "expect": {
+            "Square A": 5,
+            "Square B": 3,
+            "relationship": "A^2 + B^2 = C^2"
+          }
+        }
+      ],
+      "tags": [
+        "geometry",
+        "Pythagorean theorem",
+        "image-based"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_pythagorean_tree_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

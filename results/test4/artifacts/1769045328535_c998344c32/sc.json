@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line output.",
+      "how_to_use": "Use this skill to format the integer answer representing the total volume of the measuring cup."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_labels",
+      "signature": "(image)->int",
+      "purpose": "Extract and interpret the highest volume label from an image of a measuring cup.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image is blurry or labels are not clear",
+        "Labels are in a different unit than expected"
+      ],
+      "tests": [
+        {
+          "input": "image_with_labels_500_400_300_200_100_0",
+          "expect": 500
+        },
+        {
+          "input": "image_with_labels_1000_800_600_400_200_0",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "volume",
+        "measurement",
+        "image-based"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_labels",
+    "format_final"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find the measure of angle ∠BOC using the angle sum property and properties of angle bisectors.",
+      "how_to_use": "Use this skill to calculate the numeric value of ∠BOC based on the given angle ∠A and the properties of angle bisectors."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use this skill to format the calculated angle ∠BOC as a single line answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A: float, options: list)->str",
+      "purpose": "Calculate the angle ∠BOC formed by the intersection of angle bisectors in a triangle given one angle and multiple choice options.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The label of the correct option representing the angle ∠BOC.",
+      "edge_cases": [
+        "If angle_A is not valid, return an error.",
+        "If no option matches the calculated angle, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle",
+        "multiple choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "calc_numeric",
+    "format_final"
+  ]
+}

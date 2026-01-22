@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves a spatial arrangement depicted in a diagram where specific objects need to be counted and compared. The task is to determine if the number of tiny gray bicycles on the left side of a brown metal sedan is greater than the number of things to the left of a tiny green bicycle. The problem requires visual inspection to identify and count these objects accurately. The diagram includes a brown metal sedan, tiny gray bicycles, and a tiny green bicycle. The exact number of these objects and their positions are not provided in the text and must be determined from the image. The problem is presented as a multiple-choice question with two options: Yes or No.",
+  "entities": [
+    "tiny gray bicycles",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Identify the brown metal sedan in the diagram",
+    "Count the tiny gray bicycles on the left side of the sedan",
+    "Identify the tiny green bicycle in the diagram",
+    "Count the objects to the left of the tiny green bicycle",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "Ensure correct identification of the brown metal sedan and bicycles",
+    "Verify the spatial arrangement and count accuracy",
+    "Check for any visual markers or labels that might aid in counting"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial reasoning",
+    "visual inspection",
+    "comparison"
+  ]
+}

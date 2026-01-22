@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the length of segment AC using the given geometric relationships.",
+      "how_to_use": "Use the expression for calculating the length of AC based on the midpoint property."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use the calculated length of AC to select the correct multiple-choice option and format the answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_midpoint_diagram",
+      "signature": "(image, known_lengths)->float",
+      "purpose": "To interpret a geometric diagram to find the length of a segment using the midpoint property.",
+      "inputs": [
+        "image",
+        "known_lengths"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Diagram is unclear or ambiguous",
+        "Midpoint is not correctly identified"
+      ],
+      "tests": [
+        {
+          "input": "image_with_midpoint, {'CB': 4.0, 'DB': 7.0}",
+          "expect": "8.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "midpoint",
+        "image-based"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_midpoint_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

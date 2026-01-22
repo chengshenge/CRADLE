@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the next object in the sequence using the learned skill.",
+      "action": "reason",
+      "note": "Use the 'identify_next_object_in_sequence' skill to determine the next object in the sequence from the diagram."
+    },
+    {
+      "intention": "Call the learned skill to identify the next object in the sequence.",
+      "action": "python",
+      "code": "next_object = identify_next_object_in_sequence(image, ['A', 'B', 'C', 'D', 'E'])"
+    },
+    {
+      "intention": "Format the identified object as the final answer.",
+      "action": "normalize",
+      "text": "Answer: {next_object}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

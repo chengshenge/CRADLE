@@ -1,0 +1,67 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves counting objects with specific attributes, which are likely described in text form within the image."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting specific types of objects (large rubber spheres and big shiny cylinders) from a total set of objects to determine how many are left.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "total number of objects",
+        "value": "50",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "number of large rubber spheres",
+        "value": "15",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "number of big shiny cylinders",
+        "value": "10",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      }
+    ],
+    "unknown": [
+      "total number of objects",
+      "number of large rubber spheres",
+      "number of big shiny cylinders"
+    ],
+    "relations": [
+      "remaining objects = total objects - large rubber spheres - big shiny cylinders"
+    ],
+    "constraints": [
+      "Objects must be classified by size and material/appearance."
+    ],
+    "options": []
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying and counting specific objects based on their attributes, which requires reading and interpreting text descriptions."
+  ],
+  "problem_summary": "Determine the number of objects remaining after subtracting all large rubber spheres and big shiny cylinders from a total set.",
+  "knowns": [],
+  "asks": [
+    "How many objects are left after subtracting specific types?"
+  ],
+  "constraints": [
+    "Objects must be classified by size and material/appearance."
+  ],
+  "visual_facts": [
+    "Total number of objects: 50",
+    "Number of large rubber spheres: 15",
+    "Number of big shiny cylinders: 10"
+  ],
+  "ambiguity": [
+    "The exact number of each type of object is not provided in the prompt and must be extracted from the image."
+  ]
+}

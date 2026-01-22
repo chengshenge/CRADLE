@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_diagram",
+      "signature": "(image)->str",
+      "purpose": "Interpret the position of clock hands on a diagram to determine the time word that fits a given sentence.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Clock hands are ambiguous or overlap",
+        "Clock face is partially obscured"
+      ],
+      "tests": [
+        {
+          "input": "image_with_time_half_past_eight",
+          "expect": "half"
+        },
+        {
+          "input": "image_with_time_quarter_past_eight",
+          "expect": "quarter past"
+        },
+        {
+          "input": "image_with_time_quarter_to_nine",
+          "expect": "quarter to"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "time interpretation",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_diagram"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup. The image associated with the problem likely contains text labels indicating volume measurements. The task is to read the total volume from these labels. The volume measurements are given in milliliters (ml), with labels such as 500 ml, 400 ml, 300 ml, 200 ml, 100 ml, and 0 ml. The highest label, 500 ml, suggests the total volume capacity of the cup. However, the unit specified in the question is grams, which is unusual for volume, indicating a potential need for interpretation. The problem requires an integer answer, which should be the total volume of the measuring cup.",
+  "entities": [
+    "measuring cup",
+    "volume labels"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the volume labels from the image",
+    "Identify the highest volume label",
+    "Interpret the volume in the context of the given unit (grams)"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of volume labels as the unit is specified in grams",
+    "Verify that the highest label is indeed the total volume"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation",
+    "image-based"
+  ]
+}

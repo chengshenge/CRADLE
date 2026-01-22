@@ -1,0 +1,56 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_next_object_in_sequence",
+      "signature": "(image, options)->str",
+      "purpose": "Identify the next object in a sequence based on a visual pattern in a diagram.",
+      "inputs": [
+        "image",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Ambiguous patterns where multiple rules could apply",
+        "Sequences with no clear pattern"
+      ],
+      "tests": [
+        {
+          "input": {
+            "image": "test_image_1",
+            "options": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ]
+          },
+          "expect": "C"
+        },
+        {
+          "input": {
+            "image": "test_image_2",
+            "options": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ]
+          },
+          "expect": "E"
+        }
+      ],
+      "tags": [
+        "logic",
+        "pattern recognition",
+        "sequence",
+        "diagram"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_next_object_in_sequence"
+  ]
+}

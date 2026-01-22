@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves a geometric diagram with points A, B, C, and D. The lengths of segments CB and DB are given as 4.0 cm and 7.0 cm, respectively. Point D is specified as the midpoint of segment AC. The task is to determine the length of segment AC. The problem is presented with multiple-choice options for the length of AC. The exact positions of points A, B, C, and D are not specified in the text, which may affect the interpretation of the diagram. The solution requires understanding the geometric relationship between the points and segments.",
+  "entities": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "AC",
+    "CB",
+    "DB"
+  ],
+  "unknowns": [
+    "Length of AC"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric relationships",
+    "Use the fact that D is the midpoint of AC to find the length of AC",
+    "Compare the calculated length of AC with the given options"
+  ],
+  "blockers": [
+    "Length of AC"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct",
+    "Verify that D is correctly identified as the midpoint of AC",
+    "Check for any missing angle or parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "6cm"
+      },
+      {
+        "label": "B",
+        "text": "7cm"
+      },
+      {
+        "label": "C",
+        "text": "4cm"
+      },
+      {
+        "label": "D",
+        "text": "5cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "midpoint",
+    "length calculation",
+    "multiple-choice"
+  ]
+}

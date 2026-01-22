@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure known as a '勾股树' or Pythagorean tree, which consists of squares and right triangles. The areas of two squares, A and B, are given as 5 and 3 square units, respectively. The task is to determine the area of the largest square, C, within this configuration. The problem assumes standard geometric properties of a Pythagorean tree, where all quadrilaterals are squares and all triangles are right triangles. The relationship between the areas of these squares and triangles is implied by the Pythagorean theorem. The solution requires understanding these geometric relationships to find the area of square C. The problem is presented with multiple-choice options for the area of square C.",
+  "entities": [
+    "Square A",
+    "Square B",
+    "Square C",
+    "Area of Square A",
+    "Area of Square B"
+  ],
+  "unknowns": [
+    "Area of square C"
+  ],
+  "required_operations": [
+    "Identify geometric relationships in the Pythagorean tree",
+    "Apply Pythagorean theorem to find the area of square C",
+    "Compare calculated area with multiple-choice options"
+  ],
+  "blockers": [
+    "Area of square C"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct in the diagram",
+    "Verify that all quadrilaterals are squares and all triangles are right triangles"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "Pythagorean theorem",
+    "squares",
+    "right triangles",
+    "multiple-choice"
+  ]
+}

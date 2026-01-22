@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves identifying the next object in a sequence, which is presented as a diagram. The task is to determine which object follows a given sequence of objects, implying a pattern or rule governing the sequence. The sequence is not explicitly described, so the pattern must be inferred from the visual information. The diagram contains labels corresponding to the options provided: A, B, C, D, and E. The problem is a logic-based task requiring pattern recognition. The final answer must be one of the provided options.",
+  "entities": [
+    "sequence of objects"
+  ],
+  "unknowns": [
+    "next object in sequence"
+  ],
+  "required_operations": [
+    "Analyze the sequence of objects in the diagram",
+    "Identify the pattern or rule governing the sequence",
+    "Determine the next object based on the identified pattern",
+    "Map the determined object to one of the provided options"
+  ],
+  "blockers": [
+    "next object in sequence"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ambiguity in pattern recognition"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "pattern recognition",
+    "sequence",
+    "diagram"
+  ]
+}

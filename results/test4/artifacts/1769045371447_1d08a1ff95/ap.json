@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Understand the problem and identify knowns and unknowns.",
+      "action": "reason",
+      "note": "We need to find the angle ∠BOC in triangle △ABC where OB and OC are angle bisectors and ∠A is given as 110°."
+    },
+    {
+      "intention": "Use the angle sum property of the triangle to find ∠B and ∠C.",
+      "action": "python",
+      "code": "angle_B_plus_C = 180 - 110"
+    },
+    {
+      "intention": "Calculate the angle ∠BOC using the properties of angle bisectors.",
+      "action": "python",
+      "code": "angle_BOC = 90 + 110 / 2"
+    },
+    {
+      "intention": "Determine the closest multiple-choice option for ∠BOC.",
+      "action": "reason",
+      "note": "Compare the calculated angle_BOC with the given options to find the closest match."
+    },
+    {
+      "intention": "Format the final answer to match the required output format.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

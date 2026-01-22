@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the expected output format.",
+      "how_to_use": "Use this skill to return the answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_angle_from_diagram",
+      "signature": "(image)->int",
+      "purpose": "Extract the measure of a specific angle from a geometric diagram.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image is blurry or unclear",
+        "Angle is not clearly marked"
+      ],
+      "tests": [
+        {
+          "input": "image_with_angle_marked_102",
+          "expect": 102
+        },
+        {
+          "input": "image_with_angle_marked_97",
+          "expect": 97
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "image-based"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_from_diagram",
+    "format_final"
+  ]
+}

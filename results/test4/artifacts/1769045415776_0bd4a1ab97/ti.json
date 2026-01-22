@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects remaining after subtracting specific types of objects from a total set. The total number of objects is given as 50. Among these, there are 15 large rubber spheres and 10 big shiny cylinders. The task is to subtract the number of large rubber spheres and big shiny cylinders from the total number of objects. The final goal is to compute how many objects are left after these subtractions. The problem requires interpreting text descriptions to identify and count specific objects based on their attributes.",
+  "entities": [
+    "total number of objects",
+    "number of large rubber spheres",
+    "number of big shiny cylinders"
+  ],
+  "unknowns": [
+    "remaining objects"
+  ],
+  "required_operations": [
+    "Identify total number of objects",
+    "Subtract number of large rubber spheres",
+    "Subtract number of big shiny cylinders",
+    "Compute remaining objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct subtraction of specified object counts",
+    "Verify all object counts are extracted accurately from text"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "subtraction",
+    "counting",
+    "text interpretation"
+  ]
+}
