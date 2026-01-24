@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the highest marking on the measuring cup.",
+      "action": "reason",
+      "note": "The highest marking on the measuring cup is 500g."
+    },
+    {
+      "intention": "Interpret the highest marking as the total volume.",
+      "action": "python",
+      "code": "total_volume = 500"
+    },
+    {
+      "intention": "Format the total volume as the final answer.",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

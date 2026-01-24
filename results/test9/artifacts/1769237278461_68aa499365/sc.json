@@ -1,0 +1,73 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required by the problem statement.",
+      "how_to_use": "Use this skill to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_angle_from_diagram",
+      "signature": "(diagram_data)->angle_measure",
+      "purpose": "Extract the measure of a specified angle from a geometric diagram.",
+      "inputs": [
+        "diagram_data"
+      ],
+      "outputs": "angle_measure",
+      "edge_cases": [
+        "Diagram does not clearly label angles",
+        "Multiple angles labeled with the same identifier"
+      ],
+      "tests": [
+        {
+          "input": "diagram_data_with_angle_H_102",
+          "expect": "102"
+        },
+        {
+          "input": "diagram_data_with_no_labels",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_measure, options)->option_label",
+      "purpose": "Map the measured angle to the correct option from the provided choices.",
+      "inputs": [
+        "angle_measure",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Angle measure does not match any option",
+        "Multiple options with the same value"
+      ],
+      "tests": [
+        {
+          "input": "(102, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "B"
+        },
+        {
+          "input": "(105, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "option mapping",
+        "geometry"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_from_diagram",
+    "map_angle_to_option",
+    "format_final"
+  ]
+}

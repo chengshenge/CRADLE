@@ -1,0 +1,75 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry, specifically angles and angle bisectors in a triangle, which suggests the presence of a geometric diagram."
+  ],
+  "problem_understanding": "The problem is about finding the angle ∠BOC in triangle △ABC, where OB and OC are angle bisectors, and ∠A is given as 110°.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠A",
+        "value": "110",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle A in triangle △ABC"
+      }
+    ],
+    "unknown": [
+      "∠BOC"
+    ],
+    "relations": [
+      "OB and OC are angle bisectors of △ABC"
+    ],
+    "constraints": [
+      "∠A + ∠B + ∠C = 180°"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "△ABC has",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle ∠BOC using the given information about the triangle and its angle bisectors."
+  ],
+  "problem_summary": "Find the measure of angle ∠BOC in triangle △ABC, given that ∠A = 110° and OB, OC are angle bisectors.",
+  "knowns": [
+    {
+      "name": "∠A",
+      "value": "110",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle A in triangle △ABC"
+    }
+  ],
+  "asks": [
+    "∠BOC"
+  ],
+  "constraints": [
+    "∠A + ∠B + ∠C = 180°"
+  ],
+  "visual_facts": [
+    "OB and OC are angle bisectors",
+    "The diagram is focused on triangle △ABC with angle bisectors OB and OC, and the known angle ∠A is marked as 110°."
+  ],
+  "ambiguity": [
+    "The problem does not specify the measures of ∠B and ∠C directly."
+  ]
+}

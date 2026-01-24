@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem involves finding ∠BOC using known ∠A = 110° and angle bisectors OB, OC."
+    },
+    {
+      "intention": "Calculate ∠BOC using angle bisector properties",
+      "action": "python",
+      "code": "angle_BOC = 180 + 110 / 2"
+    },
+    {
+      "intention": "Map calculated angle to closest option",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

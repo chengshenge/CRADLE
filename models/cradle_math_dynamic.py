@@ -10,6 +10,7 @@ import uuid
 import traceback
 from pathlib import Path
 import hashlib
+import math
 
 
 # ============================================================
@@ -267,6 +268,52 @@ def _escape_newlines_inside_strings(s: str) -> str:
     return "".join(out)
 
 
+
+
+def _remove_trailing_commas(s: str) -> str:
+    """Remove trailing commas before '}' or ']' outside of strings.
+
+    LLMs sometimes emit JSON with trailing commas, which is invalid for json.loads.
+    This function is deterministic and does not change content inside quoted strings.
+    """
+    if not isinstance(s, str) or not s:
+        return s
+    out = []
+    in_str = False
+    esc = False
+    n = len(s)
+    i = 0
+    while i < n:
+        ch = s[i]
+        if in_str:
+            out.append(ch)
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_str = True
+            out.append(ch)
+            i += 1
+            continue
+
+        if ch == ",":
+            j = i + 1
+            while j < n and s[j] in " \t\r\n":
+                j += 1
+            if j < n and s[j] in "}]":
+                i += 1
+                continue
+
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
 def _extract_json_obj(text: str) -> Dict[str, Any]:
     """Parse a JSON object from model output with light, deterministic sanitation.
 
@@ -281,7 +328,7 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
 
     # First try direct parse
     try:
-        return json.loads(s)
+        return json.loads(_remove_trailing_commas(s))
     except Exception:
         pass
 
@@ -293,7 +340,7 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
     # Sanitize newlines inside strings (common LLM formatting artifact)
     candidate2 = _escape_newlines_inside_strings(candidate)
 
-    return json.loads(candidate2)
+    return json.loads(_remove_trailing_commas(candidate2))
 
 
 # ============================================================
@@ -1679,331 +1726,362 @@ Return STRICT JSON:
 
         t_total0 = time.perf_counter()
 
-        def _stage(name: str):
-            class _StageCtx:
-                def __enter__(self_inner):
-                    self_inner.t0 = time.perf_counter()
-                    return self_inner
-                def __exit__(self_inner, exc_type, exc, tb):
-                    stage_times[name] = round(time.perf_counter() - self_inner.t0, 6)
-                    return False
-            return _StageCtx()
-
-        def _missing_keys(obj: Dict[str, Any], keys: List[str]) -> List[str]:
-            miss = []
-            for k in keys:
-                if k not in obj:
-                    miss.append(k)
-            return miss
-
-        if not hasattr(self, "_skill_mgr"):
-            self._skill_mgr = SkillManager(
-                base_dir=self.output_dir,
-                subdir=self.skills_subdir,
-                freeze=self.freeze_skills,
-                reset=self.reset_skills,
-                max_new_skills=self.max_new_skills,
-                debug=self.debug,
-            )
-        skill_mgr: SkillManager = self._skill_mgr
-
-        with _stage("IG"):
-            ig0 = self._llm_call_json(
-            "IG",
-            self.IG_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text,
-            obs,
-            need_image=True,
-            )
-            _mk = _missing_keys(ig0, ["region_to_detect", "math_elements_extracted", "question_type_guess"])
-            if _mk:
-                errors.append({'stage':'IG','type':'missing_keys','missing':_mk})
-
-        with _stage("GTI"):
-            gti = self._llm_call_json(
-            "GTI",
-            self.GTI_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0),
-            obs,
-            need_image=True,
-            )
-            _mk = _missing_keys(gti, ["region_used", "structured", "targets_from_math_elements"])
-            if _mk:
-                errors.append({'stage':'GTI','type':'missing_keys','missing':_mk})
-
-        with _stage("IGR"):
-            ig = self._llm_call_json(
-            "IGR",
-            self.IGR_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0) + "\n\n[GTI_JSON]\n" + _j(gti),
-            obs,
-            need_image=False,
-            )
-            _mk = _missing_keys(ig, ["region_to_detect", "math_elements_extracted"])
-            if _mk:
-                errors.append({'stage':'IGR','type':'missing_keys','missing':_mk})
-
-        with _stage("TI"):
-            ti = self._llm_call_json(
-            "TI",
-            self.TI_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text + "\n\n[INFO_JSON]\n" + _j(ig) + "\n\n[GTI_JSON]\n" + _j(gti),
-            obs,
-            need_image=False,
-            )
-            _mk = _missing_keys(ti, ["problem_state_summary", "required_operations", "risk_checks", "grounding"])
-            if _mk:
-                errors.append({'stage':'TI','type':'missing_keys','missing':_mk})
-
-        qtype = ig.get("question_type_guess", "other")
-        mem_snips = self._load_memory_snippets([qtype, "mathvista"], k=6)
-
-        sc_input = (
-            self.SC_PROMPT
-            + "\n\n[TASK_INFERENCE_JSON]\n"
-            + _j(ti)
-            + "\n\n[SKILL_CATALOG]\n"
-            + _j(skill_mgr.catalog())
-        )
-        with _stage("SC"):
-            sc = self._llm_call_json("SC", sc_input, obs, need_image=False)
-            _mk = _missing_keys(sc, ["selected_skills", "skill_priority"])
-            if _mk:
-                errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
-
-        new_specs = sc.get("new_skill_specs", [])
-        if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
-            sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
-            sw = self._llm_call_json("SkillWriter", sw_input, obs, need_image=False)
-            accepted = 0
-            for sk in sw.get("skills", []):
-                if accepted >= self.max_new_skills:
-                    break
-                name = sk.get("name", "")
-                code = sk.get("code", "")
-                signature = sk.get("signature", "")
-                tests = sk.get("tests", [])
-                tags = sk.get("tags", [])
-                ok, _ = skill_mgr.add_or_update_skill(
-                    name=name,
-                    code=code,
-                    signature=signature,
-                    tags=tags,
-                    tests=tests,
-                )
-                if ok:
-                    accepted += 1
-
-        ap_prompt = self.AP_PROMPT.replace("MAX_STEPS", str(self.max_steps))
-        ap_input = (
-            ap_prompt
-            + "\n\n[USER_PROMPT]\n" + obs.text
-            + "\n\n[INFO_JSON]\n"
-            + _j(ig)
-            + "\n\n[GTI_JSON]\n"
-            + _j(gti)
-            + "\n\n[TASK_INFERENCE_JSON]\n"
-            + _j(ti)
-            + "\n\n[SELECTED_SKILLS]\n"
-            + _j(sc.get("selected_skills", []))
-            + "\n\n[LEARNED_SKILL_CATALOG]\n"
-            + _j(skill_mgr.catalog())
-            + "\n\n[MEMORY_SNIPPETS]\n"
-            + _j(mem_snips)
-        )
-        with _stage("AP"):
-            ap = self._llm_call_json("AP", ap_input, obs, need_image=True)
-            _mk = _missing_keys(ap, ["steps", "final_format"])
-            if _mk:
-                errors.append({'stage':'AP','type':'missing_keys','missing':_mk})
-
+        # Defaults so we can always log even if a stage throws
+        ig0 = {}
+        gti = {}
+        ig = {}
+        ti = {}
+        sc = {}
+        ap = {}
+        sr = {}
         tool_logs = []
-        t_exec0 = time.perf_counter()
-        steps = ap.get("steps", [])
-        if isinstance(steps, list):
-            for idx, step in enumerate(steps[: self.max_steps]):
-                action = step.get("action")
-                intention = step.get("intention", "")
-                if action == "python":
-                    code = step.get("code", "")
-                    out, err = safe_exec(code, skill_mgr.ctx)
-                    tool_logs.append(
-                        {
-                            "i": idx,
-                            "action": "python",
-                            "intention": intention,
-                            "code": code,
-                            "stdout": out,
-                            "error": err,
-                        }
-                    )
-                elif action == "reason":
-                    tool_logs.append(
-                        {
-                            "i": idx,
-                            "action": "reason",
-                            "intention": intention,
-                            "note": step.get("note", ""),
-                        }
-                    )
-                elif action == "normalize":
-                    raw_text = step.get("text", "")
-                    rendered_text, render_err = render_placeholders(str(raw_text), skill_mgr.ctx)
-                    tool_logs.append(
-                        {
-                            "i": idx,
-                            "action": "normalize",
-                            "intention": intention,
-                            "text": rendered_text,
-                            "raw_text": raw_text,
-                            "render_error": render_err,
-                        }
-                    )
-                else:
-                    tool_logs.append({"i": idx, "action": "unknown", "intention": intention, "raw": step})
-
-        stage_times['EXEC'] = round(time.perf_counter() - t_exec0, 6)
-        # Build a draft answer from executed plan logs (prefer last normalize text)
         draft = ""
+        final_answer = ""
+
         try:
-            norm_texts = [t.get("text", "") for t in tool_logs if t.get("action") == "normalize" and t.get("text")]
-            if norm_texts:
-                draft = str(norm_texts[-1]).strip()
-            else:
-                py_outs = [t.get("stdout", "") for t in tool_logs if t.get("action") == "python" and t.get("stdout")]
-                draft = str(py_outs[-1]).strip() if py_outs else ""
-        except Exception:
+
+            def _stage(name: str):
+                class _StageCtx:
+                    def __enter__(self_inner):
+                        self_inner.t0 = time.perf_counter()
+                        return self_inner
+                    def __exit__(self_inner, exc_type, exc, tb):
+                        stage_times[name] = round(time.perf_counter() - self_inner.t0, 6)
+                        return False
+                return _StageCtx()
+
+            def _missing_keys(obj: Dict[str, Any], keys: List[str]) -> List[str]:
+                miss = []
+                for k in keys:
+                    if k not in obj:
+                        miss.append(k)
+                return miss
+
+            if not hasattr(self, "_skill_mgr"):
+                self._skill_mgr = SkillManager(
+                    base_dir=self.output_dir,
+                    subdir=self.skills_subdir,
+                    freeze=self.freeze_skills,
+                    reset=self.reset_skills,
+                    max_new_skills=self.max_new_skills,
+                    debug=self.debug,
+                )
+            skill_mgr: SkillManager = self._skill_mgr
+
+            with _stage("IG"):
+                ig0 = self._llm_call_json(
+                "IG",
+                self.IG_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text,
+                obs,
+                need_image=True,
+                )
+                _mk = _missing_keys(ig0, ["region_to_detect", "math_elements_extracted", "question_type_guess"])
+                if _mk:
+                    errors.append({'stage':'IG','type':'missing_keys','missing':_mk})
+
+            with _stage("GTI"):
+                gti = self._llm_call_json(
+                "GTI",
+                self.GTI_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0),
+                obs,
+                need_image=True,
+                )
+                _mk = _missing_keys(gti, ["region_used", "structured", "targets_from_math_elements"])
+                if _mk:
+                    errors.append({'stage':'GTI','type':'missing_keys','missing':_mk})
+
+            with _stage("IGR"):
+                ig = self._llm_call_json(
+                "IGR",
+                self.IGR_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0) + "\n\n[GTI_JSON]\n" + _j(gti),
+                obs,
+                need_image=False,
+                )
+                _mk = _missing_keys(ig, ["region_to_detect", "math_elements_extracted"])
+                if _mk:
+                    errors.append({'stage':'IGR','type':'missing_keys','missing':_mk})
+
+            with _stage("TI"):
+                ti = self._llm_call_json(
+                "TI",
+                self.TI_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text + "\n\n[INFO_JSON]\n" + _j(ig) + "\n\n[GTI_JSON]\n" + _j(gti),
+                obs,
+                need_image=False,
+                )
+                _mk = _missing_keys(ti, ["problem_state_summary", "required_operations", "risk_checks", "grounding"])
+                if _mk:
+                    errors.append({'stage':'TI','type':'missing_keys','missing':_mk})
+
+            qtype = ig.get("question_type_guess", "other")
+            mem_snips = self._load_memory_snippets([qtype, "mathvista"], k=6)
+
+            sc_input = (
+                self.SC_PROMPT
+                + "\n\n[TASK_INFERENCE_JSON]\n"
+                + _j(ti)
+                + "\n\n[SKILL_CATALOG]\n"
+                + _j(skill_mgr.catalog())
+            )
+            with _stage("SC"):
+                sc = self._llm_call_json("SC", sc_input, obs, need_image=False)
+                _mk = _missing_keys(sc, ["selected_skills", "skill_priority"])
+                if _mk:
+                    errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
+
+            new_specs = sc.get("new_skill_specs", [])
+            if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
+                sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
+                sw = self._llm_call_json("SkillWriter", sw_input, obs, need_image=False)
+                accepted = 0
+                for sk in sw.get("skills", []):
+                    if accepted >= self.max_new_skills:
+                        break
+                    name = sk.get("name", "")
+                    code = sk.get("code", "")
+                    signature = sk.get("signature", "")
+                    tests = sk.get("tests", [])
+                    tags = sk.get("tags", [])
+                    ok, _ = skill_mgr.add_or_update_skill(
+                        name=name,
+                        code=code,
+                        signature=signature,
+                        tags=tags,
+                        tests=tests,
+                    )
+                    if ok:
+                        accepted += 1
+
+            ap_prompt = self.AP_PROMPT.replace("MAX_STEPS", str(self.max_steps))
+            ap_input = (
+                ap_prompt
+                + "\n\n[USER_PROMPT]\n" + obs.text
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[TASK_INFERENCE_JSON]\n"
+                + _j(ti)
+                + "\n\n[SELECTED_SKILLS]\n"
+                + _j(sc.get("selected_skills", []))
+                + "\n\n[LEARNED_SKILL_CATALOG]\n"
+                + _j(skill_mgr.catalog())
+                + "\n\n[MEMORY_SNIPPETS]\n"
+                + _j(mem_snips)
+            )
+            with _stage("AP"):
+                ap = self._llm_call_json("AP", ap_input, obs, need_image=True)
+                _mk = _missing_keys(ap, ["steps", "final_format"])
+                if _mk:
+                    errors.append({'stage':'AP','type':'missing_keys','missing':_mk})
+
+            tool_logs = []
+            t_exec0 = time.perf_counter()
+            steps = ap.get("steps", [])
+            if isinstance(steps, list):
+                for idx, step in enumerate(steps[: self.max_steps]):
+                    action = step.get("action")
+                    intention = step.get("intention", "")
+                    if action == "python":
+                        code = step.get("code", "")
+                        out, err = safe_exec(code, skill_mgr.ctx)
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "python",
+                                "intention": intention,
+                                "code": code,
+                                "stdout": out,
+                                "error": err,
+                            }
+                        )
+                    elif action == "reason":
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "reason",
+                                "intention": intention,
+                                "note": step.get("note", ""),
+                            }
+                        )
+                    elif action == "normalize":
+                        raw_text = step.get("text", "")
+                        rendered_text, render_err = render_placeholders(str(raw_text), skill_mgr.ctx)
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "normalize",
+                                "intention": intention,
+                                "text": rendered_text,
+                                "raw_text": raw_text,
+                                "render_error": render_err,
+                            }
+                        )
+                    else:
+                        tool_logs.append({"i": idx, "action": "unknown", "intention": intention, "raw": step})
+
+            stage_times['EXEC'] = round(time.perf_counter() - t_exec0, 6)
+            # Build a draft answer from executed plan logs (prefer last normalize text)
             draft = ""
+            try:
+                norm_texts = [t.get("text", "") for t in tool_logs if t.get("action") == "normalize" and t.get("text")]
+                if norm_texts:
+                    draft = str(norm_texts[-1]).strip()
+                else:
+                    py_outs = [t.get("stdout", "") for t in tool_logs if t.get("action") == "python" and t.get("stdout")]
+                    draft = str(py_outs[-1]).strip() if py_outs else ""
+            except Exception:
+                draft = ""
 
 
-        # -----------------------------
-        # Deterministic fallback (when plan execution failed)
-        # -----------------------------
-        try:
-            py_errors = [t for t in tool_logs if t.get("action") == "python" and t.get("error")]
-            if (not draft or not str(draft).strip().startswith("Answer:")) and py_errors:
-                # Fallback for a very common MathVista physics pattern:
-                # frictionless block/canister hits spring; KE -> spring PE
-                knowns = (ig.get("math_elements_extracted") or {}).get("known", [])
-                unknowns = (ig.get("math_elements_extracted") or {}).get("unknown", [])
-                relations = (ig.get("math_elements_extracted") or {}).get("relations", [])
+            # -----------------------------
+            # Deterministic fallback (when plan execution failed)
+            # -----------------------------
+            try:
+                py_errors = [t for t in tool_logs if t.get("action") == "python" and t.get("error")]
+                if (not draft or not str(draft).strip().startswith("Answer:")) and py_errors:
+                    # Fallback for a very common MathVista physics pattern:
+                    # frictionless block/canister hits spring; KE -> spring PE
+                    knowns = (ig.get("math_elements_extracted") or {}).get("known", [])
+                    unknowns = (ig.get("math_elements_extracted") or {}).get("unknown", [])
+                    relations = (ig.get("math_elements_extracted") or {}).get("relations", [])
 
-                def _get_float(name_keys):
-                    for it in knowns:
-                        nm = (it.get("name") or "").lower()
-                        for k in name_keys:
-                            if k in nm:
-                                try:
-                                    return float(it.get("value"))
-                                except Exception:
-                                    pass
-                    return None
+                    def _get_float(name_keys):
+                        for it in knowns:
+                            nm = (it.get("name") or "").lower()
+                            for k in name_keys:
+                                if k in nm:
+                                    try:
+                                        return float(it.get("value"))
+                                    except Exception:
+                                        pass
+                        return None
 
-                m_val = _get_float(["mass"])
-                v_val = _get_float(["speed", "velocity"])
-                k_val = _get_float(["spring constant", "k"])
+                    m_val = _get_float(["mass"])
+                    v_val = _get_float(["speed", "velocity"])
+                    k_val = _get_float(["spring constant", "k"])
 
-                wants_d = any("d" in (u or "").lower() or "distance" in (u or "").lower() for u in unknowns)
-                rel_ok = any("kinetic" in (r or "").lower() and "spring" in (r or "").lower() for r in relations)
+                    wants_d = any("d" in (u or "").lower() or "distance" in (u or "").lower() for u in unknowns)
+                    rel_ok = any("kinetic" in (r or "").lower() and "spring" in (r or "").lower() for r in relations)
 
-                if m_val is not None and v_val is not None and k_val is not None and wants_d and rel_ok:
-                    d_val = float(v_val) * math.sqrt(float(m_val) / float(k_val))
-                    draft = format_final(d_val)
-                    tool_logs.append({
-                        "i": len(tool_logs),
-                        "action": "fallback",
-                        "intention": "Fallback compute spring compression via d = v*sqrt(m/k) (KE->spring PE).",
-                        "stdout": draft,
-                        "error": None
-                    })
-        except Exception:
-            pass
+                    if m_val is not None and v_val is not None and k_val is not None and wants_d and rel_ok:
+                        d_val = float(v_val) * math.sqrt(float(m_val) / float(k_val))
+                        draft = format_final(d_val)
+                        tool_logs.append({
+                            "i": len(tool_logs),
+                            "action": "fallback",
+                            "intention": "Fallback compute spring compression via d = v*sqrt(m/k) (KE->spring PE).",
+                            "stdout": draft,
+                            "error": None
+                        })
+            except Exception:
+                pass
 
-        sr_input = (
-            self.SR_PROMPT
-            + "\n\n[INFO_JSON]\n"
-            + _j(ig)
-            + "\n\n[GTI_JSON]\n"
-            + _j(gti)
-            + "\n\n[TI_JSON]\n"
-            + _j(ti)
-            + "\n\n[AP_JSON]\n"
-            + _j(ap)
-            + "\n\n[TOOL_LOGS]\n"
-            + _j(tool_logs)
-            + "\n\n[DRAFT]\n"
-            + draft
-        )
-        with _stage("SR"):
-            sr = self._llm_call_json("SR", sr_input, obs, need_image=True)
-            _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence"])
-            if _mk:
-                errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
+            sr_input = (
+                self.SR_PROMPT
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[TI_JSON]\n"
+                + _j(ti)
+                + "\n\n[AP_JSON]\n"
+                + _j(ap)
+                + "\n\n[TOOL_LOGS]\n"
+                + _j(tool_logs)
+                + "\n\n[DRAFT]\n"
+                + draft
+            )
+            with _stage("SR"):
+                sr = self._llm_call_json("SR", sr_input, obs, need_image=True)
+                _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence"])
+                if _mk:
+                    errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
 
-        draft_line = (draft or "").strip()
-        if draft_line and not draft_line.startswith("Answer:"):
-            draft_line = "Answer: " + draft_line
+            draft_line = (draft or "").strip()
+            if draft_line and not draft_line.startswith("Answer:"):
+                draft_line = "Answer: " + draft_line
 
-        final_answer = choose_final_answer(draft_line, sr)
+            final_answer = choose_final_answer(draft_line, sr)
 
-        mem_input = (
-            self.MEM_PROMPT
-            + "\n\n[INFO_JSON]\n"
-            + _j(ig)
-            + "\n\n[GTI_JSON]\n"
-            + _j(gti)
-            + "\n\n[FINAL_ANSWER]\n"
-            + final_answer
-            + "\n\n[REFLECTION_JSON]\n"
-            + _j(sr)
-        )
-        try:
-            mem = self._llm_call_json("MEM", mem_input, obs, need_image=False)
-            self._append_memory(mem.get("memory_writes", []))
-        except Exception:
-            pass
+            mem_input = (
+                self.MEM_PROMPT
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[FINAL_ANSWER]\n"
+                + final_answer
+                + "\n\n[REFLECTION_JSON]\n"
+                + _j(sr)
+            )
+            try:
+                mem = self._llm_call_json("MEM", mem_input, obs, need_image=False)
+                self._append_memory(mem.get("memory_writes", []))
+            except Exception:
+                pass
 
-        stage_times['TOTAL'] = round(time.perf_counter() - t_total0, 6)
-
-        # Persist debug artifacts + structured logs beside final results
-        run_record = {
-            'run_id': run_id,
-            'ts': obs.meta.get('ts'),
-            'prompt_hash': prompt_hash,
-            'prompt_len': len(user_prompt) if isinstance(user_prompt, str) else None,
-            'img_hash': img_hash,
-            'stage_times': stage_times,
-            'errors': errors,
-            'llm_calls': llm_calls,
-            'region_to_detect': (ig.get('region_to_detect') if isinstance(ig, dict) else None),
-            'question_type_guess': (ig.get('question_type_guess') if isinstance(ig, dict) else None),
-            'ig0': ig0,
-            'gti': gti,
-            'ig': ig,
-            'ti': ti,
-            'sc': sc,
-            'ap': ap,
-            'tool_logs': tool_logs,
-            'draft': draft,
-            'sr': sr,
-            'final_answer': final_answer,
-        }
-        artifacts = {
-            'run_record': run_record,
-            'user_prompt.txt': _truncate(user_prompt, 4000),
-            'ig0': ig0,
-            'gti': gti,
-            'ig': ig,
-            'ti': ti,
-            'sc': sc,
-            'ap': ap,
-            'tool_logs': tool_logs,
-            'sr': sr,
-            'final_answer': {'final_answer': final_answer},
-        }
-        try:
-            artifacts_dir = self._write_artifacts(run_id, artifacts)
-            run_record['artifacts_dir'] = artifacts_dir
         except Exception as e:
-            errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e)})
-        try:
-            self._append_run_log(run_record)
-        except Exception:
-            pass
+            errors.append({
+                "stage": "EXCEPTION",
+                "type": type(e).__name__,
+                "error": str(e),
+                "traceback": _truncate(traceback.format_exc(), 4000),
+            })
+            # Best-effort answer so evaluation can continue
+            if isinstance(draft, str) and draft.strip():
+                _d = draft.strip()
+                final_answer = _d if _d.startswith("Answer:") else ("Answer: " + _d)
+            elif isinstance(final_answer, str) and final_answer.strip():
+                pass
+            else:
+                final_answer = "Answer: "
+        finally:
+            if "TOTAL" not in stage_times:
+                stage_times["TOTAL"] = round(time.perf_counter() - t_total0, 6)
+
+            run_record = {
+                'run_id': run_id,
+                'ts': obs.meta.get('ts'),
+                'prompt_hash': prompt_hash,
+                'prompt_len': len(user_prompt) if isinstance(user_prompt, str) else None,
+                'img_hash': img_hash,
+                'stage_times': stage_times,
+                'errors': errors,
+                'llm_calls': llm_calls,
+                'region_to_detect': (ig.get('region_to_detect') if isinstance(ig, dict) else None),
+                'question_type_guess': (ig.get('question_type_guess') if isinstance(ig, dict) else None),
+                'ig0': ig0,
+                'gti': gti,
+                'ig': ig,
+                'ti': ti,
+                'sc': sc,
+                'ap': ap,
+                'tool_logs': tool_logs,
+                'draft': draft,
+                'sr': sr,
+                'final_answer': final_answer,
+            }
+            artifacts = {
+                'run_record': run_record,
+                'user_prompt.txt': _truncate(user_prompt, 4000),
+                'ig0': ig0,
+                'gti': gti,
+                'ig': ig,
+                'ti': ti,
+                'sc': sc,
+                'ap': ap,
+                'tool_logs': tool_logs,
+                'sr': sr,
+                'final_answer': {'final_answer': final_answer},
+            }
+            try:
+                artifacts_dir = self._write_artifacts(run_id, artifacts)
+                run_record['artifacts_dir'] = artifacts_dir
+            except Exception as e2:
+                errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e2)})
+            try:
+                self._append_run_log(run_record)
+            except Exception:
+                pass
+
         return final_answer

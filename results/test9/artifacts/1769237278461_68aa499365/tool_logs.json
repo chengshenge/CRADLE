@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the measure of angle H from the diagram.",
+    "note": "The diagram explicitly labels angle H as 102 degrees."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map the angle measure to the provided options.",
+    "code": "angle_measure = 102; options = [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]; option_label = next(opt['label'] for opt in options if int(opt['text']) == angle_measure)",
+    "stdout": "",
+    "error": "name 'next' is not defined"
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Format the final answer as required by the problem statement.",
+    "code": "format_final(option_label)",
+    "stdout": "",
+    "error": "name 'option_label' is not defined"
+  }
+]
