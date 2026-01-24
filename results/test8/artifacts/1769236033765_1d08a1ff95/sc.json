@@ -1,0 +1,75 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find angle measures.",
+      "how_to_use": "Use to calculate angle measures using given expressions."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use to format the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "apply_triangle_angle_sum",
+      "signature": "(angles)->float",
+      "purpose": "Calculate the third angle of a triangle given two angles.",
+      "inputs": [
+        "angles"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "If angles do not sum to less than 180, return error."
+      ],
+      "tests": [
+        {
+          "input": "[110, 30]",
+          "expect": "40"
+        },
+        {
+          "input": "[60, 60]",
+          "expect": "60"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "triangle"
+      ]
+    },
+    {
+      "name": "use_angle_bisector_property",
+      "signature": "(angle_a, angle_b)->float",
+      "purpose": "Calculate the angle formed by two angle bisectors given two angles of a triangle.",
+      "inputs": [
+        "angle_a",
+        "angle_b"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "If input angles are not valid, return error."
+      ],
+      "tests": [
+        {
+          "input": "110, 30",
+          "expect": "145"
+        },
+        {
+          "input": "60, 60",
+          "expect": "120"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "apply_triangle_angle_sum",
+    "use_angle_bisector_property",
+    "calc_numeric",
+    "format_final"
+  ]
+}

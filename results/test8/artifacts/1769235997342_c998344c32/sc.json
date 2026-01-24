@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to return exactly one line.",
+      "how_to_use": "Use this skill to format the final answer as a single line string prefixed with 'Answer: '."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_markings",
+      "signature": "(image)->int",
+      "purpose": "Extract and identify the largest volume marking from an image of a measuring cup.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image is blurry or unclear",
+        "Volume markings are not visible"
+      ],
+      "tests": [
+        {
+          "input": "image_with_clear_markings",
+          "expect": 500
+        },
+        {
+          "input": "image_with_partial_markings",
+          "expect": 250
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_markings",
+    "format_final"
+  ]
+}

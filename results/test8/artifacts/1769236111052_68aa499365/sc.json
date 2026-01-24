@@ -1,0 +1,111 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to return the final answer as 'Answer: B' for the correct option."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_diagram_value",
+      "signature": "(diagram)->float",
+      "purpose": "Extract the value of a specific angle from a geometric diagram.",
+      "inputs": [
+        "diagram"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Diagram is unclear or mislabeled",
+        "Multiple angles are marked"
+      ],
+      "tests": [
+        {
+          "input": "diagram_with_angle_102",
+          "expect": 102.0
+        },
+        {
+          "input": "diagram_with_no_marked_angle",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "map_value_to_option",
+      "signature": "(value, options)->str",
+      "purpose": "Map a numeric value to the corresponding multiple-choice option.",
+      "inputs": [
+        "value",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Value does not match any option",
+        "Options are not numeric"
+      ],
+      "tests": [
+        {
+          "input": {
+            "value": 102,
+            "options": [
+              {
+                "label": "A",
+                "text": "97"
+              },
+              {
+                "label": "B",
+                "text": "102"
+              },
+              {
+                "label": "C",
+                "text": "107"
+              },
+              {
+                "label": "D",
+                "text": "122"
+              }
+            ]
+          },
+          "expect": "B"
+        },
+        {
+          "input": {
+            "value": 105,
+            "options": [
+              {
+                "label": "A",
+                "text": "97"
+              },
+              {
+                "label": "B",
+                "text": "102"
+              },
+              {
+                "label": "C",
+                "text": "107"
+              },
+              {
+                "label": "D",
+                "text": "122"
+              }
+            ]
+          },
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "value mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_diagram_value",
+    "map_value_to_option",
+    "format_final"
+  ]
+}

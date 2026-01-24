@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known angle and bisectors in the diagram",
+      "action": "reason",
+      "note": "Angle A is 110 degrees, OB and OC are angle bisectors intersecting at O."
+    },
+    {
+      "intention": "Apply angle bisector property and triangle angle sum",
+      "action": "python",
+      "code": "angle_BC = (180 - 110) / 2; angle_BOC = 180 - angle_BC"
+    },
+    {
+      "intention": "Map the result to a multiple-choice option",
+      "action": "python",
+      "code": "options = {'A': 135, 'B': 140, 'C': 145, 'D': 150}; closest_option = min(options, key=lambda k: abs(options[k] - angle_BOC))"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {closest_option}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

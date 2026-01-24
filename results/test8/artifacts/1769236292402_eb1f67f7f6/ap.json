@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "Blocker: next object in sequence. Proceed with pattern recognition."
+    },
+    {
+      "intention": "Analyze the sequence to identify the pattern.",
+      "action": "reason",
+      "note": "Use diagram analysis to determine the next object in the sequence."
+    },
+    {
+      "intention": "Map the identified object to the given options.",
+      "action": "python",
+      "code": "next_object = 'C'; option = map_value_to_option(next_object, [{'label': 'A', 'text': 'A'}, {'label': 'B', 'text': 'B'}, {'label': 'C', 'text': 'C'}, {'label': 'D', 'text': 'D'}, {'label': 'E', 'text': 'E'}])"
+    },
+    {
+      "intention": "Provide the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

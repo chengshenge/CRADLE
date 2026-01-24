@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure known as a 'Pythagorean tree', which consists of squares and right triangles. The areas of two squares, A and B, are given as 5 and 3 square units, respectively. The task is to determine the area of the largest square, C, in this configuration. The geometric relationships between the squares and triangles in the Pythagorean tree are key to solving the problem. The problem is presented with multiple-choice options for the area of square C. The diagram is essential for understanding the spatial arrangement and relationships between the squares and triangles.",
+  "entities": [
+    "Square A",
+    "Square B",
+    "Square C"
+  ],
+  "unknowns": [
+    "Area of square C"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric configuration",
+    "Apply the Pythagorean theorem to relate the areas of the squares",
+    "Calculate the area of square C using the given areas of squares A and B"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "Pythagorean theorem",
+    "area calculation",
+    "diagram interpretation"
+  ]
+}

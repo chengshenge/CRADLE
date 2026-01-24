@@ -88,6 +88,104 @@ def _atomic_write_json(path: str, obj: Any) -> None:
 
 
 
+# ============================================================
+# Placeholder rendering + answer selection helpers
+# ============================================================
+
+_PLACEHOLDER_RE = re.compile(r"\{([A-Za-z_]\w*)(?::([^}]+))?\}")
+
+def _to_scalar(v: Any) -> Any:
+    """Best-effort conversion of tool outputs to a scalar for formatting."""
+    if isinstance(v, (list, tuple)) and len(v) == 1:
+        v = v[0]
+    # SolveResult is a float subclass; treat as scalar automatically.
+    try:
+        # sympy-like
+        if hasattr(v, "evalf") and callable(getattr(v, "evalf")):
+            try:
+                v = float(v.evalf())
+            except Exception:
+                pass
+    except Exception:
+        pass
+    return v
+
+def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+    """Render {var} and {var:format} placeholders using values in ctx.
+
+    Returns (rendered_text, error_str). On error, rendered_text is the original text.
+    """
+    if not isinstance(text, str):
+        return str(text), None
+    if "{" not in text or "}" not in text:
+        return text, None
+
+    def repl(m: re.Match) -> str:
+        name, spec = m.group(1), m.group(2)
+        if name not in ctx:
+            raise KeyError(f"missing placeholder var: {name}")
+        v = _to_scalar(ctx[name])
+        return format(v, spec) if spec else str(v)
+
+    try:
+        return _PLACEHOLDER_RE.sub(repl, text), None
+    except Exception as e:
+        return text, str(e)
+
+_ANS_HOLE_RE = re.compile(r"\{[^}]+\}")
+
+def _sanitize_answer_line(s: str) -> str:
+    t = (s or "").strip()
+    if not t:
+        return ""
+    if not t.startswith("Answer:"):
+        t = "Answer: " + t
+    # single line
+    t = t.splitlines()[0].strip()
+    return t
+
+def _looks_valid_answer_line(s: str) -> bool:
+    t = _sanitize_answer_line(s)
+    if not t.startswith("Answer:"):
+        return False
+    payload = t.split("Answer:", 1)[1].strip()
+    if not payload:
+        return False
+    if "[calculated_value]" in t:
+        return False
+    if _ANS_HOLE_RE.search(t):
+        return False
+    bad = payload.lower()
+    if bad in ("none", "null", "nan", "inf", "infinity", "error", "unknown"):
+        return False
+    return True
+
+def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
+    """Prefer a valid draft answer unless SR is clearly fixing a formatting/mapping issue."""
+    draft_line = _sanitize_answer_line(draft)
+    sr_line = _sanitize_answer_line(str(sr.get("final_answer", "")))
+
+    sr_cause = str(sr.get("most_probable_cause", "")).strip().lower()
+    safe_causes = {"format_error", "option_mapping_error", "rounding_error", "unit_error"}
+
+    draft_ok = _looks_valid_answer_line(draft_line)
+    sr_ok = _looks_valid_answer_line(sr_line)
+
+    # If draft is good and SR is either bad or likely changing semantics, keep draft.
+    if draft_ok and ((not sr_ok) or (sr_cause and sr_cause not in safe_causes)):
+        return draft_line
+
+    # If SR looks good and it's a safe fix, prefer SR.
+    if sr_ok and (sr_cause in safe_causes or not draft_ok):
+        return sr_line
+
+    # Fallback: whichever is valid; else keep whatever we have.
+    if draft_ok:
+        return draft_line
+    if sr_ok:
+        return sr_line
+    return sr_line or draft_line or "Answer: "
+
 def _extract_first_balanced_json_object(s: str) -> Optional[str]:
     """Return the first balanced {...} object substring, or None."""
     if not isinstance(s, str):
@@ -422,6 +520,28 @@ def make_safe_context() -> Dict[str, Any]:
         """Compute numeric arithmetic expression safely."""
         return _safe_eval_arith_expr(expr)
 
+    class _SolveResult(float):
+        """Float-like solver result that also behaves like a list of roots.
+
+        This keeps older AP plans working whether they treat sympy_solve() as:
+          - a scalar (d = sympy_solve(...); d*100)
+          - or a list (roots = sympy_solve(...); roots[0])
+        """
+
+        def __new__(cls, value: float, roots: Optional[List[float]] = None):
+            obj = float.__new__(cls, float(value))
+            obj.roots = list(roots) if roots is not None else [float(value)]
+            return obj
+
+        def __iter__(self):
+            return iter(self.roots)
+
+        def __len__(self):
+            return len(self.roots)
+
+        def __getitem__(self, i):
+            return self.roots[i]
+
     def sympy_solve(eqs, vars):
         """Solve algebraic equation(s).
 
@@ -435,7 +555,7 @@ def make_safe_context() -> Dict[str, Any]:
                Also accepts list[str] but fallback supports only one equation.
           vars: variable name string (e.g. "d") or list with one variable.
         Returns:
-          For 1-var: list of numeric roots (float).
+          For 1-var: a float-like result (also indexable/iterable as roots list).
           For multi-var: sympy dicts if sympy available, else raises.
         """
         # -----------------------------
@@ -463,13 +583,46 @@ def make_safe_context() -> Dict[str, Any]:
 
             sol = sp.solve(eq_list, syms, dict=True)
 
-            # Normalize a common single-var case into a simple list/number
+            # Normalize a common single-var case into a scalar-like result.
             if len(syms) == 1:
                 v = syms[0]
-                vals = [d[v] for d in sol if v in d]
+                vals = [d[v] for d in sol if isinstance(d, dict) and v in d]
                 if not vals:
                     return sol
-                return vals
+
+                roots: List[float] = []
+                for vv in vals:
+                    try:
+                        # skip non-real if sympy knows
+                        if hasattr(vv, "is_real") and vv.is_real is False:
+                            continue
+                    except Exception:
+                        pass
+                    try:
+                        fv = float(vv.evalf())
+                    except Exception:
+                        try:
+                            fv = float(vv)
+                        except Exception:
+                            continue
+                    if isinstance(fv, float) and math.isfinite(fv):
+                        roots.append(float(fv))
+
+                # Choose a "best" root: prefer smallest positive real; else first real.
+                best = None
+                pos = [r for r in roots if r > 0]
+                if pos:
+                    best = min(pos)
+                elif roots:
+                    best = roots[0]
+
+                if best is not None:
+                    ctx["_last_roots"] = list(roots)
+                    ctx["_last_solution"] = float(best)
+                    return _SolveResult(float(best), roots)
+
+                return sol
+
             return sol
 
         # -----------------------------
@@ -519,9 +672,9 @@ def make_safe_context() -> Dict[str, Any]:
                         return float(xval)
                     # allow math constants like pi, e
                     if hasattr(math, node.id):
-                        v = getattr(math, node.id)
-                        if isinstance(v, (int, float)):
-                            return float(v)
+                        vv = getattr(math, node.id)
+                        if isinstance(vv, (int, float)):
+                            return float(vv)
                     raise ValueError(f"unknown name: {node.id}")
                 if isinstance(node, ast.BinOp) and isinstance(node.op, allowed_binops):
                     a = _ev(node.left)
@@ -541,8 +694,8 @@ def make_safe_context() -> Dict[str, Any]:
                     if isinstance(node.op, ast.Pow):
                         return a ** b
                 if isinstance(node, ast.UnaryOp) and isinstance(node.op, allowed_unops):
-                    v = _ev(node.operand)
-                    return +v if isinstance(node.op, ast.UAdd) else -v
+                    vv = _ev(node.operand)
+                    return +vv if isinstance(node.op, ast.UAdd) else -vv
                 if isinstance(node, ast.Call):
                     # allow math.<func>(...)
                     if isinstance(node.func, ast.Name) and hasattr(math, node.func.id):
@@ -558,9 +711,9 @@ def make_safe_context() -> Dict[str, Any]:
                 if isinstance(node, ast.Attribute):
                     # allow "math.pi" etc.
                     if isinstance(node.value, ast.Name) and node.value.id == "math" and hasattr(math, node.attr):
-                        v = getattr(math, node.attr)
-                        if isinstance(v, (int, float)):
-                            return float(v)
+                        vv = getattr(math, node.attr)
+                        if isinstance(vv, (int, float)):
+                            return float(vv)
                     raise ValueError("unsafe attribute")
                 raise ValueError(f"unsupported node: {type(node).__name__}")
 
@@ -593,7 +746,7 @@ def make_safe_context() -> Dict[str, Any]:
             else:
                 roots = []
 
-        # Choose a "best" root for downstream formatting: prefer smallest positive real.
+        # Choose a "best" root: prefer smallest positive real; else first.
         best = None
         pos = [r for r in roots if isinstance(r, (int, float)) and math.isfinite(r) and r > 0]
         if pos:
@@ -601,8 +754,10 @@ def make_safe_context() -> Dict[str, Any]:
         elif roots:
             best = roots[0]
 
+        ctx["_last_roots"] = list(roots)
         if best is not None:
             ctx["_last_solution"] = float(best)
+            return _SolveResult(float(best), roots)
 
         return roots
 
@@ -1688,12 +1843,16 @@ Return STRICT JSON:
                         }
                     )
                 elif action == "normalize":
+                    raw_text = step.get("text", "")
+                    rendered_text, render_err = render_placeholders(str(raw_text), skill_mgr.ctx)
                     tool_logs.append(
                         {
                             "i": idx,
                             "action": "normalize",
                             "intention": intention,
-                            "text": step.get("text", ""),
+                            "text": rendered_text,
+                            "raw_text": raw_text,
+                            "render_error": render_err,
                         }
                     )
                 else:
@@ -1777,9 +1936,11 @@ Return STRICT JSON:
             if _mk:
                 errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
 
-        final_answer = str(sr.get("final_answer", "")).strip()
-        if not final_answer.startswith("Answer:"):
-            final_answer = "Answer: " + final_answer
+        draft_line = (draft or "").strip()
+        if draft_line and not draft_line.startswith("Answer:"):
+            draft_line = "Answer: " + draft_line
+
+        final_answer = choose_final_answer(draft_line, sr)
 
         mem_input = (
             self.MEM_PROMPT

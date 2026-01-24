@@ -1,0 +1,63 @@
+{
+  "selected_skills": [
+    {
+      "name": "map_value_to_option",
+      "purpose": "To map the determined object to one of the given options.",
+      "how_to_use": "Use the skill to match the identified next object in the sequence to the corresponding option label from the multiple-choice options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_pattern_in_sequence",
+      "signature": "(sequence)->pattern",
+      "purpose": "To identify the pattern or rule governing a sequence of objects.",
+      "inputs": [
+        "sequence"
+      ],
+      "outputs": "pattern",
+      "edge_cases": [
+        "sequence with no discernible pattern",
+        "sequence with multiple possible patterns"
+      ],
+      "tests": [
+        {
+          "input": "[object1, object2, object3]",
+          "expect": "pattern_rule"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "sequence analysis"
+      ]
+    },
+    {
+      "name": "determine_next_object",
+      "signature": "(pattern, sequence)->object",
+      "purpose": "To determine the next object in a sequence based on an identified pattern.",
+      "inputs": [
+        "pattern",
+        "sequence"
+      ],
+      "outputs": "object",
+      "edge_cases": [
+        "pattern does not clearly indicate a single next object",
+        "sequence is incomplete"
+      ],
+      "tests": [
+        {
+          "input": "pattern_rule, [object1, object2, object3]",
+          "expect": "object4"
+        }
+      ],
+      "tags": [
+        "sequence continuation",
+        "pattern application"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_pattern_in_sequence",
+    "determine_next_object",
+    "map_value_to_option"
+  ]
+}

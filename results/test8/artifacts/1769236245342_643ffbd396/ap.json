@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify geometric relationships in the diagram",
+      "action": "reason",
+      "note": "Use the Pythagorean theorem to relate the areas of squares A, B, and C."
+    },
+    {
+      "intention": "Calculate the area of square C",
+      "action": "python",
+      "code": "area_A = 5; area_B = 3; area_C = area_A + area_B"
+    },
+    {
+      "intention": "Map calculated area to the correct option",
+      "action": "python",
+      "code": "option = map_value_to_option(area_C, [{'label': 'A', 'text': '15'}, {'label': 'B', 'text': '13'}, {'label': 'C', 'text': '11'}, {'label': 'D', 'text': '8'}])"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

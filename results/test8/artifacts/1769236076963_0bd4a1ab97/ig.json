@@ -1,0 +1,38 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves identifying and counting specific types of objects (large rubber spheres and big shiny cylinders) from an image, which suggests a need to analyze a diagram or visual representation of these objects."
+  ],
+  "problem_understanding": "The task is to count the total number of objects remaining after removing all large rubber spheres and big shiny cylinders from a given set of objects depicted in the image.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects left"
+    ],
+    "relations": [
+      "total objects - (large rubber spheres + big shiny cylinders) = objects left"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects subtract",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying specific objects based on their attributes (size, material, and shape) and performing a subtraction operation to find the remaining count."
+  ],
+  "problem_summary": "Determine the number of objects left after removing all large rubber spheres and big shiny cylinders from the image.",
+  "knowns": [],
+  "asks": [
+    "number of objects left"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains various objects including spheres and cylinders with different attributes.",
+    "The diagram contains labels for 'large rubber sphere' and 'big shiny cylinder'."
+  ],
+  "ambiguity": [
+    "The exact definition of 'large' and 'big' in terms of size is not provided, which may require visual judgment."
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "read_diagram_value",
+      "purpose": "To interpret and extract values from the geometric diagram, confirming D as the midpoint of AC.",
+      "how_to_use": "Use this skill to analyze the diagram and confirm the spatial relationships, particularly the midpoint property of D on AC."
+    },
+    {
+      "name": "map_value_to_option",
+      "purpose": "To map the calculated length of AC to one of the multiple-choice options.",
+      "how_to_use": "Use this skill to match the calculated length of AC with the provided multiple-choice options and return the corresponding label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_length_using_midpoint",
+      "signature": "(length_CB, length_DB)->float",
+      "purpose": "Calculate the length of segment AC using the midpoint property of D.",
+      "inputs": [
+        "length_CB",
+        "length_DB"
+      ],
+      "outputs": "The length of segment AC.",
+      "edge_cases": [
+        "If D is not the midpoint, the calculation will be incorrect."
+      ],
+      "tests": [
+        {
+          "input": "4.0, 7.0",
+          "expect": "14.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "midpoint",
+        "calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_diagram_value",
+    "calculate_length_using_midpoint",
+    "map_value_to_option"
+  ]
+}

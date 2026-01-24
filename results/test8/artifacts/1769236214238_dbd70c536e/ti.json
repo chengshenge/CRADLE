@@ -1,0 +1,55 @@
+{
+  "problem_state_summary": "The problem involves a spatial arrangement depicted in a diagram, where the task is to compare the number of tiny gray bicycles located on the left side of a brown metal sedan with the number of objects positioned to the left of a tiny green bicycle. The question asks whether the former quantity is greater than the latter. The diagram is expected to show these objects and their relative positions, which are crucial for solving the problem. The task requires counting and comparing these specific objects based on their spatial arrangement. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'.",
+  "entities": [
+    "tiny gray bicycle",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Identify the tiny gray bicycles and count those on the left side of the brown metal sedan",
+    "Identify and count the objects to the left of the tiny green bicycle",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of objects in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial reasoning",
+    "comparison",
+    "diagram interpretation"
+  ]
+}

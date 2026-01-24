@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify and count objects in the diagram",
+      "action": "reason",
+      "note": "Identify the number of large rubber spheres and big shiny cylinders from the diagram."
+    },
+    {
+      "intention": "Compute remaining objects",
+      "action": "python",
+      "code": "total_objects = 10; large_rubber_spheres = 3; big_shiny_cylinders = 2; remaining_objects = total_objects - (large_rubber_spheres + big_shiny_cylinders)"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

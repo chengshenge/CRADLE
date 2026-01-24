@@ -1,0 +1,31 @@
+{
+  "selected_skills": [
+    {
+      "name": "read_diagram_value",
+      "purpose": "Interpret the diagram to understand the geometric configuration and extract necessary values.",
+      "how_to_use": "Use this skill to extract values from the diagram, such as side lengths or areas of geometric shapes."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the area of square C using the given areas of squares A and B.",
+      "how_to_use": "Use this skill to perform numeric calculations based on the relationships derived from the Pythagorean theorem."
+    },
+    {
+      "name": "map_value_to_option",
+      "purpose": "Map the calculated area of square C to the correct multiple-choice option.",
+      "how_to_use": "Use this skill to match the calculated numeric value to one of the provided multiple-choice options."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer according to the required output format.",
+      "how_to_use": "Use this skill to format the answer as 'Answer: ...' with the correct option label."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "read_diagram_value",
+    "calc_numeric",
+    "map_value_to_option",
+    "format_final"
+  ]
+}

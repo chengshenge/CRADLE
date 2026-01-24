@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest volume marking on the measuring cup.",
+      "action": "reason",
+      "note": "The largest volume marking on the measuring cup is 500 ml."
+    },
+    {
+      "intention": "Format the final answer using the largest volume marking.",
+      "action": "python",
+      "code": "total_volume_ml = 500; format_final(total_volume_ml)"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Interpret clock hands to determine time word",
+    "note": "Use read_diagram_value to interpret the clock hands' positions."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Extract time word from diagram",
+    "code": "time_word = read_diagram_value('diagram')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Map time word to multiple-choice option",
+    "code": "option_label = map_value_to_option(time_word, [{'label': 'A', 'text': 'half'}, {'label': 'B', 'text': 'quarter'}, {'label': 'C', 'text': 'o\\'clock'}, {'label': 'D', 'text': 'quarter to'}, {'label': 'E', 'text': 'quarter past'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Format final answer with option label",
+    "text": "Answer: error",
+    "raw_text": "Answer: {option_label}",
+    "render_error": null
+  }
+]

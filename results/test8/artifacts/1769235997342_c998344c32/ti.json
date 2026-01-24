@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup from an image. The image contains text labels indicating volume measurements on the measuring cup. The largest value, 500 ml, is likely the total volume of the measuring cup. The task requires interpreting these labels to find the total volume. The unit specified in the question is grams (g), which is unusual for volume, suggesting a possible need to interpret the image correctly. The problem is straightforward and involves reading the largest volume marking on the cup.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read volume markings from the image",
+    "Identify the largest volume marking as the total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of volume markings",
+    "Verify unit consistency as volume is typically in ml, not grams"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation"
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the value of m∠H from the diagram.",
+    "note": "The diagram shows m∠H = 102°."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Map the identified value to the correct option.",
+    "code": "angle_H = 102; options = {'A': 97, 'B': 102, 'C': 107, 'D': 122}; correct_option = [key for key, value in options.items() if value == angle_H][0]",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer as required.",
+    "text": "Answer: B",
+    "raw_text": "Answer: B",
+    "render_error": null
+  }
+]

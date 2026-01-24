@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the subtraction operation to find the remaining count of objects.",
+      "how_to_use": "Use this skill to perform the subtraction of the count of large rubber spheres and big shiny cylinders from the total number of objects."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_in_diagram",
+      "signature": "(diagram, attributes)->list",
+      "purpose": "Identify and count specific objects in a diagram based on given attributes such as size, material, and shape.",
+      "inputs": [
+        "diagram",
+        "attributes"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "Objects with ambiguous size definitions",
+        "Overlapping objects"
+      ],
+      "tests": [
+        {
+          "input": "{\"diagram\": \"image_data\", \"attributes\": {\"size\": \"large\", \"material\": \"rubber\", \"shape\": \"sphere\"}}",
+          "expect": "[{\"type\": \"sphere\", \"material\": \"rubber\", \"size\": \"large\", \"count\": 3}]"
+        },
+        {
+          "input": "{\"diagram\": \"image_data\", \"attributes\": {\"size\": \"big\", \"material\": \"shiny\", \"shape\": \"cylinder\"}}",
+          "expect": "[{\"type\": \"cylinder\", \"material\": \"shiny\", \"size\": \"big\", \"count\": 2}]"
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "object identification"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "calc_numeric"
+  ]
+}

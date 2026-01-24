@@ -1,0 +1,32 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers in the problem",
+    "note": "Blockers: number of tiny gray bicycles on the left side of the brown metal sedan, number of things to the left of the tiny green bicycle."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Use diagram to count objects",
+    "code": "gray_bicycles_count = read_diagram_value('tiny gray bicycles on the left side of the brown metal sedan'); things_left_of_green_bicycle_count = read_diagram_value('things to the left of the tiny green bicycle')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Compare counts and map to option",
+    "code": "comparison_result = gray_bicycles_count > things_left_of_green_bicycle_count; option = map_value_to_option(comparison_result, [{'label': 'A', 'text': 'Yes'}, {'label': 'B', 'text': 'No'}])",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: error",
+    "raw_text": "Answer: {option}",
+    "render_error": null
+  }
+]
