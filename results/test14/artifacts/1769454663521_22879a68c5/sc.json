@@ -1,0 +1,48 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_time",
+      "signature": "(clock_image:str)->str",
+      "purpose": "Interpret the position of the clock hands from an image and determine the corresponding time word.",
+      "inputs": [
+        "clock_image"
+      ],
+      "outputs": "time_word",
+      "edge_cases": [
+        "Clock hands are ambiguous or not clearly visible",
+        "Clock face is non-standard"
+      ],
+      "tests": [
+        {
+          "input": "image_with_time_3_15",
+          "expect": "quarter past"
+        },
+        {
+          "input": "image_with_time_6_00",
+          "expect": "half"
+        },
+        {
+          "input": "image_with_time_12_00",
+          "expect": "o'clock"
+        },
+        {
+          "input": "image_with_time_8_45",
+          "expect": "quarter to"
+        },
+        {
+          "input": "image_with_time_3_00",
+          "expect": "o'clock"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "clock",
+        "time interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_time"
+  ]
+}

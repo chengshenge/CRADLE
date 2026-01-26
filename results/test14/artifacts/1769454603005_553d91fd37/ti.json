@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves a geometric diagram with points labeled A, B, C, and D. The lengths of segments CB and DB are given as 4.0 cm and 7.0 cm, respectively. Point D is specified as the midpoint of segment AC. The task is to determine the length of segment AC. The problem is presented in a multiple-choice format with four options for the length of AC. The exact positions of points A, B, C, and D are not specified in the text, which may require careful examination of the diagram. The solution involves understanding the geometric relationship that D, being the midpoint, divides AC into two equal parts.",
+  "entities": [
+    "CB",
+    "DB",
+    "AC",
+    "D"
+  ],
+  "unknowns": [
+    "Length of AC"
+  ],
+  "required_operations": [
+    "Examine the diagram to understand the geometric configuration",
+    "Use the property that D is the midpoint of AC to determine the length of AC",
+    "Map the calculated length of AC to one of the given options"
+  ],
+  "blockers": [
+    "Length of AC"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram",
+    "Verify that D is correctly identified as the midpoint of AC",
+    "Check for any additional markings or notes in the diagram that may affect interpretation"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "6cm"
+      },
+      {
+        "label": "B",
+        "text": "7cm"
+      },
+      {
+        "label": "C",
+        "text": "4cm"
+      },
+      {
+        "label": "D",
+        "text": "5cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "midpoint",
+    "diagram",
+    "multiple-choice"
+  ]
+}

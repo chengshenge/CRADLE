@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the area of square C using the Pythagorean theorem.",
+      "how_to_use": "Use calc_numeric to evaluate the expression derived from the Pythagorean theorem to find the area of square C."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use format_final to return the answer as 'Answer: X' where X is the option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_pythagorean_tree",
+      "signature": "(areas, options)->area_of_C",
+      "purpose": "Interpret the Pythagorean tree diagram to determine the area of square C.",
+      "inputs": [
+        "areas of squares A and B",
+        "multiple-choice options"
+      ],
+      "outputs": "area of square C",
+      "edge_cases": [
+        "Ensure correct mapping of areas to the diagram labels",
+        "Handle cases where diagram indicators are unclear"
+      ],
+      "tests": [
+        {
+          "input": "{\"areas\": {\"A\": 5, \"B\": 3}, \"options\": [15, 13, 11, 8]}",
+          "expect": "13"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "Pythagorean theorem",
+        "diagram interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_pythagorean_tree",
+    "calc_numeric",
+    "format_final"
+  ]
+}

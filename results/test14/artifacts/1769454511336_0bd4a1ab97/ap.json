@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify total and specific object counts",
+      "action": "reason",
+      "note": "Total objects: 50, Large rubber spheres: 15, Big shiny cylinders: 10"
+    },
+    {
+      "intention": "Compute remaining objects after subtraction",
+      "action": "python",
+      "code": "remaining_objects = calc_numeric('50 - 15 - 10')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

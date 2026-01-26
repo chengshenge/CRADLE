@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known and unknown elements in the problem.",
+      "action": "reason",
+      "note": "We know ∠A = 110° and need to find ∠BOC. OB and OC are angle bisectors."
+    },
+    {
+      "intention": "Use angle bisector properties and triangle angle sum to find ∠BOC.",
+      "action": "python",
+      "code": "angle_BC = 180 - 110; angle_BOC = 180 - angle_BC / 2"
+    },
+    {
+      "intention": "Map the calculated angle to the closest option.",
+      "action": "reason",
+      "note": "Calculated ∠BOC is 145°, which matches option C."
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

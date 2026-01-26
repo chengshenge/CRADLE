@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and extract total volume from image.",
+      "action": "reason",
+      "note": "The unresolved target is the total volume of the measuring cup. The largest visible marking is 2000, which is likely the total volume."
+    },
+    {
+      "intention": "Extract the largest volume marking from the image.",
+      "action": "python",
+      "code": "total_volume = max([250, 500, 750, 1000, 1250, 1500, 1750, 2000])"
+    },
+    {
+      "intention": "Format the total volume as the final answer.",
+      "action": "normalize",
+      "text": "Answer: 2000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

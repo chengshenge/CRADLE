@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is likely indicated by text on the image. The image contains numeric markings that represent volume measurements. The largest visible marking is 2000, which is likely the total volume of the measuring cup. The unit provided is grams, which is unusual for volume, suggesting a need to interpret the image correctly. The task is to extract the total volume from the image, which is a straightforward information extraction task. The problem requires an integer answer, and the final value should be provided as such.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the volume markings from the image",
+    "Identify the largest marking as the total volume",
+    "Ensure the interpretation aligns with the unit provided"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "image interpretation",
+    "integer answer"
+  ]
+}

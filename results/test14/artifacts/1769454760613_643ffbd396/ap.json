@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The blocker is the area of square C. Use the Pythagorean theorem to find it."
+    },
+    {
+      "intention": "Apply the Pythagorean theorem to find the area of square C.",
+      "action": "python",
+      "code": "area_A = 5; area_B = 3; side_A = area_A**0.5; side_B = area_B**0.5; side_C = (side_A**2 + side_B**2)**0.5; area_C = side_C**2"
+    },
+    {
+      "intention": "Map the computed area to the closest option.",
+      "action": "reason",
+      "note": "The computed area of square C is 8, which matches option D."
+    },
+    {
+      "intention": "Format the final answer as per the multiple-choice format.",
+      "action": "normalize",
+      "text": "Answer: D"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations needed to determine the length of AC using the midpoint property.",
+      "how_to_use": "Use this skill to calculate the length of AC by doubling the length of segment AD (or DC) since D is the midpoint."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the selected multiple-choice option as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_diagram",
+      "signature": "(img_hash, entities)->dict",
+      "purpose": "To interpret the geometric diagram and extract relevant information about the positions and relationships of points A, B, C, and D.",
+      "inputs": [
+        "img_hash",
+        "entities"
+      ],
+      "outputs": "A dictionary containing the interpreted geometric relationships and segment lengths.",
+      "edge_cases": [
+        "Diagram is unclear or labels are ambiguous",
+        "Additional markings in the diagram that are not mentioned in the text"
+      ],
+      "tests": [
+        {
+          "input": "{\"img_hash\": \"b66d56187399\", \"entities\": [\"A\", \"B\", \"C\", \"D\"]}",
+          "expect": "{\"AC\": \"2 * AD\", \"D is midpoint of AC\": true}"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram",
+        "interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

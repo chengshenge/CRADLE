@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves interpreting a clock diagram to determine the time word that corresponds to the position of the clock hands. The user is asked to identify the time shown on the clock and select the correct time word from the given options. The clock face is labeled with the numbers 12, 3, 6, and 9, which are standard positions on a clock. The task requires understanding the geometric representation of time on a clock face. The time word must match one of the provided options, which include 'half', 'quarter', 'o'clock', 'quarter to', and 'quarter past'. The problem is essentially a geometry-based question that requires visual interpretation of the clock hands' positions.",
+  "entities": [
+    "clock hands",
+    "clock face"
+  ],
+  "unknowns": [
+    "time word"
+  ],
+  "required_operations": [
+    "Interpret the position of the clock hands",
+    "Determine the corresponding time word",
+    "Map the time word to one of the given options"
+  ],
+  "blockers": [
+    "time word"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of clock hand positions",
+    "Verify that the time word matches one of the options"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "half"
+      },
+      {
+        "label": "B",
+        "text": "quarter"
+      },
+      {
+        "label": "C",
+        "text": "o'clock"
+      },
+      {
+        "label": "D",
+        "text": "quarter to"
+      },
+      {
+        "label": "E",
+        "text": "quarter past"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "clock",
+    "time interpretation",
+    "multiple choice"
+  ]
+}

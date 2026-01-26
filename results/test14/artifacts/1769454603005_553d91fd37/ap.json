@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem requires finding the length of AC using the midpoint property."
+    },
+    {
+      "intention": "Calculate the length of AC using midpoint property",
+      "action": "python",
+      "code": "AD = 7.0; AC = 2 * AD"
+    },
+    {
+      "intention": "Map calculated length to the closest option",
+      "action": "reason",
+      "note": "AC = 14.0 cm does not match any option; re-evaluate midpoint understanding."
+    },
+    {
+      "intention": "Re-evaluate midpoint understanding",
+      "action": "reason",
+      "note": "If D is midpoint, AC = 2 * AD; AD = DB = 7.0 cm; AC = 2 * 7.0 = 14.0 cm."
+    },
+    {
+      "intention": "Select the correct option based on reevaluation",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}
