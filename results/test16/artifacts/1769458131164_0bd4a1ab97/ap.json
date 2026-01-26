@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "Blocker: number of objects left. Proceed with subtraction using known counts."
+    },
+    {
+      "intention": "Calculate the number of objects left after subtraction.",
+      "action": "python",
+      "code": "total_objects = 5; subtracted_objects = 3 + 2; remaining_objects = total_objects - subtracted_objects"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

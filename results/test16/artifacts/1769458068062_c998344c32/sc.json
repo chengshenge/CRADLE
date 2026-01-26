@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final integer value as the answer.",
+      "how_to_use": "Use this skill to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_largest_marking",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest volume marking from the image and interpret it as the total volume.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image has unclear markings",
+        "Markings are not in expected units"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image analysis",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_largest_marking",
+    "format_final"
+  ]
+}

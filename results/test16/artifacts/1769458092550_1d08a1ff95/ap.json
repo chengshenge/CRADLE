@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Understand the problem and identify knowns and unknowns.",
+      "action": "reason",
+      "note": "We need to find ∠BOC in △ABC where ∠A = 110° and OB, OC are angle bisectors."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠BOC using properties of angle bisectors.",
+      "action": "python",
+      "code": "angle_BC = (180 - 110) / 2; angle_BOC = 180 - angle_BC"
+    },
+    {
+      "intention": "Determine the closest option to the calculated angle ∠BOC.",
+      "action": "reason",
+      "note": "The calculated angle ∠BOC is 145°, which matches option C."
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

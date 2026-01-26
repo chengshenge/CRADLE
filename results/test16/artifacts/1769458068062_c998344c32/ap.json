@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret the image correctly.",
+      "action": "reason",
+      "note": "The largest visible marking is 1000 g, which may represent the total capacity."
+    },
+    {
+      "intention": "Determine the total volume of the measuring cup.",
+      "action": "python",
+      "code": "total_volume = 1000"
+    },
+    {
+      "intention": "Format the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 1000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

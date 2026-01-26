@@ -1,0 +1,62 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_diagram_for_angle",
+      "signature": "(diagram_image:str, known_elements:dict, unknown_elements:dict, relations:list, constraints:list)->float",
+      "purpose": "Analyze a geometric diagram to infer the measure of a specified angle.",
+      "inputs": [
+        "diagram_image",
+        "known_elements",
+        "unknown_elements",
+        "relations",
+        "constraints"
+      ],
+      "outputs": "The inferred measure of the specified angle as a float.",
+      "edge_cases": [
+        "Diagram is unclear or elements are not properly labeled.",
+        "Multiple angles could be inferred due to ambiguous markers."
+      ],
+      "tests": [
+        {
+          "input": "{\"diagram_image\": \"f6272c7a7609\", \"known_elements\": {\"angles\": {\"A\": 90, \"B\": 45}}, \"unknown_elements\": {\"angle\": \"H\"}, \"relations\": [\"A + B + H = 180\"], \"constraints\": []}",
+          "expect": "45.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram analysis",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_inferred_angle_to_option",
+      "signature": "(inferred_angle:float, options:list)->str",
+      "purpose": "Map the inferred angle measure to the closest multiple-choice option.",
+      "inputs": [
+        "inferred_angle",
+        "options"
+      ],
+      "outputs": "The label of the closest matching option.",
+      "edge_cases": [
+        "Inferred angle does not match any option closely.",
+        "Multiple options are equally close."
+      ],
+      "tests": [
+        {
+          "input": "{\"inferred_angle\": 102.5, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "\"B\""
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping",
+        "geometry"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_diagram_for_angle",
+    "map_inferred_angle_to_option"
+  ]
+}

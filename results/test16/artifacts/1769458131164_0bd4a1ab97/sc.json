@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform subtraction of the counted objects from the total.",
+      "how_to_use": "Use this skill to calculate the remaining number of objects by subtracting the total number of subtracted objects from the initial total."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to format the final count of objects left in the required output format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_by_description",
+      "signature": "(descriptions:List[str], text:str)->Dict[str, int]",
+      "purpose": "To count the number of objects based on their descriptions from a given text.",
+      "inputs": [
+        "A list of object descriptions to identify and count.",
+        "The text containing descriptions of objects."
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "Descriptions not found in text should return a count of zero.",
+        "Text with similar but not exact descriptions should not be counted."
+      ],
+      "tests": [
+        {
+          "input": "(['large rubber spheres', 'big shiny cylinders'], 'There are 3 large rubber spheres and 2 big shiny cylinders.')",
+          "expect": "{'large rubber spheres': 3, 'big shiny cylinders': 2}"
+        },
+        {
+          "input": "(['large rubber spheres'], 'No large rubber spheres here.')",
+          "expect": "{'large rubber spheres': 0}"
+        }
+      ],
+      "tags": [
+        "object counting",
+        "attribute identification"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_by_description",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations needed to find the measure of angle ∠BOC.",
+      "how_to_use": "Use this skill to compute any numeric expressions derived from the properties of angle bisectors and the given angle ∠A."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: [option label]'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A: float)->float",
+      "purpose": "Calculate the angle ∠BOC formed by the intersection of the angle bisectors of a triangle given angle ∠A.",
+      "inputs": [
+        "angle_A"
+      ],
+      "outputs": "The measure of angle ∠BOC.",
+      "edge_cases": [
+        "Ensure angle_A is a valid angle in a triangle (0 < angle_A < 180)."
+      ],
+      "tests": [
+        {
+          "input": "110",
+          "expect": "140"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisector",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "calc_numeric",
+    "format_final"
+  ]
+}

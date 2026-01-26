@@ -1,0 +1,39 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading words/numbers from the image to identify and count specific objects based on their descriptions."
+  ],
+  "problem_understanding": "The problem involves identifying and subtracting specific types of objects (large rubber spheres and big shiny cylinders) from a total set of objects to determine how many are left.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects left"
+    ],
+    "relations": [
+      "total objects - large rubber spheres - big shiny cylinders = objects left"
+    ],
+    "constraints": [
+      "objects must be identified by their size and material"
+    ],
+    "options": []
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects nouns subtract verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying specific objects based on their attributes and performing subtraction to find the remaining count."
+  ],
+  "problem_summary": "Identify and subtract specific types of objects from a total to find how many are left.",
+  "knowns": [],
+  "asks": [
+    "number of objects left"
+  ],
+  "constraints": [
+    "objects must be identified by their size and material"
+  ],
+  "visual_facts": [],
+  "ambiguity": [
+    "The image must be clear enough to identify the objects based on their descriptions."
+  ]
+}
