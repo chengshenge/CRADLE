@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the total volume from the image",
+      "action": "reason",
+      "note": "The highest marking on the measuring cup is 500 g, which is interpreted as the total volume."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "python",
+      "code": "ans = 500; format_final(ans)"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

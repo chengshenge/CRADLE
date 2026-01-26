@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as required.",
+      "how_to_use": "Use this skill to format the final integer answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_volume_marking",
+      "signature": "(marking:str)->int",
+      "purpose": "Interpret the highest volume marking on the measuring cup as the total volume.",
+      "inputs": [
+        "marking"
+      ],
+      "outputs": "The total volume as an integer.",
+      "edge_cases": [
+        "If the marking is not a valid number, return an error or handle gracefully."
+      ],
+      "tests": [
+        {
+          "input": "500 g",
+          "expect": 500
+        },
+        {
+          "input": "1000 g",
+          "expect": 1000
+        },
+        {
+          "input": "invalid",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "interpretation",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_volume_marking",
+    "format_final"
+  ]
+}

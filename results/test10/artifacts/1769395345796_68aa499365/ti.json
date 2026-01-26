@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram includes point labels A through H and specifically marks angle H with a value of 102 degrees. The task is to identify the measure of angle H, which is a straightforward geometric problem. The problem is presented as a multiple-choice question with four options. The image is necessary to confirm the measure of angle H as it is not described in the text prompt. The known value of angle H is extracted from the image, which directly answers the problem's question.",
+  "entities": [
+    "m∠H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Read diagram",
+    "Identify angle H",
+    "Confirm measure of angle H"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "diagram",
+    "multiple-choice"
+  ]
+}

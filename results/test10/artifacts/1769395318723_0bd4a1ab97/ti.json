@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves a diagram that likely contains various objects, including spheres and cylinders. The task is to identify and subtract specific objects based on their attributes: large rubber spheres and big shiny cylinders. The goal is to determine how many objects remain after these subtractions. The problem requires understanding the attributes of size and material/appearance to correctly identify the objects to be subtracted. The exact criteria for 'large', 'big', 'rubber', and 'shiny' are not defined, which introduces ambiguity. The final answer should be an integer representing the number of objects left.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify large rubber spheres",
+    "Identify big shiny cylinders",
+    "Subtract identified objects from total"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ambiguity in size and material/appearance criteria"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "object identification",
+    "subtraction"
+  ]
+}

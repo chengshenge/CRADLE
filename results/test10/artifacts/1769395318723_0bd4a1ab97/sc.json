@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the final number of objects left after subtraction.",
+      "how_to_use": "Use this skill to perform the subtraction of identified objects from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the final integer result as a string in the form 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects",
+      "signature": "(attributes:dict, total_objects:int)->dict",
+      "purpose": "Identify and count objects based on given attributes.",
+      "inputs": [
+        "attributes: A dictionary specifying the attributes to identify objects (e.g., {'size': 'large', 'material': 'rubber'})",
+        "total_objects: The total number of objects to consider."
+      ],
+      "outputs": "A dictionary with counts of identified objects based on the attributes.",
+      "edge_cases": [
+        "Attributes not matching any objects should return a count of zero.",
+        "If total_objects is zero, return zero for all counts."
+      ],
+      "tests": [
+        {
+          "input": "{'size': 'large', 'material': 'rubber'}, 10",
+          "expect": "{'large rubber spheres': 3}"
+        },
+        {
+          "input": "{'size': 'big', 'appearance': 'shiny'}, 10",
+          "expect": "{'big shiny cylinders': 2}"
+        },
+        {
+          "input": "{'size': 'small', 'material': 'metal'}, 10",
+          "expect": "{}"
+        }
+      ],
+      "tags": [
+        "object identification",
+        "attribute matching"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects",
+    "calc_numeric",
+    "format_final"
+  ]
+}

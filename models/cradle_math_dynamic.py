@@ -162,7 +162,12 @@ def _looks_valid_answer_line(s: str) -> bool:
     return True
 
 def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
-    """Prefer a valid draft answer unless SR is clearly fixing a formatting/mapping issue."""
+    """Pick the final answer line.
+
+    Default behavior: keep the draft if it looks valid.
+    However, if SR explicitly flags the draft as incorrect and provides a valid correction
+    with reasonable confidence, prefer SR (this fixes logic errors, not just formatting).
+    """
     draft_line = _sanitize_answer_line(draft)
     sr_line = _sanitize_answer_line(str(sr.get("final_answer", "")))
 
@@ -172,7 +177,21 @@ def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
     draft_ok = _looks_valid_answer_line(draft_line)
     sr_ok = _looks_valid_answer_line(sr_line)
 
-    # If draft is good and SR is either bad or likely changing semantics, keep draft.
+    # If SR explicitly says the draft is wrong and is confident, trust SR.
+    sr_conf = sr.get("confidence", 0)
+    try:
+        sr_conf_f = float(sr_conf)
+    except Exception:
+        sr_conf_f = 0.0
+    sr_answer_correct = sr.get("answer_correct", None)
+    if sr_answer_correct is False and sr_ok and sr_conf_f >= 0.55:
+        return sr_line
+
+    # If SR explicitly says the draft is correct and draft is valid, keep draft.
+    if sr_answer_correct is True and draft_ok:
+        return draft_line
+
+    # If draft is good and SR is either bad or likely changing semantics without an explicit incorrect flag, keep draft.
     if draft_ok and ((not sr_ok) or (sr_cause and sr_cause not in safe_causes)):
         return draft_line
 
@@ -314,6 +333,64 @@ def _remove_trailing_commas(s: str) -> str:
         i += 1
     return "".join(out)
 
+
+# ---- JSON repair helpers (for model slips like '"...{:.1f}" .format(x)' ) ----
+
+_JSON_DOT_FORMAT_RE = re.compile(
+    r'("(?:(?:\\.)|[^"\\])*")\s*\.format\(\s*([A-Za-z_]\w*)\s*\)'
+)
+
+def _repair_dot_format_calls(s: str) -> str:
+    """Repair invalid JSON patterns like:
+    "Answer: {:.1f}" .format(d_val)  ->  "Answer: {d_val:.1f}"
+    Also repairs "{}" .format(x) -> "{x}".
+    This is a deterministic sanitation step (no model re-ask).
+    """
+    if not isinstance(s, str) or ".format" not in s:
+        return s
+
+    def _fix_literal(m: re.Match) -> str:
+        literal = m.group(1)  # includes quotes
+        var = m.group(2)
+        inner = literal[1:-1]
+
+        # Replace unnamed format fields: "{:.1f}" / "{}" with named placeholders
+        inner = re.sub(r"\{(:[^}]+)\}", "{%s\\1}" % var, inner)
+        inner = inner.replace("{}", "{%s}" % var)
+
+        return '"' + inner + '"'
+
+    # Apply repeatedly in case multiple occurrences exist.
+    prev = None
+    cur = s
+    for _ in range(6):
+        prev = cur
+        cur = _JSON_DOT_FORMAT_RE.sub(_fix_literal, cur)
+        if cur == prev:
+            break
+    return cur
+
+# ---- Skill spec filter (avoid hallucinated vision/OCR skills) ----
+_VISION_SPEC_KWS = ("image", "pixel", "bbox", "vision", "ocr", "detect", "segmentation")
+
+def _filter_vision_skill_specs(specs: Any) -> List[Dict[str, Any]]:
+    """Drop new_skill_specs that likely require direct image processing."""
+    if not isinstance(specs, list):
+        return []
+    kept: List[Dict[str, Any]] = []
+    for sp in specs:
+        if not isinstance(sp, dict):
+            continue
+        name = str(sp.get("name", "")).lower()
+        sig = str(sp.get("signature", "")).lower()
+        purpose = str(sp.get("purpose", "")).lower()
+        joined = " ".join([name, sig, purpose])
+        if any(k in joined for k in _VISION_SPEC_KWS):
+            continue
+        kept.append(sp)
+    return kept
+
+
 def _extract_json_obj(text: str) -> Dict[str, Any]:
     """Parse a JSON object from model output with light, deterministic sanitation.
 
@@ -325,6 +402,8 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
         raise ValueError("Model output is not a string.")
 
     s = _strip_markdown_fences(text)
+
+    s = _repair_dot_format_calls(s)
 
     # First try direct parse
     try:
@@ -1171,6 +1250,10 @@ How to use inputs explicitly:
    - chart: read title, axes labels, tick values, units, legend entries, and key plotted values if readable.
    - table: read headers and every relevant cell; preserve row/col structure.
    - diagram: read point labels, length/angle labels, and any marked relationships.
+- If the image contains an instrument/scale (measuring cup, ruler, thermometer): record the MAX scale, tick spacing, and UNITS, and the observed level/reading.
+- If the image is a synthetic 3D scene (CLEVR-style objects): count objects by the attributes mentioned in the question (shape/size/material/color) and record counts explicitly.
+- If the image is a plot: in addition to ticks/labels, extract the specific data points needed to answer the question (e.g., values at a referenced x/θ, the maxima/minima, or values for items mentioned in options). If you must estimate, say so and give an approximate value.
+
 2) Use INFO_JSON.math_elements_extracted to target missing/uncertain items:
    - If IG listed an unknown value/relationship but did not provide the actual number/label, attempt to locate it in the image and record it.
    - If multiple-choice options exist, extract options exactly as shown.
@@ -1301,6 +1384,10 @@ Input:
 Select skills to use.
 If missing reusable capability, propose new_skill_specs.
 
+Hard constraint for MathVista:
+- Do NOT propose skills that require directly reading the image (OCR, object detection/counting from pixels, chart digitization, region/bbox based extraction).
+  Image reading must be done by the model via GTI/AP visual observation, and the skill layer should only do deterministic math/string processing on already-extracted values.
+
 Return STRICT JSON:
 {
   "selected_skills": [{"name":"...", "purpose":"...", "how_to_use":"..."}],
@@ -1318,6 +1405,8 @@ Constraints:
 - Code must define EXACTLY one function with the given name.
 - No imports, no file/network access, no open(), no eval/exec, no attribute calls like x.y().
 - Use only basic arithmetic, control flow, and safe builtins: abs,min,max,sum,len,round,range,int,float,str
+- Skills MUST be purely deterministic and MUST NOT rely on reading images/vision. If a spec suggests vision (e.g., signature mentions image/pixels/bbox/region or purpose says OCR/detect/count from image), write a function that raises ValueError("vision skill not supported") so the planner can fall back.
+
 - If you need math functions, use provided global `math` (already available).
 
 Return STRICT JSON:
@@ -1354,13 +1443,18 @@ HARD RULES (to avoid silent wrong answers):
 - DO NOT write any `import` / `from ... import ...` statements inside python steps. The executor blocks `import`. Use the provided skills (calc_numeric, sympy_solve, format_final) and the built-in `math` module only.
 - Prefer calling sympy_solve("...", "d") rather than trying to import sympy.
 - Do not round intermediate results to 1 decimal place. Keep at least 3 significant digits (or 3+ decimals) before format_final.
+- NEVER write Python string formatting like `"Answer: {:.1f}".format(x)` inside the JSON (it breaks JSON). Use placeholders in normalize text, e.g. `"Answer: {x:.1f}"`, or call format_final(x).
+- If a needed quantity comes ONLY from the image (counts, a plotted y-value, a table cell, a marked length/angle):
+  - First add a "reason" step that states the observed value explicitly (e.g., "From the image, count_big_matte_spheres = 4").
+  - Then use a python step ONLY for arithmetic on those observed constants. Do NOT invent "count_*" helper skills that claim to read the image.
+
 
 Do NOT output the final answer directly in normal text; instead produce steps that compute it and then a normalize step.
 
 CRITICAL: You MUST explicitly use:
 1) INFO_JSON.region_to_detect to decide which modality-specific facts matter (chart/table/diagram/text).
 2) INFO_JSON.math_elements_extracted as the canonical state of the problem (known/unknown/relations/constraints/options).
-3) GTI_JSON as the only source for image-read values; DO NOT invent visual numbers or labels.
+3) GTI_JSON is the primary structured source for image-read values. If GTI_JSON is missing a value that is clearly visible, you may read it directly from the image, but you MUST state it explicitly in a "reason" step as a visual observation (no guessing).
 
 Allowed step actions (MUST match executor):
 - "reason": describe what to do next (no code).
@@ -1828,7 +1922,7 @@ Return STRICT JSON:
                 if _mk:
                     errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
 
-            new_specs = sc.get("new_skill_specs", [])
+            new_specs = _filter_vision_skill_specs(sc.get("new_skill_specs", []))
             if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
                 sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
                 sw = self._llm_call_json("SkillWriter", sw_input, obs, need_image=False)
