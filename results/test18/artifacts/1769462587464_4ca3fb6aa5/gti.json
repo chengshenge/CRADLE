@@ -1,0 +1,74 @@
+{
+  "region_used": "text",
+  "information": [
+    "Brown SUVs: 5",
+    "Brown Rubber School Buses: 8",
+    "Counting read: {\"counts\": [{\"object\": \"brown suvs\", \"count\": 3, \"note\": \"Counted all brown SUVs visible in the image.\"}, {\"object\": \"brown rubber school buses\", \"count\": 2, \"note\": \"Counted all brown rubber school buses visible in the image.\"}], \"total\": null, \"notes\": [\"The number of brown SUVs is greater than the number of brown rubber school buses.\"]}"
+  ],
+  "structured": {
+    "text_lines": [
+      "Brown SUVs: 5",
+      "Brown Rubber School Buses: 8"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "number of brown SUVs",
+        "value": "5",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      },
+      {
+        "name": "number of brown rubber school buses",
+        "value": "8",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The text region was used to extract the numbers of brown SUVs and brown rubber school buses as required by the problem statement."
+  ]
+}

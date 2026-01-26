@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify algorithms with accuracy > 9",
+      "action": "reason",
+      "note": "Use GTI_JSON to count algorithms with accuracy greater than 9."
+    },
+    {
+      "intention": "Count algorithms with accuracy > 9",
+      "action": "python",
+      "code": "accuracies = [8.5, 9.2, 9.7, 8.9, 10.1]; count = sum(1 for acc in accuracies if acc > 9)"
+    },
+    {
+      "intention": "Provide the final count as the answer",
+      "action": "normalize",
+      "text": "Answer: {count}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

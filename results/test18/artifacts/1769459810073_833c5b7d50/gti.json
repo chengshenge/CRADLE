@@ -1,0 +1,120 @@
+{
+  "region_used": "table",
+  "information": [
+    "Counting read: {\"counts\": [{\"object\": \"items sold less than 5 units in at least one store\", \"count\": 3, \"note\": \"Three items were identified as having sold less than 5 units in at least one store based on the image.\"}], \"total\": 3, \"notes\": [\"The count is based on the visible data in the attached image.\"]}"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [
+        "Item",
+        "Store A",
+        "Store B",
+        "Store C"
+      ],
+      "rows": [
+        {
+          "row_label": "Item 1",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "3"
+            },
+            {
+              "col": "Store B",
+              "text": "7"
+            },
+            {
+              "col": "Store C",
+              "text": "2"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 2",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "6"
+            },
+            {
+              "col": "Store B",
+              "text": "4"
+            },
+            {
+              "col": "Store C",
+              "text": "5"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 3",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "8"
+            },
+            {
+              "col": "Store B",
+              "text": "3"
+            },
+            {
+              "col": "Store C",
+              "text": "9"
+            }
+          ]
+        },
+        {
+          "row_label": "Item 4",
+          "cells": [
+            {
+              "col": "Store A",
+              "text": "2"
+            },
+            {
+              "col": "Store B",
+              "text": "1"
+            },
+            {
+              "col": "Store C",
+              "text": "4"
+            }
+          ]
+        }
+      ]
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The table format was chosen based on the problem's requirement to check sales data across multiple stores for each item.",
+    "The extracted table data includes headers and sales figures for each item across different stores, which aligns with the task of identifying items sold less than 5 units in at least one store."
+  ]
+}

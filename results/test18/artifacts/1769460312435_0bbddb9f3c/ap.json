@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "Blocker is ∠C. Known values are ∠D = 35° and ∠AEC = 105°."
+    },
+    {
+      "intention": "Use angle properties to find ∠C",
+      "action": "python",
+      "code": "angle_C = 360 - 35 - 105"
+    },
+    {
+      "intention": "Map calculated angle to options",
+      "action": "reason",
+      "note": "Calculated ∠C = 220°. This is incorrect; re-evaluate using correct geometry."
+    },
+    {
+      "intention": "Re-evaluate using correct geometry",
+      "action": "python",
+      "code": "angle_C = 180 - 105"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 75°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

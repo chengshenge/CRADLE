@@ -1,0 +1,69 @@
+{
+  "problem_state_summary": "The problem involves selecting the correct picture that completes a sequence or pattern from a set of given options. The task is to visually analyze the image to determine which option logically fits into the sequence. The image likely contains a series of visual elements that need to be compared or matched to identify the missing picture. The correct picture must logically fit into the sequence or pattern, adhering to any implicit rules or constraints. The problem is presented as a multiple-choice question with options labeled A through F. The exact nature of the pattern or sequence is not described in the prompt, adding a layer of ambiguity to the task.",
+  "entities": [
+    "sequence",
+    "pattern",
+    "options"
+  ],
+  "unknowns": [
+    "missing picture"
+  ],
+  "required_operations": [
+    "Analyze the sequence or pattern in the image",
+    "Compare each option to the sequence",
+    "Determine which option logically completes the sequence"
+  ],
+  "blockers": [
+    "missing picture"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "pattern recognition",
+    "visual analysis"
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with squares and right triangles, and the areas of squares are given. The task is to find the area of another square based on the diagram."
+  ],
+  "problem_understanding": "The problem involves a geometric figure called a '勾股树' (Pythagorean tree), where all quadrilaterals are squares and all triangles are right triangles. Given the areas of two squares, the task is to find the area of the largest square.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "Area of square A",
+        "value": "5",
+        "unit": "square units",
+        "source": "text",
+        "note": "Given in the problem"
+      },
+      {
+        "name": "Area of square B",
+        "value": "3",
+        "unit": "square units",
+        "source": "text",
+        "note": "Given in the problem"
+      }
+    ],
+    "unknown": [
+      "Area of square C"
+    ],
+    "relations": [
+      "The squares and triangles form a Pythagorean tree, implying a relationship between their areas."
+    ],
+    "constraints": [
+      "All quadrilaterals are squares",
+      "All triangles are right triangles"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "square has area",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the area of the largest square using the given areas of two smaller squares and the geometric properties of the figure."
+  ],
+  "problem_summary": "Determine the area of the largest square in a Pythagorean tree given the areas of two smaller squares.",
+  "knowns": [
+    {
+      "name": "Area of square A",
+      "value": "5",
+      "unit": "square units",
+      "source": "text",
+      "note": "Given in the problem"
+    },
+    {
+      "name": "Area of square B",
+      "value": "3",
+      "unit": "square units",
+      "source": "text",
+      "note": "Given in the problem"
+    }
+  ],
+  "asks": [
+    "Area of square C"
+  ],
+  "constraints": [
+    "All quadrilaterals are squares",
+    "All triangles are right triangles"
+  ],
+  "visual_facts": [
+    "The diagram shows a Pythagorean tree with squares and right triangles.",
+    "Square A: Area = 5 square units",
+    "Square B: Area = 3 square units",
+    "Square C: Area = ?"
+  ],
+  "ambiguity": [
+    "The exact configuration of the squares and triangles in the diagram is not described in the text."
+  ]
+}

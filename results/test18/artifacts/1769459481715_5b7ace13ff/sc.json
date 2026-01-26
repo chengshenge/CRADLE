@@ -1,0 +1,63 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_diagram",
+      "signature": "(image_hash:str, entities:list)->dict",
+      "purpose": "Analyze the diagram to identify and count specified entities.",
+      "inputs": [
+        "image_hash",
+        "entities"
+      ],
+      "outputs": "A dictionary with counts of specified entities.",
+      "edge_cases": [
+        "Entities are partially obscured.",
+        "Entities are overlapping.",
+        "Entities are not clearly distinguishable."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"d7c548b2c54a\", \"entities\": [\"tiny gray bicycles\", \"brown metal sedan\", \"tiny green bicycle\"]}",
+          "expect": "{\"tiny gray bicycles\": 3, \"brown metal sedan\": 1, \"tiny green bicycle\": 1}"
+        }
+      ],
+      "tags": [
+        "diagram analysis",
+        "counting",
+        "image processing"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and map the result to a multiple-choice option.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "A string representing the selected multiple-choice option.",
+      "edge_cases": [
+        "Counts are equal.",
+        "One or both counts are zero."
+      ],
+      "tests": [
+        {
+          "input": "{\"count1\": 3, \"count2\": 2}",
+          "expect": "\"A\""
+        },
+        {
+          "input": "{\"count1\": 1, \"count2\": 1}",
+          "expect": "\"B\""
+        }
+      ],
+      "tags": [
+        "comparison",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_diagram",
+    "compare_counts"
+  ]
+}

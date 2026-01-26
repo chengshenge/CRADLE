@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "interpret_diagram_for_geometry",
+      "purpose": "Extract the length and width of the rectangle from the diagram.",
+      "how_to_use": "Use the image hash to extract the dimensions of the rectangle."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the perimeter of the rectangle using the extracted dimensions.",
+      "how_to_use": "Apply the formula 2 * (length + width) to compute the perimeter."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use the computed perimeter to generate the final answer string."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "interpret_diagram_for_geometry",
+    "calc_numeric",
+    "format_final"
+  ]
+}

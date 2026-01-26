@@ -1,0 +1,47 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the arc length of the sector and use it as the circumference of the cone's base.",
+      "how_to_use": "Use the formula for arc length: (central angle / 360) * 2 * π * radius."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Return the final answer as the option label that matches the calculated perimeter."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_diagram_labels",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "Extract labels and their corresponding segments from the diagram.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary mapping labels to diagram segments.",
+      "edge_cases": [
+        "Labels are partially obscured.",
+        "Segments are not clearly defined."
+      ],
+      "tests": [
+        {
+          "input": "a72fc3a4a494",
+          "expect": {
+            "central_angle": "120 degrees",
+            "radius": "6 cm"
+          }
+        }
+      ],
+      "tags": [
+        "image processing",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_diagram_labels",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_blocks_with_exact_houses",
+      "signature": "(text:str, target:int)->int",
+      "purpose": "Count the number of blocks that have exactly a specified number of houses from a given text.",
+      "inputs": [
+        "text",
+        "target"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No blocks have the target number of houses",
+        "All blocks have the target number of houses",
+        "Text is empty",
+        "Text contains non-numeric data"
+      ],
+      "tests": [
+        {
+          "input": "Block A: 36 houses, Block B: 40 houses, Block C: 36 houses",
+          "expect": 2
+        },
+        {
+          "input": "Block A: 35 houses, Block B: 40 houses, Block C: 37 houses",
+          "expect": 0
+        },
+        {
+          "input": "Block A: 36 houses, Block B: 36 houses, Block C: 36 houses",
+          "expect": 3
+        },
+        {
+          "input": "",
+          "expect": 0
+        },
+        {
+          "input": "Block A: thirty-six houses, Block B: 36 houses",
+          "expect": 1
+        }
+      ],
+      "tags": [
+        "textual data",
+        "counting",
+        "arithmetic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_blocks_with_exact_houses"
+  ]
+}

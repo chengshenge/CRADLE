@@ -1,0 +1,19 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the total cost of beads using given prices and quantities.",
+      "action": "reason"
+    },
+    {
+      "intention": "Compute the total cost using the formula provided.",
+      "action": "python",
+      "code": "total_cost = calc_numeric('(4 * 3) + (5 * 4)')"
+    },
+    {
+      "intention": "Format the total cost as the final answer.",
+      "action": "normalize",
+      "text": "Answer: {total_cost}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

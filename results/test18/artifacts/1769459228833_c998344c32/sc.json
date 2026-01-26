@@ -1,0 +1,32 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_largest_marking_from_image",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest numeric marking from an image of a measuring cup to determine its total volume.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image has no visible markings",
+        "Multiple markings with the same largest value"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 500
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text recognition",
+        "volume measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_largest_marking_from_image"
+  ]
+}

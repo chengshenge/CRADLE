@@ -1,0 +1,95 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric configuration with angles and lines, specifically mentioning points, angles, and lines in a triangle and their relationships."
+  ],
+  "problem_understanding": "The problem involves a right triangle with a 60° angle, where the vertex A of the 60° angle and the right angle vertex C are on two parallel lines FG and DE, respectively. The hypotenuse AB bisects angle CAG and intersects line DE at point H. The task is to find the measure of angle BCH.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "angle A",
+        "value": "60",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle A is given as 60°."
+      },
+      {
+        "name": "lines FG and DE",
+        "value": "parallel",
+        "unit": "",
+        "source": "text",
+        "note": "Lines FG and DE are parallel."
+      }
+    ],
+    "unknown": [
+      "angle BCH"
+    ],
+    "relations": [
+      "AB bisects angle CAG",
+      "AB intersects DE at H"
+    ],
+    "constraints": [
+      "Triangle is a right triangle",
+      "A is on FG",
+      "C is on DE"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "triangle involves",
+  "task_horizon": 1,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle BCH based on the given geometric configuration and relationships."
+  ],
+  "problem_summary": "Determine the measure of angle BCH in a right triangle with a 60° angle, where the hypotenuse bisects another angle and intersects a parallel line.",
+  "knowns": [
+    {
+      "name": "angle A",
+      "value": "60",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle A is given as 60°."
+    },
+    {
+      "name": "lines FG and DE",
+      "value": "parallel",
+      "unit": "",
+      "source": "text",
+      "note": "Lines FG and DE are parallel."
+    }
+  ],
+  "asks": [
+    "angle BCH"
+  ],
+  "constraints": [
+    "Triangle is a right triangle",
+    "A is on FG",
+    "C is on DE"
+  ],
+  "visual_facts": [
+    "The diagram shows a right triangle with specific points and lines.",
+    "Diagram labels: A, B, C, D, E, F, G, H",
+    "Marked angle: A = 60°"
+  ],
+  "ambiguity": [
+    "The exact positions of points and lines in the diagram are not described in detail."
+  ]
+}

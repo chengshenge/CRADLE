@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves finding the sum of all values in a group labeled as the 'ruling group'. The task is to identify the values associated with this group and perform an arithmetic sum. The table provided contains multiple rows, each with a group label and a corresponding value. Specifically, the 'Ruling Group' has values of 10, 15, and 20. The goal is to sum these values to find the total. The answer must be an integer, as specified in the problem constraints. The problem does not provide any multiple-choice options, so the final answer should be presented as a single integer value.",
+  "entities": [
+    "Ruling Group",
+    "values"
+  ],
+  "unknowns": [
+    "sum of all values in the ruling group"
+  ],
+  "required_operations": [
+    "Identify the 'Ruling Group' in the table",
+    "Extract the values associated with the 'Ruling Group'",
+    "Sum the extracted values",
+    "Ensure the result is an integer"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check row/column alignment in the table",
+    "Verify that all values for the 'Ruling Group' are correctly identified",
+    "Ensure no additional values are mistakenly included"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "table",
+    "sum",
+    "integer"
+  ]
+}

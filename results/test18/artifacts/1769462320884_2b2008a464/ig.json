@@ -1,0 +1,46 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining the number of countries based on working hours, which suggests a visual representation like a chart or graph is involved."
+  ],
+  "problem_understanding": "The problem asks for the number of countries where people work more than 35 hours over the years, implying a need to analyze data likely presented in a chart or graph.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of countries with people working more than 35 hours"
+    ],
+    "relations": [
+      "Countries are related to working hours data over the years."
+    ],
+    "constraints": [
+      "Working hours must be more than 35."
+    ],
+    "options": []
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "countries nouns working verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying and counting specific data points from a visual representation, which is a straightforward data extraction task."
+  ],
+  "problem_summary": "Determine the number of countries where people work more than 35 hours over the years from a chart.",
+  "knowns": [],
+  "asks": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "constraints": [
+    "Working hours must be more than 35."
+  ],
+  "visual_facts": [
+    "Title: Average Working Hours by Country",
+    "X-axis label: Year",
+    "Y-axis label: Average Working Hours",
+    "Y-axis ticks: 30, 35, 40, 45, 50",
+    "Legend: Country A, Country B, Country C, Country D",
+    "Key points: Country A (2010, 36), Country C (2010, 37)"
+  ],
+  "ambiguity": [
+    "The specific years or range of years are not mentioned, which might affect the count."
+  ]
+}

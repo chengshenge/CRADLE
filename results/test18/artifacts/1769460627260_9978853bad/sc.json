@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_bars_below_threshold",
+      "signature": "(image_hash:str, threshold:int)->int",
+      "purpose": "Count the number of bars in a bar chart that have values below a specified threshold.",
+      "inputs": [
+        "image_hash",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All bars have values above the threshold",
+        "No bars are present in the image"
+      ],
+      "tests": [
+        {
+          "input": "(\"2f884217ac3b\", 6)",
+          "expect": 3
+        },
+        {
+          "input": "(\"2f884217ac3b\", 10)",
+          "expect": 5
+        },
+        {
+          "input": "(\"2f884217ac3b\", 2)",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "bar chart",
+        "counting",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_bars_below_threshold"
+  ]
+}

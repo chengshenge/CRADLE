@@ -1,0 +1,33 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_image_sequence",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "To analyze a sequence or pattern in an image and determine which option logically completes the sequence.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "The label of the option that completes the sequence.",
+      "edge_cases": [
+        "Ambiguous patterns",
+        "Multiple valid options"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"11c01f897753\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"]}",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "visual analysis",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_image_sequence"
+  ]
+}

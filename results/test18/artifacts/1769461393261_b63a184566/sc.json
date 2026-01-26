@@ -1,0 +1,62 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_in_circle",
+      "signature": "(image_hash:str, known_angle:float, diameter_points:tuple, chord_points:tuple)->float",
+      "purpose": "Calculate the angle ∠CAB in a circle given the inscribed angle ∠ADC and the diameter AB.",
+      "inputs": [
+        "image_hash",
+        "known_angle",
+        "diameter_points",
+        "chord_points"
+      ],
+      "outputs": "The measure of angle ∠CAB in degrees.",
+      "edge_cases": [
+        "Ensure the diameter is correctly identified in the image.",
+        "Verify that the inscribed angle is correctly labeled."
+      ],
+      "tests": [
+        {
+          "input": "('5c86f4487344', 26, ('A', 'B'), ('C', 'D'))",
+          "expect": 64
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "angles",
+        "image processing"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle:float, options:list)->str",
+      "purpose": "Map the calculated angle to the correct multiple-choice option.",
+      "inputs": [
+        "angle",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "Ensure the angle is rounded correctly if needed.",
+        "Handle cases where the angle does not match any option."
+      ],
+      "tests": [
+        {
+          "input": "(64, [{'label': 'A', 'text': '26°'}, {'label': 'B', 'text': '74°'}, {'label': 'C', 'text': '64°'}, {'label': 'D', 'text': '54°'}])",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "geometry",
+        "angles"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_in_circle",
+    "map_angle_to_option"
+  ]
+}

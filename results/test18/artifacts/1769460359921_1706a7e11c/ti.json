@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison between two groups of objects: big red rubber double buses and big green things. The task is to determine if there are more big red rubber double buses in front of a large red double bus than there are big green things. The problem is likely represented in a diagram, which requires visual inspection to count the objects. The known constraints specify that the red buses must be in front of the large red double bus. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The exact definition of 'big green things' is unclear without visual context, which adds ambiguity to the task. The solution requires counting and comparing the quantities of these objects in the diagram.",
+  "entities": [
+    "big red rubber double buses",
+    "big green things",
+    "large red double bus"
+  ],
+  "unknowns": [
+    "number of big red rubber double buses",
+    "number of big green things"
+  ],
+  "required_operations": [
+    "Identify and count the big red rubber double buses in front of the large red double bus",
+    "Identify and count the big green things",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of big red rubber double buses",
+    "number of big green things"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct identification of 'big green things'",
+    "verify the position of red buses relative to the large red double bus"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "visual reasoning",
+    "counting",
+    "logic"
+  ]
+}

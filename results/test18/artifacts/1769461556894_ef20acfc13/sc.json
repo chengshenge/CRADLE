@@ -1,0 +1,58 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image_hash:str, object_descriptions:list)->dict",
+      "purpose": "Identify and count specific objects in an image based on given descriptions.",
+      "inputs": [
+        "image_hash",
+        "object_descriptions"
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with similar colors or materials"
+      ],
+      "tests": [
+        {
+          "input": "('26dc3597b7ac', ['red matte cubes', 'small green metal objects'])",
+          "expect": "{'red matte cubes': 5, 'small green metal objects': 3}"
+        }
+      ],
+      "tags": [
+        "visual identification",
+        "image processing",
+        "object counting"
+      ]
+    },
+    {
+      "name": "compute_remaining_objects",
+      "signature": "(total:int, subtractions:dict)->int",
+      "purpose": "Compute the number of remaining objects after subtracting specified counts.",
+      "inputs": [
+        "total",
+        "subtractions"
+      ],
+      "outputs": "The number of remaining objects.",
+      "edge_cases": [
+        "Subtractions exceed total",
+        "No objects to subtract"
+      ],
+      "tests": [
+        {
+          "input": "(20, {'red matte cubes': 5, 'small green metal objects': 3})",
+          "expect": "12"
+        }
+      ],
+      "tags": [
+        "subtraction",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "compute_remaining_objects"
+  ]
+}

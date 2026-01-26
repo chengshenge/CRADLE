@@ -1,0 +1,98 @@
+{
+  "region_used": "diagram",
+  "information": [],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "marked_lengths": [
+        {
+          "segment": "AB",
+          "value": "AC",
+          "unit": ""
+        }
+      ],
+      "marked_angles": [
+        {
+          "angle": "CAB",
+          "value": "40",
+          "unit": "deg"
+        }
+      ],
+      "marked_relations": [
+        "AB = AC"
+      ]
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "AB",
+        "value": "AC",
+        "unit": "",
+        "source": "image",
+        "note": "AB equals AC"
+      },
+      {
+        "name": "∠CAB",
+        "value": "40",
+        "unit": "degrees",
+        "source": "image",
+        "note": "Angle CAB is 40 degrees"
+      }
+    ],
+    "relation_additions": [
+      "AB = AC"
+    ],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "40°"
+      },
+      {
+        "label": "B",
+        "text": "50°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ],
+    "unresolved_targets": [
+      "∠D"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The diagram shows a geometric figure with points labeled A, B, C, and D. The known values and relationships are extracted from the image, including the equality of AB and AC and the measure of angle CAB. The options for angle D are also extracted."
+  ]
+}

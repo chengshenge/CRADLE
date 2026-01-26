@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and resolve them",
+      "action": "reason",
+      "note": "The blocker is the unresolved target: number of objects left."
+    },
+    {
+      "intention": "Calculate remaining objects after subtraction",
+      "action": "python",
+      "code": "total_objects = 20; red_objects = 5; tiny_matte_balls = 3; remaining_objects = total_objects - red_objects - tiny_matte_balls"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 12"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

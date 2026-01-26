@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves comparing the number of brown SUVs to the number of brown rubber school buses. The task is to determine if the number of brown SUVs is less than the number of brown rubber school buses. The known values extracted from the image indicate that there are 5 brown SUVs and 8 brown rubber school buses. The problem is presented in a multiple-choice format with two options: 'Yes' and 'No'. The solution requires comparing these two quantities to determine which is greater. The final answer must be mapped to one of the provided options.",
+  "entities": [
+    "number of brown SUVs",
+    "number of brown rubber school buses"
+  ],
+  "unknowns": [
+    "number of brown SUVs",
+    "number of brown rubber school buses"
+  ],
+  "required_operations": [
+    "Extract numbers from text",
+    "Compare the number of brown SUVs to the number of brown rubber school buses",
+    "Map the result to the correct option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure accurate reading of numbers from text",
+    "Verify that the comparison logic is correctly applied"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "multiple-choice",
+    "text-based"
+  ]
+}

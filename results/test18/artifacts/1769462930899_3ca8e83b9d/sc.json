@@ -1,0 +1,37 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract text labels associated with each cat from the image.",
+      "how_to_use": "Use the image hash to extract text labels from the image."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_cat_sizes_from_labels",
+      "signature": "(labels:list)->str",
+      "purpose": "Compare the sizes of cats based on the extracted text labels and identify the largest cat.",
+      "inputs": [
+        "A list of text labels extracted from the image."
+      ],
+      "outputs": "The exact content of the correct choice indicating the largest cat.",
+      "edge_cases": [
+        "If labels do not clearly indicate size, return an error or request clarification."
+      ],
+      "tests": [
+        {
+          "input": "['white five', 'white three', 'white four', 'white one', 'white two']",
+          "expect": "white five"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "text analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "compare_cat_sizes_from_labels"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "problem_state_summary": "The problem involves a triangle △ABC where two of its internal angle bisectors, OB and OC, intersect at point O. The angle ∠A is given as 110°. The task is to find the measure of angle ∠BOC. The problem is purely textual, and all necessary information is provided in the prompt. The angle bisectors OB and OC create a specific geometric configuration that must be used to determine the unknown angle. The problem is presented as a multiple-choice question with four possible answers.",
+  "entities": [
+    "△ABC",
+    "∠A",
+    "OB",
+    "OC",
+    "∠BOC"
+  ],
+  "unknowns": [
+    "∠BOC"
+  ],
+  "required_operations": [
+    "Use the properties of angle bisectors in a triangle",
+    "Apply geometric rules to find ∠BOC",
+    "Map the calculated angle to one of the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct interpretation of angle bisectors",
+    "Verify the sum of angles in triangle",
+    "Check for any implicit geometric properties"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "null",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle bisectors",
+    "triangle",
+    "multiple-choice"
+  ]
+}

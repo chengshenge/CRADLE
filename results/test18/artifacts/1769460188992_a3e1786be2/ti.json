@@ -1,0 +1,51 @@
+{
+  "problem_state_summary": "The problem involves determining whether the value associated with the color 'Black' is greater than the value associated with 'Deep Sky Blue'. This comparison is likely represented in a chart, as suggested by the problem context. The chart is titled 'Color Comparison Chart' and has an x-axis labeled 'Colors' with ticks for Black, Deep Sky Blue, Red, and Green. The y-axis is labeled 'Value' with ticks ranging from 0 to 50. Key points extracted from the chart indicate that Black has a value of 35, while Deep Sky Blue has a value of 25. The task is to compare these values to answer the question. The problem is presented in a multiple-choice format with options 'yes' and 'no'.",
+  "entities": [
+    "Black",
+    "Deep Sky Blue"
+  ],
+  "unknowns": [
+    "Value of Black",
+    "Value of Deep Sky Blue"
+  ],
+  "required_operations": [
+    "Read chart",
+    "Extract values for Black and Deep Sky Blue",
+    "Compare values",
+    "Map result to option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accuracy",
+    "Ensure correct mapping of color labels to values"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "chart",
+    "multiple-choice"
+  ]
+}

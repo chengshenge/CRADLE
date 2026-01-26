@@ -1,0 +1,64 @@
+{
+  "region_used": "text",
+  "information": [
+    "Price per kg of oval beads: $3",
+    "Price per kg of star beads: $4"
+  ],
+  "structured": {
+    "text_lines": [
+      "Price per kg of oval beads: $3",
+      "Price per kg of star beads: $4"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "price_per_kg_oval",
+        "value": "3",
+        "unit": "dollars",
+        "source": "image",
+        "note": "Price per kg of oval beads extracted from image."
+      },
+      {
+        "name": "price_per_kg_star",
+        "value": "4",
+        "unit": "dollars",
+        "source": "image",
+        "note": "Price per kg of star beads extracted from image."
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The image contains the prices per kilogram for both oval and star-shaped beads, which are necessary to calculate the total cost."
+  ]
+}

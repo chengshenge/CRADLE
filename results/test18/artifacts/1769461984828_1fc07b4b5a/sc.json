@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_relationship_from_text",
+      "signature": "(text:str, options:list)->str",
+      "purpose": "To interpret the relationship between entities described in a text and map it to a given set of options.",
+      "inputs": [
+        "text",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "Text contains ambiguous relationships.",
+        "Options do not directly match the relationship described."
+      ],
+      "tests": [
+        {
+          "input": "{\"text\": \"An increase in predators leads to a decrease in prey.\", \"options\": [{\"label\": \"A\", \"text\": \"decrease\"}, {\"label\": \"B\", \"text\": \"increase\"}]}",
+          "expect": "A"
+        },
+        {
+          "input": "{\"text\": \"More rain results in more flowers.\", \"options\": [{\"label\": \"A\", \"text\": \"decrease\"}, {\"label\": \"B\", \"text\": \"increase\"}]}",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "text interpretation",
+        "relationship analysis",
+        "multiple choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_relationship_from_text"
+  ]
+}

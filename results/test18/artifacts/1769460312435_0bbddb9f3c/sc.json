@@ -1,0 +1,47 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute the numeric expression for angle calculations.",
+      "how_to_use": "Use to calculate the measure of angle C using the given angle measures and geometric properties."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for the multiple-choice question.",
+      "how_to_use": "Use to return the final answer as an option label or exact value."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_circle_chords",
+      "signature": "(image_hash:str, known_angles:dict)->float",
+      "purpose": "To analyze the diagram of a circle with intersecting chords and calculate unknown angles.",
+      "inputs": [
+        "image_hash",
+        "known_angles"
+      ],
+      "outputs": "Calculated measure of the unknown angle.",
+      "edge_cases": [
+        "Diagram is not clear or missing labels.",
+        "Incorrect angle measures provided."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"83917efafcc3\", \"known_angles\": {\"∠D\": 35, \"∠AEC\": 105}}",
+          "expect": "70"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "chords",
+        "angles"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_circle_chords",
+    "calc_numeric",
+    "format_final"
+  ]
+}

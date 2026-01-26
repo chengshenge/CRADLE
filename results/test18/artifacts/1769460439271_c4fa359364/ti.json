@@ -1,0 +1,61 @@
+{
+  "problem_state_summary": "The problem involves a geometric transformation where a sector of a circle with a central angle of 120 degrees and a radius of 6 cm is rolled into a conical shape without a bottom. The task is to determine the bottom perimeter of the resulting conical paper cap. The arc length of the sector, which is determined by the central angle and radius, becomes the circumference of the base of the cone. The problem provides multiple-choice options for the bottom perimeter, and the correct choice must be identified. The diagram likely illustrates the sector and its dimensions, which are crucial for solving the problem. The task requires understanding the relationship between the sector's arc length and the cone's base circumference.",
+  "entities": [
+    "central angle",
+    "radius",
+    "arc length",
+    "bottom perimeter"
+  ],
+  "unknowns": [
+    "bottom perimeter of the paper cap"
+  ],
+  "required_operations": [
+    "Calculate the arc length of the sector",
+    "Use the arc length as the circumference of the cone's base",
+    "Map the calculated perimeter to one of the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "2πcm"
+      },
+      {
+        "label": "B",
+        "text": "3πcm"
+      },
+      {
+        "label": "C",
+        "text": "4πcm"
+      },
+      {
+        "label": "D",
+        "text": "5πcm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "sector",
+    "cone",
+    "perimeter",
+    "transformation"
+  ]
+}

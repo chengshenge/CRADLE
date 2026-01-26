@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves a circle with two intersecting chords, AB and CD, at point E. The measure of angle D is given as 35 degrees, and the measure of angle AEC is given as 105 degrees. The task is to find the measure of angle C. The problem is presented as a multiple-choice question with four options for the measure of angle C. The solution requires understanding the geometric properties of intersecting chords in a circle and using the given angle measures to find the unknown angle. The diagram is crucial for visualizing the relationships between the angles and chords.",
+  "entities": [
+    "∠D",
+    "∠AEC",
+    "∠C",
+    "chords AB",
+    "chords CD",
+    "point E"
+  ],
+  "unknowns": [
+    "∠C"
+  ],
+  "required_operations": [
+    "Examine the diagram to understand the layout of the circle and chords.",
+    "Use the given angle measures and geometric properties to calculate ∠C.",
+    "Map the calculated angle to one of the multiple-choice options."
+  ],
+  "blockers": [
+    "∠C"
+  ],
+  "risk_checks": [
+    "Ensure the diagram correctly shows the intersection of chords AB and CD at E.",
+    "Verify the angle measures are correctly marked in the diagram.",
+    "Check for any missing labels or markers that could affect interpretation."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "70°"
+      },
+      {
+        "label": "C",
+        "text": "80°"
+      },
+      {
+        "label": "D",
+        "text": "85°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "chords",
+    "angles",
+    "multiple-choice"
+  ]
+}

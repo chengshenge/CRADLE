@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the ratio and given length to find AB.",
+      "action": "reason",
+      "note": "The ratio of AB to AC is 2:5, and AC is 25. Use this to find AB."
+    },
+    {
+      "intention": "Calculate the length of AB using the ratio.",
+      "action": "python",
+      "code": "ab_length = calc_numeric('2/5 * 25')"
+    },
+    {
+      "intention": "Map the calculated length to the closest option.",
+      "action": "reason",
+      "note": "The calculated length of AB is 10, which matches option B."
+    },
+    {
+      "intention": "Format the final answer to match the option.",
+      "action": "normalize",
+      "text": "Answer: 10"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,54 @@
+{
+  "problem_state_summary": "The problem involves determining whether 'Periwinkle' is the maximum among a set of values or categories. The user is asked to compare 'Periwinkle' with other items such as 'Lavender', 'Indigo', and 'Violet'. The task is to identify if 'Periwinkle' holds the maximum value or position in this list. The problem is presented in a multiple-choice format with two options: 'yes' or 'no'. The context of what 'Periwinkle' is being compared to is not explicitly provided, which adds ambiguity to the task. The extracted text includes the names of the categories but lacks numerical values or specific criteria for comparison. The task requires reading and comparing these values to determine if 'Periwinkle' is indeed the maximum.",
+  "entities": [
+    "Periwinkle",
+    "Lavender",
+    "Indigo",
+    "Violet"
+  ],
+  "unknowns": [
+    "Is Periwinkle the maximum?"
+  ],
+  "required_operations": [
+    "Read the list of categories",
+    "Compare 'Periwinkle' with other categories",
+    "Determine if 'Periwinkle' is the maximum"
+  ],
+  "blockers": [
+    "Is Periwinkle the maximum?"
+  ],
+  "risk_checks": [
+    "Ensure all categories are considered",
+    "Check for any hidden criteria or footnotes in the text"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "maximum",
+    "multiple-choice",
+    "text analysis"
+  ]
+}

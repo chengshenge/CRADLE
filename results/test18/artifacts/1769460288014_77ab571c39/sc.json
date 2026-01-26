@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the age gap by subtracting the ages of two people.",
+      "how_to_use": "Use calc_numeric to evaluate the expression '30 - 25' to find the age gap."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the age gap.",
+      "how_to_use": "Use format_final to return the result in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_ages_from_image",
+      "signature": "(image_hash:str)->(int, int)",
+      "purpose": "Extract the ages of two people from the text in an image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Image does not contain clear age information",
+        "Text extraction errors"
+      ],
+      "tests": [
+        {
+          "input": "77002f7cfe49",
+          "expect": "(25, 30)"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To calculate the sum of the identified digits.",
+      "how_to_use": "Use this skill to compute the sum of the digits '5' and '3'."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use this skill to format the sum result as a single line answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_digits_on_sign",
+      "signature": "(image_hash:str)->(int, int)",
+      "purpose": "To identify and extract digits located on either end of a sign in an image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Image does not contain a sign",
+        "Sign does not have digits on either end",
+        "Digits are obscured or unclear"
+      ],
+      "tests": [
+        {
+          "input": "751efbee51ae",
+          "expect": "(5, 3)"
+        }
+      ],
+      "tags": [
+        "digit identification",
+        "image processing",
+        "text extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_digits_on_sign",
+    "calc_numeric",
+    "format_final"
+  ]
+}

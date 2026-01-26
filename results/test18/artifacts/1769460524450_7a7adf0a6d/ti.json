@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a circle with a diameter AB and chords EF and EB. Point E is the midpoint of the chord FEB. The chord EF intersects the diameter AB at point C, and a line is drawn from the center O to point F. The angle AOF is given as 40 degrees. The task is to find the measure of angle F. The problem is presented with a diagram that includes labels for points A, B, C, E, F, and O, and the known angle AOF. The relationships between these points and lines are crucial for solving the problem. The problem is a multiple-choice question with four options for the measure of angle F.",
+  "entities": [
+    "AB",
+    "EF",
+    "EB",
+    "E",
+    "C",
+    "O",
+    "F",
+    "∠AOF"
+  ],
+  "unknowns": [
+    "∠F"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the geometric relationships.",
+    "Use the given angle ∠AOF and the properties of the circle to find ∠F.",
+    "Map the calculated angle to one of the provided options."
+  ],
+  "blockers": [
+    "∠F"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram.",
+    "Verify angle markers and their positions.",
+    "Check for any missing angle markers or labels that could affect interpretation."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "20°"
+      },
+      {
+        "label": "B",
+        "text": "35°"
+      },
+      {
+        "label": "C",
+        "text": "40°"
+      },
+      {
+        "label": "D",
+        "text": "55°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "angle",
+    "diagram"
+  ]
+}

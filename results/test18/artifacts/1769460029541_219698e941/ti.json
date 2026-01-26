@@ -1,0 +1,40 @@
+{
+  "problem_state_summary": "The problem involves determining how many people were born after the end of World War II, which is the year 1945. The image contains a list of birth years, and the task is to count how many of these years are greater than 1945. The known information includes the end of World War II as 1945. The unknown is the number of people born after 1945. The birth years are extracted from the image, and the task is to apply the condition that a person is considered born after WWII if their birth year is greater than 1945. The image provides a list of birth years, and the task is to count those that meet the condition.",
+  "entities": [
+    "birth_years",
+    "end_of_WWII"
+  ],
+  "unknowns": [
+    "number_of_people_born_after_1945"
+  ],
+  "required_operations": [
+    "Extract birth years from the image",
+    "Compare each birth year to 1945",
+    "Count the number of birth years greater than 1945"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure all birth years are clearly visible and correctly extracted from the image",
+    "Verify that no birth years are missing or misread"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "comparison",
+    "historical context"
+  ]
+}

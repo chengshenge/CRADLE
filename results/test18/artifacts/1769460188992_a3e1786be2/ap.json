@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Verify values from chart for Black and Deep Sky Blue",
+      "action": "reason",
+      "note": "Black has a value of 35 and Deep Sky Blue has a value of 25 from the chart."
+    },
+    {
+      "intention": "Compare the values of Black and Deep Sky Blue",
+      "action": "python",
+      "code": "is_black_greater = 35 > 25"
+    },
+    {
+      "intention": "Map comparison result to the correct option",
+      "action": "python",
+      "code": "answer = 'yes' if is_black_greater else 'no'"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

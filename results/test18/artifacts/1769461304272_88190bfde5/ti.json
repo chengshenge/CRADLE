@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects left after subtracting specific types of objects from a total. The total number of objects is 20. Among these, there are 5 small balls and 3 blue rubber things. The task is to subtract the number of small balls and blue rubber things from the total number of objects. The final goal is to find out how many objects remain after these subtractions. The problem requires simple arithmetic operations to solve. The image provides the necessary counts for the total objects, small balls, and blue rubber things.",
+  "entities": [
+    "total_objects",
+    "small_balls",
+    "blue_rubber_things"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify total number of objects",
+    "Subtract number of small balls",
+    "Subtract number of blue rubber things",
+    "Compute remaining objects"
+  ],
+  "blockers": [
+    "remaining_objects"
+  ],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "subtraction",
+    "counting"
+  ]
+}

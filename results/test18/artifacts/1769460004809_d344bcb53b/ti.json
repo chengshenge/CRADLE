@@ -1,0 +1,36 @@
+{
+  "problem_state_summary": "The problem involves a model with 4 dots that are divided into 2 equal groups. The task is to determine how many dots are in each group. The total number of dots is given as 4, and they are divided into 2 groups. The unknown variable is the number of dots per group. The relationship between the total dots, the number of groups, and the dots per group is expressed as total_dots = dots_per_group * number_of_groups. The solution requires simple arithmetic division to find the number of dots per group. The answer must be an integer, as specified by the problem constraints.",
+  "entities": [
+    "total_dots",
+    "number_of_groups"
+  ],
+  "unknowns": [
+    "dots_per_group"
+  ],
+  "required_operations": [
+    "Divide total_dots by number_of_groups to find dots_per_group"
+  ],
+  "blockers": [],
+  "risk_checks": [],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "null",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "division",
+    "integer",
+    "simple math"
+  ]
+}

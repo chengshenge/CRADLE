@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Extract counts of 'Dissatisfied' and 'Satisfied' from text.",
+      "action": "reason",
+      "note": "Use GTI_JSON to confirm the counts: Dissatisfied = 45, Satisfied = 90."
+    },
+    {
+      "intention": "Compute the ratio of Dissatisfied to Satisfied.",
+      "action": "python",
+      "code": "dissatisfied_count = 45; satisfied_count = 90; ratio = dissatisfied_count / satisfied_count"
+    },
+    {
+      "intention": "Format the ratio to one decimal place.",
+      "action": "python",
+      "code": "formatted_ratio = format_final(round(ratio, 1))"
+    },
+    {
+      "intention": "Output the formatted ratio as the final answer.",
+      "action": "normalize",
+      "text": "Answer: {formatted_ratio}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

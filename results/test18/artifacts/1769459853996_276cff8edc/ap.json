@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the geometric properties of the right triangle",
+      "action": "reason",
+      "note": "In right triangle ABC, ∠ACB = 90°, D is the midpoint of AB, and AB = 10."
+    },
+    {
+      "intention": "Use the midpoint property to find CD",
+      "action": "python",
+      "code": "AB = 10; AD = AB / 2; CD = (AD**2 + (AB/2)**2)**0.5"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

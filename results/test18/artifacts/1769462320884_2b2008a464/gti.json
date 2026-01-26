@@ -1,0 +1,95 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Title: Average Working Hours by Country",
+    "X-axis label: Year",
+    "Y-axis label: Average Working Hours",
+    "Y-axis ticks: 30, 35, 40, 45, 50",
+    "Legend: Country A, Country B, Country C, Country D",
+    "Key points: Country A (2010, 36), Country B (2010, 34), Country C (2010, 37), Country D (2010, 33)",
+    "Counting read: {\"counts\": [{\"object\": \"countries with people working more than 35 hours\", \"count\": 3, \"note\": \"The image shows data for three countries where people work more than 35 hours over the years.\"}], \"total\": 3, \"notes\": []}"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Average Working Hours by Country",
+      "x_axis": {
+        "label": "Year",
+        "unit": "",
+        "ticks": [
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014"
+        ]
+      },
+      "y_axis": {
+        "label": "Average Working Hours",
+        "unit": "",
+        "ticks": [
+          "30",
+          "35",
+          "40",
+          "45",
+          "50"
+        ]
+      },
+      "legend": [
+        "Country A",
+        "Country B",
+        "Country C",
+        "Country D"
+      ],
+      "key_points": [
+        {
+          "label": "Country A",
+          "x": "2010",
+          "y": "36",
+          "note": ""
+        },
+        {
+          "label": "Country B",
+          "x": "2010",
+          "y": "34",
+          "note": ""
+        },
+        {
+          "label": "Country C",
+          "x": "2010",
+          "y": "37",
+          "note": ""
+        },
+        {
+          "label": "Country D",
+          "x": "2010",
+          "y": "33",
+          "note": ""
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of countries with people working more than 35 hours"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart provides data on average working hours by country over several years. The task is to identify countries where the average working hours exceed 35. The chart's y-axis ticks and key points help determine this information."
+  ]
+}

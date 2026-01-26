@@ -1,0 +1,76 @@
+{
+  "region_used": "text",
+  "information": [
+    "Total objects: 20",
+    "Small balls: 5",
+    "Blue rubber things: 3",
+    "Counting read: {\"counts\": [{\"object\": \"small balls\", \"count\": 5, \"note\": \"Counted all small balls in the image.\"}, {\"object\": \"blue rubber things\", \"count\": 3, \"note\": \"Counted all blue rubber things in the image.\"}], \"total\": 7, \"notes\": [\"Subtracted small balls and blue rubber things from the total object count.\"]}"
+  ],
+  "structured": {
+    "text_lines": [
+      "Total objects: 20",
+      "Small balls: 5",
+      "Blue rubber things: 3"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "total_objects",
+        "value": "20",
+        "unit": "",
+        "source": "image",
+        "note": "Total number of objects provided in the image."
+      },
+      {
+        "name": "small_balls",
+        "value": "5",
+        "unit": "",
+        "source": "image",
+        "note": "Number of small balls provided in the image."
+      },
+      {
+        "name": "blue_rubber_things",
+        "value": "3",
+        "unit": "",
+        "source": "image",
+        "note": "Number of blue rubber things provided in the image."
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "remaining_objects"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The image provides the total number of objects, the number of small balls, and the number of blue rubber things, which are necessary to calculate the remaining objects."
+  ]
+}

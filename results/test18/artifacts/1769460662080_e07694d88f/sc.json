@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_function_symmetry",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Determine if a function represented in a graph is odd or even by analyzing its symmetry.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A string indicating whether the function is 'odd' or 'even'.",
+      "edge_cases": [
+        "Function is neither odd nor even",
+        "Graph is not clear enough to determine symmetry"
+      ],
+      "tests": [
+        {
+          "input": "5fae6361cdcc",
+          "expect": "odd"
+        },
+        {
+          "input": "another_image_hash",
+          "expect": "even"
+        }
+      ],
+      "tags": [
+        "function analysis",
+        "symmetry",
+        "graph interpretation",
+        "odd or even function"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_function_symmetry"
+  ]
+}

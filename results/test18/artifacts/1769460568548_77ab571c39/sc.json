@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_ages_from_image",
+      "purpose": "Extract ages of two people from the image text.",
+      "how_to_use": "Use the image hash to extract the ages of person 1 and person 2."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the age gap by subtracting the age of person 2 from the age of person 1.",
+      "how_to_use": "Use the expression 'age1 - age2' to calculate the age gap."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line string.",
+      "how_to_use": "Use the calculated age gap to format the answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

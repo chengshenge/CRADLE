@@ -1,0 +1,62 @@
+{
+  "problem_state_summary": "The problem involves comparing the derivative of a function f(x) at two specific points, x=2 and x=5. The task is to determine whether the derivative at x=2 is larger than, equal to, or smaller than the derivative at x=5. The function f(x) is represented graphically, and the derivatives must be inferred from the slope of the tangent lines at these points. The graph includes key points at (2, 1) and (5, 2), which are crucial for this comparison. The problem is presented as a multiple-choice question with three options. The exact values of the derivatives are not provided, requiring visual inspection of the graph to make the comparison.",
+  "entities": [
+    "f(x)",
+    "x=2",
+    "x=5",
+    "derivative at x=2",
+    "derivative at x=5"
+  ],
+  "unknowns": [
+    "Comparison of derivatives at x=2 and x=5"
+  ],
+  "required_operations": [
+    "Inspect the graph of f(x) to determine the slope of the tangent at x=2",
+    "Inspect the graph of f(x) to determine the slope of the tangent at x=5",
+    "Compare the slopes to determine if the derivative at x=2 is larger, equal, or smaller than at x=5",
+    "Map the comparison result to one of the given options"
+  ],
+  "blockers": [
+    "Comparison of derivatives at x=2 and x=5"
+  ],
+  "risk_checks": [
+    "Ensure the x-axis and y-axis scales are consistent for accurate slope determination",
+    "Verify the tick spacing on the graph to ensure accurate visual estimation of slopes",
+    "Check for any legend or additional markers that might affect interpretation"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "larger than"
+      },
+      {
+        "label": "B",
+        "text": "equal to"
+      },
+      {
+        "label": "C",
+        "text": "smaller than"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "derivative",
+    "graph analysis",
+    "comparison",
+    "multiple-choice"
+  ]
+}

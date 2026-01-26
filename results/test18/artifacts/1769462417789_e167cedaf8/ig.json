@@ -1,0 +1,72 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves analyzing a table to determine if there is a shortage or surplus at a given price.",
+    "The table likely contains data on supply and demand at various prices, which is necessary to answer the question."
+  ],
+  "problem_understanding": "The problem asks whether there is a shortage or surplus at a price of $790, based on data in a table.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "price",
+        "value": "790",
+        "unit": "dollars",
+        "source": "text",
+        "note": "The price at which we need to determine shortage or surplus."
+      }
+    ],
+    "unknown": [
+      "shortage or surplus"
+    ],
+    "relations": [
+      "Shortage occurs when demand exceeds supply at a given price.",
+      "Surplus occurs when supply exceeds demand at a given price."
+    ],
+    "constraints": [
+      "The analysis is based on the data provided in the table."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ]
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "price determines",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to compare supply and demand values at a specific price to determine if there is a shortage or surplus."
+  ],
+  "problem_summary": "Determine if there is a shortage or surplus at a price of $790 using the data in the table.",
+  "knowns": [
+    {
+      "name": "price",
+      "value": "790",
+      "unit": "dollars",
+      "source": "text",
+      "note": "The price at which we need to determine shortage or surplus."
+    }
+  ],
+  "asks": [
+    "Determine if there is a shortage or surplus at $790."
+  ],
+  "constraints": [
+    "The analysis is based on the data provided in the table."
+  ],
+  "visual_facts": [
+    "Price: $750, Supply: 1000, Demand: 1200",
+    "Price: $770, Supply: 1100, Demand: 1150",
+    "Price: $790, Supply: 1050, Demand: 1050",
+    "Price: $810, Supply: 1200, Demand: 1000",
+    "Price: $830, Supply: 1300, Demand: 950"
+  ],
+  "ambiguity": [
+    "The exact values of supply and demand at $790 are not provided in the prompt and need to be extracted from the table."
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers and known values",
+    "note": "The problem requires subtracting small balls and blue rubber things from total objects."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Compute remaining objects",
+    "code": "remaining_objects = calc_numeric('20 - 5 - 3')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: 12.0",
+    "raw_text": "Answer: {remaining_objects}",
+    "render_error": null
+  }
+]

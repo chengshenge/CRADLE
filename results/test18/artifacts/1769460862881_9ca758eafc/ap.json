@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract wait times for August and September from the table.",
+      "action": "reason",
+      "note": "The table shows August: 20 minutes, September: 25 minutes."
+    },
+    {
+      "intention": "Calculate the rate of change in wait time.",
+      "action": "python",
+      "code": "rate_of_change = calc_numeric('(25 - 20) / 1')"
+    },
+    {
+      "intention": "Format the final answer as a single line string.",
+      "action": "normalize",
+      "text": "Answer: 5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

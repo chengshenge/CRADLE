@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the difference in wait times and divide by the number of months.",
+      "how_to_use": "Use calc_numeric to calculate '(25 - 20) / 1' to find the rate of change."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line string.",
+      "how_to_use": "Use format_final to return the result as 'Answer: 5'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_wait_times_from_table",
+      "signature": "(image_hash:str, months:list)->(int, int)",
+      "purpose": "Extract average wait times for specified months from a table in an image.",
+      "inputs": [
+        "image_hash",
+        "months"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Table does not contain specified months",
+        "Table headers are misaligned"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"3d169a7c7970\", \"months\": [\"August\", \"September\"]}",
+          "expect": "(20, 25)"
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_wait_times_from_table",
+    "calc_numeric",
+    "format_final"
+  ]
+}

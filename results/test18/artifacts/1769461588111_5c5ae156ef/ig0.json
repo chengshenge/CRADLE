@@ -1,0 +1,73 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves comparing two diagrams of gas samples, which suggests that the relevant information is visual and related to the arrangement or representation of particles."
+  ],
+  "problem_understanding": "The problem asks to compare the average kinetic energies of particles in two gas samples and determine which sample has the higher temperature.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "number of particles",
+        "value": "same",
+        "unit": "",
+        "source": "text",
+        "note": "Both samples have the same number of particles."
+      }
+    ],
+    "unknown": [
+      "average kinetic energy of particles in sample A",
+      "average kinetic energy of particles in sample B",
+      "temperature of sample A",
+      "temperature of sample B"
+    ],
+    "relations": [
+      "Average kinetic energy is related to temperature."
+    ],
+    "constraints": [
+      "The containers are identical, closed, and rigid."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "neither; the samples have the same temperature"
+      },
+      {
+        "label": "B",
+        "text": "sample A"
+      },
+      {
+        "label": "C",
+        "text": "sample B"
+      }
+    ]
+  },
+  "question_type_guess": "other",
+  "need_ocr": "no",
+  "noun_and_verb": "diagrams show",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves understanding the relationship between kinetic energy and temperature in the context of gas particles, which is a conceptual understanding rather than a calculation."
+  ],
+  "problem_summary": "Compare the average kinetic energies of particles in two gas samples and determine which sample has the higher temperature.",
+  "knowns": [
+    {
+      "name": "number of particles",
+      "value": "same",
+      "unit": "",
+      "source": "text",
+      "note": "Both samples have the same number of particles."
+    }
+  ],
+  "asks": [
+    "Which sample has the higher temperature?"
+  ],
+  "constraints": [
+    "The containers are identical, closed, and rigid."
+  ],
+  "visual_facts": [
+    "Each colored ball represents one gas particle."
+  ],
+  "ambiguity": [
+    "The problem does not specify the type of gas or the initial conditions of the samples."
+  ]
+}

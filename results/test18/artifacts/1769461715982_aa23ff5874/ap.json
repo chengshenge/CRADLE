@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the geometric transformation of the rubber band",
+      "action": "reason",
+      "note": "The rubber band forms two right triangles when the midpoint is pulled up."
+    },
+    {
+      "intention": "Calculate the new length of each half of the rubber band",
+      "action": "python",
+      "code": "original_half_length = 16 / 2; vertical_displacement = 6; new_half_length = calc_numeric('sqrt((original_half_length)^2 + (vertical_displacement)^2)')"
+    },
+    {
+      "intention": "Determine the total stretched length",
+      "action": "python",
+      "code": "stretched_length = 2 * new_half_length"
+    },
+    {
+      "intention": "Map the calculated length to one of the multiple-choice options",
+      "action": "normalize",
+      "text": "Answer: 8cm"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,55 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_text_from_image",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Extract all text from an image to identify numerical values and other relevant information.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "Extracted text as a string",
+      "edge_cases": [
+        "Images with poor quality or low contrast",
+        "Text with unusual fonts or orientations"
+      ],
+      "tests": [
+        {
+          "input": "56092fe52d68",
+          "expect": "Extracted text from the image with hash 56092fe52d68"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing"
+      ]
+    },
+    {
+      "name": "identify_missing_value",
+      "signature": "(text:str)->float",
+      "purpose": "Identify and return the missing numerical value from the extracted text.",
+      "inputs": [
+        "text"
+      ],
+      "outputs": "Missing numerical value",
+      "edge_cases": [
+        "Multiple potential missing values",
+        "Ambiguous text descriptions"
+      ],
+      "tests": [
+        {
+          "input": "The total is 100, but only 75 is accounted for.",
+          "expect": 25
+        }
+      ],
+      "tags": [
+        "text analysis",
+        "arithmetic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "identify_missing_value"
+  ]
+}

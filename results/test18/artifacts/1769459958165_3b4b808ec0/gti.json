@@ -1,0 +1,99 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar chart with labeled axes and bars of varying heights."
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Bar Heights Comparison",
+      "x_axis": {
+        "label": "Categories",
+        "unit": "",
+        "ticks": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "y_axis": {
+        "label": "Height",
+        "unit": "units",
+        "ticks": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ]
+      },
+      "legend": [],
+      "key_points": [
+        {
+          "label": "A",
+          "x": "A",
+          "y": "3",
+          "note": "Height of bar A"
+        },
+        {
+          "label": "B",
+          "x": "B",
+          "y": "5",
+          "note": "Height of bar B"
+        },
+        {
+          "label": "C",
+          "x": "C",
+          "y": "2",
+          "note": "Height of bar C"
+        },
+        {
+          "label": "D",
+          "x": "D",
+          "y": "7",
+          "note": "Height of bar D"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "unresolved_targets": [
+      "sum of smallest two bars",
+      "height of largest bar"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart contains four bars labeled A, B, C, and D with respective heights. The task is to determine if the sum of the smallest two bars (C and A) is greater than the largest bar (D)."
+  ]
+}

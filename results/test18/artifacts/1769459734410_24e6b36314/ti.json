@@ -1,0 +1,56 @@
+{
+  "problem_state_summary": "The problem involves a diagram where the task is to compare the number of tiny objects behind a small metal jet with the number of tiny things left of a tiny sedan. The user is asked to determine if the number of objects behind the jet is less than those left of the sedan. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The spatial relationships 'behind' and 'left of' are crucial to solving the problem. The diagram is expected to show these objects and their positions relative to the jet and sedan. However, the exact counts of these objects are not discernible from the diagram, which is a critical blocker in solving the problem. The task requires careful analysis of the diagram to identify and count the objects in the specified spatial relationships.",
+  "entities": [
+    "small metal jet",
+    "tiny sedan",
+    "tiny objects"
+  ],
+  "unknowns": [
+    "number of tiny objects behind the small metal jet",
+    "number of tiny things left of the tiny sedan"
+  ],
+  "required_operations": [
+    "Identify the small metal jet and tiny sedan in the diagram",
+    "Count the number of tiny objects behind the small metal jet",
+    "Count the number of tiny things left of the tiny sedan",
+    "Compare the two counts"
+  ],
+  "blockers": [
+    "number of tiny objects behind the small metal jet",
+    "number of tiny things left of the tiny sedan"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear for the small metal jet and tiny sedan",
+    "Verify that the positions of tiny objects are clearly marked in relation to the jet and sedan"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "spatial relationships",
+    "counting",
+    "comparison"
+  ]
+}

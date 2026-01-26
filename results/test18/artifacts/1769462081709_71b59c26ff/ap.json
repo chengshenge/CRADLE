@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The unresolved target is ∠CDE. We will use the known angle ∠ABC and circle properties."
+    },
+    {
+      "intention": "Use diagram interpretation to find angle ∠CDE.",
+      "action": "python",
+      "code": "angle_abc = 60; angle_cde = 180 - angle_abc"
+    },
+    {
+      "intention": "Map computed angle to the closest multiple-choice option.",
+      "action": "normalize",
+      "text": "Answer: 120°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

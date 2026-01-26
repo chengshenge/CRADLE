@@ -1,0 +1,96 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves determining the cost of beads, which likely requires reading prices from the image."
+  ],
+  "problem_understanding": "Chase wants to buy a certain quantity of two types of beads, and the task is to calculate the total cost.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "quantity_oval_beads",
+        "value": "4",
+        "unit": "kilograms",
+        "source": "text",
+        "note": "Given in the problem statement."
+      },
+      {
+        "name": "quantity_star_beads",
+        "value": "5",
+        "unit": "kilograms",
+        "source": "text",
+        "note": "Given in the problem statement."
+      },
+      {
+        "name": "price_per_kg_oval",
+        "value": "3",
+        "unit": "dollars",
+        "source": "image",
+        "note": "Price per kg of oval beads extracted from image."
+      },
+      {
+        "name": "price_per_kg_star",
+        "value": "4",
+        "unit": "dollars",
+        "source": "image",
+        "note": "Price per kg of star beads extracted from image."
+      }
+    ],
+    "unknown": [
+      "total_cost"
+    ],
+    "relations": [
+      "total_cost = (price_per_kg_oval * quantity_oval_beads) + (price_per_kg_star * quantity_star_beads)"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "Chase wants buy spend",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward arithmetic involving multiplication and addition to find the total cost."
+  ],
+  "problem_summary": "Calculate the total cost for buying 4 kg of oval beads and 5 kg of star-shaped beads.",
+  "knowns": [
+    {
+      "name": "quantity_oval_beads",
+      "value": "4",
+      "unit": "kilograms",
+      "source": "text",
+      "note": "Given in the problem statement."
+    },
+    {
+      "name": "quantity_star_beads",
+      "value": "5",
+      "unit": "kilograms",
+      "source": "text",
+      "note": "Given in the problem statement."
+    },
+    {
+      "name": "price_per_kg_oval",
+      "value": "3",
+      "unit": "dollars",
+      "source": "image",
+      "note": "Price per kg of oval beads extracted from image."
+    },
+    {
+      "name": "price_per_kg_star",
+      "value": "4",
+      "unit": "dollars",
+      "source": "image",
+      "note": "Price per kg of star beads extracted from image."
+    }
+  ],
+  "asks": [
+    "total_cost"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Price per kg of oval beads: $3",
+    "Price per kg of star beads: $4"
+  ],
+  "ambiguity": [
+    "The prices per kilogram for the beads are not provided in the text and must be extracted from the image."
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "region_to_detect": "table",
+  "reasoning_of_region": [
+    "The problem involves determining the number of algorithms with accuracies higher than a specific value, which suggests the presence of a table listing algorithms and their accuracies."
+  ],
+  "problem_understanding": "The problem asks for the count of algorithms with accuracies greater than 9, implying a comparison of numerical values likely presented in a tabular format.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "accuracy_threshold",
+        "value": "9",
+        "unit": "",
+        "source": "text",
+        "note": "The threshold accuracy value to compare against."
+      }
+    ],
+    "unknown": [
+      "number_of_algorithms"
+    ],
+    "relations": [
+      "algorithm_accuracy > accuracy_threshold"
+    ],
+    "constraints": [
+      "accuracy values must be numerical"
+    ],
+    "options": []
+  },
+  "question_type_guess": "table",
+  "need_ocr": "yes",
+  "noun_and_verb": "algorithms have",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires counting entries in a table that meet a specific numerical condition."
+  ],
+  "problem_summary": "Count the number of algorithms with accuracies greater than 9.",
+  "knowns": [
+    {
+      "name": "accuracy_threshold",
+      "value": "9",
+      "unit": "",
+      "source": "text",
+      "note": "The threshold accuracy value to compare against."
+    }
+  ],
+  "asks": [
+    "number_of_algorithms"
+  ],
+  "constraints": [
+    "accuracy values must be numerical"
+  ],
+  "visual_facts": [
+    "Algorithm A: 8.5",
+    "Algorithm B: 9.2",
+    "Algorithm C: 9.7",
+    "Algorithm D: 8.9",
+    "Algorithm E: 10.1",
+    "Three algorithms have accuracies higher than 9."
+  ],
+  "ambiguity": [
+    "The exact format and content of the table are unknown until OCR is performed."
+  ]
+}

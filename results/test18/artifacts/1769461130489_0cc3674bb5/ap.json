@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and available information.",
+      "action": "reason",
+      "note": "The problem requires subtracting specific objects based on attributes."
+    },
+    {
+      "intention": "Compute the number of objects left after subtraction.",
+      "action": "python",
+      "code": "total_objects = 20; red_metallic_spheres = 0; brown_matte_things = 0; objects_left = total_objects - red_metallic_spheres - brown_matte_things"
+    },
+    {
+      "intention": "Provide the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 20"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

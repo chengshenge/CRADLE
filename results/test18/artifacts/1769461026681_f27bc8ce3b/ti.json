@@ -1,0 +1,40 @@
+{
+  "problem_state_summary": "The problem involves identifying digits located on either end of a sign in the corner of an image. The task is to calculate the sum of these digits. The image contains a sign with digits '5' and '3' identified as being on either end. The problem requires a simple arithmetic operation to find the sum of these digits. The final answer should be an integer. The problem is presented in a textual format, and the digits have been extracted from the image for calculation.",
+  "entities": [
+    "digits on either end of the sign"
+  ],
+  "unknowns": [
+    "sum of the digits on either end of the sign"
+  ],
+  "required_operations": [
+    "Identify digits on either end of the sign",
+    "Sum the identified digits"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "digit identification",
+    "sum calculation"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves a visual inspection of an image containing various objects. The task is to count all objects and then subtract those that are red and those that are tiny matte balls. The goal is to determine how many objects remain after these subtractions. The image contains a total of 20 objects, out of which 5 are red and 3 are tiny matte balls. The problem requires an integer answer representing the number of objects left after the specified subtractions. The exact definitions of 'tiny' and 'matte' are not provided, which may introduce some ambiguity in counting.",
+  "entities": [
+    "total objects",
+    "red objects",
+    "tiny matte balls"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Count total objects",
+    "Subtract red objects",
+    "Subtract tiny matte balls",
+    "Determine remaining objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure correct counting of red objects",
+    "ensure correct counting of tiny matte balls"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "subtraction",
+    "visual inspection",
+    "geometry"
+  ]
+}

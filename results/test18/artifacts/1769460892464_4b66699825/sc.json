@@ -1,0 +1,35 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "deduce_population_impact",
+      "signature": "(entities, unknowns, options)->str",
+      "purpose": "To deduce the impact on a population based on changes in life cycle events and select the correct multiple-choice option.",
+      "inputs": [
+        "entities",
+        "unknowns",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "All eggs are eaten, but other factors increase population",
+        "Eggs are eaten but some survive due to other reasons"
+      ],
+      "tests": [
+        {
+          "input": "{\"entities\": [\"spider eggs\", \"adult spiders\", \"predators\"], \"unknowns\": [\"Effect on adult spider population\"], \"options\": [{\"label\": \"A\", \"text\": \"Adult spider population would remain the same\"}, {\"label\": \"B\", \"text\": \"Adult spider population would double.\"}, {\"label\": \"C\", \"text\": \"Adults spider population would decrease\"}, {\"label\": \"D\", \"text\": \"Adult spider population would increase.\"}]}",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "logic",
+        "biology",
+        "population dynamics",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "deduce_population_impact"
+  ]
+}

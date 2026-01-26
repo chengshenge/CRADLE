@@ -1,0 +1,61 @@
+{
+  "region_used": "diagram",
+  "information": [
+    "Counting read: {\"counts\": [{\"object\": \"red things\", \"count\": 5, \"note\": \"All red objects in the image.\"}, {\"object\": \"tiny matte balls\", \"count\": 3, \"note\": \"All tiny matte balls in the image.\"}], \"total\": 12, \"notes\": [\"The total number of objects before subtraction is 20. After subtracting 5 red things and 3 tiny matte balls, 12 objects are left.\"]}"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": [],
+      "counts": [
+        {
+          "type": "total objects",
+          "count": 20
+        },
+        {
+          "type": "red objects",
+          "count": 5
+        },
+        {
+          "type": "tiny matte balls",
+          "count": 3
+        }
+      ]
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "number of objects left"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The task requires counting objects based on their color and size. The image was inspected to count the total number of objects, as well as those that are red and those that are tiny matte balls. These counts are necessary to solve the problem as described in the INFO_JSON."
+  ]
+}

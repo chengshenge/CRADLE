@@ -1,0 +1,55 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract text from the image to identify counts of shiny buses and matte things.",
+      "how_to_use": "Use the image hash to extract all text from the image and identify the relevant counts."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform numeric comparison between the counts of shiny buses and matte things.",
+      "how_to_use": "Use the extracted counts to perform a comparison operation."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer in the required multiple-choice format.",
+      "how_to_use": "Use the result of the comparison to map to the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_counts_from_text",
+      "signature": "(text:str, entities:list)->(int, int)",
+      "purpose": "Extract specific counts of entities from a block of text.",
+      "inputs": [
+        "text",
+        "entities"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Text does not contain any numbers",
+        "Entities are not mentioned in the text"
+      ],
+      "tests": [
+        {
+          "input": "text='There are 3 shiny buses and 5 matte things.', entities=['shiny buses', 'matte things']",
+          "expect": "(3, 5)"
+        },
+        {
+          "input": "text='No shiny buses, but 7 matte things.', entities=['shiny buses', 'matte things']",
+          "expect": "(0, 7)"
+        }
+      ],
+      "tags": [
+        "text processing",
+        "count extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "extract_counts_from_text",
+    "calc_numeric",
+    "format_final"
+  ]
+}

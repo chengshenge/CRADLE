@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the length of AB using the given ratio and the length of AC.",
+      "how_to_use": "Use the expression '2/5 * 25' to calculate the length of AB."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice option.",
+      "how_to_use": "Return the answer in the format 'Answer: B' if the calculated length matches option B."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "verify_diagram_labels",
+      "signature": "(image_hash:str, labels:dict)->bool",
+      "purpose": "Verify that the diagram correctly labels lines AB and AC, and that AC is marked as 25.",
+      "inputs": [
+        "image_hash",
+        "labels"
+      ],
+      "outputs": "bool",
+      "edge_cases": [
+        "Labels are partially obscured",
+        "Multiple lines with similar labels"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"51a661e55590\", \"labels\": {\"AB\": null, \"AC\": 25}}",
+          "expect": "true"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "verification",
+        "geometry"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "verify_diagram_labels",
+    "calc_numeric",
+    "format_final"
+  ]
+}

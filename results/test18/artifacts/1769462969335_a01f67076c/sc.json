@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_values_from_table",
+      "signature": "(image_hash:str, group_label:str)->list",
+      "purpose": "Extract values associated with a specific group label from a table in an image.",
+      "inputs": [
+        "image_hash",
+        "group_label"
+      ],
+      "outputs": "list",
+      "edge_cases": [
+        "Group label not found in the table",
+        "Table is not properly aligned",
+        "Values are not numeric"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\":\"d35b8868d84d\", \"group_label\":\"Ruling Group\"}",
+          "expect": "[10, 15, 20]"
+        },
+        {
+          "input": "{\"image_hash\":\"d35b8868d84d\", \"group_label\":\"Nonexistent Group\"}",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_values_from_table",
+    "calc_numeric",
+    "format_final"
+  ]
+}

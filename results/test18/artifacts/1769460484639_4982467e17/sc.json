@@ -1,0 +1,57 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_graph_continuity",
+      "signature": "(image_hash:str, points:List[Tuple[int, int]])->Dict[str, bool]",
+      "purpose": "Analyze the graph of a function to determine continuity at specified points.",
+      "inputs": [
+        "image_hash",
+        "points"
+      ],
+      "outputs": "A dictionary with point labels as keys and boolean values indicating continuity.",
+      "edge_cases": [
+        "Graph with very close points that might be hard to distinguish",
+        "Graph with multiple discontinuities close to each other"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"566a2a2a2a6d\", \"points\": [(-2, 1), (0, 0), (2, -1)]}",
+          "expect": "{\"A\": true, \"B\": false, \"C\": true}"
+        }
+      ],
+      "tags": [
+        "graph analysis",
+        "continuity",
+        "image processing"
+      ]
+    },
+    {
+      "name": "determine_overall_continuity",
+      "signature": "(continuity_results:Dict[str, bool])->str",
+      "purpose": "Determine the overall continuity of the function based on point-wise continuity results.",
+      "inputs": [
+        "continuity_results"
+      ],
+      "outputs": "A string 'Yes' or 'No' indicating overall continuity.",
+      "edge_cases": [
+        "All points are continuous except one",
+        "All points are discontinuous"
+      ],
+      "tests": [
+        {
+          "input": "{\"A\": true, \"B\": false, \"C\": true}",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "continuity",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_graph_continuity",
+    "determine_overall_continuity"
+  ]
+}

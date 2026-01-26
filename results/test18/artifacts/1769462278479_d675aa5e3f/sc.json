@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "interpret_diagram_for_geometry",
+      "purpose": "To interpret the geometric properties and relationships in the diagram to assist in calculating the angle ∠AMK.",
+      "how_to_use": "Use the image hash to extract geometric information from the diagram."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform any necessary calculations to determine the angle ∠AMK.",
+      "how_to_use": "Use the expression derived from the geometric interpretation to calculate the angle."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required.",
+      "how_to_use": "Use the calculated angle to format the answer as a single line."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "determine_positions_of_points",
+      "signature": "(image_hash:str)->(str, str)",
+      "purpose": "To determine the positions of points M and K in relation to the square and circle.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A tuple containing the positions of points M and K as strings.",
+      "edge_cases": [
+        "Points M and K are not labeled or are ambiguous in the diagram."
+      ],
+      "tests": [
+        {
+          "input": "37d98e1bbd49",
+          "expect": "('M is on the circle', 'K is on the square')"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "determine_positions_of_points",
+    "interpret_diagram_for_geometry",
+    "calc_numeric",
+    "format_final"
+  ]
+}

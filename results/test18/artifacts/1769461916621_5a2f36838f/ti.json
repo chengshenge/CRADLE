@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart titled 'Monthly Sales Data' with the x-axis labeled as 'Month' and the y-axis labeled as 'Sales (in thousands)'. The chart displays sales data for the months of January through June. The task is to determine the difference between the largest and smallest values represented by the bars in this chart. The largest value is identified as 60, occurring in May, and the smallest value is 10, occurring in June. The problem requires extracting these values from the chart and performing a subtraction to find the difference. The final answer should be presented as a floating-point number with one decimal place.",
+  "entities": [
+    "largest bar value",
+    "smallest bar value"
+  ],
+  "unknowns": [
+    "difference of largest and smallest bar"
+  ],
+  "required_operations": [
+    "Identify the largest bar value from the chart",
+    "Identify the smallest bar value from the chart",
+    "Compute the difference by subtracting the smallest value from the largest value"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify the axis scale and tick spacing on the chart",
+    "Ensure correct mapping of bar heights to values",
+    "Check for any interpolation or unit conversion issues"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "subtraction",
+    "data analysis",
+    "visual interpretation"
+  ]
+}

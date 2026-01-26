@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations and comparisons.",
+      "how_to_use": "Use to compare the values of Black and Deep Sky Blue."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use to return the final answer as 'Answer: A' or 'Answer: B'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_chart_values",
+      "signature": "(chart_image:str, entities:list)->dict",
+      "purpose": "Extract values associated with specified entities from a chart image.",
+      "inputs": [
+        "chart_image",
+        "entities"
+      ],
+      "outputs": "A dictionary mapping each entity to its extracted value.",
+      "edge_cases": [
+        "Entities not found in chart",
+        "Chart image is unclear"
+      ],
+      "tests": [
+        {
+          "input": "{\"chart_image\": \"a6f3574c0a66\", \"entities\": [\"Black\", \"Deep Sky Blue\"]}",
+          "expect": "{\"Black\": 35, \"Deep Sky Blue\": 25}"
+        }
+      ],
+      "tags": [
+        "chart",
+        "extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_chart_values",
+    "calc_numeric",
+    "format_final"
+  ]
+}

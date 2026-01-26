@@ -1,0 +1,49 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining if a function is odd or even, which typically requires analyzing a graph or plot of the function."
+  ],
+  "problem_understanding": "The problem asks whether a given function is odd or even, and the image likely contains a graph of the function that needs to be analyzed.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "function type (odd or even)"
+    ],
+    "relations": [
+      "A function is even if f(x) = f(-x) for all x in the domain.",
+      "A function is odd if f(-x) = -f(x) for all x in the domain."
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "odd"
+      },
+      {
+        "label": "B",
+        "text": "even"
+      }
+    ]
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "function is",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the symmetry of the function, which is a direct observation task from the graph."
+  ],
+  "problem_summary": "Determine if the function shown in the image is odd or even.",
+  "knowns": [],
+  "asks": [
+    "Determine if the function is odd or even."
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The graph of the function is needed to determine symmetry.",
+    "x-axis labeled as 'x' with ticks at -3, -2, -1, 0, 1, 2, 3.",
+    "y-axis labeled as 'f(x)' with ticks at -3, -2, -1, 0, 1, 2, 3."
+  ],
+  "ambiguity": [
+    "The problem does not specify the function explicitly, relying on the image."
+  ]
+}

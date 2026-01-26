@@ -1,0 +1,62 @@
+{
+  "problem_state_summary": "The problem involves a rubber band of original length 16 cm that is fixed at both ends on a horizontal table. The midpoint of the rubber band is pulled vertically upwards by 6 cm, forming two right triangles. The task is to determine how much the rubber band is stretched as a result of this action. The problem is presented with a diagram that labels the points A, B, C, and D, and indicates the original length and the vertical displacement. The solution requires understanding the geometric transformation of the rubber band and calculating the new length. The final answer must be selected from the given multiple-choice options.",
+  "entities": [
+    "original_length",
+    "vertical_displacement",
+    "stretched_length"
+  ],
+  "unknowns": [
+    "stretched_length"
+  ],
+  "required_operations": [
+    "Identify the geometric transformation of the rubber band",
+    "Use the Pythagorean theorem to calculate the new length of each half of the rubber band",
+    "Determine the total stretched length",
+    "Map the calculated length to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "stretched_length"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify the right triangle formation and correct application of the Pythagorean theorem"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "2cm"
+      },
+      {
+        "label": "B",
+        "text": "4cm"
+      },
+      {
+        "label": "C",
+        "text": "6cm"
+      },
+      {
+        "label": "D",
+        "text": "8cm"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "right triangle",
+    "Pythagorean theorem",
+    "diagram interpretation"
+  ]
+}

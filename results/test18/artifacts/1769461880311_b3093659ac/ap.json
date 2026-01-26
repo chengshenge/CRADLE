@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers in completing the matrix.",
+      "action": "reason",
+      "note": "The unresolved target is matrix completion, which requires identifying the pattern."
+    },
+    {
+      "intention": "Determine the pattern in the matrix rows.",
+      "action": "reason",
+      "note": "Each row in the matrix is a sequence of numbers increasing by a constant factor."
+    },
+    {
+      "intention": "Verify the pattern and deduce the completion.",
+      "action": "reason",
+      "note": "Row 1: 2, 4, 6 (x2); Row 2: 3, 6, 9 (x3); Row 3: 4, 8, 12 (x4)."
+    },
+    {
+      "intention": "Select the correct completion from the options.",
+      "action": "normalize",
+      "text": "Answer: A"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

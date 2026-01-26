@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves analyzing a graph that displays monthly rainfall data for Christchurch. The task is to determine which month is the wettest on average. The graph is expected to have an x-axis labeled with months and a y-axis labeled with rainfall in millimeters. The user is asked to identify the month with the highest average rainfall from the given options. The options provided are August, April, and May. The graph's key points indicate that August has the highest rainfall. The final answer must be mapped to one of the provided options.",
+  "entities": [
+    "monthly rainfall",
+    "Christchurch",
+    "August",
+    "April",
+    "May"
+  ],
+  "unknowns": [
+    "wettest month"
+  ],
+  "required_operations": [
+    "Interpret the graph to identify the month with the highest rainfall.",
+    "Map the identified month to the given options."
+  ],
+  "blockers": [
+    "wettest month"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart.",
+    "Ensure correct mapping of months to rainfall values.",
+    "Check for any missing units or labels on the chart."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "August"
+      },
+      {
+        "label": "B",
+        "text": "April"
+      },
+      {
+        "label": "C",
+        "text": "May"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "graph interpretation",
+    "rainfall data",
+    "multiple choice"
+  ]
+}

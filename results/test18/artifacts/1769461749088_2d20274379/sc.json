@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the remaining number of objects after subtraction.",
+      "how_to_use": "Use to calculate '10 - (3 + 2)' to find the number of objects left."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use to format the result of the calculation as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_object_counts_from_image",
+      "signature": "(image_hash:str, object_descriptions:list)->list",
+      "purpose": "Extract counts of specified objects from an image based on their descriptions.",
+      "inputs": [
+        "image_hash",
+        "object_descriptions"
+      ],
+      "outputs": "A list of integers representing the counts of each specified object.",
+      "edge_cases": [
+        "No objects match the description",
+        "Multiple objects match a single description"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"9bd29bec36bd\", \"object_descriptions\": [\"big matte balls\", \"green rubber objects\"]}",
+          "expect": "[3, 2]"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_object_counts_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

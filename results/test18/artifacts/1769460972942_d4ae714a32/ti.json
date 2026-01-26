@@ -1,0 +1,77 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle 3 from a geometric diagram. The diagram likely contains multiple labeled angles, including angle 3, which is the focus of the question. The task is to identify the correct measure of angle 3 from the given options. The options provided are numerical values, indicating that the answer must be one of these values. The problem is a straightforward geometry question, requiring the interpretation of a diagram to find the measure of a specific angle. The image is necessary to fully understand the geometric context and to identify angle 3 accurately.",
+  "entities": [
+    "Angle 1",
+    "Angle 2",
+    "Angle 3",
+    "Angle 4",
+    "Angle 5",
+    "Angle 6",
+    "Angle 7",
+    "Angle 8",
+    "Angle 9",
+    "Angle 10",
+    "Angle 11",
+    "Angle 12",
+    "Angle 13",
+    "Angle 14",
+    "Angle 15",
+    "Angle 16",
+    "Angle 17",
+    "Angle 18",
+    "Angle 19",
+    "Angle 20"
+  ],
+  "unknowns": [
+    "m ∠3"
+  ],
+  "required_operations": [
+    "Identify angle 3 in the diagram",
+    "Determine the measure of angle 3",
+    "Map the measure to one of the provided options"
+  ],
+  "blockers": [
+    "m ∠3"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear for angle 3",
+    "Check for any angle markers or relations that might indicate the measure of angle 3"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "28"
+      },
+      {
+        "label": "B",
+        "text": "38"
+      },
+      {
+        "label": "C",
+        "text": "52"
+      },
+      {
+        "label": "D",
+        "text": "62"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram interpretation"
+  ]
+}

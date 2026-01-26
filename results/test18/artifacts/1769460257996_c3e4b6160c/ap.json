@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between AC, BC, and AB.",
+      "action": "reason",
+      "note": "AB is the diameter, so AB = AC + BC."
+    },
+    {
+      "intention": "Calculate the length of the diameter AB.",
+      "action": "python",
+      "code": "AB = calc_numeric('8 + 15')"
+    },
+    {
+      "intention": "Calculate the radius of the circle.",
+      "action": "python",
+      "code": "radius = AB / 2"
+    },
+    {
+      "intention": "Map the calculated radius to the closest option.",
+      "action": "reason",
+      "note": "The calculated radius is 11.5, which is not an option. Check for errors or assumptions."
+    },
+    {
+      "intention": "Format the final answer.",
+      "action": "normalize",
+      "text": "Answer: 11.5"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

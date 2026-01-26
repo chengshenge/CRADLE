@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify objects preferred by more than 90% in any category.",
+      "action": "reason",
+      "note": "Use GTI_JSON to find objects with preference > 90%."
+    },
+    {
+      "intention": "Count the number of objects meeting the criteria.",
+      "action": "python",
+      "code": "objects_preferred = ['Object A', 'Object C', 'Object E']; count_preferred = len(objects_preferred)"
+    },
+    {
+      "intention": "Provide the final count as the answer.",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure, specifically a triangle ABC with a point D inside it. The line CD bisects angle ACB, and BD is perpendicular to CD. It is given that angle A is equal to angle ABD. Additionally, angle DBC is provided as 54 degrees. The task is to determine the measure of angle A. The problem is presented with multiple-choice options for the value of angle A. The relationships between the angles and lines are crucial to solving the problem, and these are typically represented in a diagram.",
+  "entities": [
+    "∠A",
+    "∠ABD",
+    "∠DBC",
+    "CD",
+    "BD",
+    "△ABC",
+    "point D"
+  ],
+  "unknowns": [
+    "∠A"
+  ],
+  "required_operations": [
+    "Interpret the diagram to understand the geometric relationships",
+    "Use the given angle measures and relationships to set up equations",
+    "Solve for the unknown angle ∠A",
+    "Map the calculated angle to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "∠A"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "36°"
+      },
+      {
+        "label": "B",
+        "text": "44°"
+      },
+      {
+        "label": "C",
+        "text": "27°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "triangle",
+    "diagram interpretation"
+  ]
+}

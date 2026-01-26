@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "interpret_diagram_for_geometry",
+      "purpose": "To analyze the geometric configuration in the diagram and extract relevant measurements or relationships.",
+      "how_to_use": "Use the image hash to interpret the diagram and extract geometric information that can help determine the value of x."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_tangent_relationship",
+      "signature": "(square_info, line_info, point_info)->float",
+      "purpose": "To analyze the geometric relationship between a square and a tangent line at a specific point to determine unknown values.",
+      "inputs": [
+        "square_info",
+        "line_info",
+        "point_info"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Square not tangent to line",
+        "Point P not on the line",
+        "Ambiguous or missing measurements"
+      ],
+      "tests": [
+        {
+          "input": "{\"square_info\": {\"side_length\": 5}, \"line_info\": {\"equation\": \"y=2x+3\"}, \"point_info\": {\"coordinates\": [2, 7]}}",
+          "expect": "5.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "tangent",
+        "square",
+        "line"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_diagram_for_geometry",
+    "analyze_tangent_relationship"
+  ]
+}

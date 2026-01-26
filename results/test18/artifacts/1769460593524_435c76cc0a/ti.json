@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the limit of a function as x approaches -1. This requires analyzing a graph or plot of the function to observe its behavior near x = -1. The graph is titled 'Graph of f(x)' and has x-axis ticks at -3, -2, -1, 0, 1, 2, 3, and y-axis ticks at -3, -2, -1, 0, 1, 2, 3. A key point labeled 'A' is located at (x = -1, y = 2) on the graph. The task is to find the limit, which is a typical calculus problem involving limits. The image is necessary to understand the function's behavior as the specific function is not described in the text.",
+  "entities": [
+    "x",
+    "f(x)",
+    "Point A"
+  ],
+  "unknowns": [
+    "limit as x approaches -1"
+  ],
+  "required_operations": [
+    "Analyze the graph to observe the behavior of f(x) as x approaches -1",
+    "Identify the y-value of the function at x = -1",
+    "Determine the limit based on the graph's behavior"
+  ],
+  "blockers": [
+    "limit as x approaches -1"
+  ],
+  "risk_checks": [
+    "Check axis scale and tick spacing to ensure accurate reading of the graph",
+    "Verify the key point at x = -1 to confirm the y-value",
+    "Ensure no interpolation is needed beyond the provided key point"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "limits",
+    "graph analysis"
+  ]
+}

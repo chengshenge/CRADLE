@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The task is to find a missing value from the information provided in an image. The image contains text that may include the missing value, but the specific context or type of missing value is not clear from the prompt alone. The problem requires identifying a numerical value that is missing, which suggests that there might be numerical or textual information in the image necessary to identify this missing value. The task is straightforward as it involves identifying a missing numerical value from the given information. The problem understanding indicates that the task is likely arithmetic in nature. The image's text is crucial for finding the missing value.",
+  "entities": [],
+  "unknowns": [
+    "missing value"
+  ],
+  "required_operations": [
+    "Read text from image",
+    "Identify missing numerical value"
+  ],
+  "blockers": [
+    "missing value"
+  ],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "text analysis",
+    "missing value"
+  ]
+}

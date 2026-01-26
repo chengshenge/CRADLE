@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The position of points M and K is not specified, which is a blocker."
+    },
+    {
+      "intention": "Use diagram interpretation skill to find angle ∠AMK.",
+      "action": "python",
+      "code": "angle_amk = interpret_diagram_for_geometry('37d98e1bbd49')"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: {angle_amk:.1f}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

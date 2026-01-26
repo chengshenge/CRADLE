@@ -1,0 +1,38 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_visual_sequence",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "Analyze a sequence of objects in an image to identify the pattern and determine the next object in the sequence.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the next object in the sequence.",
+      "edge_cases": [
+        "Ambiguous patterns where multiple options seem correct",
+        "Images with poor quality or unclear details"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "C"
+        },
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "logic",
+        "pattern recognition",
+        "sequence",
+        "diagram"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_visual_sequence"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_categories",
+      "signature": "(categories:List[str], target:str)->bool",
+      "purpose": "Determine if the target category is the maximum among a list of categories.",
+      "inputs": [
+        "categories",
+        "target"
+      ],
+      "outputs": "Boolean indicating if the target is the maximum.",
+      "edge_cases": [
+        "All categories are the same",
+        "Target is not in the list",
+        "Empty list of categories"
+      ],
+      "tests": [
+        {
+          "input": "(['Lavender', 'Indigo', 'Violet', 'Periwinkle'], 'Periwinkle')",
+          "expect": "True"
+        },
+        {
+          "input": "(['Lavender', 'Indigo', 'Violet'], 'Periwinkle')",
+          "expect": "False"
+        },
+        {
+          "input": "(['Periwinkle', 'Periwinkle', 'Periwinkle'], 'Periwinkle')",
+          "expect": "True"
+        },
+        {
+          "input": "([], 'Periwinkle')",
+          "expect": "False"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "maximum",
+        "text analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_categories"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the highest measurement value from the chart.",
+      "action": "reason",
+      "note": "The key points on the chart are Height - 75, Weight - 85, Volume - 90."
+    },
+    {
+      "intention": "Determine the maximum value among the key points.",
+      "action": "python",
+      "code": "highest_value = max(75, 85, 90)"
+    },
+    {
+      "intention": "Format the highest measurement value as the final answer.",
+      "action": "normalize",
+      "text": "Answer: 90"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

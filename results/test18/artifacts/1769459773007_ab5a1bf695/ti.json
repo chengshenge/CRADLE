@@ -1,0 +1,62 @@
+{
+  "problem_state_summary": "The problem involves understanding the impact of eliminating algae on various organisms within an aquatic ecosystem. Algae are primary producers and serve as a food source for several organisms. The task is to determine which organism would be most affected if algae were removed. The organisms in question include Tilapia, Common water flea, Great diving beetle, and Tadpole. Each of these organisms has a different relationship with algae, either directly or indirectly. The problem requires analyzing these relationships to identify the organism most dependent on algae.",
+  "entities": [
+    "Algae",
+    "Tilapia",
+    "Common water flea",
+    "Great diving beetle",
+    "Tadpole"
+  ],
+  "unknowns": [
+    "organism most affected by elimination of algae"
+  ],
+  "required_operations": [
+    "Read text information about ecosystem relationships",
+    "Identify direct and indirect dependencies on algae",
+    "Determine which organism is most dependent on algae"
+  ],
+  "blockers": [
+    "organism most affected by elimination of algae"
+  ],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Tilapia"
+      },
+      {
+        "label": "B",
+        "text": "Common water flea"
+      },
+      {
+        "label": "C",
+        "text": "Great diving beetle"
+      },
+      {
+        "label": "D",
+        "text": "Tadpole"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "ecosystem",
+    "food chain",
+    "dependency",
+    "aquatic organisms"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_chart_data",
+      "signature": "(chart_image:str, threshold:float)->int",
+      "purpose": "Analyze a chart image to determine the number of objects with a preference percentage exceeding a given threshold in any category.",
+      "inputs": [
+        "chart_image",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Chart with no objects exceeding the threshold",
+        "Multiple categories with overlapping objects"
+      ],
+      "tests": [
+        {
+          "input": "{\"chart_image\": \"a498056b9772\", \"threshold\": 90.0}",
+          "expect": 3
+        },
+        {
+          "input": "{\"chart_image\": \"a498056b9772\", \"threshold\": 95.0}",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "percentage comparison",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_chart_data"
+  ]
+}

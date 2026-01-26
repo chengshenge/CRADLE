@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations needed to find the length of segment CD.",
+      "how_to_use": "Use this skill to calculate the length of CD using the properties of the right triangle and the midpoint theorem."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: ...' with the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "find_length_CD",
+      "signature": "(hypotenuse_length: float)->float",
+      "purpose": "Calculate the length of segment CD in a right triangle where D is the midpoint of the hypotenuse.",
+      "inputs": [
+        "hypotenuse_length"
+      ],
+      "outputs": "The length of segment CD.",
+      "edge_cases": [
+        "Ensure the hypotenuse length is positive."
+      ],
+      "tests": [
+        {
+          "input": "10",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "right triangle",
+        "midpoint"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "find_length_CD",
+    "calc_numeric",
+    "format_final"
+  ]
+}

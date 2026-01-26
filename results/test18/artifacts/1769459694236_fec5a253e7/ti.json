@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves determining how many objects are preferred by more than 90 percent of people in at least one category. A chart titled 'Preferences of Objects by Percentage' is provided, with the x-axis labeled 'Objects' and the y-axis labeled 'Percentage'. The chart includes a legend with three categories. The task is to identify objects that have a preference percentage exceeding 90% in any of these categories. The visual data indicates that Object A, Object C, and Object E meet this criterion. The final answer should be an integer representing the count of such objects.",
+  "entities": [
+    "Object A",
+    "Object B",
+    "Object C",
+    "Object D",
+    "Object E",
+    "Category 1",
+    "Category 2",
+    "Category 3"
+  ],
+  "unknowns": [
+    "number of objects preferred by more than 90 percent of people in at least one category"
+  ],
+  "required_operations": [
+    "Read chart data",
+    "Identify objects with preference > 90% in any category",
+    "Count such objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart",
+    "Ensure correct legend mapping to categories",
+    "Check for interpolation errors in percentage values"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "percentage comparison",
+    "counting problem"
+  ]
+}

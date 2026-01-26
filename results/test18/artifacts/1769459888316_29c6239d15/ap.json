@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the correct question the experiment answers.",
+      "action": "reason",
+      "note": "The experiment compares average times with and without wax."
+    },
+    {
+      "intention": "Select the correct choice based on the experiment's purpose.",
+      "action": "reason",
+      "note": "Choice B matches the experiment's purpose: comparing with and without wax."
+    },
+    {
+      "intention": "Format the final answer using the correct choice.",
+      "action": "python",
+      "code": "format_final('Does Linda\\'s snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?')"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

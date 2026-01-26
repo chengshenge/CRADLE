@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform arithmetic operations to compute the remaining objects.",
+      "how_to_use": "Use to subtract the number of small balls and blue rubber things from the total number of objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use to return the final count of remaining objects in the specified format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_object_counts_from_image",
+      "signature": "(image_hash:str)->(int, int, int)",
+      "purpose": "Extract the counts of total objects, small balls, and blue rubber things from the image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(total_objects, small_balls, blue_rubber_things)",
+      "edge_cases": [
+        "Image does not contain clear numbers",
+        "Numbers are partially obscured"
+      ],
+      "tests": [
+        {
+          "input": "3706a551e433",
+          "expect": "(20, 5, 3)"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_object_counts_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

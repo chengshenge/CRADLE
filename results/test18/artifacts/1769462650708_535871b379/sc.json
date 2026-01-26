@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "interpret_diagram_for_geometry",
+      "purpose": "To identify the geometric shapes of the windows from the diagram.",
+      "how_to_use": "Use the image hash to extract and identify the geometric shapes depicted in the diagram."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "determine_common_shapes_in_houses",
+      "signature": "(shapes:list)->bool",
+      "purpose": "To determine if the given geometric shapes are common in most houses.",
+      "inputs": [
+        "A list of geometric shapes identified from the diagram."
+      ],
+      "outputs": "A boolean indicating if the shapes are common in most houses.",
+      "edge_cases": [
+        "All shapes are uncommon.",
+        "All shapes are common.",
+        "Some shapes are common, others are not."
+      ],
+      "tests": [
+        {
+          "input": "['rectangular', 'circular', 'triangular']",
+          "expect": "True"
+        },
+        {
+          "input": "['hexagonal', 'octagonal']",
+          "expect": "False"
+        },
+        {
+          "input": "['rectangular', 'triangular']",
+          "expect": "True"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "common shapes",
+        "residential architecture"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_diagram_for_geometry",
+    "determine_common_shapes_in_houses"
+  ]
+}

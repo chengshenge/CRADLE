@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The area of square C is unknown. Use the Pythagorean relationship to find it."
+    },
+    {
+      "intention": "Compute the area of square C using the Pythagorean relationship",
+      "action": "python",
+      "code": "area_C = calc_numeric('5 + 3')"
+    },
+    {
+      "intention": "Format the final answer based on the computed area",
+      "action": "normalize",
+      "text": "Answer: 8"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

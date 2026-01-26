@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and verify chart details",
+      "action": "reason",
+      "note": "The task is to find the year with the largest difference between two lines on a chart."
+    },
+    {
+      "intention": "Use learned skill to find the year with the largest difference",
+      "action": "python",
+      "code": "year_with_largest_difference = analyze_line_chart_for_largest_difference('e5e5b23c6e12')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {year_with_largest_difference}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

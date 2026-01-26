@@ -1,0 +1,32 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_line_chart_for_largest_difference",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Identify the year with the largest difference between two lines on a chart.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Lines are very close together",
+        "Multiple years have the same largest difference"
+      ],
+      "tests": [
+        {
+          "input": "e5e5b23c6e12",
+          "expect": 2020
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data comparison",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_line_chart_for_largest_difference"
+  ]
+}

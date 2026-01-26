@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_polar_plot_value",
+      "signature": "(image_hash:str, theta:float)->int",
+      "purpose": "To read the value of r from a polar plot at a given angle theta.",
+      "inputs": [
+        "image_hash",
+        "theta"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Theta value not present on the plot",
+        "Ambiguous r value due to overlapping lines"
+      ],
+      "tests": [
+        {
+          "input": "(\"32cf08957b87\", 4.71238898038)",
+          "expect": "2"
+        },
+        {
+          "input": "(\"32cf08957b87\", 0)",
+          "expect": "0"
+        },
+        {
+          "input": "(\"32cf08957b87\", 3.14159265359)",
+          "expect": "1"
+        }
+      ],
+      "tags": [
+        "polar coordinates",
+        "chart reading",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_polar_plot_value"
+  ]
+}

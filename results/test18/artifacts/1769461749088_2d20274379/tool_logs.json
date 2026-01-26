@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the number of objects to subtract.",
+    "note": "Subtract 3 big matte balls and 2 green rubber objects from the total of 10 objects."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Compute the remaining number of objects.",
+    "code": "remaining_objects = calc_numeric('10 - (3 + 2)')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer.",
+    "text": "Answer: 5.0",
+    "raw_text": "Answer: {remaining_objects}",
+    "render_error": null
+  }
+]

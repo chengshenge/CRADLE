@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_angle_measure_from_diagram",
+      "signature": "(image_hash:str, angle_label:str)->float",
+      "purpose": "Extract the measure of a specified angle from a geometric diagram.",
+      "inputs": [
+        "image_hash",
+        "angle_label"
+      ],
+      "outputs": "The measure of the specified angle as a float.",
+      "edge_cases": [
+        "The angle label is not visible in the diagram.",
+        "Multiple angles are labeled with the same identifier."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"afa92d8007da\", \"angle_label\": \"3\"}",
+          "expect": "38"
+        },
+        {
+          "input": "{\"image_hash\": \"afa92d8007da\", \"angle_label\": \"5\"}",
+          "expect": "52"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "image processing"
+      ]
+    },
+    {
+      "name": "map_measure_to_option",
+      "signature": "(measure:float, options:list)->str",
+      "purpose": "Map a given angle measure to the corresponding multiple-choice option.",
+      "inputs": [
+        "measure",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the measure.",
+      "edge_cases": [
+        "The measure does not match any of the options.",
+        "Multiple options have the same measure."
+      ],
+      "tests": [
+        {
+          "input": "{\"measure\": 38, \"options\": [{\"label\": \"A\", \"text\": \"28\"}, {\"label\": \"B\", \"text\": \"38\"}, {\"label\": \"C\", \"text\": \"52\"}, {\"label\": \"D\", \"text\": \"62\"}]}",
+          "expect": "B"
+        },
+        {
+          "input": "{\"measure\": 52, \"options\": [{\"label\": \"A\", \"text\": \"28\"}, {\"label\": \"B\", \"text\": \"38\"}, {\"label\": \"C\", \"text\": \"52\"}, {\"label\": \"D\", \"text\": \"62\"}]}",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_angle_measure_from_diagram",
+    "map_measure_to_option"
+  ]
+}

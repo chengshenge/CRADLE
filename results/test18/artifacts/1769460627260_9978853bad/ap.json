@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify bars with values less than 6",
+      "action": "reason",
+      "note": "Use GTI_JSON to determine which bars have values less than 6."
+    },
+    {
+      "intention": "Count the number of bars with values less than 6",
+      "action": "python",
+      "code": "count_bars_less_than_6 = 3"
+    },
+    {
+      "intention": "Provide the final count as the answer",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

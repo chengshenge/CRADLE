@@ -1,0 +1,56 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_rainfall_graph",
+      "signature": "(image_hash:str)->str",
+      "purpose": "To interpret a graph displaying monthly rainfall data and identify the month with the highest rainfall.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The month with the highest rainfall as a string.",
+      "edge_cases": [
+        "Graph with missing labels",
+        "Graph with unclear data points"
+      ],
+      "tests": [
+        {
+          "input": "5dd4d2712af5",
+          "expect": "August"
+        }
+      ],
+      "tags": [
+        "graph interpretation",
+        "rainfall data"
+      ]
+    },
+    {
+      "name": "map_month_to_option",
+      "signature": "(month:str, options:List[Dict[str, str]])->str",
+      "purpose": "To map the identified month to the given multiple-choice options.",
+      "inputs": [
+        "month",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the identified month.",
+      "edge_cases": [
+        "Month not in options",
+        "Multiple options for the same month"
+      ],
+      "tests": [
+        {
+          "input": "{\"month\": \"August\", \"options\": [{\"label\": \"A\", \"text\": \"August\"}, {\"label\": \"B\", \"text\": \"April\"}, {\"label\": \"C\", \"text\": \"May\"}]}",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_rainfall_graph",
+    "map_month_to_option"
+  ]
+}

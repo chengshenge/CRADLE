@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects left after performing specific subtractions based on object properties. The task requires subtracting all big matte balls and all green rubber objects from a total set of objects. The image provides descriptions of various objects, including big matte balls and green rubber objects, which need to be identified and counted. The known counts are 3 big matte balls and 2 green rubber objects, with a total of 10 objects initially. The task is to compute the remaining number of objects after these subtractions. The final answer should be an integer representing the count of remaining objects.",
+  "entities": [
+    "big matte balls",
+    "green rubber objects",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify and count big matte balls",
+    "Identify and count green rubber objects",
+    "Subtract counts of big matte balls and green rubber objects from total objects",
+    "Compute remaining objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure accurate identification of object properties from text",
+    "Verify total object count consistency"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "subtraction",
+    "counting",
+    "object properties",
+    "integer answer"
+  ]
+}

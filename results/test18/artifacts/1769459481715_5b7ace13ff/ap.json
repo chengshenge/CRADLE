@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to unreadable counts in the diagram.",
+      "action": "reason",
+      "note": "The counts of objects are unreadable from the image, creating a challenge in determining the correct answer."
+    },
+    {
+      "intention": "Use provided information to determine the answer.",
+      "action": "reason",
+      "note": "The GTI_JSON notes indicate that the number of tiny gray bicycles on the left side of the brown metal sedan is greater than the number of things to the left of the tiny green bicycle."
+    },
+    {
+      "intention": "Map the result to the correct multiple-choice option.",
+      "action": "normalize",
+      "text": "Answer: Yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

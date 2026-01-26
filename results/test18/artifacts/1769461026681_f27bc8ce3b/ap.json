@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify digits on either end of the sign.",
+      "action": "reason",
+      "note": "The digits '5' and '3' are identified from the sign in the corner."
+    },
+    {
+      "intention": "Calculate the sum of the identified digits.",
+      "action": "python",
+      "code": "sum_digits = calc_numeric('5 + 3')"
+    },
+    {
+      "intention": "Format the final answer for output.",
+      "action": "normalize",
+      "text": "Answer: {ans}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

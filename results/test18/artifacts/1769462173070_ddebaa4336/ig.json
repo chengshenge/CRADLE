@@ -1,0 +1,61 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves determining the value of r at a specific angle theta, which suggests a polar plot or graph is involved."
+  ],
+  "problem_understanding": "The problem asks for the value of r when theta equals 3*pi/2, indicating a polar coordinate system is likely used.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "theta",
+        "value": "3*pi/2",
+        "unit": "radians",
+        "source": "text",
+        "note": "Given angle in radians"
+      }
+    ],
+    "unknown": [
+      "r"
+    ],
+    "relations": [
+      "r is a function of theta in polar coordinates"
+    ],
+    "constraints": [
+      "theta is given as 3*pi/2"
+    ],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "value nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to find the value of r corresponding to a specific angle theta in a polar plot."
+  ],
+  "problem_summary": "Determine the value of r at theta=3*pi/2 in a polar coordinate system.",
+  "knowns": [
+    {
+      "name": "theta",
+      "value": "3*pi/2",
+      "unit": "radians",
+      "source": "text",
+      "note": "Given angle in radians"
+    }
+  ],
+  "asks": [
+    "r"
+  ],
+  "constraints": [
+    "theta is given as 3*pi/2"
+  ],
+  "visual_facts": [
+    "The image likely contains a polar plot or graph.",
+    "Polar Plot with theta on the x-axis and r on the y-axis.",
+    "X-axis ticks: 0, pi/2, pi, 3*pi/2, 2*pi.",
+    "Y-axis ticks: 0, 1, 2, 3, 4, 5.",
+    "Point at 3*pi/2: r = 2."
+  ],
+  "ambiguity": [
+    "The specific function or plot relating r and theta is not described in the text."
+  ]
+}

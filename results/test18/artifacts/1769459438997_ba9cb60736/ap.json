@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The unresolved target is the 'time word'. The task is to determine the time word that fits 'It is (_) after eight.'"
+    },
+    {
+      "intention": "Determine the correct time word based on the clock diagram",
+      "action": "reason",
+      "note": "The clock shows a time after eight. The options are 'half', 'quarter', 'o'clock', 'quarter to', 'quarter past'."
+    },
+    {
+      "intention": "Select the correct time word option",
+      "action": "reason",
+      "note": "Since the time is after eight, 'quarter past' fits the sentence 'It is (_) after eight.'"
+    },
+    {
+      "intention": "Output the final answer",
+      "action": "normalize",
+      "text": "Answer: quarter past"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

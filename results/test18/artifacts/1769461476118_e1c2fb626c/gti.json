@@ -1,0 +1,73 @@
+{
+  "region_used": "text",
+  "information": [
+    "Coral: Roughness 7.5",
+    "Sandstone: Roughness 6.8",
+    "Granite: Roughness 5.9",
+    "Limestone: Roughness 4.3"
+  ],
+  "structured": {
+    "text_lines": [
+      "Coral: Roughness 7.5",
+      "Sandstone: Roughness 6.8",
+      "Granite: Roughness 5.9",
+      "Limestone: Roughness 4.3"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "Coral's roughness",
+        "value": "7.5",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "relation_additions": [
+      "Coral's roughness is compared to Sandstone, Granite, and Limestone"
+    ],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The text region was used to extract roughness values for Coral and other materials.",
+    "These values are necessary to determine if Coral is the roughest."
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_web_diagram",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "Analyze a food web diagram to identify relationships and predict the impact of changes in species populations.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary with keys 'relationships' and 'predictions' indicating species interactions and predicted population changes.",
+      "edge_cases": [
+        "Diagrams with unclear or overlapping lines",
+        "Missing labels for species"
+      ],
+      "tests": [
+        {
+          "input": "2d55324a4c61",
+          "expect": {
+            "relationships": {
+              "Large Roach": [
+                "Steelheads",
+                "Stickleback Fry",
+                "Predatory Insects"
+              ],
+              "Steelheads": [],
+              "Stickleback Fry": [],
+              "Predatory Insects": []
+            },
+            "predictions": {
+              "Steelheads": "decrease",
+              "Stickleback Fry": "increase",
+              "Predatory Insects": "increase"
+            }
+          }
+        }
+      ],
+      "tags": [
+        "food web",
+        "ecology",
+        "population dynamics",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_web_diagram"
+  ]
+}

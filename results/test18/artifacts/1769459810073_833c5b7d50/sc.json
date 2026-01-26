@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform any necessary numeric calculations while analyzing the sales data.",
+      "how_to_use": "Use this skill to compute any numeric expressions required during the analysis of sales figures."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_sales_data",
+      "signature": "(table_data:List[Dict[str, Any]])->int",
+      "purpose": "To analyze sales data and count the number of items sold less than 5 units in at least one store.",
+      "inputs": [
+        "A list of dictionaries where each dictionary represents a row in the table with keys as column headers and values as sales figures."
+      ],
+      "outputs": "An integer representing the count of items sold less than 5 units in at least one store.",
+      "edge_cases": [
+        "All items have sales greater than or equal to 5 in all stores.",
+        "Some items have missing sales data for one or more stores."
+      ],
+      "tests": [
+        {
+          "input": "[{'Item': 'Item 1', 'Store A': 3, 'Store B': 6, 'Store C': 7}, {'Item': 'Item 2', 'Store A': 5, 'Store B': 5, 'Store C': 5}, {'Item': 'Item 3', 'Store A': 2, 'Store B': 4, 'Store C': 6}]",
+          "expect": "2"
+        },
+        {
+          "input": "[{'Item': 'Item 1', 'Store A': 6, 'Store B': 6, 'Store C': 6}, {'Item': 'Item 2', 'Store A': 5, 'Store B': 5, 'Store C': 5}]",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "sales data",
+        "table analysis",
+        "counting problem"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_sales_data",
+    "calc_numeric"
+  ]
+}

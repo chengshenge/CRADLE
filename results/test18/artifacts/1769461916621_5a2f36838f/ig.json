@@ -1,0 +1,45 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves identifying the largest and smallest bars, which suggests the presence of a bar chart."
+  ],
+  "problem_understanding": "The task is to find the difference between the largest and smallest values represented by bars in a bar chart.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "largest bar value",
+      "smallest bar value"
+    ],
+    "relations": [
+      "difference = largest bar value - smallest bar value"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "difference nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires identifying numerical values from a chart and performing a simple arithmetic operation (subtraction)."
+  ],
+  "problem_summary": "Determine the difference between the largest and smallest values represented by bars in a bar chart.",
+  "knowns": [],
+  "asks": [
+    "difference of largest and smallest bar"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains a bar chart with multiple bars of varying heights.",
+    "Chart title: Monthly Sales Data",
+    "X-axis label: Month",
+    "X-axis ticks: January, February, March, April, May, June",
+    "Y-axis label: Sales (in thousands)",
+    "Y-axis ticks: 0, 10, 20, 30, 40, 50, 60",
+    "Largest value: 60 (May)",
+    "Smallest value: 10 (June)"
+  ],
+  "ambiguity": [
+    "The specific values of the bars are not provided in the prompt and need to be extracted from the image."
+  ]
+}

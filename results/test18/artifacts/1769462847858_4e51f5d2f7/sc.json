@@ -1,0 +1,43 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_algorithms_above_threshold",
+      "signature": "(image_hash:str, threshold:float)->int",
+      "purpose": "To count the number of algorithms in a table that have an accuracy greater than a specified threshold.",
+      "inputs": [
+        "image_hash",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All algorithms have accuracy below threshold",
+        "All algorithms have accuracy above threshold",
+        "Some algorithms have accuracy exactly equal to threshold"
+      ],
+      "tests": [
+        {
+          "input": "(\"cfdebc521689\", 9)",
+          "expect": 3
+        },
+        {
+          "input": "(\"cfdebc521689\", 10)",
+          "expect": 1
+        },
+        {
+          "input": "(\"cfdebc521689\", 8)",
+          "expect": 5
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "comparison",
+        "counting",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_algorithms_above_threshold"
+  ]
+}

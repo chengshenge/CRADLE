@@ -1,0 +1,72 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a square and an inscribed circle, which are geometric shapes. The angle ∠AMK is likely related to these shapes, so the diagram is the most relevant region to detect."
+  ],
+  "problem_understanding": "The problem involves a square ABCD with an inscribed circle centered at O. The task is to find the angle ∠AMK.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "ABCD",
+        "value": "square",
+        "unit": "",
+        "source": "text",
+        "note": "ABCD is a square."
+      },
+      {
+        "name": "O",
+        "value": "center of inscribed circle",
+        "unit": "",
+        "source": "text",
+        "note": "O is the center of the inscribed circle."
+      }
+    ],
+    "unknown": [
+      "∠AMK"
+    ],
+    "relations": [
+      "O is the center of the circle inscribed in square ABCD."
+    ],
+    "constraints": [
+      "ABCD is a square."
+    ],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "circle inscribed find",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to find the angle ∠AMK, which involves understanding the geometric properties of the square and the inscribed circle."
+  ],
+  "problem_summary": "Find the angle ∠AMK in a square ABCD with an inscribed circle centered at O.",
+  "knowns": [
+    {
+      "name": "ABCD",
+      "value": "square",
+      "unit": "",
+      "source": "text",
+      "note": "ABCD is a square."
+    },
+    {
+      "name": "O",
+      "value": "center of inscribed circle",
+      "unit": "",
+      "source": "text",
+      "note": "O is the center of the inscribed circle."
+    }
+  ],
+  "asks": [
+    "∠AMK"
+  ],
+  "constraints": [
+    "ABCD is a square."
+  ],
+  "visual_facts": [
+    "Square ABCD with an inscribed circle centered at O.",
+    "Diagram labels: A, B, C, D, O, M, K."
+  ],
+  "ambiguity": [
+    "The position of point M and K is not specified in the prompt."
+  ]
+}

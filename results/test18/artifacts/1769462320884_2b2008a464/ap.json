@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded data",
+      "action": "reason",
+      "note": "Blocker: number of countries with people working more than 35 hours. Proceed with chart data."
+    },
+    {
+      "intention": "Count countries with working hours > 35 from chart data",
+      "action": "reason",
+      "note": "Use GTI_JSON key points to identify countries with working hours > 35."
+    },
+    {
+      "intention": "Compute the number of countries with working hours > 35",
+      "action": "python",
+      "code": "countries_over_35 = 0; key_points = [{'label': 'Country A', 'y': 36}, {'label': 'Country B', 'y': 34}, {'label': 'Country C', 'y': 37}, {'label': 'Country D', 'y': 33}]; countries_over_35 = sum(1 for point in key_points if point['y'] > 35)"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {ans}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

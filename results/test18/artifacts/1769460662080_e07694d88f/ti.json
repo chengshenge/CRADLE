@@ -1,0 +1,52 @@
+{
+  "problem_state_summary": "The problem involves determining whether a given function is odd or even. The function is represented in a graph, which is attached as an image. The x-axis is labeled 'x' with ticks ranging from -3 to 3, and the y-axis is labeled 'f(x)' with the same tick range. The task is to analyze the symmetry of the function based on its graph. A function is even if f(x) = f(-x) for all x in the domain, and it is odd if f(-x) = -f(x) for all x in the domain. The problem provides two options: odd or even, and the correct answer must be selected from these options.",
+  "entities": [
+    "function",
+    "x-axis",
+    "y-axis"
+  ],
+  "unknowns": [
+    "function type (odd or even)"
+  ],
+  "required_operations": [
+    "Analyze the graph of the function",
+    "Determine if the function is symmetric about the y-axis (even) or origin (odd)",
+    "Map the symmetry type to the given options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accurate symmetry analysis",
+    "Ensure no interpolation errors in the graph",
+    "Verify units on axes are consistent"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "odd"
+      },
+      {
+        "label": "B",
+        "text": "even"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "function analysis",
+    "symmetry",
+    "graph interpretation",
+    "odd or even function"
+  ]
+}

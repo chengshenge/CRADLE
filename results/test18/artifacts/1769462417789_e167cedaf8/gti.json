@@ -1,0 +1,151 @@
+{
+  "region_used": "table",
+  "information": [
+    "Price: $750, Supply: 1000, Demand: 1200",
+    "Price: $770, Supply: 1100, Demand: 1150",
+    "Price: $790, Supply: 1050, Demand: 1050",
+    "Price: $810, Supply: 1200, Demand: 1000",
+    "Price: $830, Supply: 1300, Demand: 950"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [
+        "Price",
+        "Supply",
+        "Demand"
+      ],
+      "rows": [
+        {
+          "row_label": "1",
+          "cells": [
+            {
+              "col": "Price",
+              "text": "$750"
+            },
+            {
+              "col": "Supply",
+              "text": "1000"
+            },
+            {
+              "col": "Demand",
+              "text": "1200"
+            }
+          ]
+        },
+        {
+          "row_label": "2",
+          "cells": [
+            {
+              "col": "Price",
+              "text": "$770"
+            },
+            {
+              "col": "Supply",
+              "text": "1100"
+            },
+            {
+              "col": "Demand",
+              "text": "1150"
+            }
+          ]
+        },
+        {
+          "row_label": "3",
+          "cells": [
+            {
+              "col": "Price",
+              "text": "$790"
+            },
+            {
+              "col": "Supply",
+              "text": "1050"
+            },
+            {
+              "col": "Demand",
+              "text": "1050"
+            }
+          ]
+        },
+        {
+          "row_label": "4",
+          "cells": [
+            {
+              "col": "Price",
+              "text": "$810"
+            },
+            {
+              "col": "Supply",
+              "text": "1200"
+            },
+            {
+              "col": "Demand",
+              "text": "1000"
+            }
+          ]
+        },
+        {
+          "row_label": "5",
+          "cells": [
+            {
+              "col": "Price",
+              "text": "$830"
+            },
+            {
+              "col": "Supply",
+              "text": "1300"
+            },
+            {
+              "col": "Demand",
+              "text": "950"
+            }
+          ]
+        }
+      ]
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ],
+    "unresolved_targets": [
+      "shortage or surplus"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The table provides data on supply and demand at various prices, which is necessary to determine if there is a shortage or surplus at $790.",
+    "The values for supply and demand at $790 are both 1050, indicating no shortage or surplus."
+  ]
+}

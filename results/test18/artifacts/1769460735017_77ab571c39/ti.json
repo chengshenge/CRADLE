@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The problem involves determining the age gap between two individuals, John and Alice, whose ages are provided in an image. John's age is 25 years, and Alice's age is 30 years. The task is to calculate the difference between these two ages to find the age gap. The problem specifies that the age gap should be an integer. The ages are extracted from the image, and the calculation involves a simple subtraction. The final answer should be presented as an integer value.",
+  "entities": [
+    "age of person 1",
+    "age of person 2"
+  ],
+  "unknowns": [
+    "age gap"
+  ],
+  "required_operations": [
+    "Extract ages from image",
+    "Compute age gap by subtracting age of person 1 from age of person 2"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the ages are correctly read from the image",
+    "Verify that the subtraction results in an integer"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "age calculation",
+    "integer result"
+  ]
+}

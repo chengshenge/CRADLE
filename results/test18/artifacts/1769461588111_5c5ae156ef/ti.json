@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem presents two diagrams showing pure samples of gas in identical closed, rigid containers. Each colored ball in the diagrams represents one gas particle, and both samples have the same number of particles. The task is to compare the average kinetic energies of the particles in each sample and determine which sample has the higher temperature. The relationship between average kinetic energy and temperature is a key concept in this problem. The problem does not specify the type of gas or initial conditions, which may affect the interpretation. The answer must be selected from the given multiple-choice options.",
+  "entities": [
+    "Sample A",
+    "Sample B",
+    "gas particles"
+  ],
+  "unknowns": [
+    "average kinetic energy of particles in sample A",
+    "average kinetic energy of particles in sample B",
+    "temperature of sample A",
+    "temperature of sample B"
+  ],
+  "required_operations": [
+    "Analyze the diagrams to compare the representation of particles in each sample",
+    "Understand the relationship between kinetic energy and temperature",
+    "Determine which sample has the higher temperature based on kinetic energy"
+  ],
+  "blockers": [
+    "average kinetic energy of particles in sample A",
+    "average kinetic energy of particles in sample B",
+    "temperature of sample A",
+    "temperature of sample B"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagrams",
+    "Check for any visual indicators of kinetic energy or temperature differences"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "neither; the samples have the same temperature"
+      },
+      {
+        "label": "B",
+        "text": "sample A"
+      },
+      {
+        "label": "C",
+        "text": "sample B"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "kinetic energy",
+    "temperature",
+    "gas samples",
+    "diagram comparison"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "problem_state_summary": "The problem involves determining the age gap between two people whose ages are provided in an image. The ages are extracted from the text in the image, with Person 1 being 25 years old and Person 2 being 30 years old. The task is to compute the difference between these two ages to find the age gap. The problem requires basic arithmetic subtraction to find the solution. The image is assumed to clearly show the ages, which are necessary for solving the problem. The final answer should be an integer representing the age gap in years.",
+  "entities": [
+    "age of person 1",
+    "age of person 2"
+  ],
+  "unknowns": [
+    "age gap between two people"
+  ],
+  "required_operations": [
+    "Extract ages from image",
+    "Compute age gap by subtracting age of person 1 from age of person 2"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the text in the image is clear and readable to accurately extract ages",
+    "Verify that the ages are correctly associated with the respective persons"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "age gap",
+    "text extraction"
+  ]
+}

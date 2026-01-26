@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves analyzing sales data presented in a table format. The table contains rows representing different items and columns for sales figures from different stores. The task is to determine how many items sold less than 5 units in at least one store. This requires checking each item's sales data across all stores. The table headers include 'Item', 'Store A', 'Store B', and 'Store C'. The sales figures for each item in these stores are provided. The goal is to count the number of items that meet the condition of having sales less than 5 units in at least one store.",
+  "entities": [
+    "Item 1",
+    "Item 2",
+    "Item 3",
+    "Item 4",
+    "Store A",
+    "Store B",
+    "Store C"
+  ],
+  "unknowns": [
+    "number of items sold less than 5 units in at least one store"
+  ],
+  "required_operations": [
+    "Read the sales data from the table",
+    "Check each item's sales across all stores",
+    "Count items with sales less than 5 units in at least one store"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure row and column alignment in the table",
+    "Verify the meaning of headers and units",
+    "Check for any missing or misaligned data"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "sales data",
+    "table analysis",
+    "counting problem"
+  ]
+}

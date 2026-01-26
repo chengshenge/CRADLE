@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known information",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠EOB. Known: ∠BOC = 50°, OD bisects ∠AOE."
+    },
+    {
+      "intention": "Use diagram interpretation to find angle relationships",
+      "action": "reason",
+      "note": "Since OD bisects ∠AOE, ∠AOD = ∠DOE. ∠BOC = 50° implies ∠EOB = ∠BOC."
+    },
+    {
+      "intention": "Calculate the measure of angle EOB",
+      "action": "python",
+      "code": "eob_angle = 50"
+    },
+    {
+      "intention": "Format the final answer as per the options",
+      "action": "normalize",
+      "text": "Answer: 50°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

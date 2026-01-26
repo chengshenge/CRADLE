@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to the multiple-choice question.",
+      "how_to_use": "Use this skill to return the final answer in the format: 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_average_times",
+      "signature": "(times_with_wax: list, times_without_wax: list)->str",
+      "purpose": "Compare the average times of the snowboard with and without wax to determine which is faster.",
+      "inputs": [
+        "times_with_wax",
+        "times_without_wax"
+      ],
+      "outputs": "A string indicating whether the snowboard is faster with or without wax.",
+      "edge_cases": [
+        "Empty time lists",
+        "Identical average times"
+      ],
+      "tests": [
+        {
+          "input": "[10, 12, 11], [13, 14, 15]",
+          "expect": "faster with wax"
+        },
+        {
+          "input": "[13, 14, 15], [10, 12, 11]",
+          "expect": "faster without wax"
+        },
+        {
+          "input": "[10, 10, 10], [10, 10, 10]",
+          "expect": "no difference"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "average time",
+        "experiment"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_average_times",
+    "format_final"
+  ]
+}

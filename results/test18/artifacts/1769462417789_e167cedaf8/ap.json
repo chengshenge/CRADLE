@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify supply and demand at $790 from the table.",
+      "action": "reason",
+      "note": "The table shows supply and demand both as 1050 at $790."
+    },
+    {
+      "intention": "Determine if there is a shortage or surplus at $790.",
+      "action": "reason",
+      "note": "Since supply equals demand at $790, there is neither a shortage nor a surplus."
+    },
+    {
+      "intention": "Select the correct option based on the analysis.",
+      "action": "normalize",
+      "text": "Answer: shortage"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

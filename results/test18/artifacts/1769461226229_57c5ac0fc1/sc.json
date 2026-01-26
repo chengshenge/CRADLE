@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_geometric_configuration",
+      "signature": "(image_hash:str, known_elements:dict, unknowns:list, constraints:list)->float",
+      "purpose": "Analyze a geometric configuration in an image to compute unknown angles or lengths based on known elements and constraints.",
+      "inputs": [
+        "image_hash",
+        "known_elements",
+        "unknowns",
+        "constraints"
+      ],
+      "outputs": "Computed measure of the unknown angle or length.",
+      "edge_cases": [
+        "Non-standard geometric shapes",
+        "Missing angle markers",
+        "Ambiguous parallel/perpendicular indicators"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"e6b07bb7a6a5\", \"known_elements\": {\"angle A\": 60, \"lines FG\": \"parallel to DE\"}, \"unknowns\": [\"angle BCH\"], \"constraints\": [\"angle bisector AB\"]}",
+          "expect": 30
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "angle computation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_geometric_configuration"
+  ]
+}

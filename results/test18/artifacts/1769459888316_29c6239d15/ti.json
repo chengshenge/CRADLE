@@ -1,0 +1,54 @@
+{
+  "problem_state_summary": "Linda conducted an experiment to determine the effect of wax on the speed of her snowboard. She alternated between riding the snowboard with a thin layer of wax and without any wax, timing each ride. The goal was to calculate the average time it took to slide down the hill in both scenarios. The task is to identify which question the experiment is designed to answer from the given choices. The experiment's purpose is to compare the average times with and without wax to see if the presence of wax affects the speed. The choices provided focus on whether the snowboard slides faster with a layer of wax or without it.",
+  "entities": [
+    "Linda",
+    "Bob",
+    "snowboard",
+    "wax",
+    "average time"
+  ],
+  "unknowns": [
+    "correct choice"
+  ],
+  "required_operations": [
+    "Read the experiment description",
+    "Understand the purpose of the experiment",
+    "Compare the average times with and without wax",
+    "Identify the correct question from the choices"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "text: currency/percent, rounding, multi-line conditions, hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a thin layer of wax or a thick layer of wax?"
+      },
+      {
+        "label": "B",
+        "text": "Does Linda's snowboard slide down a hill in less time when it has a layer of wax or when it does not have a layer of wax?"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "experiment",
+    "comparison",
+    "average time",
+    "wax effect",
+    "multiple choice"
+  ]
+}

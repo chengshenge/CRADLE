@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and extract dimensions from the diagram.",
+      "action": "reason",
+      "note": "The perimeter of the rectangle is unknown. Extract dimensions from the diagram."
+    },
+    {
+      "intention": "Calculate the perimeter using extracted dimensions.",
+      "action": "python",
+      "code": "length = 5; width = 3; perimeter = 2 * (length + width)"
+    },
+    {
+      "intention": "Provide the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 16"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

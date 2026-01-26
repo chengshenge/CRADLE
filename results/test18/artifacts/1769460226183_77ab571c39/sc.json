@@ -1,0 +1,41 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the age gap by subtracting the ages of Alice and Bob.",
+      "how_to_use": "Use calc_numeric to evaluate the expression '30 - 25' to find the age gap."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_text_from_image",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "Extract text from an image to obtain the ages of Alice and Bob.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary with keys 'Alice' and 'Bob' containing their respective ages as integers.",
+      "edge_cases": [
+        "Image contains noise or unclear text",
+        "Text is not in expected format"
+      ],
+      "tests": [
+        {
+          "input": "70d4d034bc3d",
+          "expect": {
+            "Alice": 25,
+            "Bob": 30
+          }
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calc_numeric"
+  ]
+}

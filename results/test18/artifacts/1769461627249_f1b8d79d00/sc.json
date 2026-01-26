@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "analyze_graph_for_limit",
+      "purpose": "To determine the y-value of the function f at x=3 from the graph.",
+      "how_to_use": "Use the image hash and x_value=3 to get the y-value from the graph."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a multiple-choice option.",
+      "how_to_use": "Use the result of the comparison to return the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "compare_y_value_to_zero",
+      "signature": "(y_value:float)->str",
+      "purpose": "To compare the y-value at x=3 to 0 and determine the correct multiple-choice option.",
+      "inputs": [
+        "y_value"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "y_value is exactly 0",
+        "y_value is negative",
+        "y_value is positive"
+      ],
+      "tests": [
+        {
+          "input": "1",
+          "expect": "A"
+        },
+        {
+          "input": "-1",
+          "expect": "B"
+        },
+        {
+          "input": "0",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_graph_for_limit",
+    "compare_y_value_to_zero",
+    "format_final"
+  ]
+}

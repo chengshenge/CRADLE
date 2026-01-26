@@ -1,0 +1,83 @@
+{
+  "region_used": "diagram",
+  "information": [],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "marked_lengths": [
+        {
+          "segment": "AB",
+          "value": "5",
+          "unit": ""
+        },
+        {
+          "segment": "AC",
+          "value": "6",
+          "unit": ""
+        }
+      ],
+      "marked_angles": [],
+      "marked_relations": [
+        "E is the midpoint of AB",
+        "F is the midpoint of AD"
+      ]
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [
+      {
+        "label": "A",
+        "text": "4"
+      },
+      {
+        "label": "B",
+        "text": "5"
+      },
+      {
+        "label": "C",
+        "text": "5.5"
+      },
+      {
+        "label": "D",
+        "text": "6"
+      }
+    ],
+    "unresolved_targets": [
+      "EF"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The diagram is a rhombus with points E and F marked as midpoints of sides AB and AD respectively. The known lengths of AB and AC are extracted from the diagram. The task is to find the length of EF, which is not directly marked on the diagram."
+  ]
+}

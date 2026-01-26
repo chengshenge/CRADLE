@@ -1,0 +1,37 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading specific words or numbers from the image to determine the counts of 'Dissatisfied' and 'Satisfied'."
+  ],
+  "problem_understanding": "The problem asks for the ratio of the number of 'Dissatisfied' responses to 'Satisfied' responses, expressed as a floating-point number with one decimal place.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "Number of Dissatisfied",
+      "Number of Satisfied"
+    ],
+    "relations": [
+      "Ratio = Number of Dissatisfied / Number of Satisfied"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "2 nouns 1 verb",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves extracting numerical data from the image and performing a simple arithmetic operation to find the ratio."
+  ],
+  "problem_summary": "Determine the ratio of 'Dissatisfied' to 'Satisfied' responses from the image data.",
+  "knowns": [],
+  "asks": [
+    "Ratio of Dissatisfied to Satisfied"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Dissatisfied: 45",
+    "Satisfied: 90"
+  ],
+  "ambiguity": []
+}

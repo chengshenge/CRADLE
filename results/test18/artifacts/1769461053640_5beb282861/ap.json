@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and analyze the food web diagram.",
+      "action": "reason",
+      "note": "Blockers: impact on steelheads, stickleback fry, and predatory insects. Analyze relationships."
+    },
+    {
+      "intention": "Determine the impact of a decrease in large roach on other species.",
+      "action": "reason",
+      "note": "Large Roach is a food source for Steelheads, Stickleback Fry, and Predatory Insects."
+    },
+    {
+      "intention": "Predict the population changes based on food web relationships.",
+      "action": "reason",
+      "note": "Decrease in large roach likely reduces food for predatory insects, decreasing their population."
+    },
+    {
+      "intention": "Map prediction to the provided options.",
+      "action": "normalize",
+      "text": "Answer: The population of predatory insects would decrease."
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,47 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the highest measurement value as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_chart_max_value",
+      "signature": "(chart_data:dict)->str",
+      "purpose": "Identify the highest measurement value from a chart.",
+      "inputs": [
+        "chart_data"
+      ],
+      "outputs": "The highest measurement value as a string.",
+      "edge_cases": [
+        "All values are the same",
+        "Chart data is empty"
+      ],
+      "tests": [
+        {
+          "input": "{\"Height\": 75, \"Weight\": 85, \"Volume\": 90}",
+          "expect": "Volume"
+        },
+        {
+          "input": "{\"Height\": 50, \"Weight\": 50, \"Volume\": 50}",
+          "expect": "Height"
+        },
+        {
+          "input": "{}",
+          "expect": "No data available"
+        }
+      ],
+      "tags": [
+        "chart",
+        "measurement",
+        "maximum value"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_chart_max_value",
+    "format_final"
+  ]
+}

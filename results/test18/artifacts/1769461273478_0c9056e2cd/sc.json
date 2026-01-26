@@ -1,0 +1,34 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_rectangle_dimensions_from_diagram",
+      "signature": "(image_hash:str)->(float, float)",
+      "purpose": "Extract the length and width of a rectangle from a diagram image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(float, float)",
+      "edge_cases": [
+        "Diagram with unclear labels",
+        "Non-standard units of measurement"
+      ],
+      "tests": [
+        {
+          "input": "66b54aca702e",
+          "expect": "(5.0, 3.0)"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "text extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_rectangle_dimensions_from_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

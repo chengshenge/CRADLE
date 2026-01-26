@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart that displays average working hours by country over several years. The task is to determine how many countries have people working more than 35 hours. The chart includes a title 'Average Working Hours by Country', with the x-axis labeled 'Year' and the y-axis labeled 'Average Working Hours'. The y-axis has ticks at 30, 35, 40, 45, and 50 hours. The legend indicates four countries: Country A, Country B, Country C, and Country D. Key data points show that in 2010, Country A had 36 hours, Country B had 34 hours, Country C had 37 hours, and Country D had 33 hours. The goal is to count the number of countries where the working hours exceed 35, based on the chart data.",
+  "entities": [
+    "Country A",
+    "Country B",
+    "Country C",
+    "Country D"
+  ],
+  "unknowns": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "required_operations": [
+    "Read chart data",
+    "Identify countries with working hours > 35",
+    "Count such countries"
+  ],
+  "blockers": [
+    "number of countries with people working more than 35 hours"
+  ],
+  "risk_checks": [
+    "axis scale",
+    "tick spacing",
+    "legend mapping",
+    "units"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "data extraction",
+    "counting"
+  ]
+}

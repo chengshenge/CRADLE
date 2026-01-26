@@ -1,0 +1,45 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves identifying and counting specific objects based on color and size, which suggests a need to visually analyze a diagram or image."
+  ],
+  "problem_understanding": "The problem requires identifying and subtracting certain objects based on their color and size from a total set of objects, and then determining how many objects remain.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "total number of objects",
+      "number of brown blocks",
+      "number of large blue rubber things"
+    ],
+    "relations": [
+      "remaining objects = total objects - brown blocks - large blue rubber things"
+    ],
+    "constraints": [
+      "objects are categorized by color and size"
+    ],
+    "options": []
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects are",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves counting and categorizing objects based on visual attributes, which is a straightforward task once the objects are identified."
+  ],
+  "problem_summary": "Identify and subtract brown blocks and large blue rubber things from a set of objects to find how many are left.",
+  "knowns": [],
+  "asks": [
+    "number of objects left after subtraction"
+  ],
+  "constraints": [
+    "objects must be identified by color and size"
+  ],
+  "visual_facts": [
+    "The image contains objects of different colors and sizes.",
+    "No brown blocks visible in the image.",
+    "No large blue rubber things visible in the image."
+  ],
+  "ambiguity": [
+    "The exact number of each type of object is not provided in the text and must be determined from the image."
+  ]
+}

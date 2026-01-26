@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and determine next steps.",
+      "action": "reason",
+      "note": "Blocker: maximum area under the curve for Firebrick is unresolved."
+    },
+    {
+      "intention": "Verify chart details and identify Firebrick curve.",
+      "action": "reason",
+      "note": "Chart has curves for Firebrick, Azure, Olive. Firebrick peaks at (3, 40)."
+    },
+    {
+      "intention": "Estimate area under Firebrick curve and compare.",
+      "action": "reason",
+      "note": "Estimate areas under curves using peak and axis data."
+    },
+    {
+      "intention": "Determine if Firebrick has the maximum area.",
+      "action": "reason",
+      "note": "Compare estimated areas to decide if Firebrick has the maximum."
+    },
+    {
+      "intention": "Finalize answer based on comparison.",
+      "action": "normalize",
+      "text": "Answer: no"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

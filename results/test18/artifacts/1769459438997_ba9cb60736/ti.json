@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves determining the time shown on a clock, which is represented diagrammatically. The task is to identify a time word that completes the sentence 'It is (_) after eight.' The options provided are various time expressions. The clock face is labeled with numbers from 8 to 7, indicating a standard clock layout. The problem requires recognizing the positions of the clock hands to determine the correct time word. The time is specified to be after eight, which narrows down the possible options. The final answer must be a time word that fits the given sentence structure.",
+  "entities": [
+    "clock",
+    "time word"
+  ],
+  "unknowns": [
+    "time word"
+  ],
+  "required_operations": [
+    "Read the clock diagram to determine the positions of the clock hands.",
+    "Identify the time word that fits the sentence 'It is (_) after eight.'",
+    "Map the identified time word to one of the provided options."
+  ],
+  "blockers": [
+    "time word"
+  ],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "half"
+      },
+      {
+        "label": "B",
+        "text": "quarter"
+      },
+      {
+        "label": "C",
+        "text": "o'clock"
+      },
+      {
+        "label": "D",
+        "text": "quarter to"
+      },
+      {
+        "label": "E",
+        "text": "quarter past"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "time",
+    "clock",
+    "diagram",
+    "multiple-choice"
+  ]
+}

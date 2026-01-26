@@ -1,0 +1,95 @@
+{
+  "region_used": "chart",
+  "information": [
+    "Bar chart with values on the y-axis and categories on the x-axis.",
+    "Counting read: {\"counts\": [{\"object\": \"bars with values smaller than 6\", \"count\": 3, \"note\": \"Three bars have values smaller than 6.\"}], \"total\": 3, \"notes\": []}"
+  ],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Bar Chart",
+      "x_axis": {
+        "label": "Categories",
+        "unit": "",
+        "ticks": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E"
+        ]
+      },
+      "y_axis": {
+        "label": "Values",
+        "unit": "",
+        "ticks": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ]
+      },
+      "legend": [],
+      "key_points": [
+        {
+          "label": "A",
+          "x": "A",
+          "y": "5",
+          "note": "Value less than 6"
+        },
+        {
+          "label": "B",
+          "x": "B",
+          "y": "3",
+          "note": "Value less than 6"
+        },
+        {
+          "label": "C",
+          "x": "C",
+          "y": "7",
+          "note": "Value greater than 6"
+        },
+        {
+          "label": "D",
+          "x": "D",
+          "y": "2",
+          "note": "Value less than 6"
+        },
+        {
+          "label": "E",
+          "x": "E",
+          "y": "8",
+          "note": "Value greater than 6"
+        }
+      ]
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart contains five bars labeled A to E. The y-axis provides values from 0 to 10. Bars A, B, and D have values less than 6, which are 5, 3, and 2 respectively. Bars C and E have values greater than 6, which are 7 and 8 respectively."
+  ]
+}

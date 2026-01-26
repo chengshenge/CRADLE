@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining the total semiconductor demand for the computing and wireless sectors in the year 2014. The data is organized in a table format, which includes headers for Year, Sector, and Demand. The table provides specific demand values for the computing and wireless sectors in 2014. The task requires summing these values to find the total demand. The known demand for computing in 2014 is 150, and for wireless, it is 200. The problem asks for the total of these two values, which must be presented as a floating-point number with one decimal place.",
+  "entities": [
+    "semiconductor demand for computing in 2014",
+    "semiconductor demand for wireless in 2014"
+  ],
+  "unknowns": [
+    "total semiconductor demand for computing and wireless in 2014"
+  ],
+  "required_operations": [
+    "Extract demand values for computing and wireless from the table",
+    "Sum the extracted values to find the total demand"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct alignment of rows and columns in the table",
+    "Verify that the demand values are correctly associated with the year 2014"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "table",
+    "semiconductor demand",
+    "2014",
+    "computing",
+    "wireless",
+    "sum"
+  ]
+}

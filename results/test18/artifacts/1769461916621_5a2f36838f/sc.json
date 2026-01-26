@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the difference between the largest and smallest bar values.",
+      "how_to_use": "Use calc_numeric('60 - 10') to compute the difference."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to be presented as a floating-point number with one decimal place.",
+      "how_to_use": "Use format_final(50.0) to format the answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_bar_values_from_chart",
+      "signature": "(image_hash:str)->(int, int)",
+      "purpose": "Extract the largest and smallest bar values from a bar chart image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(largest_value, smallest_value)",
+      "edge_cases": [
+        "Bars with similar heights",
+        "Non-standard axis scales"
+      ],
+      "tests": [
+        {
+          "input": "166ca3f2aae6",
+          "expect": "(60, 10)"
+        }
+      ],
+      "tags": [
+        "bar chart",
+        "image processing",
+        "data extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_bar_values_from_chart",
+    "calc_numeric",
+    "format_final"
+  ]
+}

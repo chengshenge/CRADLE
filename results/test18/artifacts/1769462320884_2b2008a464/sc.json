@@ -1,0 +1,42 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_countries_with_hours_above_threshold",
+      "signature": "(image_hash:str, threshold:float)->int",
+      "purpose": "Count the number of countries with average working hours above a specified threshold from a chart image.",
+      "inputs": [
+        "image_hash",
+        "threshold"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "All countries have hours below the threshold",
+        "All countries have hours above the threshold",
+        "Some countries have hours exactly at the threshold"
+      ],
+      "tests": [
+        {
+          "input": "(\"ea1a6aefffbe\", 35.0)",
+          "expect": 2
+        },
+        {
+          "input": "(\"ea1a6aefffbe\", 36.0)",
+          "expect": 1
+        },
+        {
+          "input": "(\"ea1a6aefffbe\", 37.0)",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data extraction",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_countries_with_hours_above_threshold"
+  ]
+}

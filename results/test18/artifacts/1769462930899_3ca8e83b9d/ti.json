@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves determining which cat is larger based on the names provided in the choices. The image likely contains text labels or descriptions associated with each cat, and the task is to identify the largest cat by reading and comparing these text labels. The problem does not specify how the size of the cats is determined, whether by visual size, weight, or another metric, which introduces some ambiguity. The choices provided are 'white five', 'white three', 'white four', 'white one', and 'white two'. The task requires reading these labels and making a comparison to identify the largest cat. The final answer must be provided as the exact content of the correct choice, not the option letter.",
+  "entities": [
+    "white five",
+    "white three",
+    "white four",
+    "white one",
+    "white two"
+  ],
+  "unknowns": [
+    "Which cat is larger?"
+  ],
+  "required_operations": [
+    "Read text labels associated with each cat",
+    "Compare the sizes based on the labels",
+    "Identify the largest cat"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure text labels are correctly read and matched to options",
+    "Clarify the metric for determining 'larger' if possible"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "white five"
+      },
+      {
+        "label": "B",
+        "text": "white three"
+      },
+      {
+        "label": "C",
+        "text": "white four"
+      },
+      {
+        "label": "D",
+        "text": "white one"
+      },
+      {
+        "label": "E",
+        "text": "white two"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "text analysis",
+    "ambiguity"
+  ]
+}

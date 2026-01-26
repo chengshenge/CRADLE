@@ -1,0 +1,91 @@
+{
+  "region_used": "chart",
+  "information": [],
+  "structured": {
+    "text_lines": [],
+    "chart": {
+      "title": "Annual Data Comparison",
+      "x_axis": {
+        "label": "Year",
+        "unit": "",
+        "ticks": [
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020"
+        ]
+      },
+      "y_axis": {
+        "label": "Value",
+        "unit": "",
+        "ticks": [
+          "0",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50"
+        ]
+      },
+      "legend": [
+        "Line A",
+        "Line B"
+      ],
+      "key_points": [
+        {
+          "label": "2015",
+          "x": "2015",
+          "y": "Line A: 10, Line B: 20",
+          "note": "Difference: 10"
+        },
+        {
+          "label": "2016",
+          "x": "2016",
+          "y": "Line A: 15, Line B: 25",
+          "note": "Difference: 10"
+        },
+        {
+          "label": "2017",
+          "x": "2017",
+          "y": "Line A: 20, Line B: 30",
+          "note": "Difference: 10"
+        },
+        {
+          "label": "2018",
+          "x": "2018",
+          "y": "Line A: 25, Line B: 35",
+          "note": "Difference: 10"
+        },
+        {
+          "label": "2019",
+          "x": "2019",
+          "y": "Line A: 30, Line B: 40",
+          "note": "Difference: 10"
+        },
+        {
+          "label": "2020",
+          "x": "2020",
+          "y": "Line A: 35, Line B: 50",
+          "note": "Difference: 15"
+        }
+      ]
+    },
+    "table": null,
+    "diagram": null
+  },
+  "targets_from_math_elements": {
+    "known_additions": [],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": [
+      "year with largest difference"
+    ]
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The chart shows two lines labeled 'Line A' and 'Line B' with data points for each year from 2015 to 2020. The task is to identify the year with the largest difference between the two lines, which is 2020 with a difference of 15."
+  ]
+}

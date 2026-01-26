@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract ages from the image using the provided skill.",
+      "action": "python",
+      "code": "age1, age2 = extract_ages_from_image('5ebcc620b216')"
+    },
+    {
+      "intention": "Compute the age gap by subtracting the ages.",
+      "action": "python",
+      "code": "age_gap = calc_numeric(f'{age2} - {age1}')"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: {age_gap}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

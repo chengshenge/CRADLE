@@ -1,0 +1,48 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations for counting and subtracting objects.",
+      "how_to_use": "Use to calculate the remaining objects after subtracting red objects and tiny matte balls from the total."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a string.",
+      "how_to_use": "Use to return the final count of remaining objects in the specified format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects",
+      "signature": "(image:str, criteria:dict)->int",
+      "purpose": "Count objects in an image based on specified criteria.",
+      "inputs": [
+        "image",
+        "criteria"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Ambiguity in defining 'tiny' and 'matte' may affect counting."
+      ],
+      "tests": [
+        {
+          "input": "{\"image\": \"c24741e49890\", \"criteria\": {\"color\": \"red\"}}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"image\": \"c24741e49890\", \"criteria\": {\"size\": \"tiny\", \"finish\": \"matte\"}}",
+          "expect": "3"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects",
+    "calc_numeric",
+    "format_final"
+  ]
+}

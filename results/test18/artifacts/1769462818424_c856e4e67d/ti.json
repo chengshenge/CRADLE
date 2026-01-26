@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the ratio of 'Dissatisfied' to 'Satisfied' responses based on numerical data extracted from a text region. The task is to compute this ratio and express it as a floating-point number with one decimal place. The known values are the counts of 'Dissatisfied' and 'Satisfied' responses, which are 45 and 90, respectively. The problem requires performing a simple division operation to find the ratio. The final answer must be presented in a specific format as instructed. There are no multiple-choice options provided, so the answer must be given as a numerical value.",
+  "entities": [
+    "Dissatisfied",
+    "Satisfied"
+  ],
+  "unknowns": [
+    "Ratio of Dissatisfied to Satisfied"
+  ],
+  "required_operations": [
+    "Extract counts of 'Dissatisfied' and 'Satisfied' from text",
+    "Compute ratio: Number of Dissatisfied / Number of Satisfied",
+    "Format result as a floating-point number with one decimal place"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct extraction of numerical data from text",
+    "Verify the division operation is performed correctly",
+    "Check the result is formatted to one decimal place"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "ratio",
+    "text extraction"
+  ]
+}

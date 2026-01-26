@@ -1,0 +1,49 @@
+{
+  "problem_state_summary": "The problem involves a set of objects that need to be analyzed based on their color and size. Specifically, the task is to subtract all brown blocks and all large blue rubber things from the total number of objects. The goal is to determine how many objects remain after these subtractions. The problem requires visual identification and counting of objects, which suggests the use of a diagram or image. However, the image is not provided, and thus the exact counts of the objects cannot be determined. The problem hints at a straightforward counting task once the objects are identified, but the lack of visual data presents a challenge.",
+  "entities": [
+    "brown blocks",
+    "large blue rubber things",
+    "total number of objects"
+  ],
+  "unknowns": [
+    "total number of objects",
+    "number of brown blocks",
+    "number of large blue rubber things"
+  ],
+  "required_operations": [
+    "Identify and count brown blocks",
+    "Identify and count large blue rubber things",
+    "Subtract counts from total number of objects",
+    "Determine remaining objects"
+  ],
+  "blockers": [
+    "total number of objects",
+    "number of brown blocks",
+    "number of large blue rubber things"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "color and size identification"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "subtraction",
+    "visual analysis",
+    "geometry"
+  ]
+}

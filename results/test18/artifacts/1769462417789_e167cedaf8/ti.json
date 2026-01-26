@@ -1,0 +1,51 @@
+{
+  "problem_state_summary": "The problem involves analyzing a table to determine if there is a shortage or surplus at a price of $790. The table contains data on supply and demand at various prices. The specific task is to compare the supply and demand values at the price of $790. A shortage occurs when demand exceeds supply, while a surplus occurs when supply exceeds demand. The table provides the necessary data to make this determination. The known price is $790, and the supply and demand at this price are both 1050. The problem asks to identify whether there is a shortage or surplus at this price point.",
+  "entities": [
+    "price",
+    "supply",
+    "demand"
+  ],
+  "unknowns": [
+    "shortage or surplus"
+  ],
+  "required_operations": [
+    "Read the table to find supply and demand at $790",
+    "Compare supply and demand values",
+    "Determine if there is a shortage or surplus"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure row alignment for price, supply, and demand",
+    "Verify that the table data is correctly interpreted"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "shortage"
+      },
+      {
+        "label": "B",
+        "text": "surplus"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "supply and demand",
+    "table analysis",
+    "shortage",
+    "surplus"
+  ]
+}

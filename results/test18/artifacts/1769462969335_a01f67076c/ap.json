@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify values in the 'Ruling Group' from the table.",
+      "action": "reason",
+      "note": "The table contains values 10, 15, and 20 for the 'Ruling Group'."
+    },
+    {
+      "intention": "Sum the values of the 'Ruling Group'.",
+      "action": "python",
+      "code": "sum_ruling_group = 10 + 15 + 20"
+    },
+    {
+      "intention": "Ensure the result is an integer and format the final answer.",
+      "action": "normalize",
+      "text": "Answer: 45"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

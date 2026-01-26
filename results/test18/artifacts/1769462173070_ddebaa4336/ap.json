@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Verify the value of r at theta=3*pi/2 from the polar plot.",
+      "action": "reason",
+      "note": "The chart indicates that at theta=3*pi/2, r=2."
+    },
+    {
+      "intention": "Confirm the integer value of r from the chart.",
+      "action": "python",
+      "code": "r_val = 2"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

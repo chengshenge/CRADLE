@@ -1,0 +1,38 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compute_length_of_segment_in_rhombus",
+      "signature": "(side_length:float, diagonal_length:float)->float",
+      "purpose": "Calculate the length of a segment connecting midpoints of two sides of a rhombus using given side and diagonal lengths.",
+      "inputs": [
+        "side_length",
+        "diagonal_length"
+      ],
+      "outputs": "Length of the segment connecting midpoints.",
+      "edge_cases": [
+        "Ensure the inputs represent a valid rhombus.",
+        "Handle cases where the diagonal is longer than the side."
+      ],
+      "tests": [
+        {
+          "input": "5, 6",
+          "expect": "4.5"
+        },
+        {
+          "input": "10, 12",
+          "expect": "9"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "rhombus",
+        "midpoint",
+        "length calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compute_length_of_segment_in_rhombus"
+  ]
+}

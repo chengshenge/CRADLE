@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves a diagram where the task is to compare the number of tiny gray bicycles on the left side of a brown metal sedan with the number of things to the left of a tiny green bicycle. The user is asked to determine if the number of tiny gray bicycles is greater than the number of things to the left of the tiny green bicycle. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The counts of the objects are crucial to solving the problem, but they are unreadable from the image. This creates a challenge in determining the correct answer. The problem requires careful analysis of the diagram to count the objects accurately.",
+  "entities": [
+    "tiny gray bicycles",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Analyze the diagram to identify the tiny gray bicycles and the brown metal sedan.",
+    "Count the number of tiny gray bicycles on the left side of the brown metal sedan.",
+    "Identify the tiny green bicycle in the diagram.",
+    "Count the number of things to the left of the tiny green bicycle.",
+    "Compare the two counts to determine if the first is greater than the second.",
+    "Map the result to the correct multiple-choice option."
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram.",
+    "Verify that all relevant objects are visible and distinguishable in the diagram.",
+    "Check for any potential obstructions or overlaps that might obscure object counts."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "comparison",
+    "counting",
+    "diagram analysis"
+  ]
+}

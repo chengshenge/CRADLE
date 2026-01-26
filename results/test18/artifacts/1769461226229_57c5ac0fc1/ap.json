@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known elements.",
+      "action": "reason",
+      "note": "The problem involves finding angle BCH using known angles and relationships in the diagram."
+    },
+    {
+      "intention": "Use geometric properties to find angle BCH.",
+      "action": "reason",
+      "note": "Since AB bisects angle CAG and lines FG and DE are parallel, angle BCH can be determined using angle properties."
+    },
+    {
+      "intention": "Calculate angle BCH using angle bisector and parallel line properties.",
+      "action": "python",
+      "code": "angle_A = 60; angle_BCH = angle_A / 2"
+    },
+    {
+      "intention": "Normalize the final answer to match the options.",
+      "action": "normalize",
+      "text": "Answer: 30°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

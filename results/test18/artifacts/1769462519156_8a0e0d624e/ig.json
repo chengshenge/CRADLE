@@ -1,0 +1,49 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading specific information about miles per gallon for a city bus, which is likely presented in text form."
+  ],
+  "problem_understanding": "The problem asks for the average miles per gallon that a city bus gets.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "average miles per gallon for a city bus",
+        "value": "6",
+        "unit": "miles per gallon",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "unknown": [
+      "average miles per gallon for a city bus"
+    ],
+    "relations": [],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "miles nouns get verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to identify a specific numerical value from the text, which is a straightforward retrieval task."
+  ],
+  "problem_summary": "Determine the average miles per gallon for a city bus.",
+  "knowns": [
+    {
+      "name": "average miles per gallon for a city bus",
+      "value": "6",
+      "unit": "miles per gallon",
+      "source": "image",
+      "note": "Extracted from text"
+    }
+  ],
+  "asks": [
+    "average miles per gallon for a city bus"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The average miles per gallon for a city bus is 6."
+  ],
+  "ambiguity": []
+}

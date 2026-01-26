@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify length and width from the diagram",
+      "action": "reason",
+      "note": "Use the interpret_diagram_for_geometry skill to extract dimensions."
+    },
+    {
+      "intention": "Extract dimensions of the rectangle",
+      "action": "python",
+      "code": "length, width = interpret_diagram_for_geometry('46237a4eb9c4')"
+    },
+    {
+      "intention": "Calculate the perimeter using the formula",
+      "action": "python",
+      "code": "perimeter = calc_numeric(f'2 * ({length} + {width})')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {perimeter}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

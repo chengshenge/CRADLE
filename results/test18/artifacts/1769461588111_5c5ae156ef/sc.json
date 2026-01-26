@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_kinetic_energy_from_diagrams",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Analyze diagrams of gas samples to compare the average kinetic energy of particles and determine which sample has the higher temperature.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The label of the sample with higher temperature or 'neither' if they are the same.",
+      "edge_cases": [
+        "Diagrams are unclear or ambiguous",
+        "Both samples have identical representations"
+      ],
+      "tests": [
+        {
+          "input": "aa6570bc1260",
+          "expect": "A"
+        },
+        {
+          "input": "bb6570bc1260",
+          "expect": "neither"
+        },
+        {
+          "input": "cc6570bc1260",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "kinetic energy",
+        "temperature",
+        "gas samples",
+        "diagram comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_kinetic_energy_from_diagrams"
+  ]
+}

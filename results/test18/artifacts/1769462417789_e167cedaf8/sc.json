@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_table_for_supply_demand",
+      "signature": "(image_hash:str, price:float)->str",
+      "purpose": "To analyze a table image and determine if there is a shortage or surplus at a given price by comparing supply and demand values.",
+      "inputs": [
+        "image_hash",
+        "price"
+      ],
+      "outputs": "A string indicating 'shortage' or 'surplus'.",
+      "edge_cases": [
+        "Price not found in the table",
+        "Supply equals demand"
+      ],
+      "tests": [
+        {
+          "input": "(image_hash='f3dec8c96426', price=790)",
+          "expect": "surplus"
+        },
+        {
+          "input": "(image_hash='f3dec8c96426', price=800)",
+          "expect": "shortage"
+        },
+        {
+          "input": "(image_hash='f3dec8c96426', price=750)",
+          "expect": "surplus"
+        }
+      ],
+      "tags": [
+        "table analysis",
+        "supply and demand",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_table_for_supply_demand"
+  ]
+}

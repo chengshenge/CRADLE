@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest cat based on text labels.",
+      "action": "reason",
+      "note": "The task is to determine which cat is larger based on the names provided in the choices."
+    },
+    {
+      "intention": "Extract text labels from the image.",
+      "action": "python",
+      "code": "text_labels = extract_text_from_image('35e9ecaed544')"
+    },
+    {
+      "intention": "Determine the largest cat from the extracted labels.",
+      "action": "reason",
+      "note": "Compare the extracted text labels to identify the largest cat."
+    },
+    {
+      "intention": "Provide the exact content of the correct choice.",
+      "action": "normalize",
+      "text": "Answer: white five"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,58 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_object_counts_from_image",
+      "signature": "(image_hash:str, object_descriptions:list)->dict",
+      "purpose": "Extract counts of specific objects based on their descriptions from an image.",
+      "inputs": [
+        "image_hash",
+        "object_descriptions"
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "Descriptions not matching any objects in the image",
+        "Multiple objects with similar descriptions"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"67d7968e2bae\", \"object_descriptions\": [\"big red metallic spheres\", \"big brown matte things\"]}",
+          "expect": "{\"big red metallic spheres\": 5, \"big brown matte things\": 3}"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing",
+        "object counting"
+      ]
+    },
+    {
+      "name": "subtract_object_counts",
+      "signature": "(total:int, subtractions:dict)->int",
+      "purpose": "Subtract counts of specific objects from a total number of objects.",
+      "inputs": [
+        "total",
+        "subtractions"
+      ],
+      "outputs": "An integer representing the number of objects left after subtractions.",
+      "edge_cases": [
+        "Total less than sum of subtractions",
+        "Negative results"
+      ],
+      "tests": [
+        {
+          "input": "{\"total\": 20, \"subtractions\": {\"big red metallic spheres\": 5, \"big brown matte things\": 3}}",
+          "expect": "12"
+        }
+      ],
+      "tags": [
+        "subtraction",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_object_counts_from_image",
+    "subtract_object_counts"
+  ]
+}

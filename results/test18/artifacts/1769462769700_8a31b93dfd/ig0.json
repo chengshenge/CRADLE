@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with intersecting lines and angles, which suggests the need to examine a diagram for angle relationships."
+  ],
+  "problem_understanding": "The problem involves intersecting lines AB and CD at point O, with OD bisecting angle AOE and angle BOC given as 50 degrees. The task is to find angle EOB.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠BOC",
+        "value": "50",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "∠EOB"
+    ],
+    "relations": [
+      "OD bisects ∠AOE",
+      "AB and CD intersect at O"
+    ],
+    "constraints": [
+      "Lines AB and CD are straight",
+      "OD is a bisector"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "50°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "70°"
+      },
+      {
+        "label": "D",
+        "text": "80°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "lines intersect",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle EOB using the given angle and the fact that OD bisects angle AOE."
+  ],
+  "problem_summary": "Find the measure of angle EOB given that lines AB and CD intersect at O, OD bisects angle AOE, and angle BOC is 50 degrees.",
+  "knowns": [
+    {
+      "name": "∠BOC",
+      "value": "50",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "∠EOB"
+  ],
+  "constraints": [
+    "Lines AB and CD are straight",
+    "OD is a bisector"
+  ],
+  "visual_facts": [
+    "Lines AB and CD intersect at O",
+    "OD bisects angle AOE"
+  ],
+  "ambiguity": [
+    "The exact measure of angle EOB is not directly given and must be inferred from the diagram and given information."
+  ]
+}

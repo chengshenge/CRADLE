@@ -1,0 +1,102 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_color_values_from_text",
+      "signature": "(text:str, colors:list)->(int, int)",
+      "purpose": "Extract numerical values associated with specified colors from a given text.",
+      "inputs": [
+        "text",
+        "colors"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Text does not contain specified colors",
+        "Text contains multiple values for a color"
+      ],
+      "tests": [
+        {
+          "input": "Sky Blue: 45, Web Maroon: 60",
+          "expect": "(45, 60)"
+        },
+        {
+          "input": "Sky Blue: 30, Web Maroon: 50",
+          "expect": "(30, 50)"
+        },
+        {
+          "input": "No colors mentioned",
+          "expect": "(None, None)"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "numerical"
+      ]
+    },
+    {
+      "name": "compare_numerical_values",
+      "signature": "(value1:int, value2:int)->bool",
+      "purpose": "Compare two numerical values and determine if the first is less than the second.",
+      "inputs": [
+        "value1",
+        "value2"
+      ],
+      "outputs": "bool",
+      "edge_cases": [
+        "Values are equal",
+        "Negative values"
+      ],
+      "tests": [
+        {
+          "input": "(45, 60)",
+          "expect": "True"
+        },
+        {
+          "input": "(60, 45)",
+          "expect": "False"
+        },
+        {
+          "input": "(50, 50)",
+          "expect": "False"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "numerical"
+      ]
+    },
+    {
+      "name": "map_boolean_to_mcq_option",
+      "signature": "(comparison_result:bool, options:dict)->str",
+      "purpose": "Map a boolean comparison result to a multiple-choice option label.",
+      "inputs": [
+        "comparison_result",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Empty options dictionary",
+        "Boolean result not matching any option"
+      ],
+      "tests": [
+        {
+          "input": "(True, {'A': 'yes', 'B': 'no'})",
+          "expect": "'A'"
+        },
+        {
+          "input": "(False, {'A': 'yes', 'B': 'no'})",
+          "expect": "'B'"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_color_values_from_text",
+    "compare_numerical_values",
+    "map_boolean_to_mcq_option"
+  ]
+}

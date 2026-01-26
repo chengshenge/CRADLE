@@ -1,0 +1,43 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "compare_derivatives_from_graph",
+      "signature": "(graph_image:str, point1:float, point2:float)->str",
+      "purpose": "Determine the relative size of the derivatives of a function at two given points by analyzing the slopes of the tangent lines on a graph.",
+      "inputs": [
+        "graph_image",
+        "point1",
+        "point2"
+      ],
+      "outputs": "A string indicating whether the derivative at point1 is 'larger', 'equal', or 'smaller' than at point2.",
+      "edge_cases": [
+        "Graph is not clear enough to determine slopes",
+        "Points are not on the graph",
+        "Graph scales are inconsistent"
+      ],
+      "tests": [
+        {
+          "input": "{\"graph_image\":\"edfa2e8ae5de\", \"point1\":2, \"point2\":5}",
+          "expect": "larger"
+        },
+        {
+          "input": "{\"graph_image\":\"edfa2e8ae5de\", \"point1\":5, \"point2\":2}",
+          "expect": "smaller"
+        },
+        {
+          "input": "{\"graph_image\":\"edfa2e8ae5de\", \"point1\":2, \"point2\":2}",
+          "expect": "equal"
+        }
+      ],
+      "tags": [
+        "graph analysis",
+        "derivative",
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "compare_derivatives_from_graph"
+  ]
+}

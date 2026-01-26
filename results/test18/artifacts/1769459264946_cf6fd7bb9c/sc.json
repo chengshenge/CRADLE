@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find the measure of angle ∠BOC using geometric properties.",
+      "how_to_use": "Use this skill to calculate the measure of angle ∠BOC based on the properties of angle bisectors and the given angle ∠A."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use this skill to format the calculated angle into the required multiple-choice answer format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "angle_bisector_theorem",
+      "signature": "(angle_A, options)->angle_BOC",
+      "purpose": "Calculate the angle ∠BOC using the properties of angle bisectors in a triangle.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "angle_BOC",
+      "edge_cases": [
+        "Ensure angle A is valid and within the range of a triangle's internal angles."
+      ],
+      "tests": [
+        {
+          "input": "110°, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "145°"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "angle_bisector_theorem",
+    "calc_numeric",
+    "format_final"
+  ]
+}

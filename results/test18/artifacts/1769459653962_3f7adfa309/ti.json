@@ -1,0 +1,50 @@
+{
+  "problem_state_summary": "The problem involves determining whether there are fewer metallic fighters than rubber objects. The task requires comparing the quantities of two categories: metallic fighters and rubber objects. The known quantities are extracted from the image, which shows that there are 5 metallic fighters and 8 rubber objects. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The goal is to decide if the number of metallic fighters is less than the number of rubber objects based on the provided data. The problem is straightforward as it involves a simple comparison of two numbers. The final answer must be mapped to one of the given options.",
+  "entities": [
+    "metallic fighters",
+    "rubber objects"
+  ],
+  "unknowns": [
+    "number of metallic fighters",
+    "number of rubber objects"
+  ],
+  "required_operations": [
+    "Extract numbers from text",
+    "Compare the number of metallic fighters to rubber objects",
+    "Map result to option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct extraction of numbers from text",
+    "Verify that the comparison logic is correctly applied"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "logic",
+    "text extraction"
+  ]
+}

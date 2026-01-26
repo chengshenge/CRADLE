@@ -1,0 +1,73 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "estimate_area_under_curve",
+      "signature": "(image_hash:str, curve_label:str)->float",
+      "purpose": "Estimate the area under a specific curve in a chart image.",
+      "inputs": [
+        "image_hash",
+        "curve_label"
+      ],
+      "outputs": "Estimated area as a float",
+      "edge_cases": [
+        "Curves with overlapping areas",
+        "Curves with non-linear segments"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\":\"6fb7768a4f3d\", \"curve_label\":\"Firebrick\"}",
+          "expect": "float"
+        },
+        {
+          "input": "{\"image_hash\":\"6fb7768a4f3d\", \"curve_label\":\"Azure\"}",
+          "expect": "float"
+        },
+        {
+          "input": "{\"image_hash\":\"6fb7768a4f3d\", \"curve_label\":\"Olive\"}",
+          "expect": "float"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "area under curve",
+        "image processing"
+      ]
+    },
+    {
+      "name": "compare_areas",
+      "signature": "(areas:dict)->str",
+      "purpose": "Compare areas under different curves and determine which is the largest.",
+      "inputs": [
+        "areas"
+      ],
+      "outputs": "Label of the curve with the maximum area",
+      "edge_cases": [
+        "Multiple curves with the same area",
+        "Empty input dictionary"
+      ],
+      "tests": [
+        {
+          "input": "{\"Firebrick\": 120.0, \"Azure\": 100.0, \"Olive\": 110.0}",
+          "expect": "\"Firebrick\""
+        },
+        {
+          "input": "{\"Firebrick\": 90.0, \"Azure\": 90.0, \"Olive\": 90.0}",
+          "expect": "\"Firebrick\""
+        },
+        {
+          "input": "{}",
+          "expect": "\"\""
+        }
+      ],
+      "tags": [
+        "comparison",
+        "area under curve"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "estimate_area_under_curve",
+    "compare_areas"
+  ]
+}

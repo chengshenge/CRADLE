@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "EF is unknown; AB = 5, AC = 6; E, F are midpoints."
+    },
+    {
+      "intention": "Use geometric properties of rhombus",
+      "action": "reason",
+      "note": "In a rhombus, diagonals bisect each other at right angles."
+    },
+    {
+      "intention": "Calculate EF using midpoint properties",
+      "action": "python",
+      "code": "EF = 0.5 * 6"
+    },
+    {
+      "intention": "Normalize the final answer",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

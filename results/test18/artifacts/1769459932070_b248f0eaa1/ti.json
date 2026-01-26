@@ -1,0 +1,40 @@
+{
+  "problem_state_summary": "The problem involves identifying the highest measurement value from a class, which is likely represented in a chart. The chart is titled 'Class Measurements' and includes measurements for Height, Weight, and Volume. The Y-axis is labeled 'Amount' and has ticks ranging from 0 to 100. The key points on the chart indicate that Height is measured at 75, Weight at 85, and Volume at 90. The task is to determine which of these measurements is the highest. The problem requires reading the chart to find the maximum value among the given measurements.",
+  "entities": [
+    "Height",
+    "Weight",
+    "Volume"
+  ],
+  "unknowns": [
+    "highest amount measured"
+  ],
+  "required_operations": [
+    "Read the chart",
+    "Identify the highest value among the key points"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing",
+    "Verify legend mapping to ensure correct interpretation of key points"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart",
+    "measurement",
+    "maximum value"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "problem_state_summary": "The problem involves a food web diagram where algae are a primary food source for certain species. The question asks about the ecological impact on various species if all the algae died due to pesticides. The species in question include crabs, limpets, dolphins, sea gulls, and star fish. The relationships in the food web are such that algae directly affect crabs and limpets, which in turn affect other species. The task is to determine how the death of algae will impact these species, considering the food web dependencies. The problem is presented as a multiple-choice question with four options regarding the potential outcomes for these species.",
+  "entities": [
+    "Algae",
+    "Crabs",
+    "Limpets",
+    "Dolphins",
+    "Sea Gulls",
+    "Star Fish"
+  ],
+  "unknowns": [
+    "impact on crabs",
+    "impact on limpets",
+    "impact on dolphins",
+    "impact on sea gulls",
+    "impact on star fish"
+  ],
+  "required_operations": [
+    "Analyze the food web diagram",
+    "Determine the direct impact of algae dying on crabs and limpets",
+    "Assess the indirect impact on dolphins, sea gulls, and star fish",
+    "Map the ecological impacts to the given options"
+  ],
+  "blockers": [
+    "impact on crabs",
+    "impact on limpets",
+    "impact on dolphins",
+    "impact on sea gulls",
+    "impact on star fish"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify the direction and meaning of arrows in the food web",
+    "Check for any missing or unclear relationships in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Crabs and limpets will decrease"
+      },
+      {
+        "label": "B",
+        "text": "Dolphins will increase"
+      },
+      {
+        "label": "C",
+        "text": "Sea gulls will become extinct"
+      },
+      {
+        "label": "D",
+        "text": "Star fish will increase"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "ecology",
+    "food web",
+    "diagram analysis",
+    "multiple choice"
+  ]
+}

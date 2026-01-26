@@ -1,0 +1,64 @@
+{
+  "region_used": "text",
+  "information": [
+    "Age: 25",
+    "Age: 30"
+  ],
+  "structured": {
+    "text_lines": [
+      "Age: 25",
+      "Age: 30"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "age of person 1",
+        "value": "25",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text"
+      },
+      {
+        "name": "age of person 2",
+        "value": "30",
+        "unit": "years",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The text region was used to extract the ages of two people, which are necessary to determine the age gap."
+  ]
+}

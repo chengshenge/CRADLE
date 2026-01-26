@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with points, angles, and perpendicular lines. It requires understanding the relationships between these elements, which are typically represented in a diagram."
+  ],
+  "problem_understanding": "The problem involves a triangle ABC with a point D inside it. CD bisects angle ACB, BD is perpendicular to CD, and angle A is equal to angle ABD. Given that angle DBC is 54°, the task is to find the measure of angle A.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠DBC",
+        "value": "54",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "∠A"
+    ],
+    "relations": [
+      "CD bisects ∠ACB",
+      "BD ⊥ CD",
+      "∠A = ∠ABD"
+    ],
+    "constraints": [
+      "D is a point inside △ABC"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "36°"
+      },
+      {
+        "label": "B",
+        "text": "44°"
+      },
+      {
+        "label": "C",
+        "text": "27°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "triangle nouns bisects verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle A using the given geometric relationships and angle measures."
+  ],
+  "problem_summary": "Find the measure of angle A in triangle ABC with point D inside, given that CD bisects angle ACB, BD is perpendicular to CD, angle A equals angle ABD, and angle DBC is 54°.",
+  "knowns": [
+    {
+      "name": "∠DBC",
+      "value": "54",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "∠A"
+  ],
+  "constraints": [
+    "D is a point inside △ABC"
+  ],
+  "visual_facts": [
+    "CD bisects ∠ACB",
+    "BD ⊥ CD",
+    "∠A = ∠ABD"
+  ],
+  "ambiguity": [
+    "The exact positions of points A, B, C, and D are not specified, but their relationships are given."
+  ]
+}

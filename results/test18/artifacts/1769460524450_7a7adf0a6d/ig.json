@@ -1,0 +1,84 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with specific points, lines, and angles on a circle, which suggests the need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem involves a circle with a diameter AB, chords EF and EB, and a point E which is the midpoint of FEB. EF intersects AB at point C, and OF is connected. Given that angle AOF is 40 degrees, the task is to find the measure of angle F.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠AOF",
+        "value": "40",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "∠F"
+    ],
+    "relations": [
+      "AB is the diameter of ⊙O",
+      "EF and EB are chords of ⊙O",
+      "E is the midpoint of FEB",
+      "EF intersects AB at C",
+      "OF is connected"
+    ],
+    "constraints": [
+      "E is the midpoint of FEB",
+      "AB is the diameter"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "20°"
+      },
+      {
+        "label": "B",
+        "text": "35°"
+      },
+      {
+        "label": "C",
+        "text": "40°"
+      },
+      {
+        "label": "D",
+        "text": "55°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "circle has",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle F using the given geometric relationships and the known angle AOF."
+  ],
+  "problem_summary": "Find the measure of angle F in a circle with diameter AB, given that angle AOF is 40 degrees and E is the midpoint of chord FEB.",
+  "knowns": [
+    {
+      "name": "∠AOF",
+      "value": "40",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "∠F"
+  ],
+  "constraints": [
+    "E is the midpoint of FEB",
+    "AB is the diameter"
+  ],
+  "visual_facts": [
+    "AB is the diameter of ⊙O",
+    "EF and EB are chords of ⊙O",
+    "EF intersects AB at C",
+    "OF is connected",
+    "Diagram labels: A, B, C, E, F, O"
+  ],
+  "ambiguity": [
+    "The exact position of points and lines on the diagram is not specified in the text, requiring visual analysis."
+  ]
+}

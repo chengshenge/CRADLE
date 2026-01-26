@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the length of each half of the rubber band using the Pythagorean theorem.",
+      "how_to_use": "Use the expression 'sqrt((original_half_length)^2 + (vertical_displacement)^2)' to find the new length of each half."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use the calculated stretched length to determine the correct multiple-choice option and format as 'Answer: [option label]'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_diagram_for_geometry",
+      "signature": "(image_hash:str)->(float, float)",
+      "purpose": "Extract geometric information from a diagram to identify the original length and vertical displacement.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(original_length, vertical_displacement)",
+      "edge_cases": [
+        "Diagram is unclear or labels are missing",
+        "Incorrect mapping of labels to segments"
+      ],
+      "tests": [
+        {
+          "input": "2c7eb7078a92",
+          "expect": "(16.0, 6.0)"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_diagram_for_geometry",
+    "calc_numeric",
+    "format_final"
+  ]
+}

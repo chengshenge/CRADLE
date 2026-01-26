@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract numerical data from the text region in the image.",
+      "how_to_use": "Use the image hash to extract the text and identify the counts of 'Dissatisfied' and 'Satisfied'."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform arithmetic operations to compute the ratio.",
+      "how_to_use": "Use the extracted counts to compute the ratio: Number of Dissatisfied / Number of Satisfied."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the computed ratio to one decimal place.",
+      "how_to_use": "Format the result of the division to one decimal place and return it as a string."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

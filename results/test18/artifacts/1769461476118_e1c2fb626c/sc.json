@@ -1,0 +1,76 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_roughness_values_from_image",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "Extract roughness values for materials from an image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary with material names as keys and their roughness values as floats.",
+      "edge_cases": [
+        "Image does not contain roughness values",
+        "Text is unclear or obscured"
+      ],
+      "tests": [
+        {
+          "input": "d9f7e09b4eae",
+          "expect": {
+            "Coral": 7.5,
+            "Sandstone": 6.8,
+            "Granite": 5.9,
+            "Limestone": 4.3
+          }
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing",
+        "roughness"
+      ]
+    },
+    {
+      "name": "compare_roughness_values",
+      "signature": "(roughness_dict:dict)->str",
+      "purpose": "Compare roughness values to determine if Coral is the roughest.",
+      "inputs": [
+        "roughness_dict"
+      ],
+      "outputs": "A string 'A' if Coral is the roughest, otherwise 'B'.",
+      "edge_cases": [
+        "All materials have the same roughness",
+        "Coral is not listed in the dictionary"
+      ],
+      "tests": [
+        {
+          "input": {
+            "Coral": 7.5,
+            "Sandstone": 6.8,
+            "Granite": 5.9,
+            "Limestone": 4.3
+          },
+          "expect": "A"
+        },
+        {
+          "input": {
+            "Coral": 6.8,
+            "Sandstone": 7.5,
+            "Granite": 5.9,
+            "Limestone": 4.3
+          },
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "roughness",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_roughness_values_from_image",
+    "compare_roughness_values"
+  ]
+}

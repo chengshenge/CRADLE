@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Extract demand values for computing and wireless sectors in 2014.",
+      "action": "reason",
+      "note": "The table provides demand values for computing (150) and wireless (200) in 2014."
+    },
+    {
+      "intention": "Calculate the total semiconductor demand for 2014.",
+      "action": "python",
+      "code": "total_demand = 150 + 200"
+    },
+    {
+      "intention": "Format the total demand as a floating-point number with one decimal place.",
+      "action": "normalize",
+      "text": "Answer: 350.0"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

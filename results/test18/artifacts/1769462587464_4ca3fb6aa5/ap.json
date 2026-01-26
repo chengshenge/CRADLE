@@ -1,0 +1,24 @@
+{
+  "steps": [
+    {
+      "intention": "Compare the number of brown SUVs to brown rubber school buses.",
+      "action": "reason"
+    },
+    {
+      "intention": "Perform numeric comparison using extracted values.",
+      "action": "python",
+      "code": "num_suvs = 5; num_buses = 8; comparison_result = num_suvs < num_buses"
+    },
+    {
+      "intention": "Map comparison result to the correct option.",
+      "action": "python",
+      "code": "answer = 'Yes' if comparison_result else 'No'"
+    },
+    {
+      "intention": "Format the final answer according to the prompt.",
+      "action": "normalize",
+      "text": "Answer: Yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

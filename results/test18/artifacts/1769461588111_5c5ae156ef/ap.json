@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "Blockers: average kinetic energy and temperature of samples A and B are unknown."
+    },
+    {
+      "intention": "Analyze the relationship between kinetic energy and temperature",
+      "action": "reason",
+      "note": "Average kinetic energy is directly related to temperature; higher kinetic energy means higher temperature."
+    },
+    {
+      "intention": "Determine which sample has higher temperature",
+      "action": "reason",
+      "note": "Since both samples have the same number of particles and are in identical containers, the sample with higher kinetic energy has higher temperature."
+    },
+    {
+      "intention": "Select the correct option based on kinetic energy",
+      "action": "reason",
+      "note": "If kinetic energies are visually identical, select option A; otherwise, select B or C based on which sample appears to have higher kinetic energy."
+    },
+    {
+      "intention": "Finalize the answer based on visual analysis",
+      "action": "normalize",
+      "text": "Answer: neither; the samples have the same temperature"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

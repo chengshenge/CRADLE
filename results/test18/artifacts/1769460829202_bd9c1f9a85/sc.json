@@ -1,0 +1,38 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the total cost by multiplying quantities with their respective prices and summing them up.",
+      "how_to_use": "Use calc_numeric to evaluate the expression '(4 * 3) + (5 * 4)'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_prices_from_image",
+      "signature": "(image_hash:str)->(int, int)",
+      "purpose": "Extract the price per kilogram for oval and star-shaped beads from the attached image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Image is blurry or text is unclear",
+        "Prices are not in expected format"
+      ],
+      "tests": [
+        {
+          "input": "d0c52b82c511",
+          "expect": "(3, 4)"
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_prices_from_image",
+    "calc_numeric"
+  ]
+}

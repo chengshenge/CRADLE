@@ -1,0 +1,93 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform numeric calculations and comparisons.",
+      "how_to_use": "Use to compare the number of metallic fighters and rubber objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer according to the required output format.",
+      "how_to_use": "Use to map the comparison result to the correct multiple-choice option."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_numbers_from_text",
+      "signature": "(text:str)->list",
+      "purpose": "Extract numbers from a given text.",
+      "inputs": [
+        "text"
+      ],
+      "outputs": "A list of numbers extracted from the text.",
+      "edge_cases": [
+        "Text contains no numbers",
+        "Text contains numbers in different formats"
+      ],
+      "tests": [
+        {
+          "input": "There are 5 apples and 8 oranges.",
+          "expect": [
+            5,
+            8
+          ]
+        },
+        {
+          "input": "No numbers here.",
+          "expect": []
+        }
+      ],
+      "tags": [
+        "text extraction",
+        "numbers"
+      ]
+    },
+    {
+      "name": "compare_numbers",
+      "signature": "(num1:int, num2:int)->bool",
+      "purpose": "Compare two numbers and determine if the first is less than the second.",
+      "inputs": [
+        "num1",
+        "num2"
+      ],
+      "outputs": "Boolean indicating if num1 is less than num2.",
+      "edge_cases": [
+        "Both numbers are equal",
+        "Negative numbers"
+      ],
+      "tests": [
+        {
+          "input": [
+            5,
+            8
+          ],
+          "expect": true
+        },
+        {
+          "input": [
+            8,
+            5
+          ],
+          "expect": false
+        },
+        {
+          "input": [
+            5,
+            5
+          ],
+          "expect": false
+        }
+      ],
+      "tags": [
+        "comparison",
+        "logic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_numbers_from_text",
+    "compare_numbers",
+    "calc_numeric",
+    "format_final"
+  ]
+}

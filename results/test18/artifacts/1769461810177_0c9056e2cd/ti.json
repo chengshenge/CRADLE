@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves calculating the perimeter of a rectangle. The rectangle is depicted in a diagram with points labeled A, B, C, and D. The lengths of segments AB and BC are marked as 5 cm and 3 cm, respectively. To find the perimeter, the dimensions of the rectangle must be identified from the diagram. The perimeter of a rectangle is calculated using the formula 2 * (length + width). The task requires extracting these dimensions from the visual information provided in the diagram. The final answer should be an integer value representing the perimeter.",
+  "entities": [
+    "rectangle",
+    "segment AB",
+    "segment BC"
+  ],
+  "unknowns": [
+    "perimeter of the rectangle"
+  ],
+  "required_operations": [
+    "Identify length and width from the diagram",
+    "Apply the formula for perimeter: 2 * (length + width)",
+    "Compute the perimeter"
+  ],
+  "blockers": [
+    "perimeter of the rectangle"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct",
+    "Verify the units of measurement for the lengths",
+    "Check for any additional markings or labels in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "perimeter",
+    "rectangle",
+    "diagram"
+  ]
+}

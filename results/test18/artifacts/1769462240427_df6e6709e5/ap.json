@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Extract counts of shiny buses and matte things from the image.",
+      "action": "reason",
+      "note": "Use GTI_JSON to get the counts of shiny buses and matte things."
+    },
+    {
+      "intention": "Compare the counts of shiny buses and matte things.",
+      "action": "python",
+      "code": "shiny_buses = 5; matte_things = 8; comparison_result = shiny_buses < matte_things"
+    },
+    {
+      "intention": "Map the comparison result to the correct option.",
+      "action": "python",
+      "code": "answer = 'Yes' if comparison_result else 'No'"
+    },
+    {
+      "intention": "Format the final answer in the required format.",
+      "action": "normalize",
+      "text": "Answer: Yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves analyzing a bar chart to determine how many bars have values smaller than 6. The chart displays bars labeled A to E, with values indicated on the y-axis ranging from 0 to 10. The task is to count the number of bars that meet the condition of having values less than 6. According to the visual data, bars A, B, and D have values of 5, 3, and 2 respectively, which are all less than 6. Bars C and E have values of 7 and 8, which do not meet the condition. The final goal is to provide the count of bars that satisfy the condition, which is an integer value.",
+  "entities": [
+    "bars A",
+    "bars B",
+    "bars C",
+    "bars D",
+    "bars E"
+  ],
+  "unknowns": [
+    "number of bars with values smaller than 6"
+  ],
+  "required_operations": [
+    "Identify bars with values less than 6",
+    "Count the number of such bars"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Verify y-axis scale and tick spacing for accurate value reading",
+    "Ensure correct mapping of bar labels to values"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "counting",
+    "values less than 6"
+  ]
+}

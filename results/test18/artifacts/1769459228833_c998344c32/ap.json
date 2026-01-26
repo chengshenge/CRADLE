@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and resolve them",
+      "action": "reason",
+      "note": "The blocker is identifying the total volume of the measuring cup from the image."
+    },
+    {
+      "intention": "Determine the largest marking on the measuring cup",
+      "action": "reason",
+      "note": "The largest visible marking on the measuring cup is 500."
+    },
+    {
+      "intention": "Provide the total volume as the final answer",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

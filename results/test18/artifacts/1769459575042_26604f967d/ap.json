@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The blocker is identifying the next object in the sequence. Use visual pattern recognition."
+    },
+    {
+      "intention": "Determine the next object in the sequence based on the pattern.",
+      "action": "reason",
+      "note": "Analyze the sequence of objects in the image to identify the pattern."
+    },
+    {
+      "intention": "Map the determined object to one of the provided options.",
+      "action": "reason",
+      "note": "Select the correct option based on the identified pattern."
+    },
+    {
+      "intention": "Output the exact content of the correct choice.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

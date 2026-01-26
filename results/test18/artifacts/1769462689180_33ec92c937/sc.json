@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract text from the attached image to identify the demand values for computing and wireless sectors in 2014.",
+      "how_to_use": "Use the image hash to extract the table data and locate the demand values for the specified sectors and year."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the total semiconductor demand by summing the extracted demand values for computing and wireless sectors.",
+      "how_to_use": "Use the extracted demand values in a numeric expression to compute the sum."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final result to match the required output format.",
+      "how_to_use": "Use the calculated total demand to produce a formatted answer string."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_demand_values_from_table",
+      "signature": "(image_hash:str, year:int, sectors:list)->(float, float)",
+      "purpose": "Extract demand values for specified sectors and year from a table in an image.",
+      "inputs": [
+        "image_hash",
+        "year",
+        "sectors"
+      ],
+      "outputs": "(float, float)",
+      "edge_cases": [
+        "Table does not contain the specified year",
+        "Sectors not found in the table"
+      ],
+      "tests": [
+        {
+          "input": "(\"63e7cccece89\", 2014, [\"computing\", \"wireless\"])",
+          "expect": "(150.0, 200.0)"
+        }
+      ],
+      "tags": [
+        "table interpretation",
+        "text extraction",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "extract_demand_values_from_table",
+    "calc_numeric",
+    "format_final"
+  ]
+}

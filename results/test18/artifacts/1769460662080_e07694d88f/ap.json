@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers or unresolved targets",
+      "action": "reason",
+      "note": "No blockers or unresolved targets; proceed with graph analysis."
+    },
+    {
+      "intention": "Analyze the graph to determine function symmetry",
+      "action": "reason",
+      "note": "Check if the function is symmetric about the y-axis (even) or origin (odd)."
+    },
+    {
+      "intention": "Determine the function type based on symmetry",
+      "action": "reason",
+      "note": "If f(x) = f(-x), the function is even. If f(-x) = -f(x), the function is odd."
+    },
+    {
+      "intention": "Select the correct option based on function type",
+      "action": "normalize",
+      "text": "Answer: odd"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,58 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_clock_diagram",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Determine the time shown on a clock diagram by analyzing the positions of the clock hands.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "time_word",
+      "edge_cases": [
+        "Clock hands are not clearly visible",
+        "Clock hands overlap",
+        "Non-standard clock face"
+      ],
+      "tests": [
+        {
+          "input": "77b300c1ce6d",
+          "expect": "quarter past"
+        }
+      ],
+      "tags": [
+        "time",
+        "clock",
+        "diagram"
+      ]
+    },
+    {
+      "name": "map_time_word_to_option",
+      "signature": "(time_word:str, options:list)->str",
+      "purpose": "Map the identified time word to one of the provided multiple-choice options.",
+      "inputs": [
+        "time_word",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Time word does not match any option",
+        "Multiple options match the time word"
+      ],
+      "tests": [
+        {
+          "input": "{\"time_word\": \"quarter past\", \"options\": [{\"label\": \"A\", \"text\": \"half\"}, {\"label\": \"B\", \"text\": \"quarter\"}, {\"label\": \"C\", \"text\": \"o'clock\"}, {\"label\": \"D\", \"text\": \"quarter to\"}, {\"label\": \"E\", \"text\": \"quarter past\"}]}",
+          "expect": "E"
+        }
+      ],
+      "tags": [
+        "time",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_clock_diagram",
+    "map_time_word_to_option"
+  ]
+}

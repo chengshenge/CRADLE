@@ -1,0 +1,70 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_image",
+      "signature": "(image_hash:str, object_type:str, position_constraint:Optional[str])->int",
+      "purpose": "Count the number of specified objects in an image, optionally considering their position relative to another object.",
+      "inputs": [
+        "image_hash",
+        "object_type",
+        "position_constraint"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with similar colors or shapes"
+      ],
+      "tests": [
+        {
+          "input": "('6e95494cd7fb', 'big red rubber double buses', 'in front of large red double bus')",
+          "expect": "3"
+        },
+        {
+          "input": "('6e95494cd7fb', 'big green things', None)",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection",
+        "counting"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and return 'A' if the first is greater, otherwise 'B'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Counts are equal"
+      ],
+      "tests": [
+        {
+          "input": "(3, 5)",
+          "expect": "B"
+        },
+        {
+          "input": "(5, 3)",
+          "expect": "A"
+        },
+        {
+          "input": "(4, 4)",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "logic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_image",
+    "compare_counts"
+  ]
+}

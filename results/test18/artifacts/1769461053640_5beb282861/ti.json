@@ -1,0 +1,67 @@
+{
+  "problem_state_summary": "The problem involves analyzing a food web diagram to determine the impact on various species if the number of large roach decreases. The food web shows relationships between large roach, steelheads, stickleback fry, and predatory insects. The task is to predict how the populations of these species will change due to a decrease in large roach. The options provided suggest different outcomes for the populations of steelheads, stickleback fry, and predatory insects. The problem requires understanding the dependencies and interactions within the food web to make an informed prediction. The diagram is crucial for visualizing these relationships and making the correct inference.",
+  "entities": [
+    "Large Roach",
+    "Steelheads",
+    "Stickleback Fry",
+    "Predatory Insects"
+  ],
+  "unknowns": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "required_operations": [
+    "Analyze the food web diagram",
+    "Identify relationships between species",
+    "Predict impact of decrease in large roach on other species",
+    "Map prediction to provided options"
+  ],
+  "blockers": [
+    "impact on steelheads",
+    "impact on stickleback fry",
+    "impact on predatory insects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure all species and relationships are correctly identified"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "The population of steelheads would decrease."
+      },
+      {
+        "label": "B",
+        "text": "The population of stickleback fry would increase."
+      },
+      {
+        "label": "C",
+        "text": "The population of predatory insects would increase."
+      },
+      {
+        "label": "D",
+        "text": "The population of predatory insects would decrease."
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "food web",
+    "ecology",
+    "population dynamics",
+    "diagram analysis"
+  ]
+}

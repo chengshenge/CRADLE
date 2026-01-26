@@ -1,0 +1,41 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_ecosystem_dependencies",
+      "signature": "(organisms, relationships)->most_dependent",
+      "purpose": "Analyze the relationships between organisms in an ecosystem to determine which organism is most dependent on a specific resource.",
+      "inputs": [
+        "organisms",
+        "relationships"
+      ],
+      "outputs": "most_dependent",
+      "edge_cases": [
+        "All organisms have equal dependency",
+        "No direct dependency on the resource"
+      ],
+      "tests": [
+        {
+          "input": "{\"organisms\": [\"Tilapia\", \"Common water flea\", \"Great diving beetle\", \"Tadpole\"], \"relationships\": {\"Algae\": [\"Common water flea\", \"Tadpole\"]}}",
+          "expect": "Common water flea"
+        },
+        {
+          "input": "{\"organisms\": [\"Tilapia\", \"Common water flea\", \"Great diving beetle\", \"Tadpole\"], \"relationships\": {\"Algae\": [\"Tilapia\", \"Common water flea\", \"Great diving beetle\", \"Tadpole\"]}}",
+          "expect": "Tilapia"
+        },
+        {
+          "input": "{\"organisms\": [\"Tilapia\", \"Common water flea\", \"Great diving beetle\", \"Tadpole\"], \"relationships\": {\"Algae\": []}}",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "ecosystem",
+        "dependency",
+        "analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_ecosystem_dependencies"
+  ]
+}

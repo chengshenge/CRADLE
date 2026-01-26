@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Determine the measure of angle ∠BOC using angle bisector properties.",
+      "action": "reason",
+      "note": "In triangle △ABC, the sum of angles is 180°. Given ∠A = 110°, the sum of ∠B and ∠C is 70°. Since OB and OC are angle bisectors, ∠BOC = 90° + (∠A/2)."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠BOC.",
+      "action": "python",
+      "code": "angle_A = 110; angle_BOC = 90 + (angle_A / 2); angle_BOC"
+    },
+    {
+      "intention": "Format the calculated angle to match the multiple-choice options.",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

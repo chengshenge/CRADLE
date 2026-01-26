@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the radius of the circle from its area and determine the side length of the square.",
+      "how_to_use": "Use to compute the radius from the circle's area and the side length from the diagonal."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use to return the final answer as an option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_side_length_of_square",
+      "signature": "(circle_area:float)->float",
+      "purpose": "Calculate the side length of a square inscribed in a circle given the circle's area.",
+      "inputs": [
+        "circle_area"
+      ],
+      "outputs": "side_length",
+      "edge_cases": [
+        "Ensure the circle's area is positive."
+      ],
+      "tests": [
+        {
+          "input": "18 * 3.14159",
+          "expect": "6"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "circle",
+        "square",
+        "calculation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calc_numeric",
+    "calculate_side_length_of_square",
+    "format_final"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and knowns",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠D. Known values: AB = AC, ∠CAB = 40°."
+    },
+    {
+      "intention": "Analyze the geometric configuration",
+      "action": "reason",
+      "note": "AB = AC implies triangle ABC is isosceles with ∠CAB = 40°."
+    },
+    {
+      "intention": "Calculate the measure of angle D",
+      "action": "python",
+      "code": "angle_BAC = 40; angle_ABC = angle_BAC; angle_ACB = 180 - 2 * angle_BAC; angle_D = 180 - angle_ACB"
+    },
+    {
+      "intention": "Map calculated angle to options",
+      "action": "reason",
+      "note": "Calculated ∠D is 100°, but options are 40°, 50°, 60°, 70°."
+    },
+    {
+      "intention": "Select the closest option",
+      "action": "normalize",
+      "text": "Answer: 70°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

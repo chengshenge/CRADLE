@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and knowns",
+      "action": "reason",
+      "note": "The unknown angle ∠A is the blocker. Known: ∠DBC = 54°."
+    },
+    {
+      "intention": "Use diagram interpretation skill",
+      "action": "python",
+      "code": "interpret_diagram_for_geometry('1a7d95f2997e')"
+    },
+    {
+      "intention": "Solve for ∠A using geometric relationships",
+      "action": "python",
+      "code": "sympy_solve('2*a + 54 = 90', 'a')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 36°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

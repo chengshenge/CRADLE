@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "A cumin canister with a mass of 0.40 kg slides across a horizontal frictionless counter at a speed of 0.50 m/s. It collides with a spring that has a spring constant of 750 N/m. The task is to determine the distance by which the spring is compressed when the canister is momentarily stopped. The problem involves the conversion of the canister's kinetic energy into the potential energy stored in the spring. The setup is likely depicted in a diagram showing the spring, the canister, and possibly the compression distance. The solution requires calculating the compression distance using the given mass, speed, and spring constant.",
+  "entities": [
+    "canister",
+    "spring",
+    "mass",
+    "speed",
+    "spring constant"
+  ],
+  "unknowns": [
+    "distance d"
+  ],
+  "required_operations": [
+    "Calculate initial kinetic energy of the canister",
+    "Set kinetic energy equal to potential energy of the spring",
+    "Solve for compression distance d"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: ensure distance d is clearly marked"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "physics",
+    "energy conversion",
+    "spring compression",
+    "kinetic energy",
+    "potential energy"
+  ]
+}

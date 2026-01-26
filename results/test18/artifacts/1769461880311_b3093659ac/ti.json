@@ -1,0 +1,74 @@
+{
+  "problem_state_summary": "The problem involves completing a matrix, which is represented as a table with rows and columns. The matrix is partially filled, and the task is to identify the pattern or rule governing the arrangement of numbers in the matrix. The first row of the matrix contains the numbers 2, 4, and 6, the second row contains 3, 6, and 9, and the third row contains 4, 8, and 12. The pattern appears to involve multiplication by a constant factor across each row. The goal is to determine the missing elements in the matrix that complete the pattern. The completion must match one of the given choices, which are labeled A through F. The specific pattern or rule must be deduced from the image of the matrix.",
+  "entities": [
+    "Row 1",
+    "Row 2",
+    "Row 3",
+    "Col 1",
+    "Col 2",
+    "Col 3"
+  ],
+  "unknowns": [
+    "matrix completion"
+  ],
+  "required_operations": [
+    "Identify the pattern or rule in the matrix",
+    "Determine the missing elements based on the pattern",
+    "Select the correct completion from the given choices"
+  ],
+  "blockers": [
+    "matrix completion"
+  ],
+  "risk_checks": [
+    "row/column alignment",
+    "header meaning",
+    "units",
+    "totals vs per-item"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      },
+      {
+        "label": "F",
+        "text": "F"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "matrix",
+    "pattern recognition",
+    "table completion",
+    "multiple choice"
+  ]
+}

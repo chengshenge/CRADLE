@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform the subtraction operation to find the number of remaining objects.",
+      "how_to_use": "Use calc_numeric to compute the total number of objects minus the number of large rubber spheres and big shiny cylinders."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use format_final to return the result in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects",
+      "signature": "(descriptions:List[str], target:str)->int",
+      "purpose": "To count the number of objects matching a specific description from a list of object descriptions.",
+      "inputs": [
+        "A list of object descriptions",
+        "The target description to count"
+      ],
+      "outputs": "The count of objects matching the target description",
+      "edge_cases": [
+        "No objects match the target description",
+        "All objects match the target description"
+      ],
+      "tests": [
+        {
+          "input": "(['large rubber sphere', 'small wooden cube', 'large rubber sphere'], 'large rubber sphere')",
+          "expect": "2"
+        },
+        {
+          "input": "(['big shiny cylinder', 'medium plastic cone'], 'large rubber sphere')",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "object counting",
+        "text interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects",
+    "calc_numeric",
+    "format_final"
+  ]
+}

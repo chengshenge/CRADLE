@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining how many objects are left after subtracting specific categories of objects from a total. The categories to be subtracted are rubber balls and yellow shiny things. The total number of objects is given as 15. The task is to subtract the number of rubber balls and yellow shiny things from this total. The known quantities include 5 rubber balls and 3 yellow shiny things. The goal is to find the remaining number of objects after these subtractions. The problem requires basic arithmetic operations to solve.",
+  "entities": [
+    "total objects",
+    "rubber balls",
+    "yellow shiny things"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify total number of objects",
+    "Subtract number of rubber balls",
+    "Subtract number of yellow shiny things",
+    "Compute remaining objects"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure accurate count of rubber balls and yellow shiny things from text",
+    "Verify total object count is consistent with image data"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "counting",
+    "subtraction"
+  ]
+}

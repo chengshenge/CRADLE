@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and key points for limit determination",
+      "action": "reason",
+      "note": "The key point at x = -1 is identified as (x = -1, y = 2)."
+    },
+    {
+      "intention": "Determine the limit of the function as x approaches -1",
+      "action": "python",
+      "code": "limit_value = 2"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 2"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

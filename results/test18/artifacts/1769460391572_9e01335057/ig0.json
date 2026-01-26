@@ -1,0 +1,91 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure (ABCD) with specific angles and side lengths mentioned, indicating a need to analyze a diagram."
+  ],
+  "problem_understanding": "The problem is about finding the measure of angle D in a geometric figure ABCD, given that AB equals AC and angle CAB is 40 degrees.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "AB",
+        "value": "AC",
+        "unit": "",
+        "source": "text",
+        "note": "AB equals AC"
+      },
+      {
+        "name": "∠CAB",
+        "value": "40",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle CAB is 40 degrees"
+      }
+    ],
+    "unknown": [
+      "∠D"
+    ],
+    "relations": [
+      "AB = AC",
+      "∠CAB = 40°"
+    ],
+    "constraints": [
+      "ABCD is a geometric figure",
+      "AB = AC"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "40°"
+      },
+      {
+        "label": "B",
+        "text": "50°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "70°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "angle find",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle D using the given geometric properties and relationships."
+  ],
+  "problem_summary": "Find the measure of angle D in the geometric figure ABCD, given AB = AC and angle CAB is 40 degrees.",
+  "knowns": [
+    {
+      "name": "AB",
+      "value": "AC",
+      "unit": "",
+      "source": "text",
+      "note": "AB equals AC"
+    },
+    {
+      "name": "∠CAB",
+      "value": "40",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle CAB is 40 degrees"
+    }
+  ],
+  "asks": [
+    "∠D"
+  ],
+  "constraints": [
+    "ABCD is a geometric figure",
+    "AB = AC"
+  ],
+  "visual_facts": [
+    "The diagram likely shows a triangle or quadrilateral with labeled angles and sides."
+  ],
+  "ambiguity": [
+    "The exact type of figure (triangle or quadrilateral) is not specified, but it is implied to be a triangle due to the given angles and sides."
+  ]
+}

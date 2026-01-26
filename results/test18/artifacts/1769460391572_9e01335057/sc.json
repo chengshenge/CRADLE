@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_ages_from_image",
+      "purpose": "Extract text and geometric information from the attached image to understand the diagram and its labels.",
+      "how_to_use": "Use the image hash to extract relevant geometric information and labels from the diagram."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform any necessary numeric calculations to deduce the measure of angle D.",
+      "how_to_use": "Use this skill to compute any numeric expressions derived from the geometric relationships."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_geometric_properties",
+      "signature": "(knowns, unknowns, relations, constraints)->angle_measure",
+      "purpose": "Analyze the geometric properties and relationships to deduce the measure of angle D.",
+      "inputs": [
+        "knowns",
+        "unknowns",
+        "relations",
+        "constraints"
+      ],
+      "outputs": "angle_measure",
+      "edge_cases": [
+        "Ambiguous diagram interpretations",
+        "Multiple possible configurations"
+      ],
+      "tests": [
+        {
+          "input": "{\"knowns\": {\"AB\": \"AC\", \"∠CAB\": 40}, \"unknowns\": [\"∠D\"], \"relations\": [], \"constraints\": []}",
+          "expect": "60"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle deduction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "analyze_geometric_properties",
+    "calc_numeric",
+    "format_final"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_ages_from_image",
+      "purpose": "Extract ages of John and Alice from the provided image.",
+      "how_to_use": "Use the image hash to extract the ages as integers."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the age gap by subtracting John's age from Alice's age.",
+      "how_to_use": "Use the expression 'age_of_alice - age_of_john' to compute the age gap."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line string.",
+      "how_to_use": "Use the computed age gap to format the answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_ages_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

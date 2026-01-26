@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values.",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠F. Known value is ∠AOF = 40°."
+    },
+    {
+      "intention": "Use circle properties to find ∠F.",
+      "action": "reason",
+      "note": "Since AB is the diameter, ∠AOF is an inscribed angle subtending the arc AF. Therefore, ∠F = 90° - ∠AOF."
+    },
+    {
+      "intention": "Calculate the measure of angle F.",
+      "action": "python",
+      "code": "angle_AOF = 40; angle_F = 90 - angle_AOF"
+    },
+    {
+      "intention": "Map calculated angle to the closest option.",
+      "action": "reason",
+      "note": "The calculated angle F is 50°, which is not an option. Re-evaluate using the correct geometric property."
+    },
+    {
+      "intention": "Re-evaluate using the correct geometric property.",
+      "action": "reason",
+      "note": "∠AOF is a central angle, so ∠F = ∠AOF / 2."
+    },
+    {
+      "intention": "Recalculate the measure of angle F.",
+      "action": "python",
+      "code": "angle_F = angle_AOF / 2"
+    },
+    {
+      "intention": "Format the final answer.",
+      "action": "normalize",
+      "text": "Answer: 20°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

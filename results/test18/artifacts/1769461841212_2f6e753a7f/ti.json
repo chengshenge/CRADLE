@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "A real estate agent has counted the number of houses on each block in a neighborhood. The task is to determine how many blocks have exactly 36 houses. The information is presented in a textual format, listing the number of houses on each block. The problem requires identifying and counting the blocks that meet the specific criterion of having exactly 36 houses. The known data includes the number of houses on each block, and the unknown is the count of blocks with exactly 36 houses. The solution involves a straightforward arithmetic task of counting the relevant blocks.",
+  "entities": [
+    "Block A",
+    "Block B",
+    "Block C",
+    "Block D",
+    "Block E"
+  ],
+  "unknowns": [
+    "number of blocks with exactly 36 houses"
+  ],
+  "required_operations": [
+    "Read the list of blocks and their house counts",
+    "Identify blocks with exactly 36 houses",
+    "Count the number of such blocks"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the text accurately lists the number of houses per block",
+    "Verify that the count of 36 houses is correctly identified for each block"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "counting",
+    "textual data"
+  ]
+}

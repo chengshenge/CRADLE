@@ -1,0 +1,73 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(diagram:str, object1:str, object2:str, relation1:str, relation2:str)->(int, int)",
+      "purpose": "Identify and count the number of specified objects in a diagram based on their spatial relationships to two reference objects.",
+      "inputs": [
+        "diagram",
+        "object1",
+        "object2",
+        "relation1",
+        "relation2"
+      ],
+      "outputs": "(int, int)",
+      "edge_cases": [
+        "Objects are partially obscured",
+        "Objects are not clearly distinguishable",
+        "Multiple objects overlap"
+      ],
+      "tests": [
+        {
+          "input": "diagram='img_hash_8eec4df5fa53', object1='small metal jet', object2='tiny sedan', relation1='behind', relation2='left of'",
+          "expect": "(3, 5)"
+        },
+        {
+          "input": "diagram='img_hash_8eec4df5fa53', object1='tree', object2='house', relation1='next to', relation2='in front of'",
+          "expect": "(0, 0)"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "spatial relationships",
+        "counting"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and return 'Yes' if the first count is less than the second, otherwise 'No'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "count1=3, count2=5",
+          "expect": "Yes"
+        },
+        {
+          "input": "count1=5, count2=3",
+          "expect": "No"
+        },
+        {
+          "input": "count1=4, count2=4",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "compare_counts"
+  ]
+}

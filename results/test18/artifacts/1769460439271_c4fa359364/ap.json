@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the arc length of the sector.",
+      "action": "reason",
+      "note": "The arc length of the sector becomes the circumference of the base of the cone."
+    },
+    {
+      "intention": "Compute the arc length using the given central angle and radius.",
+      "action": "python",
+      "code": "arc_length = calc_numeric('(120 / 360) * 2 * math.pi * 6')"
+    },
+    {
+      "intention": "Map the calculated arc length to the closest option.",
+      "action": "reason",
+      "note": "Compare the calculated arc length with the given options to find the closest match."
+    },
+    {
+      "intention": "Format the final answer based on the closest option.",
+      "action": "normalize",
+      "text": "Answer: 4πcm"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,47 @@
+{
+  "region_to_detect": "chart",
+  "reasoning_of_region": [
+    "The problem involves comparing the heights of bars, which suggests that the image contains a bar chart."
+  ],
+  "problem_understanding": "The problem asks whether the sum of the smallest two bars is greater than the largest bar in a bar chart.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "sum of smallest two bars",
+      "height of largest bar"
+    ],
+    "relations": [
+      "sum of smallest two bars > height of largest bar"
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ]
+  },
+  "question_type_guess": "chart",
+  "need_ocr": "yes",
+  "noun_and_verb": "sum nouns is verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task requires reading the heights of bars from a chart and performing a comparison."
+  ],
+  "problem_summary": "Determine if the sum of the smallest two bars in a bar chart is greater than the largest bar.",
+  "knowns": [],
+  "asks": [
+    "Is the sum of the smallest two bars greater than the largest bar?"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The image contains a bar chart with multiple bars of varying heights."
+  ],
+  "ambiguity": [
+    "The exact heights of the bars are not provided in the text and need to be extracted from the image."
+  ]
+}

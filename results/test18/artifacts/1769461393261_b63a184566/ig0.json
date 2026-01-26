@@ -1,0 +1,78 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves geometry with specific references to a circle, diameter, chord, and angles, which suggests the need to examine a diagram."
+  ],
+  "problem_understanding": "The problem involves a circle with a diameter AB and a chord CD. An angle ∠ADC is given, and the task is to find the degree of angle ∠CAB.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠ADC",
+        "value": "26.0",
+        "unit": "degrees",
+        "source": "text",
+        "note": "Angle given in the problem statement."
+      }
+    ],
+    "unknown": [
+      "∠CAB"
+    ],
+    "relations": [
+      "AB is the diameter of ⊙O",
+      "CD is a chord of ⊙O"
+    ],
+    "constraints": [
+      "AB is a straight line as it is the diameter",
+      "∠ADC is an inscribed angle"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "26°"
+      },
+      {
+        "label": "B",
+        "text": "74°"
+      },
+      {
+        "label": "C",
+        "text": "64°"
+      },
+      {
+        "label": "D",
+        "text": "54°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "circle nouns find verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of an angle in a geometric figure, which is a straightforward calculation based on the given information and geometric properties."
+  ],
+  "problem_summary": "Given a circle with diameter AB and chord CD, and angle ∠ADC = 26°, find the degree of angle ∠CAB.",
+  "knowns": [
+    {
+      "name": "∠ADC",
+      "value": "26.0",
+      "unit": "degrees",
+      "source": "text",
+      "note": "Angle given in the problem statement."
+    }
+  ],
+  "asks": [
+    "∠CAB"
+  ],
+  "constraints": [
+    "AB is the diameter of ⊙O",
+    "CD is a chord of ⊙O",
+    "∠ADC is an inscribed angle"
+  ],
+  "visual_facts": [
+    "The diagram likely shows a circle with points A, B, C, D, and center O."
+  ],
+  "ambiguity": [
+    "The exact positions of points C and D on the circle are not specified, but they are part of the chord CD."
+  ]
+}

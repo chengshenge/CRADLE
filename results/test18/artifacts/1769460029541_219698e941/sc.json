@@ -1,0 +1,66 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use this skill to format the final count of birth years greater than 1945."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_birth_years_from_image",
+      "signature": "(image_hash:str)->list",
+      "purpose": "Extract a list of birth years from the provided image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A list of birth years extracted from the image.",
+      "edge_cases": [
+        "Image is blurry or contains unclear text.",
+        "Birth years are not in a recognizable format."
+      ],
+      "tests": [
+        {
+          "input": "2ea198aeb4ab",
+          "expect": "[1950, 1960, 1970]"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "text extraction"
+      ]
+    },
+    {
+      "name": "count_years_after_1945",
+      "signature": "(birth_years:list)->int",
+      "purpose": "Count the number of birth years that are greater than 1945.",
+      "inputs": [
+        "birth_years"
+      ],
+      "outputs": "The count of birth years greater than 1945.",
+      "edge_cases": [
+        "All birth years are before 1945.",
+        "No birth years are provided."
+      ],
+      "tests": [
+        {
+          "input": "[1930, 1946, 1950, 1965]",
+          "expect": "3"
+        },
+        {
+          "input": "[1920, 1935, 1940]",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "counting",
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_birth_years_from_image",
+    "count_years_after_1945",
+    "format_final"
+  ]
+}

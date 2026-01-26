@@ -1,0 +1,92 @@
+{
+  "region_to_detect": "diagram",
+  "reasoning_of_region": [
+    "The problem involves a geometric figure with lines AB and AC, and the question is about the lengths of these lines."
+  ],
+  "problem_understanding": "The problem provides a ratio of lengths between two lines AB and AC and gives the actual length of AC. The task is to find the length of AB using the given ratio.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "Ratio of AB to AC",
+        "value": "2:5",
+        "unit": "",
+        "source": "text",
+        "note": "Given in the problem statement"
+      },
+      {
+        "name": "Length of AC",
+        "value": "25",
+        "unit": "",
+        "source": "text",
+        "note": "Given in the problem statement"
+      }
+    ],
+    "unknown": [
+      "Length of AB"
+    ],
+    "relations": [
+      "AB/AC = 2/5"
+    ],
+    "constraints": [
+      "AC = 25"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "10"
+      },
+      {
+        "label": "C",
+        "text": "15"
+      },
+      {
+        "label": "D",
+        "text": "18"
+      },
+      {
+        "label": "E",
+        "text": "20"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "5 nouns 1 verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is straightforward as it involves using the given ratio and length to find the unknown length."
+  ],
+  "problem_summary": "Given the ratio of lengths of lines AB to AC as 2:5 and the length of AC as 25, find the length of AB.",
+  "knowns": [
+    {
+      "name": "Ratio of AB to AC",
+      "value": "2:5",
+      "unit": "",
+      "source": "text",
+      "note": "Given in the problem statement"
+    },
+    {
+      "name": "Length of AC",
+      "value": "25",
+      "unit": "",
+      "source": "text",
+      "note": "Given in the problem statement"
+    }
+  ],
+  "asks": [
+    "Length of AB"
+  ],
+  "constraints": [
+    "AC = 25"
+  ],
+  "visual_facts": [
+    "The diagram likely shows lines AB and AC."
+  ],
+  "ambiguity": [
+    "The exact positions of lines AB and AC in the diagram are not specified, but the ratio and length are sufficient to solve the problem."
+  ]
+}

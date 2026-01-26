@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves a geometric configuration where a square is tangent to a line at a specific point labeled P. The task is to determine the value of x, which is related to this configuration. The square is a geometric shape with equal sides and right angles, and it is tangent to the line at point P. The exact relationship or measurement involving x is not specified in the prompt, which adds some ambiguity to the problem. The diagram includes labels for P and x, but no specific measurements or additional information about x is provided. The problem requires understanding the geometric relationship between the square and the line to find the value of x.",
+  "entities": [
+    "square",
+    "line",
+    "point P"
+  ],
+  "unknowns": [
+    "x"
+  ],
+  "required_operations": [
+    "Analyze the geometric relationship between the square and the line.",
+    "Determine how the tangent point P affects the value of x.",
+    "Use geometric properties of the square to find x."
+  ],
+  "blockers": [
+    "x"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "tangent",
+    "square",
+    "diagram"
+  ]
+}

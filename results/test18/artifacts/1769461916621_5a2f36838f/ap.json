@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest and smallest bar values from the chart.",
+      "action": "reason",
+      "note": "The largest value is 60 (May) and the smallest is 10 (June) from the chart."
+    },
+    {
+      "intention": "Compute the difference between the largest and smallest bar values.",
+      "action": "python",
+      "code": "difference = calc_numeric('60 - 10')"
+    },
+    {
+      "intention": "Format the final answer as a floating-point number with one decimal place.",
+      "action": "python",
+      "code": "formatted_answer = format_final(difference)"
+    },
+    {
+      "intention": "Provide the final answer.",
+      "action": "normalize",
+      "text": "Answer: 50.0"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

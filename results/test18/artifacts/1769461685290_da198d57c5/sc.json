@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the perimeter of the square using the formula.",
+      "how_to_use": "Use the formula '4 * side_length' to calculate the perimeter."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use to format the computed perimeter into the required output format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_side_length_from_diagram",
+      "signature": "(image_hash:str)->float",
+      "purpose": "Extract the side length of the square from the diagram.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "If the side length is not clearly labeled, return an error or default value."
+      ],
+      "tests": [
+        {
+          "input": "eb3533562ae9",
+          "expect": 5.0
+        }
+      ],
+      "tags": [
+        "image processing",
+        "geometry",
+        "text extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_side_length_from_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

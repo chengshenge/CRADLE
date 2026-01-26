@@ -1,0 +1,69 @@
+{
+  "problem_state_summary": "The problem involves a geometric diagram where two straight lines, AB and CD, intersect at point O. Line OD bisects angle AOE, and angle BOC is given as 50 degrees. The task is to determine the measure of angle EOB. The problem provides multiple-choice options for the value of angle EOB. The known information includes the measure of angle BOC and the fact that OD is a bisector of angle AOE. The solution requires understanding the relationships between the angles formed by the intersecting lines and the bisector. The final answer must be one of the provided options.",
+  "entities": [
+    "∠BOC",
+    "∠EOB",
+    "∠AOE",
+    "OD",
+    "AB",
+    "CD",
+    "O"
+  ],
+  "unknowns": [
+    "∠EOB"
+  ],
+  "required_operations": [
+    "Examine the diagram to understand the angle relationships",
+    "Use the fact that OD bisects ∠AOE",
+    "Apply angle properties of intersecting lines",
+    "Determine the measure of ∠EOB",
+    "Map the calculated angle to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "∠EOB"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify angle markers and bisector indication",
+    "Check for any missing angle markers or labels"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "50°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "70°"
+      },
+      {
+        "label": "D",
+        "text": "80°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "intersecting lines",
+    "bisector",
+    "diagram interpretation"
+  ]
+}

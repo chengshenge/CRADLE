@@ -1,0 +1,58 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem involves determining if 'Coral' is the roughest, which likely requires reading text or numerical values related to 'Coral' and its roughness from the image."
+  ],
+  "problem_understanding": "The problem asks whether 'Coral' is the roughest among a set of options, which implies comparing roughness values or descriptions.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "Coral's roughness",
+        "value": "7.5",
+        "unit": "",
+        "source": "image",
+        "note": "Extracted from text"
+      }
+    ],
+    "unknown": [
+      "Coral's roughness"
+    ],
+    "relations": [
+      "Comparison of roughness values",
+      "Coral's roughness is compared to Sandstone, Granite, and Limestone"
+    ],
+    "constraints": [],
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ]
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "Coral is",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine if 'Coral' is the roughest, which involves reading and comparing text or numerical values related to roughness."
+  ],
+  "problem_summary": "Determine if 'Coral' is the roughest based on information in the image.",
+  "knowns": [],
+  "asks": [
+    "Is Coral the roughest?"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "Coral: Roughness 7.5",
+    "Sandstone: Roughness 6.8",
+    "Granite: Roughness 5.9",
+    "Limestone: Roughness 4.3"
+  ],
+  "ambiguity": [
+    "The image content is needed to determine the roughness of 'Coral' and compare it to others."
+  ]
+}

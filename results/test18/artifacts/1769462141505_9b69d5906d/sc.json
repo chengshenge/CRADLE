@@ -1,0 +1,38 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_food_web_diagram",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "Analyze a food web diagram to determine the ecological impact on various species when a primary food source is removed.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary with species as keys and their predicted impact (increase, decrease, extinct, no change) as values.",
+      "edge_cases": [
+        "Unclear or missing arrows in the diagram",
+        "Species not directly connected to the primary food source"
+      ],
+      "tests": [
+        {
+          "input": "3c717785729b",
+          "expect": {
+            "Crabs": "decrease",
+            "Limpets": "decrease",
+            "Dolphins": "no change",
+            "Sea Gulls": "no change",
+            "Star Fish": "no change"
+          }
+        }
+      ],
+      "tags": [
+        "ecology",
+        "food web",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_food_web_diagram"
+  ]
+}

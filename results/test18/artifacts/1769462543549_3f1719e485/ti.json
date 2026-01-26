@@ -1,0 +1,47 @@
+{
+  "problem_state_summary": "The problem involves determining how many objects are left after subtracting specific types of objects from a total count. The objects to be subtracted are yellow matte blocks and tiny brown cylinders. The task requires identifying these objects in a diagram and performing subtraction to find the remaining count. However, the image does not contain any visible yellow matte blocks or tiny brown cylinders, making the subtraction unnecessary. The total number of objects is also unreadable from the image, which complicates the task. The problem ultimately asks for the number of remaining objects after the specified subtractions.",
+  "entities": [
+    "total_objects",
+    "yellow_matte_blocks",
+    "tiny_brown_cylinders"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count total objects",
+    "Identify and count yellow matte blocks",
+    "Identify and count tiny brown cylinders",
+    "Subtract counts of yellow matte blocks and tiny brown cylinders from total objects"
+  ],
+  "blockers": [
+    "total_objects",
+    "yellow_matte_blocks",
+    "tiny_brown_cylinders"
+  ],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: ensure all object types are visible and countable"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "subtraction",
+    "geometry",
+    "visual interpretation"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the sum of the smallest two bars and compare it to the largest bar.",
+      "how_to_use": "Use calc_numeric to compute the sum of the heights of bars C and A, and compare it to the height of bar D."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as required by the multiple-choice question.",
+      "how_to_use": "Use format_final to return the answer in the format 'Answer: A' or 'Answer: B'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_extreme_bars",
+      "signature": "(heights:dict)->(smallest_two:list, largest:str)",
+      "purpose": "Identify the smallest two bars and the largest bar from a given set of bar heights.",
+      "inputs": [
+        "A dictionary of bar labels and their corresponding heights."
+      ],
+      "outputs": "A list containing the labels of the smallest two bars and a string for the label of the largest bar.",
+      "edge_cases": [
+        "All bars have the same height.",
+        "Only one bar is present."
+      ],
+      "tests": [
+        {
+          "input": "{\"A\": 3, \"B\": 5, \"C\": 2, \"D\": 7}",
+          "expect": "(['C', 'A'], 'D')"
+        },
+        {
+          "input": "{\"A\": 4, \"B\": 4, \"C\": 4, \"D\": 4}",
+          "expect": "(['A', 'B'], 'A')"
+        },
+        {
+          "input": "{\"A\": 1}",
+          "expect": "(['A'], 'A')"
+        }
+      ],
+      "tags": [
+        "bar chart",
+        "comparison",
+        "extreme values"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_extreme_bars",
+    "calc_numeric",
+    "format_final"
+  ]
+}

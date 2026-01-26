@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_in_diagram",
+      "signature": "(image_hash:str, object_types:list)->dict",
+      "purpose": "Identify and count specific types of objects in a diagram.",
+      "inputs": [
+        "image_hash",
+        "object_types"
+      ],
+      "outputs": "A dictionary with object types as keys and their counts as values.",
+      "edge_cases": [
+        "No objects of specified types are visible.",
+        "Image is unclear or objects are overlapping."
+      ],
+      "tests": [
+        {
+          "input": "('a0f2bf717d8f', ['yellow matte blocks', 'tiny brown cylinders'])",
+          "expect": "{'yellow matte blocks': 0, 'tiny brown cylinders': 0}"
+        },
+        {
+          "input": "('a0f2bf717d8f', ['red spheres', 'blue cubes'])",
+          "expect": "{'red spheres': 5, 'blue cubes': 3}"
+        }
+      ],
+      "tags": [
+        "diagram interpretation",
+        "object counting",
+        "image processing"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_in_diagram"
+  ]
+}

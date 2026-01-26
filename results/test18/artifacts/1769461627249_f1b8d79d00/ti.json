@@ -1,0 +1,53 @@
+{
+  "problem_state_summary": "The problem involves determining whether the value of the function f at x=3 is greater than 0. The function f(x) is represented graphically in the image as a chart. The x-axis is labeled 'x' with ticks at 0, 1, 2, 3, 4, 5, and the y-axis is labeled 'f(x)' with ticks at -2, -1, 0, 1, 2, 3. The point on the graph where x=3 has a y-value of 1. The task is to interpret this graph to find the value of f(3) and compare it to 0. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The goal is to determine if f(3) > 0 and map the answer to the correct choice.",
+  "entities": [
+    "f(x)",
+    "x-axis",
+    "y-axis"
+  ],
+  "unknowns": [
+    "f(3)"
+  ],
+  "required_operations": [
+    "Locate the point on the graph where x=3",
+    "Determine the y-value at x=3",
+    "Compare the y-value to 0",
+    "Map the result to the correct multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accuracy",
+    "Ensure correct interpretation of the y-value at x=3",
+    "Verify units and labels on the axes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "function",
+    "graph",
+    "comparison",
+    "multiple-choice"
+  ]
+}

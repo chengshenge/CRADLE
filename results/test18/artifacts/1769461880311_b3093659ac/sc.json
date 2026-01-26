@@ -1,0 +1,38 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "complete_matrix_pattern",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "Identify the pattern in a partially filled matrix and determine the missing elements to complete it, selecting the correct option from given choices.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Matrix with non-linear patterns",
+        "Multiple valid completions"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"9b1ff9398bbd\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"]}",
+          "expect": "A"
+        },
+        {
+          "input": "{\"image_hash\": \"9b1ff9398bbd\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\", \"F\"]}",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "matrix",
+        "pattern recognition",
+        "table completion",
+        "multiple choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "complete_matrix_pattern"
+  ]
+}

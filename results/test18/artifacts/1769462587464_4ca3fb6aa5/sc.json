@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "extract_text_from_image",
+      "purpose": "Extract text from the image to identify the number of brown SUVs and brown rubber school buses.",
+      "how_to_use": "Use the image hash to extract the text and identify the relevant numbers."
+    },
+    {
+      "name": "calc_numeric",
+      "purpose": "Perform numeric comparison between the extracted numbers.",
+      "how_to_use": "Use the extracted numbers to determine if the number of brown SUVs is less than the number of brown rubber school buses."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Map the comparison result to the correct option label ('A' for 'Yes', 'B' for 'No')."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "extract_text_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

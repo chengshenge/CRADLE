@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup. The measuring cup has visible numeric markings that indicate different volume levels. The task is to identify the largest marking on the cup, which represents its total volume. The image attached to the problem shows these markings, and the largest visible marking is 500. The problem requires reading this number from the image to provide the total volume. The answer must be an integer value, as specified in the hint.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the numeric markings from the image",
+    "Identify the largest marking",
+    "Determine the total volume based on the largest marking"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure all visible markings are considered",
+    "Verify the largest marking is correctly identified"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "integer answer",
+    "image reading"
+  ]
+}

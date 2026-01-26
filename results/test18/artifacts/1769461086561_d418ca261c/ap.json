@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers in the problem.",
+      "action": "reason",
+      "note": "The problem has unresolved targets: number of gray rubber objects and big cyan matte fighters."
+    },
+    {
+      "intention": "Use provided visual facts to determine counts.",
+      "action": "reason",
+      "note": "Visual facts indicate 3 gray rubber objects and 2 big cyan matte fighters."
+    },
+    {
+      "intention": "Compare the counts to determine the answer.",
+      "action": "python",
+      "code": "gray_rubber_objects = 3; big_cyan_matte_fighters = 2; answer = 'Yes' if gray_rubber_objects > big_cyan_matte_fighters else 'No'"
+    },
+    {
+      "intention": "Format the final answer based on comparison.",
+      "action": "normalize",
+      "text": "Answer: Yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

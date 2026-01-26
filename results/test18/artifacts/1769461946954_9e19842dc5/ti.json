@@ -1,0 +1,51 @@
+{
+  "problem_state_summary": "The problem involves comparing two colors, Sky Blue and Web Maroon, based on numerical values extracted from an image. Sky Blue has a value of 45, while Web Maroon has a value of 60. The task is to determine if Sky Blue is less than Web Maroon. The comparison is likely numerical, given the values provided. The problem is presented in a multiple-choice format, with options 'yes' and 'no'. The final answer must be mapped to one of these options. The criteria for comparison are not explicitly stated, but the numerical values suggest a straightforward comparison.",
+  "entities": [
+    "Sky Blue",
+    "Web Maroon"
+  ],
+  "unknowns": [
+    "Sky Blue",
+    "Web Maroon"
+  ],
+  "required_operations": [
+    "Extract values for Sky Blue and Web Maroon from text",
+    "Compare the numerical values of Sky Blue and Web Maroon",
+    "Determine if Sky Blue is less than Web Maroon",
+    "Map the result to the correct multiple-choice option"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the numerical values for Sky Blue and Web Maroon are correctly extracted from the text",
+    "Verify that the comparison is based on numerical values as implied"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "numerical",
+    "multiple-choice"
+  ]
+}

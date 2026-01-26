@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves a geometric configuration with a right triangle where one of the angles is 60°. The vertex A of the 60° angle and the right angle vertex C are positioned on two parallel lines, FG and DE, respectively. The hypotenuse AB of the triangle bisects angle CAG and intersects the line DE at point H. The task is to determine the measure of angle BCH. The problem provides multiple-choice options for the measure of angle BCH. The known elements include the 60° angle at vertex A and the parallel nature of lines FG and DE. The unknown element is the measure of angle BCH, which needs to be computed based on the given geometric relationships and constraints.",
+  "entities": [
+    "angle A",
+    "lines FG",
+    "lines DE",
+    "angle CAG",
+    "point H",
+    "angle BCH"
+  ],
+  "unknowns": [
+    "angle BCH"
+  ],
+  "required_operations": [
+    "Analyze the geometric configuration",
+    "Use the properties of parallel lines and angle bisectors",
+    "Compute the measure of angle BCH"
+  ],
+  "blockers": [
+    "angle BCH"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers",
+    "parallel/perpendicular indicators"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "60°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "30°"
+      },
+      {
+        "label": "D",
+        "text": "25°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angles",
+    "parallel lines",
+    "angle bisector",
+    "right triangle"
+  ]
+}

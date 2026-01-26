@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "The problem involves understanding the relationship between pelicans and fish populations. It asks what happens to the fish population if the number of pelicans increases. The relationship is described in text form, indicating that an increase in pelicans leads to a decrease in fish. The task is to determine the effect on the fish population based on this relationship. The problem is presented as a multiple-choice question with four options. The correct answer must be selected from these options.",
+  "entities": [
+    "pelicans",
+    "fish population"
+  ],
+  "unknowns": [
+    "effect on fish population"
+  ],
+  "required_operations": [
+    "Read the text to understand the relationship between pelicans and fish.",
+    "Determine the effect on fish population if pelicans increase.",
+    "Map the effect to one of the given options."
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Check for any hidden assumptions or conditions in the text that might affect the relationship.",
+    "Ensure the relationship is clearly understood as stated in the text."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "decrease"
+      },
+      {
+        "label": "B",
+        "text": "nothing"
+      },
+      {
+        "label": "C",
+        "text": "increase"
+      },
+      {
+        "label": "D",
+        "text": "none of the above"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "logic",
+    "relationship",
+    "population dynamics"
+  ]
+}

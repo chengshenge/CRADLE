@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify side length from diagram",
+      "action": "reason",
+      "note": "The side length of the square is given as 5 cm in the diagram."
+    },
+    {
+      "intention": "Compute perimeter using formula",
+      "action": "python",
+      "code": "side_length = 5; perimeter = calc_numeric('4 * {}'.format(side_length))"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {ans}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

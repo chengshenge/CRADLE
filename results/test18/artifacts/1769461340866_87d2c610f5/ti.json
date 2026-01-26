@@ -1,0 +1,55 @@
+{
+  "problem_state_summary": "The problem involves analyzing a chart to determine if the 'Firebrick' entity has the maximum area under its curve. The chart is titled 'Comparison of Areas Under Curves' and includes curves for Firebrick, Azure, and Olive. The x-axis is labeled 'Time' with ticks from 0 to 5, and the y-axis is labeled 'Intensity' with ticks from 0 to 50. The Firebrick curve is noted to peak at the point (3, 40). The task requires comparing the areas under the curves of these entities to identify if Firebrick has the largest area. The problem is presented as a multiple-choice question with options 'yes' or 'no'. The solution involves interpreting the chart data to make this determination.",
+  "entities": [
+    "Firebrick",
+    "Azure",
+    "Olive"
+  ],
+  "unknowns": [
+    "maximum area under the curve for Firebrick"
+  ],
+  "required_operations": [
+    "Identify the Firebrick curve on the chart",
+    "Calculate or estimate the area under the Firebrick curve",
+    "Compare the area under the Firebrick curve with areas under other curves",
+    "Determine if Firebrick has the maximum area"
+  ],
+  "blockers": [
+    "maximum area under the curve for Firebrick"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing for accurate area estimation",
+    "Ensure correct legend mapping to identify the Firebrick curve",
+    "Check for any interpolation needed between data points"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "yes"
+      },
+      {
+        "label": "B",
+        "text": "no"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "chart analysis",
+    "area under curve",
+    "comparison",
+    "multiple choice"
+  ]
+}

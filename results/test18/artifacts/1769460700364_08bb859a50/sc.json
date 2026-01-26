@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image_hash:str, object_descriptions:List[str])->Dict[str, int]",
+      "purpose": "Identify and count specific objects in an image based on their descriptions.",
+      "inputs": [
+        "image_hash",
+        "object_descriptions"
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "No objects match the description",
+        "Multiple objects with similar descriptions"
+      ],
+      "tests": [
+        {
+          "input": "(\"b180f93b3e3a\", [\"brown blocks\", \"large blue rubber things\"])",
+          "expect": "{\"brown blocks\": 3, \"large blue rubber things\": 2}"
+        },
+        {
+          "input": "(\"b180f93b3e3a\", [\"red circles\"])",
+          "expect": "{\"red circles\": 0}"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection",
+        "counting"
+      ]
+    },
+    {
+      "name": "subtract_object_counts",
+      "signature": "(total:int, counts:Dict[str, int])->int",
+      "purpose": "Subtract specific object counts from a total number of objects.",
+      "inputs": [
+        "total",
+        "counts"
+      ],
+      "outputs": "The remaining number of objects after subtraction.",
+      "edge_cases": [
+        "Total is less than the sum of counts",
+        "Counts dictionary is empty"
+      ],
+      "tests": [
+        {
+          "input": "(10, {\"brown blocks\": 3, \"large blue rubber things\": 2})",
+          "expect": "5"
+        },
+        {
+          "input": "(5, {\"brown blocks\": 3, \"large blue rubber things\": 3})",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "subtraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "subtract_object_counts"
+  ]
+}

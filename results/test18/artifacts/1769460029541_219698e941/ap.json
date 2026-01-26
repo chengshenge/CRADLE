@@ -1,0 +1,19 @@
+{
+  "steps": [
+    {
+      "intention": "Identify birth years greater than 1945.",
+      "action": "reason"
+    },
+    {
+      "intention": "Count the number of birth years greater than 1945.",
+      "action": "python",
+      "code": "birth_years = [1920, 1935, 1940, 1946, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000]; count_after_1945 = sum(1 for year in birth_years if year > 1945)"
+    },
+    {
+      "intention": "Format the final answer.",
+      "action": "normalize",
+      "text": "Answer: {ans}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

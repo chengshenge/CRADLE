@@ -1,0 +1,55 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_accuracy_scores_from_chart",
+      "signature": "(image_hash:str, pretrain_loss:float)->dict",
+      "purpose": "Extract accuracy scores for different models from a chart at a specified pretrain loss value.",
+      "inputs": [
+        "image_hash",
+        "pretrain_loss"
+      ],
+      "outputs": "A dictionary with model names as keys and their corresponding accuracy scores as values.",
+      "edge_cases": [
+        "Chart is unclear or values are not precisely at the specified pretrain loss value."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"7f0eee6047a1\", \"pretrain_loss\": 1.80}",
+          "expect": "{\"ICL\": 0.85, \"SFT\": 0.80, \"SFT 1/8\": 0.78, \"RFT k=100\": 0.82, \"RFT k=25\": 0.81, \"RET k=6\": 0.79, \"RFT U13B\": 0.84}"
+        }
+      ],
+      "tags": [
+        "chart analysis",
+        "data extraction",
+        "image processing"
+      ]
+    },
+    {
+      "name": "determine_highest_accuracy_model",
+      "signature": "(accuracy_scores:dict)->str",
+      "purpose": "Determine which model has the highest accuracy score from a given set of scores.",
+      "inputs": [
+        "accuracy_scores"
+      ],
+      "outputs": "The name of the model with the highest accuracy score.",
+      "edge_cases": [
+        "Multiple models have the same highest accuracy score."
+      ],
+      "tests": [
+        {
+          "input": "{\"ICL\": 0.85, \"SFT\": 0.80, \"SFT 1/8\": 0.78, \"RFT k=100\": 0.82, \"RFT k=25\": 0.81, \"RET k=6\": 0.79, \"RFT U13B\": 0.84}",
+          "expect": "ICL"
+        }
+      ],
+      "tags": [
+        "data comparison",
+        "model evaluation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_accuracy_scores_from_chart",
+    "determine_highest_accuracy_model"
+  ]
+}

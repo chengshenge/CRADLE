@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "An administrator at the Department of Motor Vehicles (DMV) is tracking the average wait time from month to month. The task is to determine the rate of change in average wait time between August and September. The data required for this calculation is presented in a table that lists average wait times for different months. Specifically, the table shows that the average wait time in August is 20 minutes and in September is 25 minutes. The problem requires calculating the rate of change in minutes per month, which should be an integer. The final answer must be presented as an integer value.",
+  "entities": [
+    "August",
+    "September",
+    "average wait time"
+  ],
+  "unknowns": [
+    "rate of change between August and September"
+  ],
+  "required_operations": [
+    "Extract average wait times for August and September from the table",
+    "Compute the difference in wait times",
+    "Divide the difference by the number of months between August and September",
+    "Ensure the result is an integer"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure correct alignment of month names with their respective wait times in the table",
+    "Verify that the table headers are correctly interpreted",
+    "Check for any potential misalignment or misinterpretation of the table data"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "table",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "rate of change",
+    "table interpretation",
+    "integer result"
+  ]
+}

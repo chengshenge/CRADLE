@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blocks with exactly 36 houses",
+      "action": "reason",
+      "note": "We need to count the number of blocks that have exactly 36 houses based on the provided text data."
+    },
+    {
+      "intention": "Count the blocks with 36 houses",
+      "action": "python",
+      "code": "blocks_with_36_houses = ['Block B', 'Block C', 'Block E']; count_36_houses = len(blocks_with_36_houses)"
+    },
+    {
+      "intention": "Provide the final count as the answer",
+      "action": "normalize",
+      "text": "Answer: 3"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

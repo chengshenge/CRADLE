@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves a bar chart with four bars labeled A, B, C, and D. The heights of these bars are given as 3 units for A, 5 units for B, 2 units for C, and 7 units for D. The task is to determine if the sum of the heights of the smallest two bars is greater than the height of the largest bar. Specifically, this means checking if the sum of bars C and A is greater than bar D. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The solution requires reading the bar heights from the chart and performing a comparison operation.",
+  "entities": [
+    "Bar A",
+    "Bar B",
+    "Bar C",
+    "Bar D"
+  ],
+  "unknowns": [
+    "sum of smallest two bars",
+    "height of largest bar"
+  ],
+  "required_operations": [
+    "Identify the smallest two bars",
+    "Calculate the sum of the smallest two bars",
+    "Identify the largest bar",
+    "Compare the sum of the smallest two bars to the largest bar"
+  ],
+  "blockers": [
+    "sum of smallest two bars",
+    "height of largest bar"
+  ],
+  "risk_checks": [
+    "Verify axis scale and tick spacing on the chart",
+    "Ensure correct mapping of bar labels to heights",
+    "Check for any interpolation or unit discrepancies"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "bar chart",
+    "comparison",
+    "sum",
+    "visual data interpretation"
+  ]
+}

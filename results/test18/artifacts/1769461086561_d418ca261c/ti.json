@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves a visual comparison of two groups of objects based on their attributes. Specifically, it asks whether the number of gray rubber objects located in front of a small yellow aeroplane is greater than the number of big cyan matte fighters. The task requires identifying and counting these objects in the image. The known constraints are that the gray rubber objects must be in front of the small yellow aeroplane, and the fighters must be big, cyan, and matte. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The image is crucial for determining the counts, but there are readability issues with the image, making it difficult to ascertain the exact numbers visually.",
+  "entities": [
+    "gray rubber objects",
+    "big cyan matte fighters",
+    "small yellow aeroplane"
+  ],
+  "unknowns": [
+    "number of gray rubber objects",
+    "number of big cyan matte fighters"
+  ],
+  "required_operations": [
+    "Identify gray rubber objects in front of the small yellow aeroplane",
+    "Count the gray rubber objects",
+    "Identify big cyan matte fighters",
+    "Count the big cyan matte fighters",
+    "Compare the two counts",
+    "Map the result to the correct option"
+  ],
+  "blockers": [
+    "number of gray rubber objects",
+    "number of big cyan matte fighters"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "ensure visibility of object attributes",
+    "verify object counts are readable"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual comparison",
+    "counting",
+    "attributes",
+    "multiple-choice"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves determining whether a given function is continuous at each point. This requires analyzing the graph of the function to check for any discontinuities such as breaks, jumps, or holes. The graph is titled 'Graph of the Function' and has an x-axis labeled 'x' with ticks at -3, -2, -1, 0, 1, 2, 3, and a y-axis labeled 'f(x)' with ticks at -2, -1, 0, 1, 2. Key points on the graph include A at (-2, 1), B at (0, 0), and C at (2, -1). The task is to determine if the function is continuous at each of these points and throughout the graph. The problem is presented as a multiple-choice question with options 'Yes' or 'No'. The final answer must map to one of these options.",
+  "entities": [
+    "function",
+    "graph",
+    "x-axis",
+    "y-axis",
+    "point A",
+    "point B",
+    "point C"
+  ],
+  "unknowns": [
+    "continuity of the function at each point"
+  ],
+  "required_operations": [
+    "Analyze the graph for any breaks, jumps, or holes",
+    "Determine continuity at key points A, B, and C",
+    "Assess overall continuity of the function"
+  ],
+  "blockers": [
+    "continuity of the function at each point"
+  ],
+  "risk_checks": [
+    "Check axis scale and tick spacing for accurate reading",
+    "Ensure all key points are considered for continuity",
+    "Verify no hidden discontinuities in the graph"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "chart",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "calculus",
+    "continuity",
+    "graph analysis",
+    "multiple-choice"
+  ]
+}

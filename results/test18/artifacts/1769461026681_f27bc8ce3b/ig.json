@@ -1,0 +1,38 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires reading specific digits from a sign, which is likely to be textual information."
+  ],
+  "problem_understanding": "The problem asks for the sum of the digits located on either end of a sign in the corner of the image.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "digits on either end of the sign"
+    ],
+    "relations": [
+      "sum of the digits"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "arithmetic",
+  "need_ocr": "yes",
+  "noun_and_verb": "digits nouns sum verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying digits and performing a simple arithmetic operation (addition) on them."
+  ],
+  "problem_summary": "Identify the digits on either end of a sign in the corner of the image and calculate their sum.",
+  "knowns": [],
+  "asks": [
+    "sum of the digits on either end of the sign"
+  ],
+  "constraints": [],
+  "visual_facts": [
+    "The sign is located in the corner of the image.",
+    "Digits '5' and '3' were identified on the sign."
+  ],
+  "ambiguity": [
+    "The exact location of the sign and the digits is not specified beyond being in the corner."
+  ]
+}

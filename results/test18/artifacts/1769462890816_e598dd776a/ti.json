@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves a diagram containing a square, and the task is to find the value associated with this square. The diagram includes labels A, B, C, and D, and a marked length of AB = 5. The problem does not specify what the 'value' of the square refers to, such as its area, side length, or a numerical label. The task requires geometric or spatial reasoning to determine this value. The problem is straightforward but lacks clarity on what specific aspect of the square's value is being asked. The solution must be an integer, as indicated by the hint in the question.",
+  "entities": [
+    "square",
+    "A",
+    "B",
+    "C",
+    "D",
+    "AB"
+  ],
+  "unknowns": [
+    "value of the square"
+  ],
+  "required_operations": [
+    "Analyze the diagram to understand the relationship between the square and the marked length AB.",
+    "Determine what the 'value' of the square refers to, such as side length or area.",
+    "Calculate the required value based on the diagram's information."
+  ],
+  "blockers": [
+    "value of the square"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear in the diagram.",
+    "Check for any missing angle markers or parallel/perpendicular indicators that might affect the interpretation of the square's value."
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "diagram",
+    "spatial reasoning"
+  ]
+}

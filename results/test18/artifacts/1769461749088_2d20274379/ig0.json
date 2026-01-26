@@ -1,0 +1,36 @@
+{
+  "region_to_detect": "text",
+  "reasoning_of_region": [
+    "The problem requires identifying specific types of objects based on their descriptions, which are likely labeled or described in text within the image."
+  ],
+  "problem_understanding": "The problem involves subtracting certain types of objects based on their material and color properties, and then determining how many objects remain.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "number of objects left"
+    ],
+    "relations": [
+      "Subtract all big matte balls",
+      "Subtract all green rubber objects"
+    ],
+    "constraints": [],
+    "options": []
+  },
+  "question_type_guess": "other",
+  "need_ocr": "yes",
+  "noun_and_verb": "objects subtract",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves identifying and counting specific objects based on their properties, which requires reading and interpreting text labels or descriptions."
+  ],
+  "problem_summary": "Determine the number of objects left after subtracting all big matte balls and all green rubber objects.",
+  "knowns": [],
+  "asks": [
+    "number of objects left"
+  ],
+  "constraints": [],
+  "visual_facts": [],
+  "ambiguity": [
+    "The specific properties of the objects (e.g., size, material, color) need to be identified from the image."
+  ]
+}
