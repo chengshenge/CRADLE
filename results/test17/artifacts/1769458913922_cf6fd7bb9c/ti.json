@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves a triangle △ABC where two angle bisectors, OB and OC, intersect at point O. The given information includes the measure of angle ∠A, which is 110°. The task is to find the measure of angle ∠BOC. The problem relies on the properties of angle bisectors and the sum of angles in a triangle. The solution requires understanding the relationship between the angles in the triangle and the intersection of the angle bisectors. The problem is presented in a multiple-choice format with four options for the measure of angle ∠BOC.",
+  "entities": [
+    "△ABC",
+    "∠A",
+    "OB",
+    "OC",
+    "O"
+  ],
+  "unknowns": [
+    "∠BOC"
+  ],
+  "required_operations": [
+    "Use the triangle angle sum property to find the sum of the other two angles in the triangle.",
+    "Apply the properties of angle bisectors to determine the measure of angle ∠BOC."
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the understanding of angle bisector properties and their impact on the triangle's angles."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "null",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle bisectors",
+    "triangle properties",
+    "multiple-choice"
+  ]
+}

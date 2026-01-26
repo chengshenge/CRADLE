@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known and unknown elements in the problem.",
+      "action": "reason",
+      "note": "We know ∠A = 110° and need to find ∠BOC using angle bisector properties."
+    },
+    {
+      "intention": "Use triangle angle sum property to find the sum of ∠B and ∠C.",
+      "action": "python",
+      "code": "sum_BC = 180 - 110"
+    },
+    {
+      "intention": "Calculate ∠BOC using angle bisector properties.",
+      "action": "python",
+      "code": "BOC = 180 - sum_BC / 2"
+    },
+    {
+      "intention": "Format the final answer to match one of the given options.",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,66 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the expected output format.",
+      "how_to_use": "Use this skill to format the selected multiple-choice option label as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_angle_from_diagram",
+      "signature": "(img_hash, angle_label)->angle_measure",
+      "purpose": "Extract the measure of a specified angle from a geometric diagram.",
+      "inputs": [
+        "img_hash",
+        "angle_label"
+      ],
+      "outputs": "angle_measure",
+      "edge_cases": [
+        "The angle label is not visible or obscured in the diagram.",
+        "Multiple angles are labeled with the same identifier."
+      ],
+      "tests": [
+        {
+          "input": "{\"img_hash\": \"f6272c7a7609\", \"angle_label\": \"H\"}",
+          "expect": "97"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_measure, options)->option_label",
+      "purpose": "Map the measured angle to the correct multiple-choice option.",
+      "inputs": [
+        "angle_measure",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "The angle measure does not match any of the provided options.",
+        "Multiple options have the same angle measure."
+      ],
+      "tests": [
+        {
+          "input": "{\"angle_measure\": 97, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple-choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_from_diagram",
+    "map_angle_to_option",
+    "format_final"
+  ]
+}

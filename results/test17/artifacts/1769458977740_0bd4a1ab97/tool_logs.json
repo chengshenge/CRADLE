@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Compute the number of remaining objects after subtraction.",
+    "note": "Subtract the number of large rubber spheres and big shiny cylinders from the total number of objects."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Calculate the remaining objects using the given counts.",
+    "code": "remaining_objects = calc_numeric('50 - 15 - 10')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer for output.",
+    "text": "Answer: 25.0",
+    "raw_text": "Answer: {remaining_objects}",
+    "render_error": null
+  }
+]

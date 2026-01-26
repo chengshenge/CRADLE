@@ -1,5 +1,4 @@
-
-
+import re
 # pids: 799, 681, 615
 shot_examples = [
 {
@@ -149,6 +148,38 @@ def refine_ocr(ocr):
     return ocr
 
 
+
+def _infer_demo_mc_answer_text(example: dict, solution: str) -> str:
+    """For demo shots: if the demo is multi-choice and the solution mentions an option letter,
+    append a final 'Answer: <choice_text>' line to teach the model to output choice content.
+    Deterministic, no model calls.
+    """
+    try:
+        choices = example.get("choices", None)
+        if not choices:
+            return solution
+        # Common patterns: "answer is D", "answer is D (tokyo)", "Thus, the answer is D."
+        m = re.search(r"\banswer\s+is\s+\(?\s*([A-D])\s*\)?", solution, flags=re.IGNORECASE)
+        if not m:
+            return solution
+        letter = m.group(1).upper()
+        idx = ord(letter) - ord("A")
+        if idx < 0 or idx >= len(choices):
+            return solution
+        ans_text = str(choices[idx]).strip()
+        if not ans_text:
+            return solution
+
+        # If the solution already ends with an Answer: line, keep it.
+        tail = solution.strip().splitlines()[-1].strip() if solution.strip() else ""
+        if tail.lower().startswith("answer:"):
+            return solution
+
+        return solution.rstrip() + "\n\nAnswer: " + ans_text
+    except Exception:
+        return solution
+
+
 def create_one_query(problem, examples, shot_num, shot_type, use_caption, use_ocr):
 
 
@@ -186,6 +217,7 @@ def create_one_query(problem, examples, shot_num, shot_type, use_caption, use_oc
             # solution
             if shot_type == 'solution':
                 solution = example['solution'].strip()
+                solution = _infer_demo_mc_answer_text(example, solution)
                 prompt += "\n" + f"Solution: {solution}"
 
             # code
@@ -212,7 +244,7 @@ def create_one_query(problem, examples, shot_num, shot_type, use_caption, use_oc
     if shot_type == 'solution':
         if question_type == "multi_choice":
             assert answer_type == "text"
-            hint_text = f"Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end."
+            hint_text = (f"Hint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145° or Answer: tokyo.")
         else:
             assert answer_type in ["integer", "float", "list"]
             if answer_type == "integer":

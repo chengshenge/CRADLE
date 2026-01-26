@@ -1,0 +1,70 @@
+{
+  "region_to_detect": "null",
+  "reasoning_of_region": [
+    "The problem is purely textual and all necessary information is already in the user prompt."
+  ],
+  "problem_understanding": "The problem involves finding the angle ∠BOC in triangle △ABC where two angle bisectors OB and OC intersect at point O, given that ∠A is 110°.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠A",
+        "value": "110",
+        "unit": "°",
+        "source": "text",
+        "note": "Angle A in triangle △ABC"
+      }
+    ],
+    "unknown": [
+      "∠BOC"
+    ],
+    "relations": [
+      "OB and OC are angle bisectors intersecting at O"
+    ],
+    "constraints": [
+      "Triangle angle sum property"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "triangle nouns find verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to find the measure of angle ∠BOC using the given angle ∠A and the properties of angle bisectors in a triangle."
+  ],
+  "problem_summary": "Find the measure of angle ∠BOC in triangle △ABC where ∠A is 110° and OB, OC are angle bisectors intersecting at O.",
+  "knowns": [
+    {
+      "name": "∠A",
+      "value": "110",
+      "unit": "°",
+      "source": "text",
+      "note": "Angle A in triangle △ABC"
+    }
+  ],
+  "asks": [
+    "∠BOC"
+  ],
+  "constraints": [
+    "Triangle angle sum property"
+  ],
+  "visual_facts": [],
+  "ambiguity": []
+}

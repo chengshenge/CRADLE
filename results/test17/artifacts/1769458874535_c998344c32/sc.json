@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_volume_markings",
+      "signature": "(image_hash:str)->int",
+      "purpose": "To interpret the largest volume marking on a measuring cup from an image and return it as an integer.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Ensure that the largest marking is correctly identified even if the image is partially obscured.",
+        "Handle cases where the markings are not in the expected units (e.g., grams instead of milliliters)."
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image analysis",
+        "volume",
+        "interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_volume_markings",
+    "format_final"
+  ]
+}

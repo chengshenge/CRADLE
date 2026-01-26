@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is likely indicated by text on the image. The image contains text labels showing volume in grams, with visible markings at 250 g, 500 g, 750 g, and 1000 g. The task is to identify the total volume, which is unusual as volume is typically measured in milliliters or liters, not grams. The largest visible marking is 1000 g, which may represent the total capacity of the measuring cup. The problem requires interpreting these markings to find the total volume. The answer should be provided as an integer value.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the text labels on the measuring cup",
+    "Identify the largest marking",
+    "Interpret the largest marking as the total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of units since grams are unusual for volume",
+    "Verify that the largest marking represents the total capacity"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation",
+    "image analysis"
+  ]
+}
