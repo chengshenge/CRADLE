@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find angles in the triangle.",
+      "how_to_use": "Use to calculate the measures of angles ∠B and ∠C using the sum of angles in a triangle."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use to format the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "find_angle_bisector_intersection_angle",
+      "signature": "(angle_A, options)->str",
+      "purpose": "Calculate the angle ∠BOC formed by the intersection of angle bisectors in a triangle given angle ∠A.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The measure of angle ∠BOC as a string in the format 'Answer: ...'.",
+      "edge_cases": [
+        "If angle_A is not valid, return an error message."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "Answer: B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "find_angle_bisector_intersection_angle",
+    "calc_numeric",
+    "format_final"
+  ]
+}

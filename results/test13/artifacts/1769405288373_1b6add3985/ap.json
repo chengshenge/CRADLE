@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers",
+      "action": "reason",
+      "note": "The unresolved target is the compression distance d."
+    },
+    {
+      "intention": "Calculate initial kinetic energy",
+      "action": "python",
+      "code": "ke_initial = calc_numeric('0.5 * 0.40 * (0.50)**2')"
+    },
+    {
+      "intention": "Set up energy conservation equation",
+      "action": "python",
+      "code": "eq = '0.5 * 750 * d**2 - ' + str(ke_initial)"
+    },
+    {
+      "intention": "Solve for compression distance",
+      "action": "python",
+      "code": "d_val = sympy_solve(eq, 'd')"
+    },
+    {
+      "intention": "Format final answer",
+      "action": "normalize",
+      "text": "Answer: {d_val:.1f}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

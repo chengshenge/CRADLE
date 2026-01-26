@@ -1,0 +1,64 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the expected output format.",
+      "how_to_use": "Use this skill to return the final answer as 'Answer: B' after determining the correct option."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_angle_from_diagram",
+      "signature": "(img_hash, region_to_detect)->angle_value",
+      "purpose": "Extract the value of angle H from the provided diagram image.",
+      "inputs": [
+        "img_hash",
+        "region_to_detect"
+      ],
+      "outputs": "angle_value",
+      "edge_cases": [
+        "The angle value is obscured or not clearly marked.",
+        "Multiple angles are marked, and the correct one is not specified."
+      ],
+      "tests": [
+        {
+          "input": "{\"img_hash\": \"f6272c7a7609\", \"region_to_detect\": \"diagram\"}",
+          "expect": "102"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "angle extraction"
+      ]
+    },
+    {
+      "name": "match_angle_to_option",
+      "signature": "(angle_value, options)->option_label",
+      "purpose": "Match the extracted angle value to one of the multiple-choice options.",
+      "inputs": [
+        "angle_value",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "The angle value does not match any of the options.",
+        "Multiple options match the angle value."
+      ],
+      "tests": [
+        {
+          "input": "{\"angle_value\": 102, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "option matching",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_angle_from_diagram",
+    "match_angle_to_option",
+    "format_final"
+  ]
+}

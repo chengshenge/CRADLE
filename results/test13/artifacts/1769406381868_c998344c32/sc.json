@@ -1,0 +1,32 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_markings",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest volume marking from an image of a measuring cup.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The largest volume marking as an integer.",
+      "edge_cases": [
+        "Image is blurry or markings are not clear.",
+        "Markings are in a different unit than expected."
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image_processing",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_markings"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "steps": [
+    {
+      "intention": "Determine the measures of angles ∠B and ∠C using the sum of angles in a triangle.",
+      "action": "reason",
+      "note": "Since ∠A = 110°, use the constraint ∠A + ∠B + ∠C = 180° to find ∠B + ∠C."
+    },
+    {
+      "intention": "Calculate the sum of angles ∠B and ∠C.",
+      "action": "python",
+      "code": "sum_BC = 180 - 110"
+    },
+    {
+      "intention": "Find the measure of angle ∠BOC using the properties of angle bisectors.",
+      "action": "reason",
+      "note": "The angle ∠BOC is the sum of half of ∠B and half of ∠C."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠BOC.",
+      "action": "python",
+      "code": "angle_BOC = sum_BC / 2"
+    },
+    {
+      "intention": "Map the calculated angle ∠BOC to the closest multiple-choice option.",
+      "action": "reason",
+      "note": "Compare angle_BOC with the options: 135°, 140°, 145°, 150°."
+    },
+    {
+      "intention": "Select the correct option based on the calculated angle.",
+      "action": "python",
+      "code": "option = 'B' if angle_BOC == 140 else 'unknown'"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

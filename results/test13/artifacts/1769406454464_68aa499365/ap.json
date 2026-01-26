@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the measure of angle H from the diagram.",
+      "action": "reason",
+      "note": "Angle H is marked with a value of 102 degrees in the diagram."
+    },
+    {
+      "intention": "Match the angle value to the correct option.",
+      "action": "python",
+      "code": "angle_value = 102; options = [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]; correct_option = next(opt['label'] for opt in options if int(opt['text']) == angle_value)"
+    },
+    {
+      "intention": "Format the final answer as the correct option label.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

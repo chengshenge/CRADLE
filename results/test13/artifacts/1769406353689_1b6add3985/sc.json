@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute the initial kinetic energy of the canister.",
+      "how_to_use": "Use to calculate the kinetic energy using the formula (1/2) * mass * velocity^2."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve the energy conservation equation for the compression distance d.",
+      "how_to_use": "Set up the equation (1/2) * mass * velocity^2 = (1/2) * spring_constant * d^2 and solve for d."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the compression distance d.",
+      "how_to_use": "Use to format the solution into a readable answer string."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "calc_numeric",
+    "sympy_solve",
+    "format_final"
+  ]
+}

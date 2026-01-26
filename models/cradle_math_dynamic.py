@@ -210,6 +210,31 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
     except Exception as e:
         return text, str(e)
 
+
+def _sanitize_answer_line(s: str) -> str:
+    """Normalize an 'Answer: ...' line for downstream parsing/validation.
+
+    - Strips markdown fences and leading/trailing whitespace
+    - If an 'Answer:' prefix exists, keep from the first occurrence onward
+    - Collapses to a single line
+    """
+    if not isinstance(s, str):
+        return ""
+    t = _strip_markdown_fences(s).strip()
+
+    # Keep only the first non-empty line
+    t = t.splitlines()[0].strip() if t.splitlines() else t
+
+    # If the model returned extra text before the answer, keep the last 'Answer:' block.
+    if "Answer:" in t:
+        # take the *last* occurrence to avoid picking up examples in the prompt
+        t = "Answer:" + t.split("Answer:")[-1].strip()
+
+    # Remove stray code fence remnants
+    t = t.strip("`").strip()
+    return t
+
+
 def _looks_valid_answer_line(s: str) -> bool:
     t = _sanitize_answer_line(s)
     if not t.startswith("Answer:"):
@@ -750,12 +775,24 @@ def make_safe_context() -> Dict[str, Any]:
                 var_names = list(vars)
             syms = [sp.Symbol(v) for v in var_names]
 
+            # Pass numeric values from the current safe context into sympify(),
+            # so expressions like "0.5*k*d**2 - KE_initial" can be evaluated numerically
+            # when k/KE_initial have been assigned earlier in the same python block.
+            locals_map: Dict[str, Any] = {}
+            try:
+                if isinstance(ctx, dict):
+                    for kk, vv in ctx.items():
+                        if isinstance(vv, (int, float)) and not isinstance(vv, bool):
+                            locals_map[str(kk)] = sp.Float(vv)
+            except Exception:
+                locals_map = {}
+
             def _one_eq(s: str):
                 t = (s or "").strip()
                 if "=" in t:
                     lhs, rhs = t.split("=", 1)
-                    return sp.Eq(sp.sympify(lhs), sp.sympify(rhs))
-                return sp.Eq(sp.sympify(t), 0)
+                    return sp.Eq(sp.sympify(lhs, locals=locals_map), sp.sympify(rhs, locals=locals_map))
+                return sp.Eq(sp.sympify(t, locals=locals_map), 0)
 
             if isinstance(eqs, str):
                 eq_list = [_one_eq(eqs)]
@@ -798,9 +835,21 @@ def make_safe_context() -> Dict[str, Any]:
                     best = roots[0]
 
                 if best is not None:
-                    ctx["_last_roots"] = list(roots)
+                    # Put the preferred root first, because many generated code snippets do `sympy_solve(...)[0]`.
+                    ordered_roots: List[float] = []
+                    if best is not None:
+                        ordered_roots.append(float(best))
+                    for r in roots:
+                        try:
+                            fr = float(r)
+                        except Exception:
+                            continue
+                        if best is None or abs(fr - float(best)) > 1e-12:
+                            ordered_roots.append(fr)
+
+                    ctx["_last_roots"] = list(ordered_roots)
                     ctx["_last_solution"] = float(best)
-                    return _SolveResult(float(best), roots)
+                    return _SolveResult(float(best), ordered_roots)
 
                 return sol
 
@@ -851,11 +900,19 @@ def make_safe_context() -> Dict[str, Any]:
                 if isinstance(node, ast.Name):
                     if node.id == var_name:
                         return float(xval)
+
+                    # allow numeric variables from the current safe context (e.g., k, KE_initial)
+                    if isinstance(ctx, dict):
+                        vv_ctx = ctx.get(node.id)
+                        if isinstance(vv_ctx, (int, float)) and not isinstance(vv_ctx, bool):
+                            return float(vv_ctx)
+
                     # allow math constants like pi, e
                     if hasattr(math, node.id):
                         vv = getattr(math, node.id)
                         if isinstance(vv, (int, float)):
                             return float(vv)
+
                     raise ValueError(f"unknown name: {node.id}")
                 if isinstance(node, ast.BinOp) and isinstance(node.op, allowed_binops):
                     a = _ev(node.left)
@@ -935,10 +992,22 @@ def make_safe_context() -> Dict[str, Any]:
         elif roots:
             best = roots[0]
 
-        ctx["_last_roots"] = list(roots)
+        # Put the preferred root first (helps generated code that indexes `[0]`).
+        ordered_roots: List[float] = []
+        if best is not None:
+            ordered_roots.append(float(best))
+        for r in roots:
+            try:
+                fr = float(r)
+            except Exception:
+                continue
+            if best is None or abs(fr - float(best)) > 1e-12:
+                ordered_roots.append(fr)
+
+        ctx["_last_roots"] = list(ordered_roots)
         if best is not None:
             ctx["_last_solution"] = float(best)
-            return _SolveResult(float(best), roots)
+            return _SolveResult(float(best), ordered_roots)
 
         return roots
 
@@ -1813,9 +1882,19 @@ Return STRICT JSON:
             f"[CRADLE_STEP]{step}\n"
             f"[OBS_IMAGE_ATTACHED]{str(bool(attach_image and obs.image is not None))}\n"
         )
+        # IMPORTANT: Do NOT dump large / recursive objects (e.g., llm_calls) into the prompt.
+        # Keeping meta tiny prevents prompt growth across stages (and context_length_exceeded errors).
         if obs.meta:
-            safe_meta = {k: obs.meta[k] for k in list(obs.meta.keys())[:8]}
-            header += f"[OBS_META]{_j(safe_meta)}\n"
+            safe_meta: Dict[str, Any] = {}
+            for k in ("source", "run_id", "img_hash", "pid"):
+                try:
+                    v = obs.meta.get(k)
+                    if isinstance(v, (str, int, float, bool)) or v is None:
+                        safe_meta[k] = v
+                except Exception:
+                    pass
+            if safe_meta:
+                header += f"[OBS_META]{_j(safe_meta)}\n"
         return header + prompt
 
     def _llm_call(self, step: str, prompt: str, obs: Observation, need_image: bool) -> str:
@@ -1875,6 +1954,8 @@ Return STRICT JSON:
                 "prompt_len": len(p) if isinstance(p, str) else None,
                 "latency_s": round(dt, 4),
                 "parse_ok": parse_ok,
+                "prompt": self._wrap_prompt(step, p, obs, attach_image) if isinstance(p, str) else None,
+                "raw": last,
                 "raw_head": _truncate(last, 240),
                 "error": err,
             }
@@ -2219,6 +2300,28 @@ Return STRICT JSON:
                         )
                     elif action == "normalize":
                         raw_text = step.get("text", "")
+                        # If placeholders refer to missing variables, alias them to 'ans' / last numeric solution when unambiguous.
+                        try:
+                            raw_s = str(raw_text)
+                            missing_vars: List[str] = []
+                            for mm in _PLACEHOLDER_RE.finditer(raw_s):
+                                vname = mm.group(1)
+                                if vname not in skill_mgr.ctx:
+                                    missing_vars.append(vname)
+                            if missing_vars:
+                                if "ans" not in skill_mgr.ctx:
+                                    if "_last_solution" in skill_mgr.ctx:
+                                        skill_mgr.ctx["ans"] = skill_mgr.ctx.get("_last_solution")
+                                    elif "_last" in skill_mgr.ctx:
+                                        skill_mgr.ctx["ans"] = skill_mgr.ctx.get("_last")
+                                if "ans" in skill_mgr.ctx:
+                                    uniq = list(dict.fromkeys(missing_vars))
+                                    if len(uniq) <= 3:
+                                        for vname in uniq:
+                                            skill_mgr.ctx[vname] = skill_mgr.ctx.get("ans")
+                        except Exception:
+                            pass
+
                         rendered_text, render_err = render_placeholders(str(raw_text), skill_mgr.ctx)
                         tool_logs.append(
                             {
@@ -2398,28 +2501,38 @@ Return STRICT JSON:
             if "TOTAL" not in stage_times:
                 stage_times["TOTAL"] = round(time.perf_counter() - t_total0, 6)
 
+            # Slim structured log: per-module prompt/response/error (requested for debugging)
+            module_order = ["IG", "GTI", "IGR", "TI", "SC", "AP"]
+            modules: Dict[str, Dict[str, Any]] = {}
+
+            for st in module_order:
+                calls = [c for c in (llm_calls or []) if c.get("stage") == st]
+                lastc = calls[-1] if calls else {}
+                err_parts: List[str] = []
+
+                if lastc.get("error"):
+                    err_parts.append(str(lastc.get("error")))
+
+                # Include any non-LLM errors that were attributed to this stage (e.g., TOOL/EXEC errors)
+                for e in (errors or []):
+                    if e.get("stage") == st and e.get("error"):
+                        err_parts.append(str(e.get("error")))
+
+                modules[st] = {
+                    "prompt": lastc.get("prompt"),
+                    "response": lastc.get("raw"),
+                    "error": " | ".join([x for x in err_parts if x]) or None,
+                }
+
             run_record = {
-                'run_id': run_id,
-                'ts': obs.meta.get('ts'),
-                'prompt_hash': prompt_hash,
-                'prompt_len': len(user_prompt) if isinstance(user_prompt, str) else None,
-                'img_hash': img_hash,
-                'stage_times': stage_times,
-                'errors': errors,
-                'llm_calls': llm_calls,
-                'region_to_detect': (ig.get('region_to_detect') if isinstance(ig, dict) else None),
-                'question_type_guess': (ig.get('question_type_guess') if isinstance(ig, dict) else None),
-                'ig0': ig0,
-                'gti': gti,
-                'ig': ig,
-                'ti': ti,
-                'sc': sc,
-                'ap': ap,
-                'tool_logs': tool_logs,
-                'draft': draft,
-                'sr': sr,
-                'final_answer': final_answer,
+                "run_id": run_id,
+                "ts": obs.meta.get("ts"),
+                "prompt_hash": prompt_hash,
+                "img_hash": img_hash,
+                "modules": modules,
+                "final_answer": final_answer,
             }
+
             artifacts = {
                 'run_record': run_record,
                 'user_prompt.txt': _truncate(user_prompt, 4000),
@@ -2435,7 +2548,7 @@ Return STRICT JSON:
             }
             try:
                 artifacts_dir = self._write_artifacts(run_id, artifacts)
-                run_record['artifacts_dir'] = artifacts_dir
+                # artifacts_dir written to disk; not included in slim structured log
             except Exception as e2:
                 errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e2)})
             try:

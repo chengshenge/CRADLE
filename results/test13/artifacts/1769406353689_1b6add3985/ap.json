@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify initial kinetic energy of the canister",
+      "action": "reason",
+      "note": "Calculate the initial kinetic energy using the formula (1/2) * mass * velocity^2."
+    },
+    {
+      "intention": "Compute initial kinetic energy",
+      "action": "python",
+      "code": "kinetic_energy = calc_numeric('(1/2) * 0.40 * (0.50)**2')"
+    },
+    {
+      "intention": "Set up energy conservation equation",
+      "action": "reason",
+      "note": "Use energy conservation: initial kinetic energy = potential energy of spring."
+    },
+    {
+      "intention": "Solve for compression distance d",
+      "action": "python",
+      "code": "d_val = sympy_solve('(1/2) * 750 * d**2 - ' + str(kinetic_energy), 'd')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {d_val:.1f}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}
