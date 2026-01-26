@@ -308,6 +308,215 @@ def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
         return sr_line
     # Neither looks valid; do not return placeholder holes.
     return "Answer: "
+
+# ============================================================
+# Deterministic multiple-choice label -> option text mapping
+# ============================================================
+
+_CHOICE_LABEL_RE = re.compile(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]?\s*$')
+_PREFIX_WORD_RE = re.compile(r'^\s*(?:option|choice|answer)\s*[:\-]?\s*', flags=re.IGNORECASE)
+
+def _extract_bare_choice_label(payload: str) -> Optional[str]:
+    """Return 'A'..'H' if payload is essentially a bare option label, else None.
+
+    Deterministic and conservative: it only returns a label when the payload can be reduced
+    (by stripping wrappers like 'Option', punctuation, brackets) to a single A-H letter.
+    """
+    if not isinstance(payload, str):
+        return None
+    s = payload.strip()
+    if not s:
+        return None
+
+    # Common leading words (e.g., "Option B", "Choice: C")
+    s = _PREFIX_WORD_RE.sub("", s).strip()
+
+    # If the whole thing looks like just "(B)" / "B." / "[C]" / "D)"
+    m = _CHOICE_LABEL_RE.fullmatch(s)
+    if m:
+        return m.group(1).upper()
+
+    # Sometimes models output "B )" or "B ," etc.
+    s2 = s.strip().strip("`'\"").strip()
+    s2 = s2.strip("[](){}<> \t\r\n")
+    s2 = re.sub(r'^[\s\.\,\;\:\-]+', '', s2)
+    s2 = re.sub(r'[\s\.\,\;\:\-]+$', '', s2)
+    m2 = _CHOICE_LABEL_RE.fullmatch(s2)
+    if m2:
+        return m2.group(1).upper()
+
+    return None
+
+
+def _norm_label(x: Any) -> Optional[str]:
+    if x is None:
+        return None
+    s = str(x).strip()
+    if not s:
+        return None
+    # Keep only first A-H if present
+    m = re.search(r'[A-Ha-h]', s)
+    if not m:
+        return None
+    return m.group(0).upper()
+
+
+def _strip_label_prefix(text: str, label: str) -> str:
+    """Remove an option label prefix like 'A.', '(A)', 'A)' from the start of text."""
+    if not isinstance(text, str):
+        return ""
+    t = text.strip()
+    if not t:
+        return ""
+    # Remove common leading label formats
+    pat = re.compile(r'^\s*(?:[\(\[\{<]?\s*' + re.escape(label) + r'\s*[\)\]\}>]?\s*[\.\:\)\-]\s*)', flags=re.IGNORECASE)
+    t2 = pat.sub("", t, count=1).strip()
+    return t2 if t2 else t
+
+
+def _coerce_option_item(item: Any) -> Optional[Dict[str, str]]:
+    """Normalize option item into {'label': 'A', 'text': '...'} when possible."""
+    if item is None:
+        return None
+    if isinstance(item, dict):
+        lab = _norm_label(item.get("label"))
+        txt = item.get("text")
+        if txt is None:
+            # tolerate alternative keys
+            txt = item.get("value") if "value" in item else item.get("content")
+        txts = str(txt).strip() if txt is not None else ""
+        if lab and txts:
+            return {"label": lab, "text": txts}
+        if lab and not txts:
+            # label only; keep but may be useless
+            return {"label": lab, "text": ""}
+        return None
+    if isinstance(item, str):
+        s = item.strip()
+        if not s:
+            return None
+        # Parse "A. something" or "(B) something"
+        m = re.match(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]\s*(.+?)\s*$', s)
+        if m:
+            return {"label": m.group(1).upper(), "text": m.group(2).strip()}
+        # Parse "A something" (space separated)
+        m2 = re.match(r'^\s*([A-Ha-h])\s+(.+?)\s*$', s)
+        if m2:
+            return {"label": m2.group(1).upper(), "text": m2.group(2).strip()}
+        return None
+    return None
+
+
+def _parse_options_from_text(text: str) -> List[Dict[str, str]]:
+    """Parse options from a question text (best-effort, line-based)."""
+    if not isinstance(text, str) or not text.strip():
+        return []
+    out: List[Dict[str, str]] = []
+    line_pat = re.compile(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]\s*(.+?)\s*$')
+    for line in text.splitlines():
+        m = line_pat.match(line)
+        if not m:
+            continue
+        lab = m.group(1).upper()
+        txt = m.group(2).strip()
+        if txt:
+            out.append({"label": lab, "text": txt})
+    # Deduplicate by label (keep first occurrence)
+    seen = set()
+    dedup: List[Dict[str, str]] = []
+    for o in out:
+        if o["label"] in seen:
+            continue
+        seen.add(o["label"])
+        dedup.append(o)
+    return dedup
+
+
+def _collect_options(ig: Optional[Dict[str, Any]],
+                     gti: Optional[Dict[str, Any]],
+                     ti: Optional[Dict[str, Any]],
+                     user_prompt: Optional[str]) -> Dict[str, str]:
+    """Collect option label->text mapping from multiple deterministic sources.
+
+    Priority (most trusted first):
+      1) IG-Refine: ig.math_elements_extracted.options
+      2) GTI: gti.targets_from_math_elements.options_extracted
+      3) TI: ti.multiple_choice.options
+      4) USER_PROMPT parsing
+    """
+    mapping: Dict[str, str] = {}
+
+    def _ingest(opt_list: Any):
+        if not isinstance(opt_list, list):
+            return
+        for it in opt_list:
+            o = _coerce_option_item(it)
+            if not o:
+                continue
+            lab = o["label"]
+            txt = o.get("text", "")
+            if not lab:
+                continue
+            if txt:
+                txt2 = _strip_label_prefix(txt, lab)
+                # Keep the first non-empty text for each label (deterministic)
+                if lab not in mapping or not mapping[lab]:
+                    mapping[lab] = txt2
+            else:
+                # ensure key exists
+                mapping.setdefault(lab, "")
+
+    try:
+        if isinstance(ig, dict):
+            _ingest(((ig.get("math_elements_extracted") or {}).get("options", [])))
+    except Exception:
+        pass
+    try:
+        if isinstance(gti, dict):
+            _ingest((((gti.get("targets_from_math_elements") or {}).get("options_extracted", []))))
+    except Exception:
+        pass
+    try:
+        if isinstance(ti, dict):
+            _ingest((((ti.get("multiple_choice") or {}).get("options", []))))
+    except Exception:
+        pass
+    try:
+        _ingest(_parse_options_from_text(user_prompt or ""))
+    except Exception:
+        pass
+
+    return mapping
+
+
+def _map_bare_choice_to_option_text(final_answer: str,
+                                    *,
+                                    ig: Optional[Dict[str, Any]] = None,
+                                    gti: Optional[Dict[str, Any]] = None,
+                                    ti: Optional[Dict[str, Any]] = None,
+                                    user_prompt: Optional[str] = None) -> Optional[str]:
+    """If final_answer is 'Answer: B' (bare label), deterministically map it to the option text.
+
+    Returns:
+      - Mapped 'Answer: <option_text>' if mapping is possible and non-empty.
+      - None if no mapping should be applied.
+    """
+    if not isinstance(final_answer, str) or not final_answer.strip():
+        return None
+
+    payload = final_answer.split("Answer:", 1)[1].strip() if "Answer:" in final_answer else final_answer.strip()
+    lab = _extract_bare_choice_label(payload)
+    if not lab:
+        return None
+
+    opt_map = _collect_options(ig, gti, ti, user_prompt)
+    txt = (opt_map.get(lab) or "").strip()
+    if not txt:
+        return None
+
+    return "Answer: " + txt
+
+
 def _extract_first_balanced_json_object(s: str) -> Optional[str]:
     """Return the first balanced {...} object substring, or None."""
     if not isinstance(s, str):
@@ -2451,18 +2660,13 @@ Return STRICT JSON:
 
             final_answer = choose_final_answer(draft_line, sr)
 
-            # If the final answer is a bare option label (A/B/C/...), map it to the option text when available.
+            # Robust deterministic mapping from bare option label -> option text (no extra model calls).
             try:
-                payload = final_answer.split("Answer:", 1)[1].strip() if "Answer:" in final_answer else final_answer.strip()
-                if re.fullmatch(r"[A-H]", payload):
-                    opts = (ig.get("math_elements_extracted") or {}).get("options", [])
-                    if isinstance(opts, list):
-                        for o in opts:
-                            if str(o.get("label", "")).strip() == payload:
-                                txt = str(o.get("text", "")).strip()
-                                if txt:
-                                    final_answer = "Answer: " + txt
-                                    break
+                mapped = _map_bare_choice_to_option_text(
+                    final_answer, ig=ig, gti=gti, ti=ti, user_prompt=user_prompt
+                )
+                if mapped is not None:
+                    final_answer = mapped
             except Exception:
                 pass
             mem_input = (

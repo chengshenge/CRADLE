@@ -1,0 +1,40 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection_angle",
+      "signature": "(angle_A:int)->int",
+      "purpose": "Calculate the angle ∠BOC formed by the intersection of angle bisectors OB and OC in triangle △ABC given angle ∠A.",
+      "inputs": [
+        "angle_A"
+      ],
+      "outputs": "The measure of angle ∠BOC.",
+      "edge_cases": [
+        "If angle_A is not within the valid range for a triangle, return an error."
+      ],
+      "tests": [
+        {
+          "input": "110",
+          "expect": "145"
+        },
+        {
+          "input": "60",
+          "expect": "120"
+        },
+        {
+          "input": "90",
+          "expect": "135"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection_angle",
+    "format_final"
+  ]
+}

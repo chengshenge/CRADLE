@@ -1,0 +1,25 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the initial kinetic energy of the canister.",
+      "how_to_use": "Use the formula KE = 0.5 * mass * velocity^2 to calculate the kinetic energy."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve for the compression distance d using energy conservation.",
+      "how_to_use": "Set the initial kinetic energy equal to the potential energy of the spring (0.5 * k * d^2) and solve for d."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the compression distance.",
+      "how_to_use": "Use this skill to format the calculated distance d as the final answer."
+    }
+  ],
+  "new_skill_specs": [],
+  "skill_priority": [
+    "calc_numeric",
+    "sympy_solve",
+    "format_final"
+  ]
+}

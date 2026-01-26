@@ -1,0 +1,61 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line output.",
+      "how_to_use": "Use this skill to ensure the answer is presented in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_largest_volume_marking",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest volume marking from the image of the measuring cup.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The largest volume marking as an integer.",
+      "edge_cases": [
+        "Image is unclear or markings are not visible.",
+        "Markings are in a different unit than expected."
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image analysis",
+        "volume extraction"
+      ]
+    },
+    {
+      "name": "interpret_volume_as_grams",
+      "signature": "(volume_ml:int)->int",
+      "purpose": "Interpret the volume in milliliters as grams, assuming a 1:1 conversion for water.",
+      "inputs": [
+        "volume_ml"
+      ],
+      "outputs": "The volume in grams.",
+      "edge_cases": [
+        "Non-water substances where the conversion is not 1:1."
+      ],
+      "tests": [
+        {
+          "input": 1000,
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "unit conversion",
+        "volume interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_largest_volume_marking",
+    "interpret_volume_as_grams",
+    "format_final"
+  ]
+}

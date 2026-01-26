@@ -1,0 +1,75 @@
+{
+  "region_used": "text",
+  "information": [
+    "Total objects: 20",
+    "Large rubber spheres: 5",
+    "Big shiny cylinders: 3",
+    "Counting read: {\"counts\": [{\"object\": \"large rubber spheres\", \"count\": 3, \"note\": \"Counted all large rubber spheres visible in the image.\"}, {\"object\": \"big shiny cylinders\", \"count\": 2, \"note\": \"Counted all big shiny cylinders visible in the image.\"}], \"total\": 5, \"notes\": [\"Total objects subtracted: 5\"]}"
+  ],
+  "structured": {
+    "text_lines": [
+      "Total objects: 20",
+      "Large rubber spheres: 5",
+      "Big shiny cylinders: 3"
+    ],
+    "chart": {
+      "title": "",
+      "x_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "y_axis": {
+        "label": "",
+        "unit": "",
+        "ticks": []
+      },
+      "legend": [],
+      "key_points": []
+    },
+    "table": {
+      "headers": [],
+      "rows": []
+    },
+    "diagram": {
+      "labels": [],
+      "marked_lengths": [],
+      "marked_angles": [],
+      "marked_relations": []
+    }
+  },
+  "targets_from_math_elements": {
+    "known_additions": [
+      {
+        "name": "total_objects",
+        "value": "20",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "large_rubber_spheres",
+        "value": "5",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      },
+      {
+        "name": "big_shiny_cylinders",
+        "value": "3",
+        "unit": "",
+        "source": "image",
+        "note": ""
+      }
+    ],
+    "relation_additions": [],
+    "constraint_additions": [],
+    "options_extracted": [],
+    "unresolved_targets": []
+  },
+  "readability_issues": [],
+  "reasoning": [
+    "The text region was selected to extract the counts of different objects as required by the problem statement.",
+    "The extracted text provides the necessary counts for total objects, large rubber spheres, and big shiny cylinders."
+  ]
+}

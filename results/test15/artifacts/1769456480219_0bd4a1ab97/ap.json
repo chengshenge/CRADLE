@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the total number of objects and those to be subtracted.",
+      "action": "reason",
+      "note": "Total objects: 20, Large rubber spheres: 5, Big shiny cylinders: 3."
+    },
+    {
+      "intention": "Compute the remaining number of objects after subtraction.",
+      "action": "python",
+      "code": "remaining_objects = 20 - 5 - 3"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "normalize",
+      "text": "Answer: 12"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

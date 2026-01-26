@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup. The image attached to the problem likely contains volume markings that need to be read to find the answer. The task is to extract the largest volume marking from the image, which is expected to represent the total volume of the measuring cup. The known volume markings on the measuring cup are 250 ml, 500 ml, 750 ml, and 1000 ml. The problem specifies the unit as grams (g), which is unusual for volume, indicating a potential need for careful interpretation. The final answer should be an integer value representing the total volume in grams, as per the problem's instructions.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read volume markings from the image",
+    "Identify the largest volume marking",
+    "Interpret the largest marking as the total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Ensure correct interpretation of volume markings as total volume",
+    "Verify unit conversion if necessary due to unusual unit specification (grams)"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation",
+    "image analysis"
+  ]
+}

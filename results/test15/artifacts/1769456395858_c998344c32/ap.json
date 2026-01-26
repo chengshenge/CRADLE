@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret volume markings.",
+      "action": "reason",
+      "note": "The largest volume marking is 1000 ml, which likely indicates the total volume. The unit is specified as grams, so conversion is needed."
+    },
+    {
+      "intention": "Convert the largest volume marking to grams.",
+      "action": "python",
+      "code": "total_volume_ml = 1000; total_volume_g = interpret_volume_as_grams(total_volume_ml)"
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: {total_volume_g}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

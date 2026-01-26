@@ -1,0 +1,33 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_map_angle",
+      "signature": "(diagram:str, options:list)->str",
+      "purpose": "Identify the measure of angle H from the diagram and map it to the correct multiple-choice option.",
+      "inputs": [
+        "diagram",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "Diagram does not clearly show angle H",
+        "Multiple angles are marked with similar values"
+      ],
+      "tests": [
+        {
+          "input": "{\"diagram\": \"image_with_angle_H_97\", \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}, {\"label\": \"C\", \"text\": \"107\"}, {\"label\": \"D\", \"text\": \"122\"}]}",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_map_angle"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between angles in the triangle.",
+      "action": "reason",
+      "note": "In triangle △ABC, the sum of angles is 180°. Given ∠A = 110°, find ∠B + ∠C."
+    },
+    {
+      "intention": "Calculate the sum of angles ∠B and ∠C.",
+      "action": "python",
+      "code": "sum_BC = 180 - 110"
+    },
+    {
+      "intention": "Use angle bisector properties to find ∠BOC.",
+      "action": "reason",
+      "note": "The angle bisectors OB and OC divide ∠B and ∠C, so ∠BOC = 90° + (∠B + ∠C)/2."
+    },
+    {
+      "intention": "Calculate the measure of angle ∠BOC.",
+      "action": "python",
+      "code": "BOC = 90 + sum_BC / 2"
+    },
+    {
+      "intention": "Determine the closest option for ∠BOC.",
+      "action": "reason",
+      "note": "Compare calculated ∠BOC with options: 135°, 140°, 145°, 150°."
+    },
+    {
+      "intention": "Select the correct multiple-choice option.",
+      "action": "normalize",
+      "text": "Answer: C"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}
