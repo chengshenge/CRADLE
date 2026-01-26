@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H, which is likely part of a geometric figure. The task is to identify the correct measure from the given multiple-choice options. The problem suggests a geometric context, possibly involving a diagram with angles and labels. The choices provided indicate that the measure of angle H is one of the given options. The problem is straightforward, requiring the identification of the angle measure from a diagram. The specific geometric context or additional information about angle H is not provided in the text.",
+  "entities": [
+    "angle H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Identify angle H in the diagram",
+    "Determine the measure of angle H",
+    "Map the measure to one of the provided options"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "currency/percent",
+    "rounding",
+    "multi-line conditions",
+    "hidden footnotes"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "multiple-choice"
+  ]
+}

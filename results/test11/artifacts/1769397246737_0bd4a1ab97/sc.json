@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(image, object_type:str)->int",
+      "purpose": "Identify and count specific types of objects in an image based on visual characteristics.",
+      "inputs": [
+        "image",
+        "object_type"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with ambiguous size or appearance"
+      ],
+      "tests": [
+        {
+          "input": "(image, 'large rubber spheres')",
+          "expect": "3"
+        },
+        {
+          "input": "(image, 'big shiny cylinders')",
+          "expect": "2"
+        }
+      ],
+      "tags": [
+        "visual recognition",
+        "counting",
+        "image analysis"
+      ]
+    },
+    {
+      "name": "subtract_counts",
+      "signature": "(total:int, subtractions:List[int])->int",
+      "purpose": "Subtract a list of counts from a total count to determine the remaining count.",
+      "inputs": [
+        "total",
+        "subtractions"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Negative results",
+        "Empty subtractions list"
+      ],
+      "tests": [
+        {
+          "input": "(10, [3, 2])",
+          "expect": "5"
+        },
+        {
+          "input": "(5, [])",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "subtraction",
+        "arithmetic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "subtract_counts"
+  ]
+}

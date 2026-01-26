@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the measure of angle H using the learned skill.",
+      "action": "python",
+      "code": "identify_angle_measure('image_path', [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])"
+    },
+    {
+      "intention": "Normalize the output to the required format.",
+      "action": "normalize",
+      "text": "Answer: B"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

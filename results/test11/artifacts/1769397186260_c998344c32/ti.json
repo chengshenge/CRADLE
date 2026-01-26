@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup based on the markings visible in an image. The image contains text markings indicating volume levels, specifically 100 ml, 200 ml, 300 ml, 400 ml, and 500 ml. The task is to identify the maximum volume marking on the measuring cup. The unit provided in the question is grams (g), which is unusual for volume, suggesting a potential need for careful interpretation of the image markings. The problem requires reading these numbers from the image to determine the total volume of the measuring cup. The final answer should be an integer value.",
+  "entities": [
+    "measuring cup",
+    "volume markings"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read volume markings from the image",
+    "Identify the maximum volume marking",
+    "Interpret the markings to determine total volume"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Check for any unusual units or markings that might affect interpretation",
+    "Ensure that the volume markings are correctly read and interpreted as volume"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "interpretation",
+    "image analysis"
+  ]
+}

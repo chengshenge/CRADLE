@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the maximum volume marking from the image.",
+      "action": "reason",
+      "note": "The image shows volume markings up to 500 ml."
+    },
+    {
+      "intention": "Determine the total volume of the measuring cup.",
+      "action": "python",
+      "code": "total_volume = 500"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

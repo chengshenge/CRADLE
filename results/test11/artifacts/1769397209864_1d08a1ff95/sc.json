@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find the measure of angle BOC using known angle properties.",
+      "how_to_use": "Use to calculate the measure of angle BOC by applying the triangle angle sum property and properties of angle bisectors."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use to format the computed measure of angle BOC into the specified answer format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_triangle_properties",
+      "signature": "(triangle_data)->dict",
+      "purpose": "Analyze the properties of a triangle given its angles and bisectors to determine unknown angles.",
+      "inputs": [
+        "triangle_data"
+      ],
+      "outputs": "Dictionary containing calculated angles and properties.",
+      "edge_cases": [
+        "Triangle with obtuse angles",
+        "Triangle with equal angles"
+      ],
+      "tests": [
+        {
+          "input": "{\"angles\": {\"A\": 110}, \"bisectors\": {\"OB\": true, \"OC\": true}}",
+          "expect": "{\"BOC\": 145}"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle properties"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_triangle_properties",
+    "calc_numeric",
+    "format_final"
+  ]
+}

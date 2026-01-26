@@ -114,36 +114,93 @@ def _to_scalar(v: Any) -> Any:
 def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[str]]:
     """Render {var} and {var:format} placeholders using values in ctx.
 
-    Returns (rendered_text, error_str). On error, rendered_text is the original text.
+    Returns (rendered_text, error_str). On error, rendered_text is the original.
+    Includes a conservative heuristic: if fixed-point formatting would round a small non-zero
+    *length-like* value to 0.0 with low precision, try meters->centimeters.
     """
     if not isinstance(text, str):
-        return str(text), None
-    if "{" not in text or "}" not in text:
         return text, None
+    if ctx is None:
+        ctx = {}
 
-    def repl(m: re.Match) -> str:
-        name, spec = m.group(1), m.group(2)
-        if name not in ctx:
-            raise KeyError(f"missing placeholder var: {name}")
-        v = _to_scalar(ctx[name])
-        return format(v, spec) if spec else str(v)
+    # Use decimal ROUND_HALF_UP for fixed-point formats to avoid banker's rounding surprises.
+    def _format_fixed_half_up(val: float, fmt: str) -> Optional[str]:
+        mfmt = re.search(r"\.(\d+)f$", (fmt or '').strip())
+        if not mfmt:
+            return None
+        try:
+            from decimal import Decimal, ROUND_HALF_UP
+            decimals = int(mfmt.group(1))
+            q = Decimal('1').scaleb(-decimals)  # 10**(-decimals)
+            d = Decimal(str(float(val))).quantize(q, rounding=ROUND_HALF_UP)
+            # Ensure fixed number of decimals
+            return format(d, f".{decimals}f")
+        except Exception:
+            return None
+
+
+    def _maybe_rescale_length(v: float, fmt: str) -> float:
+        try:
+            fv = float(v)
+        except Exception:
+            return v
+        if not math.isfinite(fv) or fv == 0.0:
+            return v
+        mfmt = re.search(r"\.(\d+)f$", (fmt or '').strip())
+        if not mfmt:
+            return v
+        decimals = int(mfmt.group(1))
+        if decimals > 1:
+            return v
+
+        q = str(ctx.get('_question_text', '')).lower()
+        unit = str(ctx.get('_unit', '')).strip().lower()
+        if unit in {'cm','mm','m','meter','metre','meters','metres'}:
+            return v
+
+        lengthy = any(w in q for w in [
+            'distance','length','height','width','radius','diameter',
+            'compress','compression','displacement','spring','stretched',
+            'moved','travel','how far'
+        ])
+        if not lengthy:
+            return v
+
+        try:
+            test = ("{:" + fmt + "}").format(fv)
+            if test.startswith('0') and abs(fv) < 0.1:
+                scaled = fv * 100.0
+                if 0.1 <= abs(scaled) <= 10000:
+                    return scaled
+        except Exception:
+            pass
+        return v
+
+    def _render_one(m: re.Match) -> str:
+        var = m.group(1)
+        fmt = m.group(2) or ''
+        if var not in ctx:
+            return m.group(0)
+        v = ctx[var]
+        try:
+            if fmt and isinstance(v, (int, float)):
+                v = _maybe_rescale_length(v, fmt)
+                s = _format_fixed_half_up(v, fmt)
+                return s if s is not None else ("{:" + fmt + "}").format(v)
+            if fmt:
+                s = _format_fixed_half_up(v, fmt)
+                return s if s is not None else ("{:" + fmt + "}").format(v)
+            return str(v)
+        except Exception:
+            return m.group(0)
 
     try:
-        return _PLACEHOLDER_RE.sub(repl, text), None
+        rendered = _PLACEHOLDER_RE.sub(_render_one, text)
+        if _PLACEHOLDER_RE.search(rendered):
+            return rendered, "Unresolved placeholders remain"
+        return rendered, None
     except Exception as e:
         return text, str(e)
-
-_ANS_HOLE_RE = re.compile(r"\{[^}]+\}")
-
-def _sanitize_answer_line(s: str) -> str:
-    t = (s or "").strip()
-    if not t:
-        return ""
-    if not t.startswith("Answer:"):
-        t = "Answer: " + t
-    # single line
-    t = t.splitlines()[0].strip()
-    return t
 
 def _looks_valid_answer_line(s: str) -> bool:
     t = _sanitize_answer_line(s)
@@ -162,50 +219,61 @@ def _looks_valid_answer_line(s: str) -> bool:
     return True
 
 def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
-    """Pick the final answer line.
+    """Prefer a valid draft answer unless SR is clearly fixing a formatting/mapping issue.
 
-    Default behavior: keep the draft if it looks valid.
-    However, if SR explicitly flags the draft as incorrect and provides a valid correction
-    with reasonable confidence, prefer SR (this fixes logic errors, not just formatting).
+    SR is useful for:
+    - adding/removing the required 'Answer:' line
+    - option-letter <-> option-text mapping
+    - rounding/precision/unit formatting
+
+    SR is *not* trusted to re-solve arithmetic/relations. We therefore gate SR overrides.
     """
     draft_line = _sanitize_answer_line(draft)
-    sr_line = _sanitize_answer_line(str(sr.get("final_answer", "")))
-
-    sr_cause = str(sr.get("most_probable_cause", "")).strip().lower()
-    safe_causes = {"format_error", "option_mapping_error", "rounding_error", "unit_error"}
+    sr_line = _sanitize_answer_line(str(sr.get('final_answer', '')))
 
     draft_ok = _looks_valid_answer_line(draft_line)
     sr_ok = _looks_valid_answer_line(sr_line)
 
-    # If SR explicitly says the draft is wrong and is confident, trust SR.
-    sr_conf = sr.get("confidence", 0)
-    try:
-        sr_conf_f = float(sr_conf)
-    except Exception:
-        sr_conf_f = 0.0
-    sr_answer_correct = sr.get("answer_correct", None)
-    if sr_answer_correct is False and sr_ok and sr_conf_f >= 0.55:
-        return sr_line
+    sr_cause = str(sr.get('most_probable_cause', '') or '').strip().lower()
 
-    # If SR explicitly says the draft is correct and draft is valid, keep draft.
-    if sr_answer_correct is True and draft_ok:
-        return draft_line
+    safe_causes = {
+        'format_error',
+        'rounding_error',
+        'precision_error',
+        'unit_error',
+        'missing_answer_line',
+        'option_mapping_error',
+    }
 
-    # If draft is good and SR is either bad or likely changing semantics without an explicit incorrect flag, keep draft.
-    if draft_ok and ((not sr_ok) or (sr_cause and sr_cause not in safe_causes)):
-        return draft_line
+    def _extract_num(s: str):
+        payload = s.split('Answer:', 1)[-1].strip() if 'Answer:' in s else s.strip()
+        m = re.search(r"[-+]?\d+(?:\.\d+)?", payload)
+        return float(m.group(0)) if m else None
 
-    # If SR looks good and it's a safe fix, prefer SR.
-    if sr_ok and (sr_cause in safe_causes or not draft_ok):
-        return sr_line
+    def _payload(s: str) -> str:
+        return s.split('Answer:', 1)[-1].strip() if 'Answer:' in s else s.strip()
 
-    # Fallback: whichever is valid; else keep whatever we have.
     if draft_ok:
+        if sr_ok and sr_cause in safe_causes:
+            nd, ns = _extract_num(draft_line), _extract_num(sr_line)
+            if nd is not None and ns is not None:
+                # Allow small numeric edits (rounding) or 100x unit swap (unit_error)
+                if abs(ns - nd) <= max(1e-6, 0.05 * max(1.0, abs(nd))):
+                    return sr_line
+                if sr_cause == 'unit_error' and nd != 0:
+                    ratio = ns / nd
+                    if abs(ratio - 100.0) < 1e-3 or abs(ratio - 0.01) < 1e-3:
+                        return sr_line
+                return draft_line
+            # Non-numeric: mapping/formatting fix
+            if _payload(draft_line) != _payload(sr_line):
+                return sr_line
+            return sr_line
         return draft_line
+
     if sr_ok:
         return sr_line
-    return sr_line or draft_line or "Answer: "
-
+    return draft_line
 def _extract_first_balanced_json_object(s: str) -> Optional[str]:
     """Return the first balanced {...} object substring, or None."""
     if not isinstance(s, str):
@@ -333,64 +401,6 @@ def _remove_trailing_commas(s: str) -> str:
         i += 1
     return "".join(out)
 
-
-# ---- JSON repair helpers (for model slips like '"...{:.1f}" .format(x)' ) ----
-
-_JSON_DOT_FORMAT_RE = re.compile(
-    r'("(?:(?:\\.)|[^"\\])*")\s*\.format\(\s*([A-Za-z_]\w*)\s*\)'
-)
-
-def _repair_dot_format_calls(s: str) -> str:
-    """Repair invalid JSON patterns like:
-    "Answer: {:.1f}" .format(d_val)  ->  "Answer: {d_val:.1f}"
-    Also repairs "{}" .format(x) -> "{x}".
-    This is a deterministic sanitation step (no model re-ask).
-    """
-    if not isinstance(s, str) or ".format" not in s:
-        return s
-
-    def _fix_literal(m: re.Match) -> str:
-        literal = m.group(1)  # includes quotes
-        var = m.group(2)
-        inner = literal[1:-1]
-
-        # Replace unnamed format fields: "{:.1f}" / "{}" with named placeholders
-        inner = re.sub(r"\{(:[^}]+)\}", "{%s\\1}" % var, inner)
-        inner = inner.replace("{}", "{%s}" % var)
-
-        return '"' + inner + '"'
-
-    # Apply repeatedly in case multiple occurrences exist.
-    prev = None
-    cur = s
-    for _ in range(6):
-        prev = cur
-        cur = _JSON_DOT_FORMAT_RE.sub(_fix_literal, cur)
-        if cur == prev:
-            break
-    return cur
-
-# ---- Skill spec filter (avoid hallucinated vision/OCR skills) ----
-_VISION_SPEC_KWS = ("image", "pixel", "bbox", "vision", "ocr", "detect", "segmentation")
-
-def _filter_vision_skill_specs(specs: Any) -> List[Dict[str, Any]]:
-    """Drop new_skill_specs that likely require direct image processing."""
-    if not isinstance(specs, list):
-        return []
-    kept: List[Dict[str, Any]] = []
-    for sp in specs:
-        if not isinstance(sp, dict):
-            continue
-        name = str(sp.get("name", "")).lower()
-        sig = str(sp.get("signature", "")).lower()
-        purpose = str(sp.get("purpose", "")).lower()
-        joined = " ".join([name, sig, purpose])
-        if any(k in joined for k in _VISION_SPEC_KWS):
-            continue
-        kept.append(sp)
-    return kept
-
-
 def _extract_json_obj(text: str) -> Dict[str, Any]:
     """Parse a JSON object from model output with light, deterministic sanitation.
 
@@ -402,8 +412,6 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
         raise ValueError("Model output is not a string.")
 
     s = _strip_markdown_fences(text)
-
-    s = _repair_dot_format_calls(s)
 
     # First try direct parse
     try:
@@ -1250,10 +1258,6 @@ How to use inputs explicitly:
    - chart: read title, axes labels, tick values, units, legend entries, and key plotted values if readable.
    - table: read headers and every relevant cell; preserve row/col structure.
    - diagram: read point labels, length/angle labels, and any marked relationships.
-- If the image contains an instrument/scale (measuring cup, ruler, thermometer): record the MAX scale, tick spacing, and UNITS, and the observed level/reading.
-- If the image is a synthetic 3D scene (CLEVR-style objects): count objects by the attributes mentioned in the question (shape/size/material/color) and record counts explicitly.
-- If the image is a plot: in addition to ticks/labels, extract the specific data points needed to answer the question (e.g., values at a referenced x/θ, the maxima/minima, or values for items mentioned in options). If you must estimate, say so and give an approximate value.
-
 2) Use INFO_JSON.math_elements_extracted to target missing/uncertain items:
    - If IG listed an unknown value/relationship but did not provide the actual number/label, attempt to locate it in the image and record it.
    - If multiple-choice options exist, extract options exactly as shown.
@@ -1384,10 +1388,6 @@ Input:
 Select skills to use.
 If missing reusable capability, propose new_skill_specs.
 
-Hard constraint for MathVista:
-- Do NOT propose skills that require directly reading the image (OCR, object detection/counting from pixels, chart digitization, region/bbox based extraction).
-  Image reading must be done by the model via GTI/AP visual observation, and the skill layer should only do deterministic math/string processing on already-extracted values.
-
 Return STRICT JSON:
 {
   "selected_skills": [{"name":"...", "purpose":"...", "how_to_use":"..."}],
@@ -1405,8 +1405,6 @@ Constraints:
 - Code must define EXACTLY one function with the given name.
 - No imports, no file/network access, no open(), no eval/exec, no attribute calls like x.y().
 - Use only basic arithmetic, control flow, and safe builtins: abs,min,max,sum,len,round,range,int,float,str
-- Skills MUST be purely deterministic and MUST NOT rely on reading images/vision. If a spec suggests vision (e.g., signature mentions image/pixels/bbox/region or purpose says OCR/detect/count from image), write a function that raises ValueError("vision skill not supported") so the planner can fall back.
-
 - If you need math functions, use provided global `math` (already available).
 
 Return STRICT JSON:
@@ -1443,18 +1441,13 @@ HARD RULES (to avoid silent wrong answers):
 - DO NOT write any `import` / `from ... import ...` statements inside python steps. The executor blocks `import`. Use the provided skills (calc_numeric, sympy_solve, format_final) and the built-in `math` module only.
 - Prefer calling sympy_solve("...", "d") rather than trying to import sympy.
 - Do not round intermediate results to 1 decimal place. Keep at least 3 significant digits (or 3+ decimals) before format_final.
-- NEVER write Python string formatting like `"Answer: {:.1f}".format(x)` inside the JSON (it breaks JSON). Use placeholders in normalize text, e.g. `"Answer: {x:.1f}"`, or call format_final(x).
-- If a needed quantity comes ONLY from the image (counts, a plotted y-value, a table cell, a marked length/angle):
-  - First add a "reason" step that states the observed value explicitly (e.g., "From the image, count_big_matte_spheres = 4").
-  - Then use a python step ONLY for arithmetic on those observed constants. Do NOT invent "count_*" helper skills that claim to read the image.
-
 
 Do NOT output the final answer directly in normal text; instead produce steps that compute it and then a normalize step.
 
 CRITICAL: You MUST explicitly use:
 1) INFO_JSON.region_to_detect to decide which modality-specific facts matter (chart/table/diagram/text).
 2) INFO_JSON.math_elements_extracted as the canonical state of the problem (known/unknown/relations/constraints/options).
-3) GTI_JSON is the primary structured source for image-read values. If GTI_JSON is missing a value that is clearly visible, you may read it directly from the image, but you MUST state it explicitly in a "reason" step as a visual observation (no guessing).
+3) GTI_JSON as the only source for image-read values; DO NOT invent visual numbers or labels.
 
 Allowed step actions (MUST match executor):
 - "reason": describe what to do next (no code).
@@ -1861,6 +1854,7 @@ Return STRICT JSON:
                     debug=self.debug,
                 )
             skill_mgr: SkillManager = self._skill_mgr
+            skill_mgr.ctx['_question_text'] = obs.text
 
             with _stage("IG"):
                 ig0 = self._llm_call_json(
@@ -1873,6 +1867,13 @@ Return STRICT JSON:
                 if _mk:
                     errors.append({'stage':'IG','type':'missing_keys','missing':_mk})
 
+            # If OCR is needed, bias region to text for downstream modules
+            try:
+                if isinstance(ig0, dict) and str(ig0.get('need_ocr','')).strip().lower() == 'yes':
+                    ig0['region_to_detect'] = 'text'
+            except Exception:
+                pass
+
             with _stage("GTI"):
                 gti = self._llm_call_json(
                 "GTI",
@@ -1883,6 +1884,48 @@ Return STRICT JSON:
                 _mk = _missing_keys(gti, ["region_used", "structured", "targets_from_math_elements"])
                 if _mk:
                     errors.append({'stage':'GTI','type':'missing_keys','missing':_mk})
+
+            # Optional GTI2: targeted re-read for max-marking questions to reduce missed top ticks.
+            try:
+                if isinstance(ig0, dict) and str(ig0.get('need_ocr','')).strip().lower() == 'yes':
+                    qlow = str(obs.text).lower()
+                    if any(w in qlow for w in ['measuring', 'volume', 'capacity', 'marking', 'graduated', 'cup', 'beaker']):
+                        nums = []
+                        if isinstance(gti, dict):
+                            for s in (gti.get('information') or []):
+                                for mm in re.finditer(r"\d+(?:\.\d+)?", str(s)):
+                                    try:
+                                        nums.append(float(mm.group(0)))
+                                    except Exception:
+                                        pass
+                        max_seen = max(nums) if nums else None
+                        if (max_seen is None) or (max_seen < 800):
+                            t0 = time.perf_counter()
+                            ocr2_prompt = (
+                                "Targeted read: list all visible numeric markings relevant to the question.\n"
+                                "Return STRICT JSON: {\"numbers\": [..], \"max_marking\": <number or null>, \"notes\": [..]}\n"
+                                "Only include numbers you can actually see.\n\n"
+                                + obs.text
+                            )
+                            ocr2 = self._llm_call_json("GTI2", ocr2_prompt, obs, need_image=True)
+                            stage_times['GTI2'] = round(time.perf_counter() - t0, 6)
+                            llm_calls.append({
+                                'run_id': run_id,'stage':'GTI2','attempt':0,'need_image':True,'attach_image':True,
+                                'prompt_len': len(ocr2_prompt),'latency_s': stage_times.get('GTI2'),
+                                'parse_ok': True,'raw_head': _truncate(_j(ocr2), 400),'error':''
+                            })
+                            if isinstance(ocr2, dict):
+                                max2 = ocr2.get('max_marking')
+                                if max2 is None:
+                                    try:
+                                        max2 = max(float(x) for x in (ocr2.get('numbers') or []) if x is not None)
+                                    except Exception:
+                                        max2 = None
+                                if max2 is not None and isinstance(gti, dict):
+                                    gti.setdefault('information', [])
+                                    gti['information'].append(f"Targeted OCR: max_marking={max2}")
+            except Exception:
+                pass
 
             with _stage("IGR"):
                 ig = self._llm_call_json(
@@ -1922,7 +1965,7 @@ Return STRICT JSON:
                 if _mk:
                     errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
 
-            new_specs = _filter_vision_skill_specs(sc.get("new_skill_specs", []))
+            new_specs = sc.get("new_skill_specs", [])
             if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
                 sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
                 sw = self._llm_call_json("SkillWriter", sw_input, obs, need_image=False)

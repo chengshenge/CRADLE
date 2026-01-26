@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the energy conversion process",
+      "action": "reason",
+      "note": "The kinetic energy of the canister is converted into the potential energy of the spring."
+    },
+    {
+      "intention": "Calculate initial kinetic energy and set up energy equation",
+      "action": "python",
+      "code": "m = 0.40; v = 0.50; k = 750; KE_initial = 0.5 * m * v**2; PE_spring = 0.5 * k * d**2; eq = f'{KE_initial} - {PE_spring}'"
+    },
+    {
+      "intention": "Solve for the compression distance d",
+      "action": "python",
+      "code": "d_val = sympy_solve(eq, 'd')"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {ans}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

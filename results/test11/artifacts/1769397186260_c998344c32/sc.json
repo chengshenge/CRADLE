@@ -1,0 +1,43 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line output.",
+      "how_to_use": "Use this skill to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_markings",
+      "signature": "(image)->int",
+      "purpose": "Extract and interpret volume markings from an image of a measuring cup.",
+      "inputs": [
+        "image"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Unusual units like grams instead of ml",
+        "Blurry or unclear markings"
+      ],
+      "tests": [
+        {
+          "input": "image_with_clear_markings",
+          "expect": 500
+        },
+        {
+          "input": "image_with_blurry_markings",
+          "expect": 0
+        }
+      ],
+      "tags": [
+        "image analysis",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_markings",
+    "format_final"
+  ]
+}

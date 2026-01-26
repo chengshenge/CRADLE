@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves a visual task where the user must identify and count specific types of objects from an image. The objects in question are large rubber spheres and big shiny cylinders. The task requires subtracting these specific objects from the total number of objects in the image to determine how many objects remain. The problem does not provide a clear definition of what constitutes 'large' or 'big', which may require subjective visual judgment. The final answer should be an integer representing the number of remaining objects after the specified subtractions. The problem is presented in a multiple-choice format, requiring the final answer to map to one of the given options.",
+  "entities": [
+    "total_objects",
+    "large_rubber_spheres",
+    "big_shiny_cylinders",
+    "remaining_objects"
+  ],
+  "unknowns": [
+    "remaining_objects"
+  ],
+  "required_operations": [
+    "Identify and count all objects in the image",
+    "Identify and count large rubber spheres",
+    "Identify and count big shiny cylinders",
+    "Subtract the counts of large rubber spheres and big shiny cylinders from the total object count"
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "visual judgment for 'large' and 'big' definitions"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "visual recognition",
+    "subtraction",
+    "counting",
+    "diagram analysis"
+  ]
+}

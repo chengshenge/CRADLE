@@ -1,0 +1,34 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_angle_measure",
+      "signature": "(image, options)->str",
+      "purpose": "Identify the measure of a specific angle from a diagram and map it to one of the provided multiple-choice options.",
+      "inputs": [
+        "image",
+        "options"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Diagram is unclear or angle labels are missing",
+        "Multiple angles with similar measures"
+      ],
+      "tests": [
+        {
+          "input": "('diagram_with_angles.png', [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "image analysis",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_angle_measure"
+  ]
+}
