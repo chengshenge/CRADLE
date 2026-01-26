@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Compute remaining objects after subtraction",
+      "action": "python",
+      "code": "remaining_objects = 50 - 10 - 5"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

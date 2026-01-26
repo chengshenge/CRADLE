@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the largest volume marking on the measuring cup.",
+      "action": "reason",
+      "note": "The largest visible marking is 1000 ml, which likely indicates the total volume capacity of the measuring cup."
+    },
+    {
+      "intention": "Format the total volume as the final answer.",
+      "action": "python",
+      "code": "total_volume = 1000; formatted_answer = format_final(total_volume)"
+    },
+    {
+      "intention": "Provide the formatted answer.",
+      "action": "normalize",
+      "text": "Answer: 1000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

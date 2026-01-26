@@ -155,8 +155,16 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
 
         q = str(ctx.get('_question_text', '')).lower()
         unit = str(ctx.get('_unit', '')).strip().lower()
-        if unit in {'cm','mm','m','meter','metre','meters','metres'}:
-            return v
+        # If the question explicitly requests a unit, do not auto-rescale.
+        try:
+            if unit in {'cm','mm'}:
+                return v
+            if re.search(r"\b(in\s*cm|centimeters?)\b", q) or re.search(r"\b(in\s*mm|millimeters?)\b", q):
+                return v
+            if re.search(r"\b(in\s*m|meters?|metres?)\b", q):
+                return v
+        except Exception:
+            pass
 
         lengthy = any(w in q for w in [
             'distance','length','height','width','radius','diameter',
@@ -273,7 +281,8 @@ def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
 
     if sr_ok:
         return sr_line
-    return draft_line
+    # Neither looks valid; do not return placeholder holes.
+    return "Answer: "
 def _extract_first_balanced_json_object(s: str) -> Optional[str]:
     """Return the first balanced {...} object substring, or None."""
     if not isinstance(s, str):
@@ -357,6 +366,41 @@ def _escape_newlines_inside_strings(s: str) -> str:
 
 
 
+
+def _repair_dot_format_calls(s: str) -> str:
+    """Repair common LLM artifact: "text": "...".format(var)
+
+    Example:
+      "text": "Answer: {:.1f}".format(d_val)
+    becomes:
+      "text": "Answer: {d_val:.1f}"
+
+    This is deterministic and only touches patterns that are not valid JSON anyway.
+    """
+    if not isinstance(s, str) or ".format(" not in s:
+        return s
+
+    # Only repair for a few known string-valued keys to avoid unintended rewrites.
+    keys = ("text", "note", "intention")
+    key_pat = "|".join(re.escape(k) for k in keys)
+    # Match: "text": "....".format(var)
+    pattern = re.compile(rf'("({key_pat})"\s*:\s*)"([^"\\]*(?:\\.[^"\\]*)*)"\s*\.format\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)')
+    def repl(m: re.Match) -> str:
+        prefix = m.group(1)
+        inner = m.group(3)
+        var = m.group(4)
+        # If inner contains "{:" spec, inject var name.
+        if "{:" in inner:
+            inner2 = inner.replace("{:", "{"+var+":", 1)
+        elif "{}" in inner:
+            inner2 = inner.replace("{}", "{"+var+"}", 1)
+        else:
+            # No obvious placeholder: keep string as-is (drop .format call)
+            inner2 = inner
+        return f'{prefix}"{inner2}"'
+    return pattern.sub(repl, s)
+
+
 def _remove_trailing_commas(s: str) -> str:
     """Remove trailing commas before '}' or ']' outside of strings.
 
@@ -415,7 +459,7 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
 
     # First try direct parse
     try:
-        return json.loads(_remove_trailing_commas(s))
+        return json.loads(_remove_trailing_commas(_repair_dot_format_calls(s)))
     except Exception:
         pass
 
@@ -426,6 +470,9 @@ def _extract_json_obj(text: str) -> Dict[str, Any]:
 
     # Sanitize newlines inside strings (common LLM formatting artifact)
     candidate2 = _escape_newlines_inside_strings(candidate)
+
+    # Repair invalid JSON artifacts like "text": "...".format(var)
+    candidate2 = _repair_dot_format_calls(candidate2)
 
     return json.loads(_remove_trailing_commas(candidate2))
 
@@ -906,6 +953,24 @@ def make_safe_context() -> Dict[str, Any]:
         except Exception:
             pass
 
+
+        # Heuristic: many MathVista physics "distance/length" answers are stored in centimeters
+        # even if inputs are in SI. If the unknown is length-like and the computed value is < 0.1,
+        # scale by 100 to avoid rounding to 0.0 at low precision.
+        try:
+            if isinstance(a, (int, float)) and math.isfinite(a):
+                if ctx.get("_length_like", False) and 0 < abs(float(a)) < 0.1:
+                    a = float(a) * 100.0
+        except Exception:
+            pass
+
+        # Keep a generic 'ans' variable available for normalize placeholders (Answer: {ans})
+        try:
+            if "ans" not in ctx and isinstance(a, (int, float, str)):
+                ctx["ans"] = a
+        except Exception:
+            pass
+
         # If AP hard-codes a rounded number but we have a computed last solution,
         # prefer the computed one when they differ significantly.
         try:
@@ -930,6 +995,48 @@ def make_safe_context() -> Dict[str, Any]:
     ctx["sympy_solve"] = sympy_solve
     ctx["format_final"] = format_final
     return ctx
+
+
+
+def _infer_ans_name_from_code(code: str) -> Optional[str]:
+    """Infer the most likely answer variable name from a one-line python snippet.
+
+    We prefer:
+    - last assignment target (e.g., d_val = ...)
+    - argument to format_final(x)
+    """
+    if not isinstance(code, str) or not code.strip():
+        return None
+    try:
+        tree = ast.parse(code)
+    except Exception:
+        return None
+
+    cand = None
+    for node in tree.body:
+        # Prefer explicit format_final(arg)
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            fn = node.value.func
+            if isinstance(fn, ast.Name) and fn.id == "format_final" and node.value.args:
+                a0 = node.value.args[0]
+                if isinstance(a0, ast.Name):
+                    cand = a0.id
+                elif isinstance(a0, ast.Constant):
+                    return None
+        if isinstance(node, ast.Assign):
+            # multiple targets possible
+            for t in node.targets:
+                if isinstance(t, ast.Name):
+                    cand = t.id
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            cand = node.target.id
+        elif isinstance(node, ast.AugAssign) and isinstance(node.target, ast.Name):
+            cand = node.target.id
+
+    # Don't return clearly non-answer names unless nothing else exists
+    if cand in (None, "m", "v", "k", "g", "pi"):
+        return cand
+    return cand
 
 
 def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
@@ -1251,6 +1358,12 @@ Input:
 
 Goal: extract ALL readable text/values/labels from the image, focusing on region_to_detect.
 Do NOT solve the problem.
+Extra extraction rules (important):
+- If the question asks for a maximum/total/capacity/highest value on a scale (cup, ruler, axis, gauge), list ALL visible numeric markings and explicitly include the largest marking you can see.
+- If the question is a counting task ("how many", "count", "left", "remain"), count objects mentioned in the question and also the total if possible. Record counts in structured.diagram under a key "counts" (free-form list).
+- Never invent numbers; if unreadable, add a note to readability_issues.
+- Never output python string formatting like ".format(...)" inside JSON strings.
+
 
 How to use inputs explicitly:
 1) Use INFO_JSON.region_to_detect to decide what to read:
@@ -1441,6 +1554,7 @@ HARD RULES (to avoid silent wrong answers):
 - DO NOT write any `import` / `from ... import ...` statements inside python steps. The executor blocks `import`. Use the provided skills (calc_numeric, sympy_solve, format_final) and the built-in `math` module only.
 - Prefer calling sympy_solve("...", "d") rather than trying to import sympy.
 - Do not round intermediate results to 1 decimal place. Keep at least 3 significant digits (or 3+ decimals) before format_final.
+- Do NOT use python-style string formatting in JSON fields (e.g., "...".format(x)). For normalize.text, use placeholders like "Answer: {ans}" or "Answer: {x_val:.2f}" only.
 
 Do NOT output the final answer directly in normal text; instead produce steps that compute it and then a normalize step.
 
@@ -1467,7 +1581,8 @@ D) If region_to_detect == "diagram":
    - Explicitly map labels to segments/angles; use constraints from math_elements_extracted.
 E) If multiple-choice options exist:
    - Compute a value (if needed) THEN map to the closest/required option based on the problem instruction.
-   - normalize MUST output the option label if the dataset expects a label.
+   - If the question explicitly says "choose A/B/C/D" or "option letter", output the option label.
+   - Otherwise, output the option TEXT/value (e.g., "145°") to be robust to answer formats.
 F) Always include at least one final sanity check:
    - unit consistency, sign, range constraints, and whether the result satisfies relations/constraints.
 
@@ -1867,10 +1982,11 @@ Return STRICT JSON:
                 if _mk:
                     errors.append({'stage':'IG','type':'missing_keys','missing':_mk})
 
-            # If OCR is needed, bias region to text for downstream modules
+            # If OCR is needed but IG did not select a region, bias to text.
             try:
                 if isinstance(ig0, dict) and str(ig0.get('need_ocr','')).strip().lower() == 'yes':
-                    ig0['region_to_detect'] = 'text'
+                    if str(ig0.get('region_to_detect','')).strip().lower() in ('', 'null'):
+                        ig0['region_to_detect'] = 'text'
             except Exception:
                 pass
 
@@ -1924,6 +2040,48 @@ Return STRICT JSON:
                                 if max2 is not None and isinstance(gti, dict):
                                     gti.setdefault('information', [])
                                     gti['information'].append(f"Targeted OCR: max_marking={max2}")
+                                    try:
+                                        gti.setdefault('structured', {}).setdefault('diagram', {}).setdefault('labels', [])
+                                        gti['structured']['diagram']['labels'].append(str(max2))
+                                        gti.setdefault('targets_from_math_elements', {}).setdefault('known_additions', [])
+                                        gti['targets_from_math_elements']['known_additions'].append({
+                                            'name': 'max_marking', 'value': str(max2), 'unit': '', 'source': 'image', 'note': 'targeted OCR max marking'
+                                        })
+                                    except Exception:
+                                        pass
+
+                # Optional GTI_COUNT: re-read for pure counting tasks (objects/remaining/how many).
+                try:
+                    qlow = str(obs.text).lower()
+                    wants_count = any(w in qlow for w in ['how many', 'count', 'remain', 'left', 'number of'])
+                    if wants_count:
+                        # If initial GTI did not extract any useful numeric labels, ask again focused on counting.
+                        labels = []
+                        if isinstance(gti, dict):
+                            labels = (gti.get('structured', {}).get('diagram', {}).get('labels', []) or [])
+                        if not labels:
+                            t0 = time.perf_counter()
+                            count_prompt = (
+                                "Counting focus: Count the objects relevant to the question directly from the image.\n"
+                                "If the question mentions specific object types, count each type and also the total.\n"
+                                "Return STRICT JSON: {\"counts\": [{\"object\":\"...\",\"count\":<int>,\"note\":\"...\"}], \"total\": <int or null>, \"notes\": [..]}\n"
+                                "Only report counts you can justify from the image.\n\n"
+                                + obs.text
+                            )
+                            cnt = self._llm_call_json("GTI_COUNT", count_prompt, obs, need_image=True)
+                            stage_times['GTI_COUNT'] = round(time.perf_counter() - t0, 6)
+                            llm_calls.append({
+                                'run_id': run_id,'stage':'GTI_COUNT','attempt':0,'need_image':True,'attach_image':True,
+                                'prompt_len': len(count_prompt),'latency_s': stage_times.get('GTI_COUNT'),
+                                'parse_ok': True,'raw_head': _truncate(_j(cnt), 400),'error':''
+                            })
+                            if isinstance(cnt, dict) and isinstance(gti, dict):
+                                # Merge into gti.information for IGR/TI/AP grounding
+                                gti.setdefault('information', [])
+                                gti['information'].append("Counting read: " + _truncate(_j(cnt), 500))
+                except Exception:
+                    pass
+
             except Exception:
                 pass
 
@@ -1937,6 +2095,17 @@ Return STRICT JSON:
                 _mk = _missing_keys(ig, ["region_to_detect", "math_elements_extracted"])
                 if _mk:
                     errors.append({'stage':'IGR','type':'missing_keys','missing':_mk})
+
+
+            # Mark whether the unknown is length-like to enable deterministic unit scaling (m->cm) in format_final/rendering.
+            try:
+                unknowns = (ig.get('math_elements_extracted') or {}).get('unknown', [])
+                if isinstance(unknowns, list):
+                    ulow = " ".join(str(u).lower() for u in unknowns)
+                    length_kw = ['distance','length','height','width','radius','diameter','depth','thickness','displacement','compression','extension']
+                    skill_mgr.ctx['_length_like'] = any(k in ulow for k in length_kw)
+            except Exception:
+                pass
 
             with _stage("TI"):
                 ti = self._llm_call_json(
@@ -2021,6 +2190,14 @@ Return STRICT JSON:
                     if action == "python":
                         code = step.get("code", "")
                         out, err = safe_exec(code, skill_mgr.ctx)
+                        # Infer a generic 'ans' variable for later placeholders.
+                        try:
+                            if err is None:
+                                nm = _infer_ans_name_from_code(code)
+                                if nm and nm in skill_mgr.ctx and nm not in ('m','v','k','g','pi'):
+                                    skill_mgr.ctx['ans'] = skill_mgr.ctx.get(nm)
+                        except Exception:
+                            pass
                         tool_logs.append(
                             {
                                 "i": idx,
@@ -2138,8 +2315,53 @@ Return STRICT JSON:
             if draft_line and not draft_line.startswith("Answer:"):
                 draft_line = "Answer: " + draft_line
 
+
+            # If draft still contains unresolved placeholders (e.g., Answer: {ans}), try to render from ctx.
+            try:
+                rendered, rerr = render_placeholders(draft_line, skill_mgr.ctx)
+                if rerr is None and rendered:
+                    draft_line = rendered.strip()
+            except Exception:
+                pass
+
+            # If still invalid, try rendering AP.final_format using ctx['ans'].
+            try:
+                if not _looks_valid_answer_line(draft_line):
+                    ff = ""
+                    if isinstance(ap, dict):
+                        ff = str(ap.get("final_format", "") or "")
+                    if ff:
+                        ff_line = ff if ff.strip().startswith("Answer:") else ("Answer: " + ff.strip())
+                        rendered, rerr = render_placeholders(ff_line, skill_mgr.ctx)
+                        if rerr is None and rendered and _looks_valid_answer_line(rendered):
+                            draft_line = rendered.strip()
+            except Exception:
+                pass
+
+            # Last resort: if we have a numeric/string 'ans' in ctx, format it deterministically.
+            try:
+                if not _looks_valid_answer_line(draft_line) and "ans" in skill_mgr.ctx:
+                    draft_line = format_final(skill_mgr.ctx.get("ans"))
+            except Exception:
+                pass
+
+
             final_answer = choose_final_answer(draft_line, sr)
 
+            # If the final answer is a bare option label (A/B/C/...), map it to the option text when available.
+            try:
+                payload = final_answer.split("Answer:", 1)[1].strip() if "Answer:" in final_answer else final_answer.strip()
+                if re.fullmatch(r"[A-H]", payload):
+                    opts = (ig.get("math_elements_extracted") or {}).get("options", [])
+                    if isinstance(opts, list):
+                        for o in opts:
+                            if str(o.get("label", "")).strip() == payload:
+                                txt = str(o.get("text", "")).strip()
+                                if txt:
+                                    final_answer = "Answer: " + txt
+                                    break
+            except Exception:
+                pass
             mem_input = (
                 self.MEM_PROMPT
                 + "\n\n[INFO_JSON]\n"

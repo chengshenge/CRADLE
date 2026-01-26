@@ -1,0 +1,52 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expression in python.",
+      "how_to_use": "Use to perform calculations involving numeric expressions."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "Solve equations using sp in python if available.",
+      "how_to_use": "Use to solve equations symbolically."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Return exactly one line: Answer: ...",
+      "how_to_use": "Use to format the final answer in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A, options)->str",
+      "purpose": "Calculate the angle ∠BOC formed by the intersection of angle bisectors in a triangle given ∠A.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The correct option label for ∠BOC.",
+      "edge_cases": [
+        "Ensure angle A is valid and options are provided."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle",
+        "multiple-choice"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "calc_numeric",
+    "sympy_solve",
+    "format_final"
+  ]
+}

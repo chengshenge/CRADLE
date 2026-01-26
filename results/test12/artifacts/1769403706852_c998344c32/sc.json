@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final integer answer as required.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_volume_from_image",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the total volume from an image of a measuring cup with volume markings.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The total volume as an integer.",
+      "edge_cases": [
+        "Image is blurry or markings are unclear",
+        "Markings are in an unusual unit"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume extraction",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_volume_from_image",
+    "format_final"
+  ]
+}

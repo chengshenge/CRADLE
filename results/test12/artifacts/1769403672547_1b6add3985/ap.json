@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify initial kinetic energy and set up energy conservation equation.",
+      "action": "reason",
+      "note": "The kinetic energy of the canister is converted into the potential energy of the spring."
+    },
+    {
+      "intention": "Calculate the initial kinetic energy and solve for distance d.",
+      "action": "python",
+      "code": "m = 0.40; v = 0.50; k = 750; KE_initial = 0.5 * m * v**2; d_val = sympy_solve('0.5 * k * d**2 - KE_initial', 'd')[0]"
+    },
+    {
+      "intention": "Format the final answer for the distance d.",
+      "action": "normalize",
+      "text": "Answer: {d_val:.1f}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

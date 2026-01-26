@@ -1,0 +1,71 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as required by the problem statement.",
+      "how_to_use": "Use this skill to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "read_diagram_angle",
+      "signature": "(diagram_image)->angle_value",
+      "purpose": "To read and extract the angle value from a given diagram image.",
+      "inputs": [
+        "diagram_image"
+      ],
+      "outputs": "angle_value",
+      "edge_cases": [
+        "Diagram is unclear or has multiple angles marked."
+      ],
+      "tests": [
+        {
+          "input": "diagram_with_angle_102",
+          "expect": "102"
+        },
+        {
+          "input": "diagram_with_no_clear_angle",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "angle measurement"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_value, options)->option_label",
+      "purpose": "To map the identified angle value to one of the provided multiple-choice options.",
+      "inputs": [
+        "angle_value",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Angle value does not match any option."
+      ],
+      "tests": [
+        {
+          "input": "(102, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "B"
+        },
+        {
+          "input": "(105, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}])",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "multiple choice",
+        "angle measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_diagram_angle",
+    "map_angle_to_option",
+    "format_final"
+  ]
+}
