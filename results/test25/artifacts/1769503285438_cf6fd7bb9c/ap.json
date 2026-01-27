@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem involves finding ∠BOC using given ∠A = 110° and angle bisectors."
+    },
+    {
+      "intention": "Calculate ∠B and ∠C using angle sum property",
+      "action": "python",
+      "code": "angle_B_plus_C = 180 - 110"
+    },
+    {
+      "intention": "Calculate ∠BOC using properties of angle bisectors",
+      "action": "python",
+      "code": "angle_BOC = 0.5 * angle_B_plus_C"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 135°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

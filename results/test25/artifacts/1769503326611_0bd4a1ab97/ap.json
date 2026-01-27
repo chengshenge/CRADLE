@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to missing image data",
+      "action": "reason",
+      "note": "The image is not available for analysis, preventing object counting."
+    },
+    {
+      "intention": "Conclude based on inability to count objects",
+      "action": "normalize",
+      "text": "Answer: Cannot determine"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

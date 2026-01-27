@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects left after removing specific types of objects from a collection. The objects are categorized by attributes such as size, material, and shape. Specifically, the task is to subtract all large rubber spheres and big shiny cylinders from the total number of objects. The image that contains these objects is not available for analysis, making it impossible to visually interpret and count the specified objects. The problem requires visual inspection and categorization of objects based on their attributes, which is currently blocked due to the lack of image data. The final answer should be an integer representing the number of objects left after the specified subtractions.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "total number of objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify and count large rubber spheres",
+    "Identify and count big shiny cylinders",
+    "Subtract the counts of these objects from the total number of objects"
+  ],
+  "blockers": [
+    "Image is not available for analysis, preventing object counting"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping for object attributes like size, material, and shape"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual interpretation",
+    "object counting"
+  ]
+}

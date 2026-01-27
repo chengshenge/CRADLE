@@ -70,6 +70,100 @@ def _strip_markdown_fences(s: str) -> str:
     return t
 
 
+# ============================================================
+# Robust JSON extraction / repair
+# ============================================================
+
+def _remove_trailing_commas(s: str) -> str:
+    """Remove trailing commas before '}' or ']' (best-effort)."""
+    return re.sub(r",\s*([}\]])", r"\1", s)
+
+
+def _escape_newlines_in_json_strings(s: str) -> str:
+    """Escape literal newlines inside JSON strings (best-effort repair)."""
+    out: List[str] = []
+    in_str = False
+    esc = False
+    for ch in s:
+        if in_str:
+            if esc:
+                esc = False
+                out.append(ch)
+                continue
+            if ch == "\\":  # escape next char
+                esc = True
+                out.append(ch)
+                continue
+            if ch == '"':
+                in_str = False
+                out.append(ch)
+                continue
+            if ch == "\n":
+                out.append("\\n")
+                continue
+            if ch == "\r":
+                out.append("\\r")
+                continue
+            out.append(ch)
+        else:
+            if ch == '"':
+                in_str = True
+            out.append(ch)
+    return "".join(out)
+
+
+def _extract_first_balanced_json_object(s: str) -> Optional[str]:
+    """Extract the first balanced {...} JSON object from arbitrary text."""
+    if not isinstance(s, str):
+        return None
+    start = s.find("{")
+    if start < 0:
+        return None
+
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(s)):
+        ch = s[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":  # escape
+                esc = True
+            elif ch == '"':
+                in_str = False
+        else:
+            if ch == '"':
+                in_str = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return s[start : i + 1]
+    # Unbalanced; return best-effort tail
+    return s[start:].strip()
+
+
+def _extract_json_obj(raw: str) -> Dict[str, Any]:
+    """Parse a JSON object from model output with lightweight repairs."""
+    if not isinstance(raw, str):
+        raise ValueError("Model output is not a string.")
+    t = _strip_markdown_fences(raw).strip()
+
+    jtxt = _extract_first_balanced_json_object(t)
+    if not jtxt:
+        raise ValueError("Cannot find JSON object in model output.")
+
+    jtxt = _escape_newlines_in_json_strings(jtxt)
+    jtxt = _remove_trailing_commas(jtxt)
+
+    obj = json.loads(jtxt)
+    if not isinstance(obj, dict):
+        raise ValueError("Top-level JSON is not an object.")
+    return obj
+
+
 def _sha1_text(s: str) -> str:
     try:
         return hashlib.sha1(s.encode("utf-8", errors="ignore")).hexdigest()
@@ -1800,6 +1894,21 @@ class CradleMathDynamicAgent:
     image_steps: Optional[List[str]] = None
     json_max_retries: int = 1
 
+    def __post_init__(self):
+        # Ensure some minimal robustness: one malformed JSON should not nuke a sample.
+        try:
+            self.json_max_retries = max(int(self.json_max_retries), 2)
+        except Exception:
+            self.json_max_retries = 2
+
+        # Normalize image_steps (if provided as comma string elsewhere, caller should split).
+        if self.image_steps is not None and not isinstance(self.image_steps, list):
+            try:
+                self.image_steps = [str(x).strip() for x in self.image_steps]  # type: ignore
+            except Exception:
+                self.image_steps = None
+
+
     # Stage-specific LLM controls.
     # Some backbones expose get_response(..., max_tokens=..., temperature=...).
     # We pass these kwargs opportunistically (ignored if unsupported).
@@ -1822,7 +1931,13 @@ class CradleMathDynamicAgent:
     # Stage-specific JSON retry budget (number of retries after the first attempt).
     # AP is the most fragile stage (nested JSON with steps); allow more retries.
     STAGE_JSON_MAX_RETRIES: ClassVar[Dict[str, int]] = {
+        "IG": 1,
+        "GTI": 1,
+        "IGR": 1,
+        "TI": 1,
+        "SC": 1,
         "AP": 3,
+        "SR": 1,
     }
     _JSON_RULES = (
         "\n\n[STRICT_OUTPUT_RULES]\n"

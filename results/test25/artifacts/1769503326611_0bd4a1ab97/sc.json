@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_by_attributes",
+      "signature": "(image_hash:str, attributes:List[str])->int",
+      "purpose": "Count objects in an image based on specified attributes such as size, material, and shape.",
+      "inputs": [
+        "image_hash",
+        "attributes"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects match the specified attributes",
+        "Image is not clear enough to distinguish attributes"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"attributes\": [\"large\", \"rubber\", \"sphere\"]}",
+          "expect": "3"
+        },
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"attributes\": [\"big\", \"shiny\", \"cylinder\"]}",
+          "expect": "2"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "attribute recognition"
+      ]
+    },
+    {
+      "name": "subtract_counts",
+      "signature": "(total:int, counts:List[int])->int",
+      "purpose": "Subtract a list of counts from a total number.",
+      "inputs": [
+        "total",
+        "counts"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Total is less than the sum of counts",
+        "Counts list is empty"
+      ],
+      "tests": [
+        {
+          "input": "{\"total\": 10, \"counts\": [3, 2]}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"total\": 5, \"counts\": [6]}",
+          "expect": "-1"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "subtraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_by_attributes",
+    "subtract_counts"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_geometric_diagram",
+      "signature": "(image_hash:str)->dict",
+      "purpose": "To interpret a geometric diagram and extract relevant information such as angle measures, labels, and relationships.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A dictionary containing extracted geometric information such as known angles, unknown angles, and relationships.",
+      "edge_cases": [
+        "Diagrams with unclear labels",
+        "Overlapping geometric figures"
+      ],
+      "tests": [
+        {
+          "input": "f6272c7a7609",
+          "expect": {
+            "known_angles": {
+              "A": 90,
+              "B": 45
+            },
+            "unknown_angles": [
+              "H"
+            ],
+            "relationships": {
+              "A + B + H": 180
+            }
+          }
+        },
+        {
+          "input": "invalid_hash",
+          "expect": {
+            "error": "Image not found"
+          }
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_measure:int, options:List[dict])->str",
+      "purpose": "To map a calculated angle measure to one of the given multiple-choice options.",
+      "inputs": [
+        "angle_measure",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the angle measure.",
+      "edge_cases": [
+        "Angle measure not matching any option",
+        "Multiple options with the same measure"
+      ],
+      "tests": [
+        {
+          "input": "107, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "C"
+        },
+        {
+          "input": "100, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "angle measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_geometric_diagram",
+    "map_angle_to_option"
+  ]
+}

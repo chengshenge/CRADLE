@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import time
+import re
 
 from datasets import load_dataset
 from openai import OpenAI
@@ -24,7 +25,14 @@ def verify_response(response):
         return False
     if "Response Error" in response:
         return False
+    # Treat empty placeholder answers as invalid so reruns don't skip them.
+    if re.fullmatch(r"Answer:\s*", response or ""):
+        return False
+    # Catch templates like Answer: {ans}
+    if re.search(r"\{[^}]*[A-Za-z][^}]*\}", response or ""):
+        return False
     return True
+
 
 
 def evaluate_code(code_string):
@@ -265,6 +273,25 @@ def main():
                     logging.warning(
                         f"[{pid}] Rate limit hit. Retry {attempt}/{args.max_retries} after {args.retry_sleep}s"
                     )
+                    time.sleep(args.retry_sleep)
+                    continue
+
+                # Treat JSON/formatting failures as transient: retry a few times.
+                if (
+                    'json parse failed' in msg.lower()
+                    or 'cannot find json object' in msg.lower()
+                    or 'expecting value' in msg.lower()
+                    or 'unterminated string' in msg.lower()
+                ):
+                    if attempt > args.max_retries:
+                        logging.error(f"[{pid}] Exceeded max retries due to JSON/format issue.")
+                        results[pid] = problem
+                        results[pid]['query'] = query
+                        results[pid]['error'] = msg
+                        results[pid]['agent'] = args.agent
+                        results[pid]['backbone_model'] = args.model
+                        break
+                    logging.warning(f"[{pid}] JSON/format issue. Retry {attempt}/{args.max_retries} after {args.retry_sleep}s")
                     time.sleep(args.retry_sleep)
                     continue
 

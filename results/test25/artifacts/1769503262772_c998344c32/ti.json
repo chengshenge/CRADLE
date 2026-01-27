@@ -1,0 +1,41 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is likely depicted in the image as a diagram with volume markings. The task is to find the total volume of the measuring cup, which is likely indicated by markings on the cup in the image. The image must be clear enough to read the volume markings on the measuring cup. However, the image is unreadable, making it impossible to extract the necessary information. The task requires reading the volume markings on the measuring cup to determine its total capacity. The problem is presented as a geometry question, focusing on the measurement of volume.",
+  "entities": [
+    "measuring cup"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the volume markings on the measuring cup",
+    "Determine the total capacity from the markings"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "unreadable image"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "volume",
+    "measurement",
+    "diagram"
+  ]
+}

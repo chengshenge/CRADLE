@@ -1,0 +1,60 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H, which is part of a geometric diagram. The task is to find the measure of this angle using the information provided in the diagram. However, the specific geometric configuration and any given angle measures or relationships are not specified in the text. The problem is presented as a multiple-choice question with four options for the measure of angle H. The diagram is expected to contain relevant geometric information, but the exact details are not readable. The task is straightforward but requires interpreting the diagram to find the correct angle measure.",
+  "entities": [
+    "angle H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Interpret the geometric diagram",
+    "Identify angle H",
+    "Determine the measure of angle H",
+    "Map the measure to one of the given options"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram interpretation",
+    "multiple-choice"
+  ]
+}

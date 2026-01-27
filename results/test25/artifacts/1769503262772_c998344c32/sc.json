@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "read_volume_markings",
+      "signature": "(image_hash:str)->float",
+      "purpose": "Extract and read the volume markings from an image of a measuring cup to determine its total capacity.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "total volume as a float",
+      "edge_cases": [
+        "Image is blurry or unreadable",
+        "Markings are not standard or are ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": "500.0"
+        },
+        {
+          "input": "unreadable_image_hash",
+          "expect": "null"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "read_volume_markings"
+  ]
+}

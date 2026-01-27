@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find unknown angles using given constraints.",
+      "how_to_use": "Use to calculate angles based on the angle sum property of triangles and properties of angle bisectors."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use to return the final answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "find_angle_bisector_intersection_angle",
+      "signature": "(angle_A, options)->str",
+      "purpose": "Determine the measure of angle ∠BOC formed by the intersection of angle bisectors in a triangle.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "Ensure angle_A is valid and options are provided."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "Answer: B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "find_angle_bisector_intersection_angle",
+    "calc_numeric",
+    "format_final"
+  ]
+}
