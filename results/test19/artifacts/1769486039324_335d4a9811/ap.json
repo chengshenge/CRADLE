@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem requires finding m∠H using known angles ∠A, ∠B, and ∠C."
+    },
+    {
+      "intention": "Calculate m∠H using known angles",
+      "action": "python",
+      "code": "m_angle_H = 180 - (45 + 60 + 75)"
+    },
+    {
+      "intention": "Map calculated m∠H to the closest option",
+      "action": "reason",
+      "note": "The calculated m∠H should match one of the provided options."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 102"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

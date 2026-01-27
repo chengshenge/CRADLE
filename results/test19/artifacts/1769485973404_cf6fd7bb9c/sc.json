@@ -1,0 +1,50 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find angle measures.",
+      "how_to_use": "Use to calculate the remaining angles in the triangle and the measure of ∠BOC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for the multiple-choice question.",
+      "how_to_use": "Use to return the final answer as an option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "angle_bisector_property",
+      "signature": "(angle_A, angle_B, angle_C)->angle_BOC",
+      "purpose": "Calculate the angle ∠BOC using the properties of angle bisectors in a triangle.",
+      "inputs": [
+        "angle_A",
+        "angle_B",
+        "angle_C"
+      ],
+      "outputs": "angle_BOC",
+      "edge_cases": [
+        "Ensure angle measures are valid and sum to 180° in the triangle."
+      ],
+      "tests": [
+        {
+          "input": {
+            "angle_A": 110,
+            "angle_B": 35,
+            "angle_C": 35
+          },
+          "expect": 145
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "angle_bisector_property",
+    "calc_numeric",
+    "format_final"
+  ]
+}

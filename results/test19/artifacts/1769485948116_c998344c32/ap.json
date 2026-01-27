@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret the largest marking.",
+      "action": "reason",
+      "note": "The largest visible marking is 5000, which likely represents the total volume."
+    },
+    {
+      "intention": "Extract the total volume from the image markings.",
+      "action": "python",
+      "code": "total_volume = 5000"
+    },
+    {
+      "intention": "Format the final answer as a single line output.",
+      "action": "normalize",
+      "text": "Answer: 5000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

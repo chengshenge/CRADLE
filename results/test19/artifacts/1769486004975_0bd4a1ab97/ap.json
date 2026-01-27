@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "The unresolved target is the number of objects left. We have the counts of specific objects to subtract."
+    },
+    {
+      "intention": "Calculate the number of objects left after subtraction.",
+      "action": "python",
+      "code": "total_objects = 5; large_rubber_spheres = 3; big_shiny_cylinders = 2; objects_left = total_objects - (large_rubber_spheres + big_shiny_cylinders)"
+    },
+    {
+      "intention": "Format the final answer.",
+      "action": "normalize",
+      "text": "Answer: {objects_left}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

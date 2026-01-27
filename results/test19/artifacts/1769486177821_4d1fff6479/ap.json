@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and confirm known values.",
+      "action": "reason",
+      "note": "The area of square C is unknown. Use areas of squares A and B to find it."
+    },
+    {
+      "intention": "Apply the Pythagorean theorem to find the area of square C.",
+      "action": "python",
+      "code": "side_c = math.sqrt(5 + 3); area_c = side_c ** 2"
+    },
+    {
+      "intention": "Determine the closest multiple-choice option for area C.",
+      "action": "normalize",
+      "text": "Answer: 8"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,67 @@
+{
+  "region_to_detect": "diagram",
+  "focus_bbox": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "focus_zoom": 1.0,
+  "reasoning_of_region": [
+    "The problem involves finding the measure of an angle, which suggests that the image likely contains a geometric diagram with labeled angles."
+  ],
+  "problem_understanding": "The problem asks for the measure of angle H, which is likely part of a geometric figure in the image.",
+  "math_elements_extracted": {
+    "known": [],
+    "unknown": [
+      "m∠H"
+    ],
+    "relations": [
+      "The measure of angle H is related to other angles or sides in the diagram."
+    ],
+    "constraints": [
+      "The sum of angles in a triangle is 180° if applicable."
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "yes",
+  "noun_and_verb": "angle find",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to identify the measure of a specific angle from a geometric diagram, which requires understanding the relationships between angles in the figure."
+  ],
+  "problem_summary": "Determine the measure of angle H from the given geometric diagram.",
+  "knowns": [],
+  "asks": [
+    "m∠H"
+  ],
+  "constraints": [
+    "The sum of angles in a triangle is 180° if applicable."
+  ],
+  "visual_facts": [
+    "The diagram contains labeled angles: A, B, C, D, E, F, G, H.",
+    "Marked angles: ∠A = 45°, ∠B = 60°, ∠C = 75°.",
+    "Relation: ∠A + ∠B + ∠C = 180°."
+  ],
+  "ambiguity": [
+    "The exact relationships between angles in the diagram are not specified in the text."
+  ]
+}

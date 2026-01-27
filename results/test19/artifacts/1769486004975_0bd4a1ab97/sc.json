@@ -1,0 +1,46 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as subtraction to find the number of objects left.",
+      "how_to_use": "Use this skill to calculate the expression representing the total number of objects minus the sum of large rubber spheres and big shiny cylinders."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use this skill to format the result of the calculation into a single line answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_from_image",
+      "signature": "(image_hash:str, object_descriptions:list)->dict",
+      "purpose": "Identify and count specific objects in an image based on their descriptions.",
+      "inputs": [
+        "image_hash",
+        "object_descriptions"
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "No objects match the description",
+        "Multiple objects with similar descriptions"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_descriptions\": [\"large rubber spheres\", \"big shiny cylinders\"]}",
+          "expect": "{\"large rubber spheres\": 3, \"big shiny cylinders\": 2}"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting",
+        "text interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_from_image",
+    "calc_numeric",
+    "format_final"
+  ]
+}

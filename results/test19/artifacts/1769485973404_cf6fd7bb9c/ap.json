@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and knowns",
+      "action": "reason",
+      "note": "The blocker is the unknown angle ∠BOC. Known: ∠A = 110°."
+    },
+    {
+      "intention": "Use angle bisector properties",
+      "action": "reason",
+      "note": "In △ABC, OB and OC are angle bisectors. ∠BOC = 90° + ∠A/2."
+    },
+    {
+      "intention": "Calculate ∠BOC using the formula",
+      "action": "python",
+      "code": "angle_A = 110; angle_BOC = 90 + angle_A / 2; angle_BOC"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,75 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_and_count_objects",
+      "signature": "(diagram:str, object_description:str)->int",
+      "purpose": "Identify and count specific objects in a diagram based on their description.",
+      "inputs": [
+        "diagram",
+        "object_description"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Objects partially visible",
+        "Objects overlapping",
+        "Ambiguous object descriptions"
+      ],
+      "tests": [
+        {
+          "input": "(diagram, 'tiny gray bicycles')",
+          "expect": "3"
+        },
+        {
+          "input": "(diagram, 'brown metal sedan')",
+          "expect": "1"
+        },
+        {
+          "input": "(diagram, 'tiny green bicycle')",
+          "expect": "1"
+        }
+      ],
+      "tags": [
+        "diagram analysis",
+        "object recognition",
+        "counting"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and return 'Yes' if the first is greater, otherwise 'No'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "str",
+      "edge_cases": [
+        "Counts are equal",
+        "One or both counts are zero"
+      ],
+      "tests": [
+        {
+          "input": "(5, 3)",
+          "expect": "Yes"
+        },
+        {
+          "input": "(2, 4)",
+          "expect": "No"
+        },
+        {
+          "input": "(3, 3)",
+          "expect": "No"
+        }
+      ],
+      "tags": [
+        "comparison",
+        "decision making"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_and_count_objects",
+    "compare_counts"
+  ]
+}

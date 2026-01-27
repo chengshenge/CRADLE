@@ -1,0 +1,73 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform any necessary arithmetic calculations related to the angles.",
+      "how_to_use": "Use this skill to compute the sum or difference of angles as needed."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to return the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "analyze_geometric_diagram",
+      "signature": "(diagram_data)->relations",
+      "purpose": "To analyze the geometric diagram and extract relationships between angles.",
+      "inputs": [
+        "diagram_data"
+      ],
+      "outputs": "relations",
+      "edge_cases": [
+        "Diagrams with missing labels",
+        "Diagrams with overlapping angles"
+      ],
+      "tests": [
+        {
+          "input": "diagram with triangle ABC and angle H",
+          "expect": "relations between angles A, B, C, and H"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram analysis"
+      ]
+    },
+    {
+      "name": "map_angle_to_option",
+      "signature": "(angle_value, options)->option_label",
+      "purpose": "To map the calculated angle value to one of the provided multiple-choice options.",
+      "inputs": [
+        "angle_value",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Angle value not matching any option",
+        "Multiple options close to angle value"
+      ],
+      "tests": [
+        {
+          "input": "angle_value: 97, options: [97, 102, 107, 122]",
+          "expect": "A"
+        },
+        {
+          "input": "angle_value: 100, options: [97, 102, 107, 122]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_geometric_diagram",
+    "calc_numeric",
+    "map_angle_to_option",
+    "format_final"
+  ]
+}

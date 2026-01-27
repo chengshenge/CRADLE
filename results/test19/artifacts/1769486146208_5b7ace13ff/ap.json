@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to unresolved targets.",
+      "action": "reason",
+      "note": "The counts of objects are unreadable, and the image is not provided."
+    },
+    {
+      "intention": "Use GTI_JSON notes to determine the answer.",
+      "action": "reason",
+      "note": "The GTI_JSON notes state that the number of tiny gray bicycles is greater."
+    },
+    {
+      "intention": "Normalize the answer based on GTI_JSON notes.",
+      "action": "normalize",
+      "text": "Answer: Yes"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

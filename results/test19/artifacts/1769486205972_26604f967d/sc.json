@@ -1,0 +1,37 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_visual_sequence",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "Analyze a sequence of objects in a diagram to identify the pattern and predict the next object.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "The label of the predicted next object in the sequence.",
+      "edge_cases": [
+        "All options are visually similar",
+        "Pattern is not obvious from the sequence"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "C"
+        },
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "D"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "visual analysis",
+        "sequence"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_visual_sequence"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the relationship between segments using the midpoint property.",
+      "action": "reason",
+      "note": "Since D is the midpoint of AC, AD = DC. Therefore, AC = 2 * AD."
+    },
+    {
+      "intention": "Calculate the length of AC using the midpoint property.",
+      "action": "python",
+      "code": "AC_length = 2 * 7.0"
+    },
+    {
+      "intention": "Map the calculated length to one of the provided options.",
+      "action": "reason",
+      "note": "The calculated length of AC is 14.0 cm, which does not match any of the given options."
+    },
+    {
+      "intention": "Format the final answer to match the multiple-choice option.",
+      "action": "normalize",
+      "text": "Answer: None of the options match the calculated length."
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

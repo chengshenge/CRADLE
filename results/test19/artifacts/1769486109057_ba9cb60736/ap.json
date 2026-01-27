@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and proceed with grounded information.",
+      "action": "reason",
+      "note": "Blocker: time in words. Proceed with interpreting the clock face."
+    },
+    {
+      "intention": "Interpret the time shown on the clock face.",
+      "action": "reason",
+      "note": "The clock face shows a specific time. Determine the time in words."
+    },
+    {
+      "intention": "Match the interpreted time to the given options.",
+      "action": "reason",
+      "note": "The time is a quarter past eight."
+    },
+    {
+      "intention": "Output the correct option text.",
+      "action": "normalize",
+      "text": "Answer: quarter past"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

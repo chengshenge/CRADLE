@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to format the integer answer representing the total volume of the measuring cup."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_largest_marking_from_image",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest numeric marking from the image of the measuring cup to determine its total volume.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The largest numeric marking as an integer.",
+      "edge_cases": [
+        "Image is blurry or markings are not clear.",
+        "Multiple large markings are present."
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 5000
+        }
+      ],
+      "tags": [
+        "image interpretation",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_largest_marking_from_image",
+    "format_final"
+  ]
+}

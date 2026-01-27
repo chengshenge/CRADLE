@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves counting objects and performing arithmetic operations based on their descriptions. Specifically, the task is to subtract all objects that are large rubber spheres and big shiny cylinders from the total number of objects. The goal is to determine how many objects remain after these subtractions. The image likely contains labeled objects with descriptions such as 'large rubber spheres' and 'big shiny cylinders'. The total number of objects subtracted is 5, as identified by the counts of 3 large rubber spheres and 2 big shiny cylinders. The problem requires reading text labels or descriptions from the image to identify and count the objects accurately.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "total objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify and count large rubber spheres",
+    "Identify and count big shiny cylinders",
+    "Subtract the counts of these objects from the total number of objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "Ensure accurate reading of text labels for object descriptions",
+    "Verify the total count of objects before subtraction"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "arithmetic",
+    "object counting",
+    "subtraction",
+    "text interpretation"
+  ]
+}

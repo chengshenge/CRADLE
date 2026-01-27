@@ -11,6 +11,12 @@ import traceback
 from pathlib import Path
 import hashlib
 import math
+from io import BytesIO
+
+try:
+    from PIL import Image
+except Exception:
+    Image = None
 
 
 # ============================================================
@@ -87,6 +93,339 @@ def _atomic_write_json(path: str, obj: Any) -> None:
         json.dump(obj, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
+# ============================================================
+# Image focus helpers (crop/zoom) + knowns injection
+# ============================================================
+
+def _coerce_pil_image(img: Any) -> Optional["Image.Image"]:
+    """Convert a bytes/PIL/numpy image into a PIL Image (RGB) if possible."""
+    if img is None or Image is None:
+        return None
+    try:
+        if isinstance(img, (bytes, bytearray)):
+            im = Image.open(BytesIO(bytes(img)))
+            return im.convert("RGB")
+        # PIL Image
+        if hasattr(img, "size") and hasattr(img, "mode") and hasattr(img, "convert"):
+            try:
+                return img.convert("RGB")
+            except Exception:
+                return img
+        # numpy array (H,W,C)
+        try:
+            import numpy as np  # optional
+            if isinstance(img, np.ndarray):
+                if img.dtype != np.uint8:
+                    arr = img.astype(np.uint8)
+                else:
+                    arr = img
+                if arr.ndim == 2:
+                    return Image.fromarray(arr, mode="L").convert("RGB")
+                if arr.ndim == 3:
+                    return Image.fromarray(arr).convert("RGB")
+        except Exception:
+            pass
+    except Exception:
+        return None
+    return None
+
+
+def _pil_to_bytes(im: "Image.Image", fmt: str = "PNG") -> bytes:
+    if Image is None:
+        return b""
+    buf = BytesIO()
+    try:
+        im.save(buf, format=fmt)
+    except Exception:
+        # Fallback: try RGB conversion
+        try:
+            im.convert("RGB").save(buf, format=fmt)
+        except Exception:
+            return b""
+    return buf.getvalue()
+
+
+def _normalize_bbox(bbox: Any, im_w: Optional[int] = None, im_h: Optional[int] = None) -> Optional[Tuple[float, float, float, float]]:
+    """Normalize bbox to (x0,y0,x1,y1) in [0,1]. Accept list/tuple or dict. Pixel coords are also accepted."""
+    if bbox is None:
+        return None
+    x0 = y0 = x1 = y1 = None
+
+    try:
+        if isinstance(bbox, dict):
+            # common keys
+            for k in ("x0", "left", "xmin"):
+                if k in bbox:
+                    x0 = float(bbox[k]); break
+            for k in ("y0", "top", "ymin"):
+                if k in bbox:
+                    y0 = float(bbox[k]); break
+            for k in ("x1", "right", "xmax"):
+                if k in bbox:
+                    x1 = float(bbox[k]); break
+            for k in ("y1", "bottom", "ymax"):
+                if k in bbox:
+                    y1 = float(bbox[k]); break
+        elif isinstance(bbox, (list, tuple)) and len(bbox) == 4:
+            x0, y0, x1, y1 = [float(v) for v in bbox]
+    except Exception:
+        return None
+
+    if x0 is None or y0 is None or x1 is None or y1 is None:
+        return None
+
+    # If values look like pixels, convert to normalized if size known
+    try:
+        if im_w and im_h and (max(x0, x1) > 1.5 or max(y0, y1) > 1.5):
+            x0, x1 = x0 / float(im_w), x1 / float(im_w)
+            y0, y1 = y0 / float(im_h), y1 / float(im_h)
+    except Exception:
+        pass
+
+    # fix ordering + clamp
+    x0, x1 = (x0, x1) if x0 <= x1 else (x1, x0)
+    y0, y1 = (y0, y1) if y0 <= y1 else (y1, y0)
+    x0 = max(0.0, min(1.0, x0))
+    y0 = max(0.0, min(1.0, y0))
+    x1 = max(0.0, min(1.0, x1))
+    y1 = max(0.0, min(1.0, y1))
+    # avoid degenerate
+    if (x1 - x0) < 1e-4 or (y1 - y0) < 1e-4:
+        return None
+    return (x0, y0, x1, y1)
+
+
+def _make_focus_image(original_img: Any, bbox: Any, pad_frac: float = 0.06, min_side: int = 1024, max_side: int = 1600) -> Any:
+    """Crop+zoom to bbox. Returns same type family as input (bytes -> bytes, PIL -> PIL)."""
+    im = _coerce_pil_image(original_img)
+    if im is None:
+        return None
+
+    w, h = im.size
+    nb = _normalize_bbox(bbox, w, h)
+    if nb is None:
+        return None
+    x0, y0, x1, y1 = nb
+
+    # padding proportional to bbox size
+    bw, bh = (x1 - x0), (y1 - y0)
+    px = pad_frac * bw
+    py = pad_frac * bh
+    x0p = max(0.0, x0 - px)
+    y0p = max(0.0, y0 - py)
+    x1p = min(1.0, x1 + px)
+    y1p = min(1.0, y1 + py)
+
+    left = int(round(x0p * w))
+    top = int(round(y0p * h))
+    right = int(round(x1p * w))
+    bottom = int(round(y1p * h))
+
+    if right <= left + 2 or bottom <= top + 2:
+        return None
+
+    crop = im.crop((left, top, right, bottom))
+
+    # Resize to make details readable, but cap max side.
+    cw, ch = crop.size
+    if cw <= 0 or ch <= 0:
+        return None
+    scale = 1.0
+    try:
+        scale = max(1.0, float(min_side) / float(min(cw, ch)))
+        # cap by max_side
+        cap = float(max_side) / float(max(cw, ch))
+        scale = min(scale, max(1.0, cap))
+    except Exception:
+        scale = 1.0
+
+    if scale > 1.0001:
+        nw = int(round(cw * scale))
+        nh = int(round(ch * scale))
+        try:
+            crop = crop.resize((nw, nh), resample=Image.BICUBIC)
+        except Exception:
+            pass
+
+    # Return bytes if original was bytes
+    if isinstance(original_img, (bytes, bytearray)):
+        return _pil_to_bytes(crop, fmt="PNG")
+    return crop
+
+
+_NUM_RE = re.compile(r"[-+]?\d+(?:\.\d+)?(?:e[-+]?\d+)?", flags=re.IGNORECASE)
+_FRAC_RE = re.compile(r"(?P<a>\d+)\s*/\s*(?P<b>\d+)")
+
+
+def _parse_number(v: Any) -> Optional[float]:
+    if v is None:
+        return None
+    if isinstance(v, (int, float)):
+        try:
+            return float(v)
+        except Exception:
+            return None
+    s = str(v).strip().replace(",", "")
+    if not s:
+        return None
+    m = _FRAC_RE.search(s)
+    if m:
+        try:
+            a = float(m.group("a"))
+            b = float(m.group("b"))
+            if b != 0:
+                return a / b
+        except Exception:
+            pass
+    m = _NUM_RE.search(s)
+    if m:
+        try:
+            return float(m.group(0))
+        except Exception:
+            return None
+    return None
+
+
+def _normalize_simple_unit(val: float, unit: str) -> Tuple[float, str]:
+    """Very small unit normalizer for common MathVista units. Only handles simple single units."""
+    if unit is None:
+        return val, ""
+    u = str(unit).strip().lower()
+    if not u:
+        return val, ""
+    # If composite, do not normalize aggressively.
+    if "/" in u or "*" in u or "per" in u or "^" in u:
+        return val, u
+
+    # Length
+    if u in {"mm", "millimeter", "millimeters"}:
+        return val / 1000.0, "m"
+    if u in {"cm", "centimeter", "centimeters"}:
+        return val / 100.0, "m"
+    if u in {"m", "meter", "meters"}:
+        return val, "m"
+    if u in {"km", "kilometer", "kilometers"}:
+        return val * 1000.0, "m"
+    # Mass
+    if u in {"g", "gram", "grams"}:
+        return val / 1000.0, "kg"
+    if u in {"kg", "kilogram", "kilograms"}:
+        return val, "kg"
+    # Time
+    if u in {"s", "sec", "second", "seconds"}:
+        return val, "s"
+    if u in {"min", "minute", "minutes"}:
+        return val * 60.0, "s"
+    if u in {"h", "hr", "hour", "hours"}:
+        return val * 3600.0, "s"
+
+    return val, u
+
+
+def _guess_var_keys(name: str) -> List[str]:
+    """Map a human-readable quantity name to preferred python variable keys."""
+    if not name:
+        return []
+    n = str(name).strip().lower()
+    keys: List[str] = []
+
+    # direct single-letter variable mention
+    try:
+        m = re.search(r"\b([a-zA-Z])\b", n)
+        if m:
+            keys.append(m.group(1))
+    except Exception:
+        pass
+
+    def add(pref: str, *aliases: str):
+        if pref:
+            keys.append(pref)
+        for a in aliases:
+            if a:
+                keys.append(a)
+
+    if "mass" in n:
+        add("m", "mass")
+    if "speed" in n or "velocity" in n:
+        add("v", "speed", "velocity")
+    if "spring constant" in n or (n == "k") or (" k" in n) or ("k " in n):
+        add("k", "spring_k")
+    if "gravity" in n or "gravitational" in n or n == "g":
+        add("g", "gravity")
+    if "radius" in n:
+        add("r", "radius")
+    if "diameter" in n:
+        add("d", "diameter")
+    if "distance" in n or "displacement" in n or "compression" in n or "extension" in n or "length" in n:
+        add("d", "distance", "length")
+    if "height" in n:
+        add("h", "height")
+    if "width" in n:
+        add("w", "width")
+    if "time" in n:
+        add("t", "time")
+    if "angle" in n or "theta" in n:
+        add("theta", "angle")
+
+    # Deduplicate, preserve order, keep python-friendly
+    out: List[str] = []
+    seen = set()
+    for k in keys:
+        kk = str(k).strip()
+        if not kk:
+            continue
+        kk = re.sub(r"[^A-Za-z0-9_]", "_", kk)
+        if kk[0].isdigit():
+            kk = "_" + kk
+        if kk not in seen:
+            seen.add(kk)
+            out.append(kk)
+    return out
+
+
+def _inject_knowns_into_ctx(ig: Dict[str, Any], gti: Dict[str, Any], ctx: Dict[str, Any]) -> None:
+    """Parse IG knowns into ctx as numeric variables (with light unit normalization)."""
+    if ctx is None:
+        return
+    knowns = []
+    try:
+        knowns = ((ig.get("math_elements_extracted") or {}).get("known") or [])
+    except Exception:
+        knowns = []
+    # also allow top-level knowns
+    try:
+        k2 = ig.get("knowns")
+        if isinstance(k2, list):
+            knowns = knowns + k2
+    except Exception:
+        pass
+
+    injected = []
+    for it in knowns:
+        if not isinstance(it, dict):
+            continue
+        name = str(it.get("name", "") or "").strip()
+        val_raw = it.get("value", None)
+        unit = it.get("unit", "") or ""
+        v = _parse_number(val_raw)
+        if v is None:
+            continue
+        v_norm, unit_norm = _normalize_simple_unit(float(v), str(unit))
+        keys = _guess_var_keys(name)
+        if not keys:
+            continue
+        for k in keys[:3]:
+            # Don't clobber if already present (keep first-read).
+            if k not in ctx:
+                ctx[k] = v_norm
+        # Keep raw as well for debugging
+        ctx[f"_{keys[0]}_raw"] = float(v)
+        if unit_norm:
+            ctx[f"_{keys[0]}_unit"] = unit_norm
+        injected.append({"name": name, "keys": keys[:3], "value": v_norm, "unit": unit_norm})
+
+    if injected:
+        ctx["_known_injected"] = injected
 
 
 # ============================================================
@@ -512,6 +851,39 @@ def _map_bare_choice_to_option_text(final_answer: str,
     opt_map = _collect_options(ig, gti, ti, user_prompt)
     txt = (opt_map.get(lab) or "").strip()
     if not txt:
+        return None
+
+
+def _map_numeric_answer_to_option_text(answer_line: str, ig: Dict[str, Any]) -> Optional[str]:
+    """If answer is numeric but problem is multi_choice with numeric options, map to closest option text."""
+    try:
+        opts = ((ig.get("math_elements_extracted") or {}).get("options") or [])
+        if not isinstance(opts, list) or not opts:
+            return None
+        payload = answer_line.split("Answer:", 1)[-1].strip() if "Answer:" in answer_line else str(answer_line).strip()
+        val = _parse_number(payload)
+        if val is None:
+            return None
+        # Extract numeric for each option
+        best = None
+        best_d = None
+        for it in opts:
+            if not isinstance(it, dict):
+                continue
+            txt = str(it.get("text", "") or "").strip()
+            if not txt:
+                continue
+            ov = _parse_number(txt)
+            if ov is None:
+                continue
+            d = abs(float(ov) - float(val))
+            if best_d is None or d < best_d:
+                best_d = d
+                best = txt
+        if best is None:
+            return None
+        return "Answer: " + best
+    except Exception:
         return None
 
     return "Answer: " + txt
@@ -1562,9 +1934,20 @@ class CradleMathDynamicAgent:
     # Some backbones expose get_response(..., max_tokens=..., temperature=...).
     # We pass these kwargs opportunistically (ignored if unsupported).
     STAGE_LLM_KWARGS: ClassVar[Dict[str, Dict[str, Any]]] = {
-        # AP outputs can be long; give it more room but also constrain output schema in the prompt.
-        "AP": {"max_tokens": 1200, "temperature": 0},
-    }
+    # Deterministic extraction/formatting stages: keep temperature at 0.
+    # Increase room for chart/table extraction to reduce truncation.
+    "IG": {"max_tokens": 1200, "temperature": 0},
+    "GTI": {"max_tokens": 1800, "temperature": 0},
+    "IGR": {"max_tokens": 900, "temperature": 0},
+    "TI": {"max_tokens": 1200, "temperature": 0},
+    "SC": {"max_tokens": 900, "temperature": 0},
+    # AP outputs can be long; give it more room but keep schema tight.
+    "AP": {"max_tokens": 1400, "temperature": 0},
+    # SR should be concise but sometimes needs room for issue listing.
+    "SR": {"max_tokens": 1000, "temperature": 0},
+    "MEM": {"max_tokens": 800, "temperature": 0},
+}
+
 
     # Stage-specific JSON retry budget (number of retries after the first attempt).
     # AP is the most fragile stage (nested JSON with steps); allow more retries.
@@ -1587,6 +1970,7 @@ Your job: extract ALL information needed to solve. Do NOT solve the problem.
 
 You may conceptually use OCR/region detection to read the image.
 First decide ONE most relevant region to detect/zoom for this problem.
+If possible, also provide a tight focus_bbox (normalized [x0,y0,x1,y1] in 0..1) covering the most relevant region; this will be used for crop+zoom.
 
 Region choice rules:
 1) If the problem requires reading words/numbers from the image but no specific region is mentioned, choose "text".
@@ -1604,6 +1988,8 @@ IMPORTANT:
 
 {
   "region_to_detect": "text|chart|table|diagram|null",
+  "focus_bbox": [0.0, 0.0, 1.0, 1.0],
+  "focus_zoom": 1.0,
   "reasoning_of_region": ["..."],
   "problem_understanding": "...",
   "math_elements_extracted": {
@@ -2279,12 +2665,24 @@ Return STRICT JSON:
                         ig0['region_to_detect'] = 'text'
             except Exception:
                 pass
+            # Build a focus-cropped/zoomed image if IG provided a bbox (helps chart/table/diagram reading).
+            obs_focus = obs
+            try:
+                fb = ig0.get("focus_bbox") or ig0.get("bbox") or ig0.get("focus_box")
+                if fb is not None and obs.image is not None:
+                    focus_img = _make_focus_image(obs.image, fb, pad_frac=0.06, min_side=1024, max_side=1600)
+                    if focus_img is not None:
+                        obs_focus = Observation(text=obs.text, image=focus_img, meta=obs.meta)
+                        obs.meta["focus_bbox"] = fb
+                        obs.meta["focus_applied"] = True
+            except Exception:
+                pass
 
             with _stage("GTI"):
                 gti = self._llm_call_json(
                 "GTI",
                 self.GTI_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0),
-                obs,
+                obs_focus,
                 need_image=True,
                 )
                 _mk = _missing_keys(gti, ["region_used", "structured", "targets_from_math_elements"])
@@ -2385,6 +2783,13 @@ Return STRICT JSON:
                 _mk = _missing_keys(ig, ["region_to_detect", "math_elements_extracted"])
                 if _mk:
                     errors.append({'stage':'IGR','type':'missing_keys','missing':_mk})
+            # Inject numeric knowns into execution ctx to reduce AP/EXEC failures (e.g., m, v, k).
+            try:
+                _inject_knowns_into_ctx(ig, gti, skill_mgr.ctx)
+            except Exception:
+                pass
+
+
 
 
             # Mark whether the unknown is length-like to enable deterministic unit scaling (m->cm) in format_final/rendering.
@@ -2465,7 +2870,7 @@ Return STRICT JSON:
                 + _j(mem_snips)
             )
             with _stage("AP"):
-                ap = self._llm_call_json("AP", ap_input, obs, need_image=True)
+                ap = self._llm_call_json("AP", ap_input, obs_focus, need_image=True)
                 _mk = _missing_keys(ap, ["steps", "final_format"])
                 if _mk:
                     errors.append({'stage':'AP','type':'missing_keys','missing':_mk})
@@ -2618,7 +3023,7 @@ Return STRICT JSON:
                 + draft
             )
             with _stage("SR"):
-                sr = self._llm_call_json("SR", sr_input, obs, need_image=True)
+                sr = self._llm_call_json("SR", sr_input, obs_focus, need_image=True)
                 _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence"])
                 if _mk:
                     errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
@@ -2659,6 +3064,14 @@ Return STRICT JSON:
 
 
             final_answer = choose_final_answer(draft_line, sr)
+
+            # If multi-choice and we produced a numeric, map to the closest numeric option text deterministically.
+            try:
+                mapped_num = _map_numeric_answer_to_option_text(final_answer, ig=ig)
+                if mapped_num is not None:
+                    final_answer = mapped_num
+            except Exception:
+                pass
 
             # Robust deterministic mapping from bare option label -> option text (no extra model calls).
             try:
