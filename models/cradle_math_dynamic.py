@@ -18,6 +18,13 @@ try:
 except Exception:
     Image = None
 
+# ============================================================
+# Regex constants
+# ============================================================
+# Detect unfilled template holes like 'Answer: {ans}' so we don't accept them as valid answers.
+# Require at least one letter inside braces to avoid flagging numeric set notation like '{1,2,3}'.
+_ANS_HOLE_RE = re.compile(r"\{[^}]*[A-Za-z][^}]*\}")
+
 
 # ============================================================
 # Utilities

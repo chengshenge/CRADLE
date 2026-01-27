@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as subtraction.",
+      "how_to_use": "Use to compute the remaining number of objects after subtracting the specified objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use to return the final count of objects in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "count_objects_by_description",
+      "signature": "(image:str, description:str)->int",
+      "purpose": "To count the number of objects in an image based on a given description.",
+      "inputs": [
+        "image",
+        "description"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "No objects match the description",
+        "Multiple objects match the description"
+      ],
+      "tests": [
+        {
+          "input": "{\"image\": \"img_hash\", \"description\": \"large rubber spheres\"}",
+          "expect": "3"
+        },
+        {
+          "input": "{\"image\": \"img_hash\", \"description\": \"big shiny cylinders\"}",
+          "expect": "2"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "count_objects_by_description",
+    "calc_numeric",
+    "format_final"
+  ]
+}

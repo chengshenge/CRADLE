@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup, which is expected to be labeled on the image. The image contains a series of weight measurements in grams, with the largest marking being 500 g. This marking might indicate the total capacity of the measuring cup if the context is correct. However, the use of grams for volume is unusual, suggesting a possible mislabeling or misunderstanding. The task is straightforward as it involves identifying a specific piece of information (total volume) from the image. The problem requires an integer answer, and the final value should be provided as such.",
+  "entities": [
+    "measuring cup"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Identify the largest marking on the measuring cup",
+    "Determine if the largest marking represents the total volume",
+    "Provide the total volume as an integer"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "Check for any mislabeling or misunderstanding due to the use of grams for volume",
+    "Ensure that the largest marking is indeed the total volume"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "volume",
+    "measurement",
+    "image interpretation",
+    "unit conversion"
+  ]
+}

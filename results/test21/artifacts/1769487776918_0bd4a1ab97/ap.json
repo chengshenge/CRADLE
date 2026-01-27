@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem requires subtracting specific objects. Known: 3 large rubber spheres, 2 big shiny cylinders."
+    },
+    {
+      "intention": "Compute remaining objects",
+      "action": "python",
+      "code": "total_objects = 5; subtracted_objects = 3 + 2; remaining_objects = total_objects - subtracted_objects"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: {remaining_objects}"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}
