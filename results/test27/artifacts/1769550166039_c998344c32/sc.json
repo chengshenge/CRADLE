@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_volume_from_image",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the total volume from a measuring cup diagram in an image.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "int",
+      "edge_cases": [
+        "Image is unreadable",
+        "Volume markings are unclear or missing"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": "500"
+        },
+        {
+          "input": "unreadable_image_hash",
+          "expect": "null"
+        }
+      ],
+      "tags": [
+        "image_processing",
+        "volume_extraction",
+        "diagram_analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_volume_from_image"
+  ]
+}

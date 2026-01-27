@@ -1,0 +1,64 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram contains labeled angles, including A, B, C, and H. The known angles are ∠A = 50°, ∠B = 60°, and ∠C = 70°. The sum of angles in a triangle is 180°, which is a key constraint in solving the problem. The task is to find the measure of angle H, which is related to other angles or geometric properties in the diagram. The problem is presented as a multiple-choice question with four options.",
+  "entities": [
+    "∠A",
+    "∠B",
+    "∠C",
+    "∠H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Identify the geometric configuration involving angle H",
+    "Apply the sum of angles in a triangle if applicable",
+    "Calculate the measure of angle H",
+    "Map the calculated measure to one of the given options"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear",
+    "Verify angle markers are correctly interpreted",
+    "Check for any unreadable angle labels or values"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "diagram",
+    "multiple-choice"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to unreadable image.",
+      "action": "reason",
+      "note": "The image is unreadable, preventing extraction of relevant information."
+    },
+    {
+      "intention": "Conclude based on inability to extract data.",
+      "action": "normalize",
+      "text": "Answer: Unable to determine due to unreadable image."
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

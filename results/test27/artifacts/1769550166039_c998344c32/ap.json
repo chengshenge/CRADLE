@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to unreadable image.",
+      "action": "reason",
+      "note": "The image is unreadable, preventing extraction of volume markings."
+    },
+    {
+      "intention": "Acknowledge inability to determine the total volume.",
+      "action": "reason",
+      "note": "Without readable image data, the total volume cannot be determined."
+    },
+    {
+      "intention": "Provide a placeholder answer due to lack of data.",
+      "action": "normalize",
+      "text": "Answer: Data Unavailable"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

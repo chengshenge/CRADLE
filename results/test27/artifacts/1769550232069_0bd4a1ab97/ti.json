@@ -1,0 +1,44 @@
+{
+  "problem_state_summary": "The problem involves a diagram where the task is to count the remaining objects after removing those that are large rubber spheres and big shiny cylinders. The user is asked to determine how many objects are left after these subtractions. The problem requires identifying and counting specific types of objects based on their attributes, which involves spatial and visual reasoning. However, the image does not clearly show the large rubber spheres or the big shiny cylinders, making it difficult to perform the required subtractions. The exact criteria for 'large', 'rubber', 'big', and 'shiny' are not specified, adding to the ambiguity. The image is unreadable, preventing the extraction of relevant information needed to solve the problem.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify large rubber spheres",
+    "Identify big shiny cylinders",
+    "Subtract identified objects from total",
+    "Count remaining objects"
+  ],
+  "blockers": [
+    "number of objects left"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "unreadable image preventing object identification"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": []
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual reasoning",
+    "object counting",
+    "attribute identification"
+  ]
+}

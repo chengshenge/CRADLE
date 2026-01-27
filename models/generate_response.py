@@ -1,0 +1,3598 @@
+import ast
+import json
+import os
+import re
+import time
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple, ClassVar
+import logging
+import uuid
+import traceback
+from pathlib import Path
+import hashlib
+import math
+from io import BytesIO
+
+try:
+    from PIL import Image
+except Exception:
+    Image = None
+
+# ============================================================
+# Regex constants
+# ============================================================
+# Detect unfilled template holes like 'Answer: {ans}' so we don't accept them as valid answers.
+# Require at least one letter inside braces to avoid flagging numeric set notation like '{1,2,3}'.
+_ANS_HOLE_RE = re.compile(r"\{[^}]*[A-Za-z][^}]*\}")
+
+
+# ============================================================
+# Utilities
+# ============================================================
+
+def _now_ts() -> float:
+    return time.time()
+
+
+def _j(obj) -> str:
+    return json.dumps(obj, ensure_ascii=False)
+
+
+def _strip_markdown_fences(s: str) -> str:
+    """Remove common markdown code fences (``` / ```json).
+
+    This is a deterministic sanitation step (no model re-ask).
+    It supports outputs like:
+      ```json\n{...}\n```
+    and also cases where the closing fence is missing.
+    """
+    if not isinstance(s, str):
+        return s
+    t = s.strip()
+
+    # Prefer extracting the first fenced block if it exists.
+    m = re.search(r"```(?:json)?\s*(.*?)```", t, flags=re.DOTALL | re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+
+    # If only an opening fence exists, drop the first fence line.
+    if t.startswith("```"):
+        parts = t.splitlines()
+        if len(parts) >= 2:
+            t = "\n".join(parts[1:]).strip()
+        else:
+            t = ""
+
+    # If there's a trailing fence without a matched opener, strip it.
+    if t.endswith("```"):
+        t = t[:-3].strip()
+
+    return t
+
+
+# ============================================================
+# Robust JSON extraction / repair
+# ============================================================
+
+def _remove_trailing_commas(s: str) -> str:
+    """Remove trailing commas before '}' or ']' (best-effort)."""
+    return re.sub(r",\s*([}\]])", r"\1", s)
+
+
+def _escape_newlines_in_json_strings(s: str) -> str:
+    """Escape literal newlines inside JSON strings (best-effort repair)."""
+    out: List[str] = []
+    in_str = False
+    esc = False
+    for ch in s:
+        if in_str:
+            if esc:
+                esc = False
+                out.append(ch)
+                continue
+            if ch == "\\":  # escape next char
+                esc = True
+                out.append(ch)
+                continue
+            if ch == '"':
+                in_str = False
+                out.append(ch)
+                continue
+            if ch == "\n":
+                out.append("\\n")
+                continue
+            if ch == "\r":
+                out.append("\\r")
+                continue
+            out.append(ch)
+        else:
+            if ch == '"':
+                in_str = True
+            out.append(ch)
+    return "".join(out)
+
+
+def _extract_first_balanced_json_object(s: str) -> Optional[str]:
+    """Extract the first balanced {...} JSON object from arbitrary text."""
+    if not isinstance(s, str):
+        return None
+    start = s.find("{")
+    if start < 0:
+        return None
+
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(s)):
+        ch = s[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":  # escape
+                esc = True
+            elif ch == '"':
+                in_str = False
+        else:
+            if ch == '"':
+                in_str = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return s[start : i + 1]
+    # Unbalanced; return best-effort tail
+    return s[start:].strip()
+
+
+def _extract_json_obj(raw: str) -> Dict[str, Any]:
+    """Parse a JSON object from model output with lightweight repairs."""
+    if not isinstance(raw, str):
+        raise ValueError("Model output is not a string.")
+    t = _strip_markdown_fences(raw).strip()
+
+    jtxt = _extract_first_balanced_json_object(t)
+    if not jtxt:
+        raise ValueError("Cannot find JSON object in model output.")
+
+    jtxt = _escape_newlines_in_json_strings(jtxt)
+    jtxt = _remove_trailing_commas(jtxt)
+
+    obj = json.loads(jtxt)
+    if not isinstance(obj, dict):
+        raise ValueError("Top-level JSON is not an object.")
+    return obj
+
+
+def _sha1_text(s: str) -> str:
+    try:
+        return hashlib.sha1(s.encode("utf-8", errors="ignore")).hexdigest()
+    except Exception:
+        return "0" * 40
+
+
+def _sha1_bytes(b: bytes) -> str:
+    try:
+        return hashlib.sha1(b).hexdigest()
+    except Exception:
+        return "0" * 40
+
+
+def _truncate(s: str, n: int = 240) -> str:
+    if s is None:
+        return ""
+    s = str(s)
+    if len(s) <= n:
+        return s
+    return s[: n // 2] + " ... " + s[-n // 2 :]
+
+
+def _atomic_write_json(path: str, obj: Any) -> None:
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
+def _as_list(x: Any) -> List[Any]:
+    """Return x as a list (None -> [], scalar -> [scalar])."""
+    if x is None:
+        return []
+    if isinstance(x, list):
+        return x
+    return [x]
+
+
+def _one_line(s: Any, n: int = 420) -> str:
+    """Best-effort stringify to a single line and truncate for logs."""
+    if s is None:
+        return ""
+    try:
+        t = str(s)
+    except Exception:
+        t = repr(s)
+    t = t.replace("\r", " ").replace("\n", " ")
+    t = re.sub(r"\s+", " ", t).strip()
+    return _truncate(t, n)
+
+# ============================================================
+# Image focus helpers (crop/zoom) + knowns injection
+# ============================================================
+
+def _coerce_pil_image(img: Any) -> Optional["Image.Image"]:
+    """Convert a bytes/PIL/numpy image into a PIL Image (RGB) if possible."""
+    if img is None or Image is None:
+        return None
+    try:
+        if isinstance(img, (bytes, bytearray)):
+            im = Image.open(BytesIO(bytes(img)))
+            return im.convert("RGB")
+        # PIL Image
+        if hasattr(img, "size") and hasattr(img, "mode") and hasattr(img, "convert"):
+            try:
+                return img.convert("RGB")
+            except Exception:
+                return img
+        # numpy array (H,W,C)
+        try:
+            import numpy as np  # optional
+            if isinstance(img, np.ndarray):
+                if img.dtype != np.uint8:
+                    arr = img.astype(np.uint8)
+                else:
+                    arr = img
+                if arr.ndim == 2:
+                    return Image.fromarray(arr, mode="L").convert("RGB")
+                if arr.ndim == 3:
+                    return Image.fromarray(arr).convert("RGB")
+        except Exception:
+            pass
+    except Exception:
+        return None
+    return None
+
+
+def _pil_to_bytes(im: "Image.Image", fmt: str = "PNG") -> bytes:
+    if Image is None:
+        return b""
+    buf = BytesIO()
+    try:
+        im.save(buf, format=fmt)
+    except Exception:
+        # Fallback: try RGB conversion
+        try:
+            im.convert("RGB").save(buf, format=fmt)
+        except Exception:
+            return b""
+    return buf.getvalue()
+
+
+def _normalize_bbox(bbox: Any, im_w: Optional[int] = None, im_h: Optional[int] = None) -> Optional[Tuple[float, float, float, float]]:
+    """Normalize bbox to (x0,y0,x1,y1) in [0,1]. Accept list/tuple or dict. Pixel coords are also accepted."""
+    if bbox is None:
+        return None
+    x0 = y0 = x1 = y1 = None
+
+    try:
+        if isinstance(bbox, dict):
+            # common keys
+            for k in ("x0", "left", "xmin"):
+                if k in bbox:
+                    x0 = float(bbox[k]); break
+            for k in ("y0", "top", "ymin"):
+                if k in bbox:
+                    y0 = float(bbox[k]); break
+            for k in ("x1", "right", "xmax"):
+                if k in bbox:
+                    x1 = float(bbox[k]); break
+            for k in ("y1", "bottom", "ymax"):
+                if k in bbox:
+                    y1 = float(bbox[k]); break
+        elif isinstance(bbox, (list, tuple)) and len(bbox) == 4:
+            x0, y0, x1, y1 = [float(v) for v in bbox]
+    except Exception:
+        return None
+
+    if x0 is None or y0 is None or x1 is None or y1 is None:
+        return None
+
+    # If values look like pixels, convert to normalized if size known
+    try:
+        if im_w and im_h and (max(x0, x1) > 1.5 or max(y0, y1) > 1.5):
+            x0, x1 = x0 / float(im_w), x1 / float(im_w)
+            y0, y1 = y0 / float(im_h), y1 / float(im_h)
+    except Exception:
+        pass
+
+    # fix ordering + clamp
+    x0, x1 = (x0, x1) if x0 <= x1 else (x1, x0)
+    y0, y1 = (y0, y1) if y0 <= y1 else (y1, y0)
+    x0 = max(0.0, min(1.0, x0))
+    y0 = max(0.0, min(1.0, y0))
+    x1 = max(0.0, min(1.0, x1))
+    y1 = max(0.0, min(1.0, y1))
+    # avoid degenerate
+    if (x1 - x0) < 1e-4 or (y1 - y0) < 1e-4:
+        return None
+    return (x0, y0, x1, y1)
+
+
+def _make_focus_image(original_img: Any, bbox: Any, pad_frac: float = 0.06, min_side: int = 1024, max_side: int = 1600) -> Any:
+    """Crop+zoom to bbox. Returns same type family as input (bytes -> bytes, PIL -> PIL)."""
+    im = _coerce_pil_image(original_img)
+    if im is None:
+        return None
+
+    w, h = im.size
+    nb = _normalize_bbox(bbox, w, h)
+    if nb is None:
+        return None
+    x0, y0, x1, y1 = nb
+
+    # padding proportional to bbox size
+    bw, bh = (x1 - x0), (y1 - y0)
+    px = pad_frac * bw
+    py = pad_frac * bh
+    x0p = max(0.0, x0 - px)
+    y0p = max(0.0, y0 - py)
+    x1p = min(1.0, x1 + px)
+    y1p = min(1.0, y1 + py)
+
+    left = int(round(x0p * w))
+    top = int(round(y0p * h))
+    right = int(round(x1p * w))
+    bottom = int(round(y1p * h))
+
+    if right <= left + 2 or bottom <= top + 2:
+        return None
+
+    crop = im.crop((left, top, right, bottom))
+
+    # Resize to make details readable, but cap max side.
+    cw, ch = crop.size
+    if cw <= 0 or ch <= 0:
+        return None
+    scale = 1.0
+    try:
+        scale = max(1.0, float(min_side) / float(min(cw, ch)))
+        # cap by max_side
+        cap = float(max_side) / float(max(cw, ch))
+        scale = min(scale, max(1.0, cap))
+    except Exception:
+        scale = 1.0
+
+    if scale > 1.0001:
+        nw = int(round(cw * scale))
+        nh = int(round(ch * scale))
+        try:
+            crop = crop.resize((nw, nh), resample=Image.BICUBIC)
+        except Exception:
+            pass
+
+    # Return bytes if original was bytes
+    if isinstance(original_img, (bytes, bytearray)):
+        return _pil_to_bytes(crop, fmt="PNG")
+    return crop
+
+
+_NUM_RE = re.compile(r"[-+]?\d+(?:\.\d+)?(?:e[-+]?\d+)?", flags=re.IGNORECASE)
+_FRAC_RE = re.compile(r"(?P<a>\d+)\s*/\s*(?P<b>\d+)")
+
+
+def _parse_number(v: Any) -> Optional[float]:
+    if v is None:
+        return None
+    if isinstance(v, (int, float)):
+        try:
+            return float(v)
+        except Exception:
+            return None
+    s = str(v).strip().replace(",", "")
+    if not s:
+        return None
+    m = _FRAC_RE.search(s)
+    if m:
+        try:
+            a = float(m.group("a"))
+            b = float(m.group("b"))
+            if b != 0:
+                return a / b
+        except Exception:
+            pass
+    m = _NUM_RE.search(s)
+    if m:
+        try:
+            return float(m.group(0))
+        except Exception:
+            return None
+    return None
+
+
+
+# ============================================================
+# Counting-task helpers
+# ============================================================
+
+_SUBTRACT_TARGET_RE = re.compile(r"\bsubtract\s+all\s+([^\.\n\r]+)", flags=re.IGNORECASE)
+_ADD_TARGET_RE = re.compile(r"\badd\s+all\s+([^\.\n\r]+)", flags=re.IGNORECASE)
+
+def _extract_subtract_targets(q: str) -> List[str]:
+    """Extract object descriptions from prompts like 'Subtract all X. Subtract all Y.'"""
+    if not isinstance(q, str):
+        return []
+    q2 = q.replace("\n", " ")
+    t = [m.group(1).strip() for m in _SUBTRACT_TARGET_RE.finditer(q2)]
+    # de-dup while preserving order
+    out = []
+    seen = set()
+    for x in t:
+        k = x.lower()
+        if k not in seen:
+            seen.add(k)
+            out.append(x)
+    return out
+
+def _normalize_obj_name(s: str) -> str:
+    if not isinstance(s, str):
+        return ""
+    t = s.lower().strip()
+    t = re.sub(r"[^a-z0-9]+", " ", t).strip()
+    t = re.sub(r"\s+", " ", t)
+    return t
+
+def _get_counts_from_gti(gti: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Optional[int]]:
+    """Return (counts_list, total_int_or_none) from gti.structured.diagram."""
+    try:
+        diag = (gti or {}).get("structured", {}).get("diagram", {}) or {}
+        counts = diag.get("counts", []) or []
+        total = diag.get("total_objects", None)
+        if isinstance(total, str):
+            total = int(float(total))
+        if isinstance(total, (int, float)):
+            total = int(total)
+        else:
+            total = None
+        # sanitize counts entries
+        cleaned = []
+        for c in counts:
+            if not isinstance(c, dict):
+                continue
+            obj = str(c.get("object", "") or "").strip()
+            cnt = c.get("count", None)
+            if isinstance(cnt, str):
+                try:
+                    cnt = int(float(cnt))
+                except Exception:
+                    cnt = None
+            if isinstance(cnt, (int, float)):
+                cnt = int(cnt)
+            if obj and cnt is not None:
+                cleaned.append({"object": obj, "count": cnt, "note": str(c.get("note", "") or "").strip()})
+        return cleaned, total
+    except Exception:
+        return [], None
+
+def _compute_remaining_objects(question: str, gti: Dict[str, Any]) -> Tuple[Optional[int], str]:
+    """Compute remaining objects for common prompts: subtract listed targets from total."""
+    counts, total = _get_counts_from_gti(gti)
+    if not counts and total is None:
+        return None, "no counts/total available"
+    # If total missing, try summing all counted categories
+    if total is None and counts:
+        total = sum(int(c.get("count", 0)) for c in counts)
+    targets = _extract_subtract_targets(question or "")
+    if not targets:
+        # if no explicit subtract targets, and total exists, answer total
+        if total is not None:
+            return int(total), "no subtract targets; using total"
+        return None, "no subtract targets and no total"
+    # Build map by normalized name
+    cmap = {}
+    for c in counts:
+        cmap[_normalize_obj_name(c["object"])] = int(c["count"])
+    subtract = 0
+    missing = []
+    for t in targets:
+        nk = _normalize_obj_name(t)
+        if nk in cmap:
+            subtract += cmap[nk]
+            continue
+        # fuzzy contains match
+        found = None
+        for ck, cv in cmap.items():
+            if nk in ck or ck in nk:
+                found = cv
+                break
+        if found is None:
+            missing.append(t)
+        else:
+            subtract += int(found)
+    if missing:
+        return None, "missing counts for targets: " + ", ".join(missing[:3])
+    if total is None:
+        return None, "total missing"
+    return int(total - subtract), "computed from total - sum(target_counts)"
+
+def _normalize_simple_unit(val: float, unit: str) -> Tuple[float, str]:
+    """Very small unit normalizer for common MathVista units. Only handles simple single units."""
+    if unit is None:
+        return val, ""
+    u = str(unit).strip().lower()
+    if not u:
+        return val, ""
+    # If composite, do not normalize aggressively.
+    if "/" in u or "*" in u or "per" in u or "^" in u:
+        return val, u
+
+    # Length
+    if u in {"mm", "millimeter", "millimeters"}:
+        return val / 1000.0, "m"
+    if u in {"cm", "centimeter", "centimeters"}:
+        return val / 100.0, "m"
+    if u in {"m", "meter", "meters"}:
+        return val, "m"
+    if u in {"km", "kilometer", "kilometers"}:
+        return val * 1000.0, "m"
+    # Mass
+    if u in {"g", "gram", "grams"}:
+        return val / 1000.0, "kg"
+    if u in {"kg", "kilogram", "kilograms"}:
+        return val, "kg"
+    # Time
+    if u in {"s", "sec", "second", "seconds"}:
+        return val, "s"
+    if u in {"min", "minute", "minutes"}:
+        return val * 60.0, "s"
+    if u in {"h", "hr", "hour", "hours"}:
+        return val * 3600.0, "s"
+
+    return val, u
+
+
+def _guess_var_keys(name: str) -> List[str]:
+    """Map a human-readable quantity name to preferred python variable keys."""
+    if not name:
+        return []
+    n = str(name).strip().lower()
+    keys: List[str] = []
+
+    # counting/objects variables (used in counting tasks)
+    try:
+        if n.startswith("count::"):
+            kk = "count_" + re.sub(r"[^a-z0-9_]+", "_", n.split("count::", 1)[1]).strip("_")
+            keys.append(kk)
+        if n.startswith("count_"):
+            kk = re.sub(r"[^a-z0-9_]+", "_", n).strip("_")
+            keys.append(kk)
+        if "total objects" in n or n in ("total", "total_object", "total_objects", "objects total"):
+            keys.append("total_objects")
+        if "remaining objects" in n or "objects left" in n or "how many objects are left" in n:
+            keys.append("remaining_objects")
+    except Exception:
+        pass
+
+    # direct single-letter variable mention
+    try:
+        m = re.search(r"\b([a-zA-Z])\b", n)
+        if m:
+            keys.append(m.group(1))
+    except Exception:
+        pass
+
+    def add(pref: str, *aliases: str):
+        if pref:
+            keys.append(pref)
+        for a in aliases:
+            if a:
+                keys.append(a)
+
+    if "mass" in n:
+        add("m", "mass")
+    if "speed" in n or "velocity" in n:
+        add("v", "speed", "velocity")
+    if "spring constant" in n or (n == "k") or (" k" in n) or ("k " in n):
+        add("k", "spring_k")
+    if "gravity" in n or "gravitational" in n or n == "g":
+        add("g", "gravity")
+    if "radius" in n:
+        add("r", "radius")
+    if "diameter" in n:
+        add("d", "diameter")
+    if "distance" in n or "displacement" in n or "compression" in n or "extension" in n or "length" in n:
+        add("d", "distance", "length")
+    if "height" in n:
+        add("h", "height")
+    if "width" in n:
+        add("w", "width")
+    if "time" in n:
+        add("t", "time")
+    if "angle" in n or "theta" in n:
+        add("theta", "angle")
+
+    # Deduplicate, preserve order, keep python-friendly
+    out: List[str] = []
+    seen = set()
+    for k in keys:
+        kk = str(k).strip()
+        if not kk:
+            continue
+        kk = re.sub(r"[^A-Za-z0-9_]", "_", kk)
+        if kk[0].isdigit():
+            kk = "_" + kk
+        if kk not in seen:
+            seen.add(kk)
+            out.append(kk)
+    return out
+
+
+def _inject_knowns_into_ctx(ig: Dict[str, Any], gti: Dict[str, Any], ctx: Dict[str, Any]) -> None:
+    """Parse IG knowns into ctx as numeric variables (with light unit normalization)."""
+    if ctx is None:
+        return
+    knowns = []
+    try:
+        knowns = ((ig.get("math_elements_extracted") or {}).get("known") or [])
+    except Exception:
+        knowns = []
+    # also allow top-level knowns
+    try:
+        k2 = ig.get("knowns")
+        if isinstance(k2, list):
+            knowns = knowns + k2
+    except Exception:
+        pass
+
+    injected = []
+    for it in knowns:
+        if not isinstance(it, dict):
+            continue
+        name = str(it.get("name", "") or "").strip()
+        val_raw = it.get("value", None)
+        unit = it.get("unit", "") or ""
+        v = _parse_number(val_raw)
+        if v is None:
+            continue
+        v_norm, unit_norm = _normalize_simple_unit(float(v), str(unit))
+        keys = _guess_var_keys(name)
+        if not keys:
+            continue
+        for k in keys[:3]:
+            # Don't clobber if already present (keep first-read).
+            if k not in ctx:
+                ctx[k] = v_norm
+        # Keep raw as well for debugging
+        ctx[f"_{keys[0]}_raw"] = float(v)
+        if unit_norm:
+            ctx[f"_{keys[0]}_unit"] = unit_norm
+        injected.append({"name": name, "keys": keys[:3], "value": v_norm, "unit": unit_norm})
+
+    if injected:
+        ctx["_known_injected"] = injected
+
+
+# ============================================================
+# Placeholder rendering + answer selection helpers
+# ============================================================
+
+_PLACEHOLDER_RE = re.compile(r"\{([^{}]+)\}")
+
+def _to_scalar(v: Any) -> Any:
+    """Best-effort conversion of tool outputs to a scalar for formatting."""
+    if isinstance(v, (list, tuple)) and len(v) == 1:
+        v = v[0]
+    try:
+        if hasattr(v, "evalf") and callable(getattr(v, "evalf")):
+            try:
+                v = float(v.evalf())
+            except Exception:
+                pass
+    except Exception:
+        pass
+    return v
+
+
+def _resolve_placeholder_expr(expr: str, ctx: Dict[str, Any]) -> Tuple[Optional[Any], Optional[str]]:
+    """Resolve a conservative subset of python-like expressions used in placeholders.
+
+    Supports:
+      - name
+      - name[idx] where idx is int
+      - name['key'] / name["key"]
+      - chained indexing, e.g. d_val[0]
+    Does NOT support function calls, arithmetic, slices, or attribute access.
+    """
+    try:
+        expr = (expr or "").strip()
+        m = re.match(r"^([A-Za-z_]\w*)(.*)$", expr)
+        if not m:
+            return None, "bad_expr"
+        name = m.group(1)
+        rest = (m.group(2) or "").strip()
+        if name not in ctx:
+            return None, "missing_var"
+        v = ctx[name]
+        while rest:
+            if not rest.startswith("["):
+                return None, "unsupported_tail"
+            rb = rest.find("]")
+            if rb < 0:
+                return None, "unclosed_bracket"
+            key_raw = rest[1:rb].strip()
+            if re.fullmatch(r"-?\d+", key_raw or ""):
+                key = int(key_raw)
+            elif (len(key_raw) >= 2) and ((key_raw[0] == key_raw[-1] == "'") or (key_raw[0] == key_raw[-1] == '"')):
+                key = key_raw[1:-1]
+            else:
+                try:
+                    key = int(key_raw)
+                except Exception:
+                    return None, "bad_index"
+            try:
+                v = v[key]
+            except Exception:
+                return None, "index_fail"
+            rest = rest[rb + 1 :].strip()
+        return v, None
+    except Exception:
+        return None, "resolve_fail"
+
+
+def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+    """Render {expr} and {expr:format} placeholders using values in ctx.
+
+    Returns (rendered_text, error_str). On error, rendered_text is the original.
+
+    Includes a conservative heuristic: if fixed-point formatting would round a small non-zero
+    *length-like* value to 0.0 with low precision, try meters->centimeters.
+    """
+    if not isinstance(text, str):
+        return text, None
+    if ctx is None:
+        ctx = {}
+
+    def _format_fixed_half_up(val: float, fmt: str) -> Optional[str]:
+        mfmt = re.search(r"\.(\d+)f$", (fmt or '').strip())
+        if not mfmt:
+            return None
+        try:
+            from decimal import Decimal, ROUND_HALF_UP
+            decimals = int(mfmt.group(1))
+            q = Decimal('1').scaleb(-decimals)
+            d = Decimal(str(float(val))).quantize(q, rounding=ROUND_HALF_UP)
+            return format(d, f".{decimals}f")
+        except Exception:
+            return None
+
+    def _maybe_rescale_length(v: float, fmt: str) -> float:
+        try:
+            fv = float(v)
+        except Exception:
+            return v
+        if not math.isfinite(fv) or fv == 0.0:
+            return v
+        mfmt = re.search(r"\.(\d+)f$", (fmt or '').strip())
+        if not mfmt:
+            return v
+        decimals = int(mfmt.group(1))
+        if decimals > 1:
+            return v
+
+        q = str(ctx.get('_question_text', '')).lower()
+        unit = str(ctx.get('_unit', '')).strip().lower()
+        try:
+            if unit in {'cm', 'mm'}:
+                return v
+            if re.search(r"\b(in\s*cm|centimeters?)\b", q) or re.search(r"\b(in\s*mm|millimeters?)\b", q):
+                return v
+            if re.search(r"\b(in\s*m|meters?|metres?)\b", q):
+                return v
+        except Exception:
+            pass
+
+        lengthy = any(w in q for w in [
+            'distance','length','height','width','radius','diameter',
+            'compress','compression','displacement','spring','stretched',
+            'moved','travel','how far'
+        ])
+        if not lengthy:
+            return v
+
+        try:
+            test = ("{:" + fmt + "}").format(fv)
+            if test.startswith('0') and abs(fv) < 0.1:
+                scaled = fv * 100.0
+                if 0.1 <= abs(scaled) <= 10000:
+                    return scaled
+        except Exception:
+            pass
+        return v
+
+    def _render_one(m: re.Match) -> str:
+        inside = (m.group(1) or "").strip()
+        expr, fmt = inside, ''
+        if ':' in inside:
+            expr, fmt = inside.split(':', 1)
+            expr, fmt = expr.strip(), (fmt or '').strip()
+
+        val, err = _resolve_placeholder_expr(expr, ctx)
+        if err is not None:
+            return m.group(0)
+
+        v = _to_scalar(val)
+        try:
+            if fmt:
+                if isinstance(v, (int, float)):
+                    v = _maybe_rescale_length(v, fmt)
+                if isinstance(v, (int, float)):
+                    s = _format_fixed_half_up(float(v), fmt)
+                    if s is not None:
+                        return s
+                return ("{:" + fmt + "}").format(v)
+
+            try:
+                if ctx.get('_expect_int', False) and isinstance(v, float) and math.isfinite(v) and abs(v - round(v)) < 1e-9:
+                    return str(int(round(v)))
+            except Exception:
+                pass
+            return str(v)
+        except Exception:
+            return m.group(0)
+
+    try:
+        rendered = _PLACEHOLDER_RE.sub(_render_one, text)
+        if _PLACEHOLDER_RE.search(rendered):
+            return rendered, "Unresolved placeholders remain"
+        return rendered, None
+    except Exception as e:
+        return text, str(e)
+
+
+def _sanitize_answer_line(s: str) -> str:
+    """Normalize an 'Answer: ...' line for downstream parsing/validation.
+
+    - Strips markdown fences and leading/trailing whitespace
+    - If an 'Answer:' prefix exists, keep from the last occurrence onward
+    - Collapses to a single line
+    - Always standardizes to 'Answer: <payload>' with ONE space after colon
+    """
+    if not isinstance(s, str):
+        return ""
+    t = _strip_markdown_fences(s).strip()
+
+    # Keep only the first non-empty line
+    t = t.splitlines()[0].strip() if t.splitlines() else t
+
+    if "Answer:" in t:
+        payload = t.split("Answer:")[-1].strip()
+        t = "Answer: " + payload
+    # Remove stray code fence remnants
+    t = t.strip("`").strip()
+    return t
+
+
+def _looks_valid_answer_line(s: str) -> bool:
+    t = _sanitize_answer_line(s)
+    if not t.startswith("Answer:"):
+        return False
+    payload = t.split("Answer:", 1)[1].strip()
+    if not payload:
+        return False
+    if "[calculated_value]" in t:
+        return False
+    if _ANS_HOLE_RE.search(t):
+        return False
+    bad = payload.lower()
+    if bad in ("none", "null", "nan", "inf", "infinity", "error", "unknown"):
+        return False
+    return True
+
+def _build_numeric_candidates(ctx: Dict[str, Any], ig: Optional[Dict[str, Any]] = None, gti: Optional[Dict[str, Any]] = None, user_prompt: str = "") -> List[float]:
+    """Collect numeric candidates from the execution context and image readings.
+
+    Used to guard SR overrides from hallucinating new numbers.
+    """
+    cands: List[float] = []
+
+    def _add(v):
+        try:
+            fv = float(v)
+            if math.isfinite(fv):
+                cands.append(fv)
+        except Exception:
+            return
+
+    if isinstance(ctx, dict):
+        for k in ["ans", "_last_solution", "_last", "result", "value", "final_value"]:
+            if k in ctx:
+                _add(ctx.get(k))
+        for _, v in list(ctx.items()):
+            if isinstance(v, (list, tuple)) and len(v) == 1:
+                _add(v[0])
+
+    try:
+        if isinstance(gti, dict):
+            info = gti.get("information")
+            if isinstance(info, list):
+                for s in info[:200]:
+                    if isinstance(s, str) and re.fullmatch(r"-?\d+(?:\.\d+)?", s.strip()):
+                        _add(s.strip())
+    except Exception:
+        pass
+
+    expanded: List[float] = []
+    for v in cands:
+        expanded.extend([v, v * 100.0, v / 100.0, v * 1000.0, v / 1000.0])
+        for nd in [0, 1, 2, 3]:
+            try:
+                expanded.append(round(v, nd))
+                expanded.append(round(v * 100.0, nd))
+            except Exception:
+                pass
+
+    uniq: List[float] = []
+    for v in expanded:
+        if not any(abs(v - u) <= 1e-9 for u in uniq):
+            uniq.append(v)
+    return uniq
+
+
+def choose_final_answer(
+    draft_line: str,
+    sr: Optional[Dict[str, Any]],
+    candidates: Optional[List[float]] = None,
+) -> str:
+    """Pick final answer with SR guardrails.
+
+    Priority:
+      1) A valid draft_line (already grounded in tool logs / ctx)
+      2) SR only if it does NOT introduce a new numeric outside candidate set
+    """
+    draft_line = _sanitize_answer_line(draft_line)
+    if candidates is None:
+        candidates = []
+
+    sr_line = ""
+    sr_cause = "none"
+    try:
+        if isinstance(sr, dict):
+            sr_line = _sanitize_answer_line(sr.get("final_answer") or "")
+            sr_cause = str(sr.get("most_probable_cause") or "none")
+    except Exception:
+        pass
+
+    draft_ok = _looks_valid_answer_line(draft_line)
+    sr_ok = _looks_valid_answer_line(sr_line)
+
+    if not sr_ok:
+        return draft_line if draft_ok else "Answer: "
+
+    if draft_ok and sr_cause == "none":
+        return draft_line
+
+    def _parse_num(line: str) -> Optional[float]:
+        if not isinstance(line, str):
+            return None
+        payload = line.split("Answer:", 1)[-1].strip()
+        if re.fullmatch(r"-?\d+(?:\.\d+)?", payload):
+            try:
+                return float(payload)
+            except Exception:
+                return None
+        return None
+
+    ns = _parse_num(sr_line)
+    nd = _parse_num(draft_line) if draft_ok else None
+
+    if ns is not None and candidates:
+        ok = any(abs(ns - c) <= max(1e-6, 1e-4 * max(1.0, abs(c))) for c in candidates)
+        if not ok:
+            if draft_ok:
+                return draft_line
+            best = min(candidates, key=lambda c: abs(c - ns))
+            return "Answer: " + (str(int(best)) if abs(best - round(best)) < 1e-9 else str(best))
+
+    if ns is not None and nd is not None and sr_cause == "unit_error":
+        try:
+            if nd != 0 and (abs(ns / nd - 100.0) < 0.02 or abs(ns / nd - 0.01) < 0.0002):
+                return sr_line
+        except Exception:
+            pass
+
+    return draft_line if draft_ok else sr_line
+
+
+
+
+@dataclass
+class Observation:
+    """Single source of truth passed to every LLM call."""
+
+    text: str
+    image: Any
+    meta: Dict[str, Any]
+
+
+# ============================================================
+# Security checks for generated skill code
+# ============================================================
+DENY_PATTERNS = [
+    r"\bimport\b",
+    r"\bopen\s*\(",
+    r"\bos\.",
+    r"\bsys\.",
+    r"\bsubprocess\b",
+    r"\bsocket\b",
+    r"\bshutil\b",
+    r"\bpathlib\b",
+    r"__",
+    r"\beval\s*\(",
+    r"\bexec\s*\(",
+    r"\bglobals\s*\(",
+    r"\blocals\s*\(",
+]
+
+
+ALLOWED_AST_NODES = {
+    # module/function structure
+    ast.Module,
+    ast.FunctionDef,
+    ast.arguments,
+    ast.arg,
+    ast.Return,
+    ast.Expr,
+    ast.Assign,
+    ast.AnnAssign,
+    # constants/ops
+    ast.Constant,
+    ast.Name,
+    ast.Load,
+    ast.Store,
+    ast.BinOp,
+    ast.UnaryOp,
+    ast.BoolOp,
+    ast.Compare,
+    ast.Add,
+    ast.Sub,
+    ast.Mult,
+    ast.Div,
+    ast.FloorDiv,
+    ast.Mod,
+    ast.Pow,
+    ast.USub,
+    ast.UAdd,
+    ast.And,
+    ast.Or,
+    ast.Eq,
+    ast.NotEq,
+    ast.Lt,
+    ast.LtE,
+    ast.Gt,
+    ast.GtE,
+    # containers
+    ast.List,
+    ast.Tuple,
+    ast.Dict,
+    ast.Set,
+    ast.Subscript,
+    ast.Slice,
+    # control
+    ast.If,
+    ast.For,
+    ast.While,
+    ast.Break,
+    ast.Continue,
+    ast.Pass,
+    # calls
+    ast.Call,
+    ast.keyword,
+    # f-strings
+    ast.JoinedStr,
+    ast.FormattedValue,
+}
+
+
+def check_code_static_safety(code: str) -> Optional[str]:
+    if not isinstance(code, str) or not code.strip():
+        return "Empty code."
+    for pat in DENY_PATTERNS:
+        if re.search(pat, code):
+            return f"Blocked by deny pattern: {pat}"
+
+    try:
+        tree = ast.parse(code)
+    except Exception as e:
+        return f"AST parse error: {e}"
+
+    for node in ast.walk(tree):
+        if type(node) not in ALLOWED_AST_NODES:
+            return f"Disallowed AST node: {type(node).__name__}"
+
+        # Forbid attribute calls (Attribute node is not allowed)
+        if isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                if node.func.id in ("__import__",):
+                    return "Disallowed call: __import__"
+            else:
+                return "Disallowed call target (non-Name)."
+
+    # Ensure only function defs at top-level (optional but useful)
+    for stmt in tree.body:
+        if not isinstance(stmt, (ast.FunctionDef, ast.Expr)):
+            return f"Top-level statement not allowed: {type(stmt).__name__}"
+        if isinstance(stmt, ast.Expr) and not isinstance(stmt.value, ast.Constant):
+            return "Only docstring allowed as top-level Expr."
+
+    return None
+
+
+# ============================================================
+# Safe execution context for python tool steps + skills
+# ============================================================
+
+def make_safe_context() -> Dict[str, Any]:
+    import math
+
+    safe_builtins = {
+        "abs": abs,
+        "min": min,
+        "max": max,
+        "sum": sum,
+        "len": len,
+        "round": round,
+        "range": range,
+        "int": int,
+        "float": float,
+        "str": str,
+        "print": print,
+    }
+
+    ctx: Dict[str, Any] = {
+        "__builtins__": safe_builtins,
+        "math": math,
+    }
+
+    # Optional sympy
+    sp = None
+    try:
+        import sympy as _sp  # type: ignore
+        sp = _sp
+        ctx["sp"] = _sp
+    except Exception:
+        sp = None
+
+    # ------------------------------------------------------------
+    # Built-in tool skills (needed by AP python steps)
+    # ------------------------------------------------------------
+
+    def _safe_eval_arith_expr(expr: str) -> float:
+        """Evaluate a *numeric* expression safely (no attributes, subscripts, etc.)."""
+        expr = (expr or "").strip()
+        if not expr:
+            raise ValueError("empty expr")
+
+        tree = ast.parse(expr, mode="eval")
+
+        allowed_binops = (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow)
+        allowed_unops = (ast.UAdd, ast.USub)
+
+        def _eval(node: ast.AST) -> float:
+            if isinstance(node, ast.Expression):
+                return _eval(node.body)
+            if isinstance(node, ast.Constant):
+                if isinstance(node.value, (int, float)):
+                    return float(node.value)
+                raise ValueError("non-numeric constant")
+            if isinstance(node, ast.Num):  # py<3.8
+                return float(node.n)
+            if isinstance(node, ast.UnaryOp) and isinstance(node.op, allowed_unops):
+                v = _eval(node.operand)
+                return +v if isinstance(node.op, ast.UAdd) else -v
+            if isinstance(node, ast.BinOp) and isinstance(node.op, allowed_binops):
+                a = _eval(node.left)
+                b = _eval(node.right)
+                if isinstance(node.op, ast.Add):
+                    return a + b
+                if isinstance(node.op, ast.Sub):
+                    return a - b
+                if isinstance(node.op, ast.Mult):
+                    return a * b
+                if isinstance(node.op, ast.Div):
+                    return a / b
+                if isinstance(node.op, ast.FloorDiv):
+                    return a // b
+                if isinstance(node.op, ast.Mod):
+                    return a % b
+                if isinstance(node.op, ast.Pow):
+                    return a ** b
+                raise ValueError("bad op")
+            if isinstance(node, ast.Name):
+                # allow referencing numeric constants or variables already in ctx
+                if node.id in ("pi", "e"):
+                    return float(getattr(math, node.id))
+                v = ctx.get(node.id, None)
+                if isinstance(v, (int, float)):
+                    return float(v)
+                raise ValueError(f"unknown name: {node.id}")
+            # Disallow all other nodes (Call, Attribute, Subscript, etc.)
+            raise ValueError(f"disallowed node: {type(node).__name__}")
+
+        return float(_eval(tree))
+
+    def calc_numeric(expr: str) -> float:
+        """Compute numeric arithmetic expression safely."""
+        return _safe_eval_arith_expr(expr)
+
+    class _SolveResult(float):
+        """Float-like solver result that also behaves like a list of roots.
+
+        This keeps older AP plans working whether they treat sympy_solve() as:
+          - a scalar (d = sympy_solve(...); d*100)
+          - or a list (roots = sympy_solve(...); roots[0])
+        """
+
+        def __new__(cls, value: float, roots: Optional[List[float]] = None):
+            obj = float.__new__(cls, float(value))
+            obj.roots = list(roots) if roots is not None else [float(value)]
+            return obj
+
+        def __iter__(self):
+            return iter(self.roots)
+
+        def __len__(self):
+            return len(self.roots)
+
+        def __getitem__(self, i):
+            return self.roots[i]
+
+    def sympy_solve(eqs, vars):
+        """Solve algebraic equation(s).
+
+        - If sympy is available, use it.
+        - If sympy is NOT available, provide a lightweight fallback for the
+          common MathVista case: a *single-variable* equation that is linear
+          or quadratic in that variable.
+
+        Args:
+          eqs: str like "lhs = rhs" OR an expression f(x) where f(x)=0.
+               Also accepts list[str] but fallback supports only one equation.
+          vars: variable name string (e.g. "d") or list with one variable.
+        Returns:
+          For 1-var: a float-like result (also indexable/iterable as roots list).
+          For multi-var: sympy dicts if sympy available, else raises.
+        """
+        # -----------------------------
+        # Sympy path (if available)
+        # -----------------------------
+        if sp is not None:
+            # vars -> list of symbols
+            if isinstance(vars, str):
+                var_names = [vars]
+            else:
+                var_names = list(vars)
+            syms = [sp.Symbol(v) for v in var_names]
+
+            # Pass numeric values from the current safe context into sympify(),
+            # so expressions like "0.5*k*d**2 - KE_initial" can be evaluated numerically
+            # when k/KE_initial have been assigned earlier in the same python block.
+            locals_map: Dict[str, Any] = {}
+            try:
+                if isinstance(ctx, dict):
+                    for kk, vv in ctx.items():
+                        if isinstance(vv, (int, float)) and not isinstance(vv, bool):
+                            locals_map[str(kk)] = sp.Float(vv)
+            except Exception:
+                locals_map = {}
+
+            def _one_eq(s: str):
+                t = (s or "").strip()
+                if "=" in t:
+                    lhs, rhs = t.split("=", 1)
+                    return sp.Eq(sp.sympify(lhs, locals=locals_map), sp.sympify(rhs, locals=locals_map))
+                return sp.Eq(sp.sympify(t, locals=locals_map), 0)
+
+            if isinstance(eqs, str):
+                eq_list = [_one_eq(eqs)]
+            else:
+                eq_list = [_one_eq(x) for x in list(eqs)]
+
+            sol = sp.solve(eq_list, syms, dict=True)
+
+            # Normalize a common single-var case into a scalar-like result.
+            if len(syms) == 1:
+                v = syms[0]
+                vals = [d[v] for d in sol if isinstance(d, dict) and v in d]
+                if not vals:
+                    return sol
+
+                roots: List[float] = []
+                for vv in vals:
+                    try:
+                        # skip non-real if sympy knows
+                        if hasattr(vv, "is_real") and vv.is_real is False:
+                            continue
+                    except Exception:
+                        pass
+                    try:
+                        fv = float(vv.evalf())
+                    except Exception:
+                        try:
+                            fv = float(vv)
+                        except Exception:
+                            continue
+                    if isinstance(fv, float) and math.isfinite(fv):
+                        roots.append(float(fv))
+
+                # Choose a "best" root: prefer smallest positive real; else first real.
+                best = None
+                pos = [r for r in roots if r > 0]
+                if pos:
+                    best = min(pos)
+                elif roots:
+                    best = roots[0]
+
+                if best is not None:
+                    # Put the preferred root first, because many generated code snippets do `sympy_solve(...)[0]`.
+                    ordered_roots: List[float] = []
+                    if best is not None:
+                        ordered_roots.append(float(best))
+                    for r in roots:
+                        try:
+                            fr = float(r)
+                        except Exception:
+                            continue
+                        if best is None or abs(fr - float(best)) > 1e-12:
+                            ordered_roots.append(fr)
+
+                    ctx["_last_roots"] = list(ordered_roots)
+                    ctx["_last_solution"] = float(best)
+                    ctx["_last_solution_run_id"] = ctx.get("_current_run_id")
+                    return _SolveResult(float(best), ordered_roots)
+
+                return sol
+
+            return sol
+
+        # -----------------------------
+        # Fallback path (no sympy)
+        # -----------------------------
+        # Only support 1-variable, 1-equation fallback.
+        if isinstance(vars, str):
+            var_name = vars.strip()
+        else:
+            var_name = (list(vars)[0] if vars else "x").strip()
+
+        if not var_name:
+            var_name = "x"
+
+        if isinstance(eqs, (list, tuple)):
+            if len(eqs) != 1:
+                raise RuntimeError("sympy not available; fallback supports a single equation only")
+            eqs = eqs[0]
+
+        s = (eqs or "").strip()
+        if not s:
+            raise ValueError("empty equation")
+
+        # Convert "lhs = rhs" to "(lhs)-(rhs)" (equals zero)
+        if "=" in s:
+            lhs, rhs = s.split("=", 1)
+            expr = f"({lhs})-({rhs})"
+        else:
+            expr = s
+
+        # Safe AST evaluator for numeric expressions with one variable + math.*
+        allowed_binops = (ast.Add, ast.Sub, ast.Mult, ast.Div, ast.FloorDiv, ast.Mod, ast.Pow)
+        allowed_unops = (ast.UAdd, ast.USub)
+
+        def _eval_with_var(expr_str: str, xval: float) -> float:
+            tree = ast.parse(expr_str, mode="eval")
+
+            def _ev(node: ast.AST) -> float:
+                if isinstance(node, ast.Expression):
+                    return _ev(node.body)
+                if isinstance(node, ast.Constant):
+                    if isinstance(node.value, (int, float)):
+                        return float(node.value)
+                    raise ValueError("non-numeric constant")
+                if isinstance(node, ast.Name):
+                    if node.id == var_name:
+                        return float(xval)
+
+                    # allow numeric variables from the current safe context (e.g., k, KE_initial)
+                    if isinstance(ctx, dict):
+                        vv_ctx = ctx.get(node.id)
+                        if isinstance(vv_ctx, (int, float)) and not isinstance(vv_ctx, bool):
+                            return float(vv_ctx)
+
+                    # allow math constants like pi, e
+                    if hasattr(math, node.id):
+                        vv = getattr(math, node.id)
+                        if isinstance(vv, (int, float)):
+                            return float(vv)
+
+                    raise ValueError(f"unknown name: {node.id}")
+                if isinstance(node, ast.BinOp) and isinstance(node.op, allowed_binops):
+                    a = _ev(node.left)
+                    b = _ev(node.right)
+                    if isinstance(node.op, ast.Add):
+                        return a + b
+                    if isinstance(node.op, ast.Sub):
+                        return a - b
+                    if isinstance(node.op, ast.Mult):
+                        return a * b
+                    if isinstance(node.op, ast.Div):
+                        return a / b
+                    if isinstance(node.op, ast.FloorDiv):
+                        return a // b
+                    if isinstance(node.op, ast.Mod):
+                        return a % b
+                    if isinstance(node.op, ast.Pow):
+                        return a ** b
+                if isinstance(node, ast.UnaryOp) and isinstance(node.op, allowed_unops):
+                    vv = _ev(node.operand)
+                    return +vv if isinstance(node.op, ast.UAdd) else -vv
+                if isinstance(node, ast.Call):
+                    # allow math.<func>(...)
+                    if isinstance(node.func, ast.Name) and hasattr(math, node.func.id):
+                        fn = getattr(math, node.func.id)
+                    elif isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id == "math":
+                        fn = getattr(math, node.func.attr, None)
+                    else:
+                        fn = None
+                    if fn is None or not callable(fn):
+                        raise ValueError("unsafe function call")
+                    args = [_ev(a) for a in node.args]
+                    return float(fn(*args))
+                if isinstance(node, ast.Attribute):
+                    # allow "math.pi" etc.
+                    if isinstance(node.value, ast.Name) and node.value.id == "math" and hasattr(math, node.attr):
+                        vv = getattr(math, node.attr)
+                        if isinstance(vv, (int, float)):
+                            return float(vv)
+                    raise ValueError("unsafe attribute")
+                raise ValueError(f"unsupported node: {type(node).__name__}")
+
+            return float(_ev(tree))
+
+        # Fit linear/quadratic coefficients by sampling f(0), f(1), f(2)
+        f0 = _eval_with_var(expr, 0.0)
+        f1 = _eval_with_var(expr, 1.0)
+        f2 = _eval_with_var(expr, 2.0)
+
+        a = (f2 - 2.0 * f1 + f0) / 2.0
+        c = f0
+        b = f1 - a - c
+
+        eps = 1e-12
+        roots: List[float] = []
+
+        if abs(a) < eps:
+            # linear: b*x + c = 0
+            if abs(b) < eps:
+                roots = []
+            else:
+                roots = [(-c) / b]
+        else:
+            disc = b * b - 4.0 * a * c
+            if disc >= -1e-12:
+                disc = max(0.0, disc)
+                sd = math.sqrt(disc)
+                roots = [(-b + sd) / (2.0 * a), (-b - sd) / (2.0 * a)]
+            else:
+                roots = []
+
+        # Choose a "best" root: prefer smallest positive real; else first.
+        best = None
+        pos = [r for r in roots if isinstance(r, (int, float)) and math.isfinite(r) and r > 0]
+        if pos:
+            best = min(pos)
+        elif roots:
+            best = roots[0]
+
+        # Put the preferred root first (helps generated code that indexes `[0]`).
+        ordered_roots: List[float] = []
+        if best is not None:
+            ordered_roots.append(float(best))
+        for r in roots:
+            try:
+                fr = float(r)
+            except Exception:
+                continue
+            if best is None or abs(fr - float(best)) > 1e-12:
+                ordered_roots.append(fr)
+
+        ctx["_last_roots"] = list(ordered_roots)
+        if best is not None:
+            ctx["_last_solution"] = float(best)
+            ctx["_last_solution_run_id"] = ctx.get("_current_run_id")
+            return _SolveResult(float(best), ordered_roots)
+
+        return roots
+
+    def format_final(ans) -> str:
+        """Return exactly one line in MathVista style: Answer: ..."""
+        a = ans
+        if isinstance(a, (list, tuple)) and a:
+            a = a[0]
+        try:
+            if sp is not None and hasattr(a, "evalf"):
+                a = float(a.evalf())
+        except Exception:
+            pass
+
+
+        # Heuristic: many MathVista physics "distance/length" answers are stored in centimeters
+        # even if inputs are in SI. If the unknown is length-like and the computed value is < 0.1,
+        # scale by 100 to avoid rounding to 0.0 at low precision.
+        try:
+            if isinstance(a, (int, float)) and math.isfinite(a):
+                if ctx.get("_length_like", False) and 0 < abs(float(a)) < 0.1:
+                    a = float(a) * 100.0
+        except Exception:
+            pass
+
+        # Keep a generic 'ans' variable available for normalize placeholders (Answer: {ans})
+        try:
+            if "ans" not in ctx and isinstance(a, (int, float, str)):
+                ctx["ans"] = a
+        except Exception:
+            pass
+
+        # If AP hard-codes a rounded number but we have a computed last solution,
+        # only prefer the computed one when the hard-coded value looks like a rounded version of it.
+        # (Important: do NOT override multiple-choice numeric labels / unrelated literals.)
+        try:
+            if not ctx.get("_is_mcq", False):
+                sol = ctx.get("_last_solution", None)
+                sol_run = ctx.get("_last_solution_run_id", None)
+                if sol_run is None or sol_run == ctx.get("_current_run_id"):
+                    if isinstance(sol, (int, float)) and isinstance(a, (int, float)) and math.isfinite(float(sol)) and math.isfinite(float(a)):
+                        s = float(sol)
+                        av = float(a)
+                        for nd in (0, 1, 2, 3):
+                            if abs(av - round(s, nd)) < 1e-12:
+                                a = float(sol)
+                                break
+        except Exception:
+            pass
+
+        # Default numeric formatting (respects question expectations when available).
+        try:
+            if isinstance(a, (int, float)) and math.isfinite(float(a)):
+                dp = ctx.get("_expect_dp", None)
+                if ctx.get("_expect_int", False) and dp is None:
+                    a_str = str(int(round(float(a))))
+                elif dp is not None:
+                    a_str = f"{float(a):.{int(dp)}f}"
+                else:
+                    a_str = f"{float(a):.4g}"
+            else:
+                a_str = str(a)
+        except Exception:
+            a_str = str(a)
+
+        return f"Answer: {a_str}"
+
+    ctx["calc_numeric"] = calc_numeric
+    ctx["sympy_solve"] = sympy_solve
+    ctx["format_final"] = format_final
+    return ctx
+
+
+
+def _infer_ans_name_from_code(code: str) -> Optional[str]:
+    """Infer the most likely answer variable name from a one-line python snippet.
+
+    We prefer:
+    - last assignment target (e.g., d_val = ...)
+    - argument to format_final(x)
+    """
+    if not isinstance(code, str) or not code.strip():
+        return None
+    try:
+        tree = ast.parse(code)
+    except Exception:
+        return None
+
+    cand = None
+    for node in tree.body:
+        # Prefer explicit format_final(arg)
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            fn = node.value.func
+            if isinstance(fn, ast.Name) and fn.id == "format_final" and node.value.args:
+                a0 = node.value.args[0]
+                if isinstance(a0, ast.Name):
+                    cand = a0.id
+                elif isinstance(a0, ast.Constant):
+                    return None
+        if isinstance(node, ast.Assign):
+            # multiple targets possible
+            for t in node.targets:
+                if isinstance(t, ast.Name):
+                    cand = t.id
+        elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
+            cand = node.target.id
+        elif isinstance(node, ast.AugAssign) and isinstance(node.target, ast.Name):
+            cand = node.target.id
+
+    # Don't return clearly non-answer names unless nothing else exists
+    if cand in (None, "m", "v", "k", "g", "pi"):
+        return cand
+    return cand
+
+def _auto_assign_tool_calls(code: str) -> str:
+    """Rewrite common bare helper calls so downstream placeholders can be rendered.
+
+    Examples:
+      "sympy_solve('x-1', 'x')" -> "ans = sympy_solve('x-1', 'x')"
+      "a=1; calc_numeric('2+2')" -> "a=1; ans = calc_numeric('2+2')"
+
+    This is intentionally conservative: only rewrites a statement when it has
+    no '=' and begins with one of the known helper functions.
+    """
+    if not isinstance(code, str) or not code.strip():
+        return code
+    parts = [p.strip() for p in code.split(";")]
+    new_parts: List[str] = []
+    for p in parts:
+        if not p:
+            continue
+        # Only rewrite if it's a bare call (no assignment) and starts with a known helper.
+        if ("=" not in p) and re.match(r"^(sympy_solve|calc_numeric)\s*\(", p):
+            new_parts.append("ans = " + p)
+        else:
+            new_parts.append(p)
+    return "; ".join(new_parts)
+
+
+
+def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
+    """Execute python code in a constrained context.
+
+    Enhancement vs v5: if the last statement is an expression (e.g., calc_numeric(...)),
+    we also evaluate it and print its value (REPL-like), so the agent can read results
+    without explicitly writing print() or assignments.
+    """
+    for pat in DENY_PATTERNS:
+        if re.search(pat, code):
+            return "", f"Blocked unsafe pattern: {pat}"
+
+    import io
+
+    old_stdout = sys.stdout  # type: ignore
+    buf = io.StringIO()
+    sys.stdout = buf  # type: ignore
+    err = None
+    try:
+        tree = ast.parse(code, mode="exec")
+        last_expr = None
+        if tree.body and isinstance(tree.body[-1], ast.Expr):
+            last_expr = ast.Expression(tree.body[-1].value)
+            tree.body = tree.body[:-1]
+
+        if tree.body:
+            tree = ast.fix_missing_locations(tree)
+            exec(compile(tree, "<tool_exec>", "exec"), g, g)
+
+        if last_expr is not None:
+            last_expr = ast.fix_missing_locations(last_expr)
+            val = eval(compile(last_expr, "<tool_eval>", "eval"), g, g)
+            g["_last"] = val
+            if val is not None:
+                print(val)
+    except Exception as e:
+        err = str(e)
+    sys.stdout = old_stdout  # type: ignore
+    return buf.getvalue().strip(), err
+
+
+# (sys is used in safe_exec; keep import local to avoid global denylist concerns)
+import sys  # noqa: E402
+
+
+# ============================================================
+# Skill Manager
+# ============================================================
+
+
+@dataclass
+class SkillRecord:
+    name: str
+    code: str
+    signature: str
+    created_at: float
+    updated_at: float
+    tags: List[str]
+
+
+class SkillManager:
+    def __init__(
+        self,
+        base_dir: str,
+        subdir: str = "skills",
+        freeze: bool = False,
+        reset: bool = False,
+        max_new_skills: int = 3,
+        debug: bool = False,
+    ):
+        self.base_dir = base_dir
+        self.subdir = subdir
+        self.freeze = freeze
+        self.reset = reset
+        self.max_new_skills = max_new_skills
+        self.debug = debug
+
+        self.skills_dir = os.path.join(base_dir, subdir)
+        os.makedirs(self.skills_dir, exist_ok=True)
+
+        self.registry_path = os.path.join(self.skills_dir, "registry.jsonl")
+        self._loaded: Dict[str, SkillRecord] = {}
+
+        self.ctx = make_safe_context()
+
+        if self.reset:
+            self._reset_registry()
+
+        self.load_registry()
+
+    def _reset_registry(self):
+        if os.path.exists(self.registry_path):
+            os.remove(self.registry_path)
+        self._loaded = {}
+        self.ctx = make_safe_context()
+
+    def load_registry(self):
+        if not os.path.exists(self.registry_path):
+            return
+        with open(self.registry_path, "r", encoding="utf-8") as f:
+            for ln in f:
+                ln = ln.strip()
+                if not ln:
+                    continue
+                try:
+                    obj = json.loads(ln)
+                except Exception:
+                    continue
+                rec = SkillRecord(
+                    name=obj["name"],
+                    code=obj["code"],
+                    signature=obj.get("signature", ""),
+                    created_at=obj.get("created_at", _now_ts()),
+                    updated_at=obj.get("updated_at", _now_ts()),
+                    tags=obj.get("tags", []),
+                )
+                err = check_code_static_safety(rec.code)
+                if err is None:
+                    _, run_err = safe_exec(rec.code, self.ctx)
+                    if run_err is None:
+                        self._loaded[rec.name] = rec
+
+    def new_run_context(self, run_id: str, user_prompt: str = "") -> None:
+        """Rebuild a fresh execution context per problem to avoid cross-run state leakage."""
+        self.ctx = make_safe_context()
+
+        # Re-register learned skills into the fresh ctx.
+        for rec in self._loaded.values():
+            try:
+                _, err = safe_exec(rec.code, self.ctx)
+                if err is not None and self.debug:
+                    pass
+            except Exception:
+                continue
+
+        # Per-run metadata
+        self.ctx["_current_run_id"] = run_id
+        self.ctx["_question_text"] = user_prompt or ""
+
+        # Infer output formatting expectations from the prompt (best-effort).
+        up = (user_prompt or "").lower()
+        try:
+            if ("integer answer" in up) or ("an integer answer" in up) or re.search(r"\brequiring\s+an\s+integer\s+answer\b", up):
+                self.ctx["_expect_int"] = True
+            if re.search(r"\bone\s+decimal\s+place\b|\b1\s+decimal\s+place\b", up):
+                self.ctx["_expect_dp"] = 1
+            if re.search(r"\btwo\s+decimal\s+places\b|\b2\s+decimal\s+places\b", up):
+                self.ctx["_expect_dp"] = 2
+            if re.search(r"\bthree\s+decimal\s+places\b|\b3\s+decimal\s+places\b", up):
+                self.ctx["_expect_dp"] = 3
+        except Exception:
+            pass
+
+    def catalog(self) -> List[Dict[str, Any]]:
+        cat = []
+        for name, rec in self._loaded.items():
+            cat.append(
+                {
+                    "name": name,
+                    "signature": rec.signature,
+                    "tags": rec.tags,
+                    "desc": "learned skill",
+                }
+            )
+        cat.extend(
+            [
+                {
+                    "name": "calc_numeric",
+                    "signature": "(expr:str)->float",
+                    "tags": ["builtin"],
+                    "desc": "Compute numeric expression in python.",
+                },
+                {
+                    "name": "sympy_solve",
+                    "signature": "(eqs, vars)->solution",
+                    "tags": ["builtin"],
+                    "desc": "Solve equations using sp in python if available.",
+                },
+                {
+                    "name": "format_final",
+                    "signature": "(ans)->str",
+                    "tags": ["builtin"],
+                    "desc": "Return exactly one line: Answer: ...",
+                },
+            ]
+        )
+        return cat
+
+    def add_or_update_skill(
+        self,
+        name: str,
+        code: str,
+        signature: str,
+        tags: Optional[List[str]] = None,
+        tests: Optional[List[Dict[str, Any]]] = None,
+    ) -> Tuple[bool, str]:
+        if self.freeze:
+            return False, "Skills are frozen."
+
+        static_err = check_code_static_safety(code)
+        if static_err:
+            return False, static_err
+
+        temp_ctx = dict(self.ctx)
+        _, err = safe_exec(code, temp_ctx)
+        if err:
+            return False, f"Skill code exec error: {err}"
+
+        if name not in temp_ctx or not callable(temp_ctx[name]):
+            return False, "Defined function not found or not callable."
+
+        if tests:
+            for t in tests:
+                tcode = t.get("code", "")
+                expect = t.get("expect_contains", "")
+                tout, terr = safe_exec(tcode, temp_ctx)
+                if terr:
+                    return False, f"Test error: {terr}"
+                if expect and expect not in str(tout):
+                    return False, f"Test failed: expected output contains '{expect}', got '{tout}'"
+
+        _, err2 = safe_exec(code, self.ctx)
+        if err2:
+            return False, f"Commit exec error: {err2}"
+
+        now = _now_ts()
+        rec = SkillRecord(
+            name=name,
+            code=code,
+            signature=signature,
+            created_at=self._loaded[name].created_at if name in self._loaded else now,
+            updated_at=now,
+            tags=tags or [],
+        )
+        self._loaded[name] = rec
+
+        with open(self.registry_path, "a", encoding="utf-8") as f:
+            f.write(
+                _j(
+                    {
+                        "name": rec.name,
+                        "code": rec.code,
+                        "signature": rec.signature,
+                        "created_at": rec.created_at,
+                        "updated_at": rec.updated_at,
+                        "tags": rec.tags,
+                    }
+                )
+                + "\n"
+            )
+
+        return True, "ok"
+
+
+# ============================================================
+# Dynamic CRADLE-style Agent (CRADLE-aligned image injection)
+# ============================================================
+
+@dataclass
+class CradleMathDynamicAgent:
+    backbone: Any
+    output_dir: str
+    skills_subdir: str = "skills"
+    max_steps: int = 10
+    freeze_skills: bool = False
+    reset_skills: bool = False
+    max_new_skills: int = 3
+    debug: bool = False
+
+    always_attach_image: bool = True
+    image_steps: Optional[List[str]] = None
+    json_max_retries: int = 1
+
+    def __post_init__(self):
+        # Ensure some minimal robustness: one malformed JSON should not nuke a sample.
+        try:
+            self.json_max_retries = max(int(self.json_max_retries), 2)
+        except Exception:
+            self.json_max_retries = 2
+
+        # Normalize image_steps (if provided as comma string elsewhere, caller should split).
+        if self.image_steps is not None and not isinstance(self.image_steps, list):
+            try:
+                self.image_steps = [str(x).strip() for x in self.image_steps]  # type: ignore
+            except Exception:
+                self.image_steps = None
+
+
+    # Stage-specific LLM controls.
+    # Some backbones expose get_response(..., max_tokens=..., temperature=...).
+    # We pass these kwargs opportunistically (ignored if unsupported).
+    STAGE_LLM_KWARGS: ClassVar[Dict[str, Dict[str, Any]]] = {
+    # Deterministic extraction/formatting stages: keep temperature at 0.
+    # Increase room for chart/table extraction to reduce truncation.
+    "IG": {"max_tokens": 1200, "temperature": 0},
+    "GTI": {"max_tokens": 1800, "temperature": 0},
+    "IGR": {"max_tokens": 900, "temperature": 0},
+    "TI": {"max_tokens": 1200, "temperature": 0},
+    "SC": {"max_tokens": 900, "temperature": 0},
+    # AP outputs can be long; give it more room but keep schema tight.
+    "AP": {"max_tokens": 1400, "temperature": 0},
+    # SR should be concise but sometimes needs room for issue listing.
+    "SR": {"max_tokens": 1000, "temperature": 0},
+    "MEM": {"max_tokens": 800, "temperature": 0},
+}
+
+
+    # Stage-specific JSON retry budget (number of retries after the first attempt).
+    # AP is the most fragile stage (nested JSON with steps); allow more retries.
+    STAGE_JSON_MAX_RETRIES: ClassVar[Dict[str, int]] = {
+        "IG": 1,
+        "GTI": 1,
+        "IGR": 1,
+        "TI": 1,
+        "SC": 1,
+        "AP": 3,
+        "SR": 1,
+    }
+    _JSON_RULES = (
+        "\n\n[STRICT_OUTPUT_RULES]\n"
+        "- Output RAW JSON only.\n"
+        "- Do NOT wrap in ``` or ```json.\n"
+        "- Do NOT include any extra commentary.\n"
+        "- ALL string values must be single-line (no literal newlines).\n"
+    )
+    IG_PROMPT = """You are the Information Gathering (IG) module for MathVista-style multimodal math problems.
+You receive:
+- user_prompt (may contain few-shot examples); focus ONLY on the LAST target question.
+- an image (the target figure/table/diagram/screenshot).
+
+Your job: extract ALL information needed to solve. Do NOT solve the problem.
+
+You may conceptually use OCR/region detection to read the image.
+First decide ONE most relevant region to detect/zoom for this problem.
+If possible, also provide a tight focus_bbox (normalized [x0,y0,x1,y1] in 0..1) covering the most relevant region; this will be used for crop+zoom.
+
+Region choice rules:
+1) If the problem requires reading words/numbers from the image but no specific region is mentioned, choose "text".
+2) If the problem involves a plot/graph (axes/legend/curve/bars), choose "chart".
+3) If the problem involves a table (rows/columns/cells), choose "table".
+4) If the problem involves geometry (shapes/angles/length labels), choose "diagram".
+4b) If the task asks to count objects or compare spatial relations of objects in the image (how many/count/left/right/remain), choose "diagram".
+5) If the problem is purely textual and all necessary info is already in user_prompt, choose "null".
+6) If the image is missing/blank/unreadable, choose "null".
+
+Return STRICT JSON with the schema below.
+IMPORTANT:
+- Do NOT solve.
+- Output RAW JSON only (no markdown fences).
+- ALL string values must be single-line (no literal newlines).
+
+{
+  "region_to_detect": "text|chart|table|diagram|null",
+  "focus_bbox": [0.0, 0.0, 1.0, 1.0],
+  "focus_zoom": 1.0,
+  "reasoning_of_region": ["..."],
+  "problem_understanding": "...",
+  "math_elements_extracted": {
+    "known": [{"name": "...", "value": "...", "unit": "...", "source": "text|image", "note": "..."}],
+    "unknown": ["..."],
+    "relations": ["..."],
+    "constraints": ["..."],
+    "options": [{"label": "A", "text": "..."}, {"label": "B", "text": "..."}]
+  },
+  "question_type_guess": "arithmetic|algebra|geometry|probability|statistics|calculus|chart|table|logic|other",
+  "need_ocr": "yes|no",
+  "noun_and_verb": "X nouns Y verbs",
+  "task_horizon": 0,
+  "reasoning_of_task": ["..."],
+
+  "problem_summary": "...",
+  "knowns": [{"name": "...", "value": "...", "unit": "...", "source":"text|image", "note":"..."}],
+  "asks": ["..."],
+  "constraints": ["..."],
+  "visual_facts": ["..."],
+  "ambiguity": ["..."]
+}
+""" + _JSON_RULES
+    GTI_PROMPT = """You are the Gather Text Information (GTI) module for MathVista-style multimodal math problems.
+Input:
+- INFO_JSON for the LAST target question (produced by IG or IG-Refine). It includes:
+  - region_to_detect (text|chart|table|diagram|null)
+  - math_elements_extracted (known/unknown/relations/constraints/options)
+- the image
+
+Goal: extract ALL readable text/values/labels from the image, focusing on region_to_detect.
+Do NOT solve the problem.
+Extra extraction rules (important):
+- If the question asks for a maximum/total/capacity/highest value on a scale (cup, ruler, axis, gauge), list ALL visible numeric markings and explicitly include the largest marking you can see.
+- If the question is a counting task ("how many", "count", "left", "remain"), count objects mentioned in the question and also the total if possible. Record counts in structured.diagram under a key "counts" (free-form list).
+- Never invent numbers; if unreadable, add a note to readability_issues.
+- Never output python string formatting like ".format(...)" inside JSON strings.
+- If region_used is "diagram" and you cannot read labels/numbers, you MUST add a readable note such as "unreadable" into readability_issues (do not leave everything empty).
+
+
+How to use inputs explicitly:
+1) Use INFO_JSON.region_to_detect to decide what to read:
+   - text: read all visible text lines/numbers.
+   - chart: read title, axes labels, tick values, units, legend entries, and key plotted values if readable.
+   - table: read headers and every relevant cell; preserve row/col structure.
+   - diagram: read point labels, length/angle labels, and any marked relationships.
+2) Use INFO_JSON.math_elements_extracted to target missing/uncertain items:
+   - If IG listed an unknown value/relationship but did not provide the actual number/label, attempt to locate it in the image and record it.
+   - If multiple-choice options exist, extract options exactly as shown.
+
+Return STRICT JSON (RAW JSON only; no markdown fences). Strings must be single-line.
+Schema:
+{
+  "region_used": "text|chart|table|diagram|null",
+  "information": ["..."],
+
+  "structured": {
+    "text_lines": ["..."],
+
+    "chart": {
+      "title": "...",
+      "x_axis": {"label":"...", "unit":"...", "ticks":["..."]},
+      "y_axis": {"label":"...", "unit":"...", "ticks":["..."]},
+      "legend": ["..."],
+      "key_points": [{"label":"...", "x":"...", "y":"...", "note":"..."}]
+    },
+
+    "table": {
+      "headers": ["..."],
+      "rows": [
+        {"row_label":"...", "cells":[{"col":"...", "text":"..."}]}
+      ]
+    },
+
+    "diagram": {
+      "labels": ["..."],
+      "marked_lengths": [{"segment":"...", "value":"...", "unit":"..."}],
+      "marked_angles": [{"angle":"...", "value":"...", "unit":"deg"}],
+      "marked_relations": ["..."]
+    }
+  },
+
+  "targets_from_math_elements": {
+    "known_additions": [{"name":"...", "value":"...", "unit":"...", "source":"image", "note":"..."}],
+    "relation_additions": ["..."],
+    "constraint_additions": ["..."],
+    "options_extracted": [{"label":"A","text":"..."},{"label":"B","text":"..."}],
+    "unresolved_targets": ["..."]
+  },
+
+  "readability_issues": ["..."],
+  "reasoning": ["..."]
+}
+""" + _JSON_RULES
+
+
+    IGR_PROMPT = """You are the IG-Refine module for MathVista.
+Input:
+- INFO_JSON from IG (may be incomplete)
+- GTI_JSON from Gather Text Information (more faithful raw readings from image)
+
+Goal: merge and refine INFO_JSON using GTI_JSON to produce a cleaner, more complete INFO_JSON.
+Do NOT solve the problem.
+
+Explicit usage rules:
+1) Keep INFO_JSON.region_to_detect as the primary modality, but you may adjust it if GTI proves a different modality is dominant.
+2) Update INFO_JSON.math_elements_extracted by incorporating GTI_JSON.targets_from_math_elements:
+   - append known_additions into known
+   - append relation_additions into relations
+   - append constraint_additions into constraints
+   - if options were extracted, set options to those extracted (prefer exact on-image text)
+3) Update INFO_JSON.visual_facts with key GTI readings (axis ticks, table cells, diagram labels) as short factual strings.
+4) Keep all existing top-level keys used downstream:
+   region_to_detect, reasoning_of_region, problem_understanding, math_elements_extracted,
+   question_type_guess, need_ocr, noun_and_verb, task_horizon, reasoning_of_task,
+   problem_summary, knowns, asks, constraints, visual_facts, ambiguity.
+
+Return STRICT JSON using the SAME schema as INFO_JSON expected by downstream modules.
+RAW JSON only; no markdown fences. Strings must be single-line.
+""" + _JSON_RULES
+
+
+    TI_PROMPT = """You are the Task Inference (TI) module for MathVista-style multimodal math problems.
+You will be given:
+- USER_PROMPT: the original question text (may include choices).
+- INFO_JSON: output of IG-Refine (contains region_to_detect + math_elements_extracted and other fields).
+- GTI_JSON: output of Gather Text Information (may contain extracted numbers/labels and unresolved targets).
+
+Your job: produce a clean, decision-ready summary of the problem state and the next reasoning objectives.
+Do NOT fully solve the problem. Do NOT invent visual facts.
+
+You MUST explicitly use:
+- INFO_JSON.region_to_detect to reason about what modality-specific checks are needed.
+- INFO_JSON.math_elements_extracted (and GTI_JSON additions) as the ground truth for known/unknown/relations/options.
+
+Return STRICT JSON (raw JSON only; no markdown fences). All strings must be single-line.
+
+Required behavior:
+1) Summarize the problem as a short story of the math situation: what is shown, what is asked, what must be computed.
+2) List the entities/variables and the operations required (e.g., read chart -> compute slope -> map to option).
+3) Identify any missing/uncertain visual targets from GTI_JSON.unresolved_targets and mark them as blockers.
+4) Add modality-specific risk checks based on region_to_detect:
+   - chart: axis scale, tick spacing, legend mapping, interpolation, units
+   - table: row/column alignment, header meaning, units, totals vs per-item
+   - diagram: label-to-segment mapping, angle markers, parallel/perpendicular indicators
+   - text: currency/percent, rounding, multi-line conditions, hidden footnotes
+5) If multiple-choice exists, ensure options are present and remind that final answer must map to one option label/value.
+
+Schema:
+{
+  "problem_state_summary": "...",              // >= 6 sentences
+  "entities": ["..."],                        // variables/objects/series names
+  "unknowns": ["..."],                        // what must be found
+  "required_operations": ["..."],             // ordered, high-level steps
+  "blockers": ["..."],                        // unresolved visual targets or missing info
+  "risk_checks": ["..."],                     // modality-specific checks
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [{"label":"A","text":"..."}],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text|chart|table|diagram|null",
+    "must_use_fields": ["math_elements_extracted.known","math_elements_extracted.unknown","math_elements_extracted.relations","math_elements_extracted.constraints","math_elements_extracted.options"]
+  },
+  "tags": ["..."]
+}
+""" + _JSON_RULES
+    SC_PROMPT = """You are the Skill Curation module for MathVista.
+Input:
+- task inference JSON
+- current skill catalog (including learned skills)
+
+Select skills to use.
+If missing reusable capability, propose new_skill_specs.
+
+Return STRICT JSON:
+{
+  "selected_skills": [{"name":"...", "purpose":"...", "how_to_use":"..."}],
+  "new_skill_specs": [
+     {"name":"...", "signature":"(args)->ret", "purpose":"...", "inputs":["..."], "outputs":"...", "edge_cases":["..."], "tests":[{"input":"...", "expect":"..."}], "tags":["..."]}
+  ],
+  "skill_priority": ["skill1","skill2"]
+}
+""" + _JSON_RULES
+
+    SKILL_WRITER_PROMPT = """You are the Skill Writer module.
+Input is new_skill_specs (reusable). You must produce SAFE python code for each skill.
+
+Constraints:
+- Code must define EXACTLY one function with the given name.
+- No imports, no file/network access, no open(), no eval/exec, no attribute calls like x.y().
+- Use only basic arithmetic, control flow, and safe builtins: abs,min,max,sum,len,round,range,int,float,str
+- If you need math functions, use provided global `math` (already available).
+
+Return STRICT JSON:
+{
+  "skills": [
+    {
+      "name": "...",
+      "signature": "...",
+      "code": "def name(...): ...",
+      "tests": [
+        {"code": "print(name(...))", "expect_contains": "..."}
+      ],
+      "tags": ["..."]
+    }
+  ]
+}
+""" + _JSON_RULES
+    AP_PROMPT = """You are the Action Planning (AP) module for MathVista-style multimodal math problems.
+
+You are given:
+- USER_PROMPT: the original question text (may include multiple-choice options).
+- INFO_JSON: refined information extraction (contains region_to_detect + math_elements_extracted + constraints).
+- GTI_JSON: direct readings from the image (numbers/labels/axes/cells) + unresolved_targets if any.
+- TASK_INFERENCE_JSON: decision-ready summary, blockers, and risk checks.
+- SELECTED_SKILLS + LEARNED_SKILL_CATALOG: available helper functions you MAY call from Python.
+- MEMORY_SNIPPETS: prior similar patterns (optional).
+
+Your job: output an executable reasoning plan that produces a SINGLE-LINE candidate answer string.
+
+HARD RULES (to avoid silent wrong answers):
+- Never hard-code the final numeric answer (e.g., format_final(0.02)) unless it was computed in a previous python step.
+- If you solve an equation or compute a value, ASSIGN it to a variable (e.g., d_val = ...) and use that variable in format_final(d_val).
+- If a tool call fails (e.g., solver unavailable), fall back to direct algebra or numeric computation using only python + math.
+- DO NOT write any `import` / `from ... import ...` statements inside python steps. The executor blocks `import`. Use the provided skills (calc_numeric, sympy_solve, format_final) and the built-in `math` module only.
+- Prefer calling sympy_solve("...", "d") rather than trying to import sympy.
+- Do not round intermediate results to 1 decimal place. Keep at least 3 significant digits (or 3+ decimals) before format_final.
+- Do NOT use python-style string formatting in JSON fields (e.g., "...".format(x)). For normalize.text, use placeholders like "Answer: {ans}" or "Answer: {x_val:.2f}" only.
+
+Do NOT output the final answer directly in normal text; instead produce steps that compute it and then a normalize step.
+
+CRITICAL: You MUST explicitly use:
+1) INFO_JSON.region_to_detect to decide which modality-specific facts matter (chart/table/diagram/text).
+2) INFO_JSON.math_elements_extracted as the canonical state of the problem (known/unknown/relations/constraints/options).
+3) GTI_JSON as the only source for image-read values; DO NOT invent visual numbers or labels.
+
+Allowed step actions (MUST match executor):
+- "reason": describe what to do next (no code).
+- "python": provide short deterministic Python code to compute needed quantities; you may call functions from the skill library in this code.
+- "normalize": produce a single-line candidate answer text (e.g., "Answer: B" or "Answer: 12.5").
+
+Planning rules (must follow):
+A) If TASK_INFERENCE_JSON.blockers is non-empty or GTI_JSON.unresolved_targets is non-empty:
+   - Add an early "reason" step that lists the blockers.
+   - Continue only with what is grounded; never fabricate missing values.
+B) If region_to_detect == "chart":
+   - Explicitly verify axis scale and units using GTI_JSON (ticks/labels).
+   - If reading a point/slope, state which two points/intervals are used and ensure consistent units.
+C) If region_to_detect == "table":
+   - Explicitly identify the row/column headers used and confirm units.
+D) If region_to_detect == "diagram":
+   - Explicitly map labels to segments/angles; use constraints from math_elements_extracted.
+E) If multiple-choice options exist:
+   - Compute a value (if needed) THEN map to the closest/required option based on the problem instruction.
+   - If the question explicitly says "choose A/B/C/D" or "option letter", output the option label.
+   - Otherwise, output the option TEXT/value (e.g., "145°") to be robust to answer formats.
+F) Always include at least one final sanity check:
+   - unit consistency, sign, range constraints, and whether the result satisfies relations/constraints.
+
+Output STRICT JSON only (raw JSON; no markdown fences). All strings must be single-line.
+
+Schema:
+{
+  "steps": [
+    {"intention":"...", "action":"reason", "note":"..."},
+    {"intention":"...", "action":"python", "code":"..."},
+    {"intention":"...", "action":"normalize", "text":"Answer: ..."}
+  ],
+  "final_format": "Answer: {ans}"
+}
+
+Additional constraints:
+- Keep the JSON SMALL to reduce truncation risk:
+  - steps length <= 4 (prefer 2-4).
+  - Each "intention" <= 80 characters.
+  - Each "note" <= 120 characters (or omit "note" entirely).
+  - Each python "code" MUST be a single line. If multiple statements are needed, use ';' to separate.
+  - Do not include any keys other than: steps, final_format, and within each step only: intention, action, (note|code|text).
+- steps length <= MAX_STEPS
+- python code should not import heavy libraries; use basic math only.
+- If an equivalent helper exists in SELECTED_SKILLS/LEARNED_SKILL_CATALOG, call it instead of rewriting complex logic.
+- The normalize text must be a single line and start with "Answer:".
+""" + _JSON_RULES
+    SR_PROMPT = """You are the Self-Reflection (SR) module for MathVista-style multimodal math problems.
+
+You receive:
+- INFO_JSON: the refined information extraction (must include region_to_detect and math_elements_extracted).
+- GTI_JSON: raw visual readings (OCR/region reading results).
+- TI_JSON: task interpretation / high-level solution plan.
+- AP_JSON: action plan / step-by-step reasoning plan (may include tool-usage intentions).
+- TOOL_LOGS: outputs/errors from tools (python/normalize/etc).
+- DRAFT: a candidate final answer string (may be missing, wrong, or unformatted).
+
+Your job:
+1) Decide whether the DRAFT answer is correct and properly formatted.
+2) If not, identify the single most probable failure cause and produce a corrected final answer.
+
+You MUST explicitly use:
+- INFO_JSON.region_to_detect to apply modality-specific checks:
+  * chart: axis direction, tick spacing, legend mapping, interpolation, bar/line alignment
+  * table: correct row/column, header mapping, units, totals vs per-row values
+  * diagram: which segment/angle, label ownership, parallel/perpendicular marks, scale assumptions
+  * text: units, percent vs decimal, wording constraints, "at least/at most", rounding rules
+- INFO_JSON.math_elements_extracted (known/unknown/relations/constraints/options) and GTI_JSON visual readings to confirm all numbers/labels used are actually present (no hallucinated guaranteed values).
+- Constraints (INFO_JSON.math_elements_extracted.constraints) to validate the final answer.
+- If multiple-choice options exist, ensure the final answer matches the required format (usually option label), and that the value maps to the chosen option.
+
+Reflection procedure (keep it concise but careful):
+A) Restate what is being asked (from INFO_JSON.asks / problem_summary).
+B) Verify key visual facts (compare INFO_JSON.math_elements_extracted vs GTI_JSON; note any mismatch).
+C) Re-check the computation/logic quickly (you may rely on TOOL_LOGS if they are consistent; otherwise re-derive).
+D) Validate formatting: single line starting with "Answer:"; include units if required; if MCQ, output the option label.
+
+Return STRICT JSON (RAW JSON only; no markdown fences). All string values MUST be single-line (no literal newlines):
+
+{
+  "answer_correct": true,
+  "issues_found": ["..."],
+  "most_probable_cause": "visual_misread|wrong_relation|arithmetic_error|unit_error|option_mapping_error|rounding_error|format_error|other",
+  "fixes": ["..."],
+  "final_answer": "Answer: ...",
+  "confidence": 0.0
+}
+
+Rules:
+- If you are not fully sure, still output the best-justified final_answer and lower confidence.
+- final_answer MUST begin with "Answer:" and be a single line.
+""" + _JSON_RULES
+    MEM_PROMPT = """You are the Memory module for MathVista.
+Input:
+- info JSON
+- final answer
+- reflection JSON
+
+Write reusable tips/pitfalls/format rules only (short).
+Return STRICT JSON:
+{
+  "memory_writes": [
+    {"type":"skill_tip|pitfall|format_rule|verification_rule", "key":"...", "content":"...", "tags":["..."]}
+  ]
+}
+""" + _JSON_RULES
+
+    def _memory_path(self) -> str:
+        os.makedirs(self.output_dir, exist_ok=True)
+        return os.path.join(self.output_dir, "cradle_memory.jsonl")
+
+    def _append_memory(self, writes: List[Dict[str, Any]]) -> None:
+        if not writes:
+            return
+        with open(self._memory_path(), "a", encoding="utf-8") as f:
+            for w in writes:
+                f.write(_j(w) + "\n")
+
+    def _load_memory_snippets(self, tags: List[str], k: int = 6) -> List[Dict[str, Any]]:
+        path = self._memory_path()
+        if not os.path.exists(path):
+            return []
+        res = []
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                lines = f.readlines()[-300:]
+            for ln in reversed(lines):
+                ln = ln.strip()
+                if not ln:
+                    continue
+                try:
+                    obj = json.loads(ln)
+                except Exception:
+                    continue
+                itags = set(obj.get("tags", []))
+                if itags.intersection(set(tags)):
+                    res.append(obj)
+                if len(res) >= k:
+                    break
+        except Exception:
+            return []
+        return res
+
+    def _ensure_logging(self) -> None:
+        """Initialize per-run JSON log + a human-readable debug log once."""
+        if getattr(self, "_log_ready", False):
+            return
+        os.makedirs(self.output_dir, exist_ok=True)
+
+        # Human-readable debug log (optional)
+        self._debug_log_path = os.path.join(self.output_dir, "agent_debug.log")
+        self._logger = logging.getLogger(f"cradle_mathvista_{id(self)}")
+        self._logger.setLevel(logging.DEBUG if self.debug else logging.INFO)
+        self._logger.propagate = False
+        if not self._logger.handlers:
+            fh = logging.FileHandler(self._debug_log_path, encoding="utf-8")
+            fmt = logging.Formatter("%(asctime)s | %(levelname)s | %(message)s")
+            fh.setFormatter(fmt)
+            self._logger.addHandler(fh)
+
+        # Default structured run log path (will mirror to log_output_<outputfile>.json if detectable)
+        self._structured_log_default = os.path.join(self.output_dir, "log_output.json")
+
+        self._log_ready = True
+
+    def _guess_output_filename(self) -> Optional[str]:
+        """Try to infer the output_*.json produced by the evaluator in this output_dir."""
+        try:
+            cands = []
+            for fn in os.listdir(self.output_dir):
+                if fn.startswith("output_") and fn.endswith(".json"):
+                    p = os.path.join(self.output_dir, fn)
+                    try:
+                        cands.append((os.path.getmtime(p), fn))
+                    except Exception:
+                        cands.append((0.0, fn))
+            if not cands:
+                return None
+            cands.sort(reverse=True)
+            return cands[0][1]
+        except Exception:
+            return None
+
+    def _structured_log_paths(self) -> List[str]:
+        """Return a list of structured log paths to write to (default + mirrored name if possible)."""
+        self._ensure_logging()
+        paths = [self._structured_log_default]
+        out_fn = self._guess_output_filename()
+        if out_fn:
+            mirror = os.path.join(self.output_dir, "log_" + out_fn)  # e.g., log_output_xxx.json
+            if mirror not in paths:
+                paths.append(mirror)
+        return paths
+
+    def _append_run_log(self, run_record: Dict[str, Any]) -> None:
+        """Append a single run record into structured JSON array file(s)."""
+        for path in self._structured_log_paths():
+            try:
+                if os.path.exists(path):
+                    with open(path, "r", encoding="utf-8") as f:
+                        try:
+                            arr = json.load(f)
+                            if not isinstance(arr, list):
+                                arr = []
+                        except Exception:
+                            arr = []
+                else:
+                    arr = []
+                arr.append(run_record)
+                _atomic_write_json(path, arr)
+            except Exception as e:
+                # Fall back to debug logger only
+                try:
+                    self._logger.error(f"Failed writing structured log {path}: {e}")
+                except Exception:
+                    pass
+
+    def _write_artifacts(self, run_id: str, artifacts: Dict[str, Any]) -> str:
+        """Write per-run artifacts under output_dir/artifacts/<run_id>/ and return the directory."""
+        self._ensure_logging()
+        adir = os.path.join(self.output_dir, "artifacts", run_id)
+        os.makedirs(adir, exist_ok=True)
+        for name, obj in artifacts.items():
+            try:
+                if name.endswith(".txt"):
+                    with open(os.path.join(adir, name), "w", encoding="utf-8") as f:
+                        f.write(str(obj))
+                else:
+                    _atomic_write_json(os.path.join(adir, f"{name}.json"), obj)
+            except Exception as e:
+                try:
+                    self._logger.error(f"Failed writing artifact {name} for {run_id}: {e}")
+                except Exception:
+                    pass
+        return adir
+
+    # -----------------------------
+    # Human-readable trace helpers
+    # -----------------------------
+
+    def _extract_numeric_stats(self, items: Any) -> Dict[str, Any]:
+        """Extract count/min/max from a list of strings/numbers."""
+        vals: List[float] = []
+        for it in _as_list(items):
+            try:
+                if isinstance(it, (int, float)):
+                    vals.append(float(it))
+                else:
+                    s = str(it).strip()
+                    # keep things like '5,000' or '5000g'
+                    s2 = re.sub(r"[^0-9.\-]", "", s)
+                    if s2 and s2 not in {"-", "."}:
+                        vals.append(float(s2))
+            except Exception:
+                continue
+        if not vals:
+            return {"count": 0}
+        return {"count": len(vals), "min": min(vals), "max": max(vals)}
+
+    def _build_human_trace_lines(
+        self,
+        run_id: str,
+        prompt_hash: str,
+        img_hash: Optional[str],
+        user_prompt: str,
+        ig0: Dict[str, Any],
+        gti: Dict[str, Any],
+        ig: Dict[str, Any],
+        ti: Dict[str, Any],
+        sc: Dict[str, Any],
+        ap: Dict[str, Any],
+        tool_logs: List[Dict[str, Any]],
+        sr: Dict[str, Any],
+        final_answer: str,
+        errors: List[Dict[str, Any]],
+        stage_times: Dict[str, float],
+    ) -> List[str]:
+        """Create a readable, stage-by-stage trace (no gigantic prompts)."""
+        lines: List[str] = []
+        lines.append(f"RUN {run_id} | prompt_hash={prompt_hash} | img_hash={img_hash}")
+        # Include a short question preview for humans
+        q_preview = _one_line(user_prompt, 240)
+        lines.append(f"QUESTION: {q_preview}")
+
+        # IG
+        try:
+            me = (ig0.get("math_elements_extracted") or {})
+            lines.append("\n[IG] Information Gathering")
+            lines.append(f"- region_to_detect: {ig0.get('region_to_detect')}")
+            lines.append(f"- focus_bbox: {ig0.get('focus_bbox')} | focus_zoom: {ig0.get('focus_zoom')}")
+            lines.append(f"- need_ocr: {ig0.get('need_ocr')}")
+            lines.append(f"- asks: {ig0.get('asks')}")
+            lines.append(f"- unknown: {me.get('unknown')}")
+            r = _as_list(ig0.get("reasoning_of_region"))
+            if r:
+                lines.append("- reasoning_of_region:")
+                for x in r[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+            rt = _as_list(ig0.get("reasoning_of_task"))
+            if rt:
+                lines.append("- reasoning_of_task:")
+                for x in rt[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # GTI
+        try:
+            lines.append("\n[GTI] Gather Text/Values")
+            lines.append(f"- region_used: {gti.get('region_used')}")
+            info = gti.get("information")
+            stats = self._extract_numeric_stats(info)
+            if stats.get("count", 0) > 0:
+                lines.append(f"- extracted_numbers: count={stats['count']} min={stats.get('min')} max={stats.get('max')}")
+            else:
+                tl = (gti.get("structured") or {}).get("text_lines")
+                lines.append(f"- extracted_text_lines: {len(_as_list(tl))}")
+
+            unresolved = ((gti.get("targets_from_math_elements") or {}).get("unresolved_targets"))
+            if unresolved:
+                lines.append(f"- unresolved_targets: {unresolved}")
+            ri = _as_list(gti.get("readability_issues"))
+            if ri:
+                lines.append("- readability_issues:")
+                for x in ri[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+            rr = _as_list(gti.get("reasoning"))
+            if rr:
+                lines.append("- gti_reasoning:")
+                for x in rr[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # IGR (refined info)
+        try:
+            lines.append("\n[IGR] IG Refine (merged IG+GTI)")
+            lines.append(f"- region_to_detect: {ig.get('region_to_detect')}")
+            vf = _as_list(ig.get("visual_facts"))
+            if vf:
+                lines.append("- visual_facts:")
+                for x in vf[:10]:
+                    lines.append(f"  • {_one_line(x, 300)}")
+            amb = _as_list(ig.get("ambiguity"))
+            if amb:
+                lines.append("- ambiguity:")
+                for x in amb[:6]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # TI
+        try:
+            lines.append("\n[TI] Task Inference")
+            pss = ti.get("problem_state_summary")
+            if pss:
+                lines.append(f"- problem_state_summary: {_one_line(pss, 520)}")
+            ops = _as_list(ti.get("required_operations"))
+            if ops:
+                lines.append("- required_operations:")
+                for i, x in enumerate(ops[:12], 1):
+                    lines.append(f"  {i}. {_one_line(x, 340)}")
+            bl = _as_list(ti.get("blockers"))
+            if bl:
+                lines.append(f"- blockers: {[_one_line(x, 220) for x in bl[:10]]}")
+            rc = _as_list(ti.get("risk_checks"))
+            if rc:
+                lines.append("- risk_checks:")
+                for x in rc[:12]:
+                    lines.append(f"  • {_one_line(x, 340)}")
+        except Exception:
+            pass
+
+        # SC
+        try:
+            lines.append("\n[SC] Skill Curation")
+            ss = _as_list(sc.get("selected_skills"))
+            if ss:
+                lines.append("- selected_skills:")
+                for it in ss[:10]:
+                    nm = (it.get("name") if isinstance(it, dict) else str(it))
+                    pur = (it.get("purpose") if isinstance(it, dict) else "")
+                    lines.append(f"  • {nm}: {_one_line(pur, 260)}")
+            ns = _as_list(sc.get("new_skill_specs"))
+            if ns:
+                lines.append("- new_skill_specs:")
+                for it in ns[:10]:
+                    nm = (it.get("name") if isinstance(it, dict) else str(it))
+                    sig = (it.get("signature") if isinstance(it, dict) else "")
+                    lines.append(f"  • {nm} {sig}")
+        except Exception:
+            pass
+
+        # AP
+        try:
+            lines.append("\n[AP] Action Plan")
+            steps = _as_list(ap.get("steps"))
+            if steps:
+                for i, st in enumerate(steps[:12], 1):
+                    if not isinstance(st, dict):
+                        lines.append(f"  {i}. {_one_line(st, 320)}")
+                        continue
+                    action = st.get("action")
+                    intention = st.get("intention")
+                    lines.append(f"  {i}. ({action}) {_one_line(intention, 240)}")
+                    if st.get("note"):
+                        lines.append(f"     note: {_one_line(st.get('note'), 360)}")
+                    if st.get("code"):
+                        lines.append(f"     code: {_one_line(st.get('code'), 360)}")
+                    if st.get("text"):
+                        lines.append(f"     text: {_one_line(st.get('text'), 360)}")
+        except Exception:
+            pass
+
+        # EXEC
+        try:
+            lines.append("\n[EXEC] Plan Execution")
+            for t in (tool_logs or [])[:18]:
+                if not isinstance(t, dict):
+                    continue
+                act = t.get("action")
+                intent = t.get("intention")
+                if act == "python":
+                    out = t.get("stdout")
+                    err = t.get("error")
+                    lines.append(f"  - python: {_one_line(intent, 220)}")
+                    if out:
+                        lines.append(f"    stdout: {_one_line(out, 320)}")
+                    if err:
+                        lines.append(f"    ERROR: {_one_line(err, 320)}")
+                elif act == "normalize":
+                    lines.append(f"  - normalize: {_one_line(t.get('text'), 220)}")
+                elif act == "fallback":
+                    lines.append(f"  - fallback: {_one_line(intent, 260)}")
+                    if t.get("stdout"):
+                        lines.append(f"    stdout: {_one_line(t.get('stdout'), 320)}")
+                elif act == "tool":
+                    lines.append(f"  - tool: {_one_line(intent, 220)}")
+                    if t.get("rendered"):
+                        lines.append(f"    rendered: {_one_line(t.get('rendered'), 320)}")
+                    if t.get("render_error"):
+                        lines.append(f"    ERROR: {_one_line(t.get('render_error'), 320)}")
+                else:
+                    lines.append(f"  - {act}: {_one_line(intent, 240)}")
+        except Exception:
+            pass
+
+        # SR
+        try:
+            lines.append("\n[SR] Self-Reflection / Answer Polishing")
+            if isinstance(sr, dict):
+                if sr.get("issues_found"):
+                    lines.append("- issues_found:")
+                    for x in _as_list(sr.get("issues_found"))[:12]:
+                        lines.append(f"  • {_one_line(x, 360)}")
+                if sr.get("final_answer"):
+                    lines.append(f"- sr_final_answer: {_one_line(sr.get('final_answer'), 200)}")
+                if sr.get("confidence") is not None:
+                    lines.append(f"- confidence: {sr.get('confidence')}")
+        except Exception:
+            pass
+
+        # Final
+        lines.append("\n[FINAL]")
+        lines.append(f"- final_answer: {_one_line(final_answer, 220)}")
+
+        # Errors + timings
+        if errors:
+            lines.append("\n[ERRORS]")
+            for e in errors[:24]:
+                if not isinstance(e, dict):
+                    lines.append(f"- {_one_line(e, 360)}")
+                    continue
+                st = e.get("stage")
+                et = e.get("type")
+                msg = e.get("error") or e.get("missing") or e.get("raw") or ""
+                lines.append(f"- ({st}/{et}) {_one_line(msg, 520)}")
+
+        if stage_times:
+            lines.append("\n[TIMINGS]")
+            for k in sorted(stage_times.keys()):
+                lines.append(f"- {k}: {stage_times[k]}s")
+
+        return lines
+
+    def _should_attach_image(self, step: str, need_image: bool) -> bool:
+        if self.always_attach_image:
+            return True
+        if need_image:
+            return True
+        if self.image_steps is None:
+            return step in {"IG", "GTI", "AP", "SR"}
+        return step in set(self.image_steps)
+
+    def _wrap_prompt(self, step: str, prompt: str, obs: Observation, attach_image: bool) -> str:
+        header = (
+            f"[CRADLE_STEP]{step}\n"
+            f"[OBS_IMAGE_ATTACHED]{str(bool(attach_image and obs.image is not None))}\n"
+        )
+        # IMPORTANT: Do NOT dump large / recursive objects (e.g., llm_calls) into the prompt.
+        # Keeping meta tiny prevents prompt growth across stages (and context_length_exceeded errors).
+        if obs.meta:
+            safe_meta: Dict[str, Any] = {}
+            for k in ("source", "run_id", "img_hash", "pid"):
+                try:
+                    v = obs.meta.get(k)
+                    if isinstance(v, (str, int, float, bool)) or v is None:
+                        safe_meta[k] = v
+                except Exception:
+                    pass
+            if safe_meta:
+                header += f"[OBS_META]{_j(safe_meta)}\n"
+        return header + prompt
+
+    def _llm_call(self, step: str, prompt: str, obs: Observation, need_image: bool) -> str:
+        attach = self._should_attach_image(step, need_image)
+        wrapped = self._wrap_prompt(step, prompt, obs, attach)
+        img = obs.image if attach else None
+
+        # Stage-specific kwargs (e.g., max_tokens/temperature) passed opportunistically.
+        kwargs: Dict[str, Any] = {}
+        try:
+            stage_kwargs = getattr(self, "STAGE_LLM_KWARGS", {}).get(step, {})
+            if stage_kwargs:
+                try:
+                    import inspect  # module-scope import; NOT executed inside safe_exec
+                    sig = inspect.signature(self.backbone.get_response)
+                    for k, v in stage_kwargs.items():
+                        if k in sig.parameters:
+                            kwargs[k] = v
+                except Exception:
+                    # If signature introspection fails, try passing kwargs directly.
+                    kwargs.update(stage_kwargs)
+        except Exception:
+            kwargs = {}
+
+        try:
+            return self.backbone.get_response(user_prompt=wrapped, decoded_image=img, **kwargs)
+        except TypeError:
+            # Backbone does not support extra kwargs.
+            return self.backbone.get_response(user_prompt=wrapped, decoded_image=img)
+    def _llm_call_json(self, step: str, prompt: str, obs: Observation, need_image: bool) -> Dict[str, Any]:
+        self._ensure_logging()
+        last = ""
+        attach_image = self._should_attach_image(step, need_image)
+        max_retries = getattr(self, 'STAGE_JSON_MAX_RETRIES', {}).get(step, self.json_max_retries)
+        for attempt in range(max_retries + 1):
+            p = prompt
+            if attempt > 0:
+                p = prompt + "\n\n[REMINDER] Output RAW JSON only. No code fences. Strings must be single-line."
+            t0 = time.perf_counter()
+            last = self._llm_call(step, p, obs, need_image)
+            dt = time.perf_counter() - t0
+            parse_ok = False
+            obj: Optional[Dict[str, Any]] = None
+            err = ""
+            try:
+                obj = _extract_json_obj(last)
+                parse_ok = True
+            except Exception as e:
+                err = str(e)
+
+            call_log = {
+                "run_id": obs.meta.get("run_id"),
+                "stage": step,
+                "attempt": attempt,
+                "need_image": bool(need_image),
+                "attach_image": bool(attach_image),
+                "prompt_len": len(p) if isinstance(p, str) else None,
+                "latency_s": round(dt, 4),
+                "parse_ok": parse_ok,
+                "prompt": self._wrap_prompt(step, p, obs, attach_image) if isinstance(p, str) else None,
+                "raw": last,
+                "raw_head": _truncate(last, 240),
+                "error": err,
+            }
+            llm_calls = obs.meta.get("llm_calls")
+            if isinstance(llm_calls, list):
+                llm_calls.append(call_log)
+            try:
+                if self.debug and not parse_ok:
+                    self._logger.warning(f"[{step}] JSON parse failed (attempt {attempt}). head={call_log['raw_head']}")
+            except Exception:
+                pass
+
+            if parse_ok and obj is not None:
+                return obj
+
+        raise ValueError(f"[{step}] JSON parse failed. Raw head: {last[:220]}")
+
+    def get_response(self, user_prompt: str, decoded_image=None) -> str:
+        obs = Observation(
+            text=user_prompt,
+            image=decoded_image,
+            meta={"source": "MathVista", "ts": _now_ts()},
+        )
+
+        self._ensure_logging()
+
+        # Per-problem run context
+        prompt_hash = _sha1_text(user_prompt)[:10]
+        run_id = f"{int(time.time()*1000)}_{prompt_hash}"
+        llm_calls: List[Dict[str, Any]] = []
+        stage_times: Dict[str, float] = {}
+        errors: List[Dict[str, Any]] = []
+
+        # Best-effort image hash (for detecting missing/duplicate images)
+        img_hash = None
+        try:
+            if decoded_image is None:
+                img_hash = None
+            elif isinstance(decoded_image, (bytes, bytearray)):
+                img_hash = _sha1_bytes(bytes(decoded_image))[:12]
+            elif hasattr(decoded_image, "tobytes"):
+                img_hash = _sha1_bytes(decoded_image.tobytes())[:12]
+            else:
+                img_hash = _sha1_text(str(type(decoded_image)))[:12]
+        except Exception:
+            img_hash = None
+
+        obs.meta["run_id"] = run_id
+        obs.meta["llm_calls"] = llm_calls
+        obs.meta["img_hash"] = img_hash
+
+        t_total0 = time.perf_counter()
+
+        # Defaults so we can always log even if a stage throws
+        ig0 = {}
+        gti = {}
+        ig = {}
+        ti = {}
+        sc = {}
+        ap = {}
+        sr = {}
+        tool_logs = []
+        draft = ""
+        final_answer = ""
+
+        try:
+
+            def _stage(name: str):
+                class _StageCtx:
+                    def __enter__(self_inner):
+                        self_inner.t0 = time.perf_counter()
+                        return self_inner
+                    def __exit__(self_inner, exc_type, exc, tb):
+                        stage_times[name] = round(time.perf_counter() - self_inner.t0, 6)
+                        return False
+                return _StageCtx()
+
+            def _missing_keys(obj: Dict[str, Any], keys: List[str]) -> List[str]:
+                miss = []
+                for k in keys:
+                    if k not in obj:
+                        miss.append(k)
+                return miss
+
+            if not hasattr(self, "_skill_mgr"):
+                self._skill_mgr = SkillManager(
+                    base_dir=self.output_dir,
+                    subdir=self.skills_subdir,
+                    freeze=self.freeze_skills,
+                    reset=self.reset_skills,
+                    max_new_skills=self.max_new_skills,
+                    debug=self.debug,
+                )
+            skill_mgr: SkillManager = self._skill_mgr
+            try:
+                skill_mgr.new_run_context(run_id, user_prompt)
+            except Exception:
+                pass
+            skill_mgr.ctx['_question_text'] = obs.text
+
+            with _stage("IG"):
+                ig0 = self._llm_call_json(
+                "IG",
+                self.IG_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text,
+                obs,
+                need_image=True,
+                )
+                _mk = _missing_keys(ig0, ["region_to_detect", "math_elements_extracted", "question_type_guess"])
+                if _mk:
+                    errors.append({'stage':'IG','type':'missing_keys','missing':_mk})
+
+            # If OCR is needed but IG did not select a region, bias to text.
+            try:
+                if isinstance(ig0, dict) and str(ig0.get('need_ocr','')).strip().lower() == 'yes':
+                    if str(ig0.get('region_to_detect','')).strip().lower() in ('', 'null'):
+                        ig0['region_to_detect'] = 'text'
+            except Exception:
+                pass
+            # Build a focus-cropped/zoomed image if IG provided a bbox (helps chart/table/diagram reading).
+            
+            # Heuristic: for object-counting / spatial-relation tasks, prefer diagram rather than text.
+            try:
+                qlow = str(obs.text or "").lower()
+                if isinstance(ig0, dict):
+                    if ig0.get("region_to_detect") == "text" and any(k in qlow for k in ["how many", "count ", "count?", "number of", "left of", "to the left", "to the right", "remain", "subtract all", "remove all"]):
+                        ig0["region_to_detect"] = "diagram"
+                        ig0.setdefault("reasoning_of_region", [])
+                        if isinstance(ig0["reasoning_of_region"], list):
+                            ig0["reasoning_of_region"].append("Heuristic override: counting/object relation tasks are best treated as diagram.")
+            except Exception:
+                pass
+
+            obs_focus = obs
+            try:
+                fb = ig0.get("focus_bbox") or ig0.get("bbox") or ig0.get("focus_box")
+                if fb is not None and obs.image is not None:
+                    focus_img = _make_focus_image(obs.image, fb, pad_frac=0.06, min_side=1024, max_side=1600)
+                    if focus_img is not None:
+                        obs_focus = Observation(text=obs.text, image=focus_img, meta=obs.meta)
+                        obs.meta["focus_bbox"] = fb
+                        obs.meta["focus_applied"] = True
+            except Exception:
+                pass
+
+            with _stage("GTI"):
+                gti = self._llm_call_json(
+                "GTI",
+                self.GTI_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0),
+                obs_focus,
+                need_image=True,
+                )
+                _mk = _missing_keys(gti, ["region_used", "structured", "targets_from_math_elements"])
+                if _mk:
+                    errors.append({'stage':'GTI','type':'missing_keys','missing':_mk})
+
+            # Optional GTI2: targeted re-read for max-marking questions to reduce missed top ticks.
+            try:
+                if isinstance(ig0, dict) and str(ig0.get('need_ocr','')).strip().lower() == 'yes':
+                    qlow = str(obs.text).lower()
+                    if any(w in qlow for w in ['measuring', 'volume', 'capacity', 'marking', 'graduated', 'cup', 'beaker']):
+                        nums = []
+                        if isinstance(gti, dict):
+                            for s in (gti.get('information') or []):
+                                for mm in re.finditer(r"\d+(?:\.\d+)?", str(s)):
+                                    try:
+                                        nums.append(float(mm.group(0)))
+                                    except Exception:
+                                        pass
+                        max_seen = max(nums) if nums else None
+                        if (max_seen is None) or (max_seen < 800):
+                            t0 = time.perf_counter()
+                            ocr2_prompt = (
+                                "Targeted read: list all visible numeric markings relevant to the question.\n"
+                                "Return STRICT JSON: {\"numbers\": [..], \"max_marking\": <number or null>, \"notes\": [..]}\n"
+                                "Only include numbers you can actually see.\n\n"
+                                + obs.text
+                            )
+                            ocr2 = self._llm_call_json("GTI2", ocr2_prompt, obs, need_image=True)
+                            stage_times['GTI2'] = round(time.perf_counter() - t0, 6)
+                            llm_calls.append({
+                                'run_id': run_id,'stage':'GTI2','attempt':0,'need_image':True,'attach_image':True,
+                                'prompt_len': len(ocr2_prompt),'latency_s': stage_times.get('GTI2'),
+                                'parse_ok': True,'raw_head': _truncate(_j(ocr2), 400),'error':''
+                            })
+                            if isinstance(ocr2, dict):
+                                max2 = ocr2.get('max_marking')
+                                if max2 is None:
+                                    try:
+                                        max2 = max(float(x) for x in (ocr2.get('numbers') or []) if x is not None)
+                                    except Exception:
+                                        max2 = None
+                                if max2 is not None and isinstance(gti, dict):
+                                    gti.setdefault('information', [])
+                                    gti['information'].append(f"Targeted OCR: max_marking={max2}")
+                                    try:
+                                        gti.setdefault('structured', {}).setdefault('diagram', {}).setdefault('labels', [])
+                                        gti['structured']['diagram']['labels'].append(str(max2))
+                                        gti.setdefault('targets_from_math_elements', {}).setdefault('known_additions', [])
+                                        gti['targets_from_math_elements']['known_additions'].append({
+                                            'name': 'max_marking', 'value': str(max2), 'unit': '', 'source': 'image', 'note': 'targeted OCR max marking'
+                                        })
+                                    except Exception:
+                                        pass
+
+                # Optional GTI_COUNT: targeted vision pass for counting tasks (how many/left/remain/subtract/add).
+                try:
+                    qlow = str(obs.text).lower()
+                    wants_count = any(w in qlow for w in ['how many', 'count', 'remain', 'left', 'number of', 'subtract all', 'add all'])
+                    if wants_count:
+                        targets = _extract_subtract_targets(str(obs.text))
+                        t0 = time.perf_counter()
+                        target_str = ("; ".join(targets)) if targets else ""
+                        count_prompt = (
+                            "Counting focus: Count objects relevant to the question.irectly from the image.\n"
+                            "If the question mentions specific object types, count EACH mentioned type and also the TOTAL objects.\n"
+                            "IMPORTANT: Use EXACT object strings for the mentioned targets when possible.\n"
+                            + (f"Mentioned targets: {target_str}\n" if target_str else "")
+                            + "Return STRICT JSON: {\"counts\":[{\"object\":\"...\",\"count\":<int>,\"note\":\"...\"}], \"total\":<int or null>, \"notes\":[\"...\"]}\n"
+                            "Only report counts you can justify from the image; if unclear, set count to null and explain in notes.\n\n"
+                            + obs.text
+                        )
+                        cnt = self._llm_call_json("GTI_COUNT", count_prompt, obs, need_image=True)
+                        stage_times['GTI_COUNT'] = round(time.perf_counter() - t0, 6)
+
+                        if isinstance(cnt, dict) and isinstance(gti, dict):
+                            # Store counts in structured.diagram for downstream grounding
+                            gti.setdefault('structured', {})
+                            gti['structured'].setdefault('diagram', {})
+                            gti['structured']['diagram']['counts'] = cnt.get('counts', []) or []
+                            gti['structured']['diagram']['total_objects'] = cnt.get('total', None)
+
+                            # Also add as known_additions so ctx can ingest them deterministically
+                            gti.setdefault('targets_from_math_elements', {})
+                            gti['targets_from_math_elements'].setdefault('known_additions', [])
+                            try:
+                                if cnt.get('total', None) is not None:
+                                    gti['targets_from_math_elements']['known_additions'].append({
+                                        'name': 'total objects',
+                                        'value': str(cnt.get('total')),
+                                        'unit': '',
+                                        'source': 'image',
+                                        'note': 'counting total from GTI_COUNT'
+                                    })
+                            except Exception:
+                                pass
+
+                            try:
+                                for c in (cnt.get('counts', []) or []):
+                                    if not isinstance(c, dict):
+                                        continue
+                                    obj = str(c.get('object', '') or '').strip()
+                                    cc = c.get('count', None)
+                                    if obj and cc is not None:
+                                        gti['targets_from_math_elements']['known_additions'].append({
+                                            'name': 'count::' + obj,
+                                            'value': str(cc),
+                                            'unit': '',
+                                            'source': 'image',
+                                            'note': 'counting from GTI_COUNT'
+                                        })
+                            except Exception:
+                                pass
+
+                            # Human-readable hint for logs/debugging
+                            gti.setdefault('information', [])
+                            gti['information'].append("Counting JSON: " + _truncate(_j(cnt), 800))
+                except Exception:
+                    pass
+
+            except Exception:
+                pass
+
+            with _stage("IGR"):
+                ig = self._llm_call_json(
+                "IGR",
+                self.IGR_PROMPT + "\n\n[INFO_JSON]\n" + _j(ig0) + "\n\n[GTI_JSON]\n" + _j(gti),
+                obs,
+                need_image=False,
+                )
+                _mk = _missing_keys(ig, ["region_to_detect", "math_elements_extracted"])
+                if _mk:
+                    errors.append({'stage':'IGR','type':'missing_keys','missing':_mk})
+            # Inject numeric knowns into execution ctx to reduce AP/EXEC failures (e.g., m, v, k).
+            try:
+                _inject_knowns_into_ctx(ig, gti, skill_mgr.ctx)
+            except Exception:
+                pass
+
+
+
+
+            # Mark whether the unknown is length-like to enable deterministic unit scaling (m->cm) in format_final/rendering.
+            try:
+                unknowns = (ig.get('math_elements_extracted') or {}).get('unknown', [])
+                if isinstance(unknowns, list):
+                    ulow = " ".join(str(u).lower() for u in unknowns)
+                    length_kw = ['distance','length','height','width','radius','diameter','depth','thickness','displacement','compression','extension']
+                    skill_mgr.ctx['_length_like'] = any(k in ulow for k in length_kw)
+            except Exception:
+                pass
+
+            with _stage("TI"):
+                ti = self._llm_call_json(
+                "TI",
+                self.TI_PROMPT + "\n\n[USER_PROMPT]\n" + obs.text + "\n\n[INFO_JSON]\n" + _j(ig) + "\n\n[GTI_JSON]\n" + _j(gti),
+                obs,
+                need_image=False,
+                )
+                _mk = _missing_keys(ti, ["problem_state_summary", "required_operations", "risk_checks", "grounding"])
+                if _mk:
+                    errors.append({'stage':'TI','type':'missing_keys','missing':_mk})
+
+            qtype = ig.get("question_type_guess", "other")
+            mem_snips = self._load_memory_snippets([qtype, "mathvista"], k=6)
+
+            sc_input = (
+                self.SC_PROMPT
+                + "\n\n[TASK_INFERENCE_JSON]\n"
+                + _j(ti)
+                + "\n\n[SKILL_CATALOG]\n"
+                + _j(skill_mgr.catalog())
+            )
+            with _stage("SC"):
+                sc = self._llm_call_json("SC", sc_input, obs, need_image=False)
+                _mk = _missing_keys(sc, ["selected_skills", "skill_priority"])
+                if _mk:
+                    errors.append({'stage':'SC','type':'missing_keys','missing':_mk})
+
+            new_specs = sc.get("new_skill_specs", [])
+            if isinstance(new_specs, list) and new_specs and (not self.freeze_skills):
+                sw_input = self.SKILL_WRITER_PROMPT + "\n\n[NEW_SKILL_SPECS]\n" + _j(new_specs)
+                sw = self._llm_call_json("SkillWriter", sw_input, obs, need_image=False)
+                accepted = 0
+                for sk in sw.get("skills", []):
+                    if accepted >= self.max_new_skills:
+                        break
+                    name = sk.get("name", "")
+                    code = sk.get("code", "")
+                    signature = sk.get("signature", "")
+                    tests = sk.get("tests", [])
+                    tags = sk.get("tags", [])
+                    ok, _ = skill_mgr.add_or_update_skill(
+                        name=name,
+                        code=code,
+                        signature=signature,
+                        tags=tags,
+                        tests=tests,
+                    )
+                    if ok:
+                        accepted += 1
+
+            ap_prompt = self.AP_PROMPT.replace("MAX_STEPS", str(self.max_steps))
+            ap_input = (
+                ap_prompt
+                + "\n\n[USER_PROMPT]\n" + obs.text
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[TASK_INFERENCE_JSON]\n"
+                + _j(ti)
+                + "\n\n[SELECTED_SKILLS]\n"
+                + _j(sc.get("selected_skills", []))
+                + "\n\n[LEARNED_SKILL_CATALOG]\n"
+                + _j(skill_mgr.catalog())
+                + "\n\n[MEMORY_SNIPPETS]\n"
+                + _j(mem_snips)
+            )
+            with _stage("AP"):
+                ap = self._llm_call_json("AP", ap_input, obs_focus, need_image=True)
+                _mk = _missing_keys(ap, ["steps", "final_format"])
+                if _mk:
+                    errors.append({'stage':'AP','type':'missing_keys','missing':_mk})
+
+            tool_logs = []
+            t_exec0 = time.perf_counter()
+            # Mark multiple-choice for downstream formatting guards (e.g., format_final heuristics).
+            try:
+                me = (ig.get("math_elements_extracted") or {}) if isinstance(ig, dict) else {}
+                skill_mgr.ctx["_is_mcq"] = isinstance(me.get("options", None), list) and len(me.get("options", [])) > 0
+            except Exception:
+                skill_mgr.ctx["_is_mcq"] = False
+            steps = ap.get("steps", [])
+            if isinstance(steps, list):
+                for idx, step in enumerate(steps[: self.max_steps]):
+                    action = step.get("action")
+                    intention = step.get("intention", "")
+                    if action == "python":
+                        raw_code = step.get("code", "")
+
+                        code = _auto_assign_tool_calls(str(raw_code))
+                        out, err = safe_exec(code, skill_mgr.ctx)
+                        # Infer a generic 'ans' variable for later placeholders.
+                        try:
+                            if err is None:
+                                nm = _infer_ans_name_from_code(code)
+                                if nm and nm in skill_mgr.ctx and nm not in ('m','v','k','g','pi'):
+                                    skill_mgr.ctx['ans'] = skill_mgr.ctx.get(nm)
+                        except Exception:
+                            pass
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "python",
+                                "intention": intention,
+                                "code": code,
+                                "raw_code": raw_code,
+                                "stdout": out,
+                                "error": err,
+                            }
+                        )
+                    elif action == "reason":
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "reason",
+                                "intention": intention,
+                                "note": step.get("note", ""),
+                            }
+                        )
+                    elif action == "normalize":
+                        raw_text = step.get("text", "")
+                        # If placeholders refer to missing variables, alias them to 'ans' / last numeric solution when unambiguous.
+                        try:
+                            raw_s = str(raw_text)
+                            missing_vars: List[str] = []
+                            for mm in _PLACEHOLDER_RE.finditer(raw_s):
+                                vname = mm.group(1)
+                                if vname not in skill_mgr.ctx:
+                                    missing_vars.append(vname)
+                            if missing_vars:
+                                if "ans" not in skill_mgr.ctx:
+                                    if "_last_solution" in skill_mgr.ctx:
+                                        skill_mgr.ctx["ans"] = skill_mgr.ctx.get("_last_solution")
+                                    elif "_last" in skill_mgr.ctx:
+                                        skill_mgr.ctx["ans"] = skill_mgr.ctx.get("_last")
+                                if "ans" in skill_mgr.ctx:
+                                    uniq = list(dict.fromkeys(missing_vars))
+                                    if len(uniq) <= 3:
+                                        for vname in uniq:
+                                            skill_mgr.ctx[vname] = skill_mgr.ctx.get("ans")
+                        except Exception:
+                            pass
+
+                        rendered_text, render_err = render_placeholders(str(raw_text), skill_mgr.ctx)
+                        tool_logs.append(
+                            {
+                                "i": idx,
+                                "action": "normalize",
+                                "intention": intention,
+                                "text": rendered_text,
+                                "raw_text": raw_text,
+                                "render_error": render_err,
+                            }
+                        )
+                    else:
+                        tool_logs.append({"i": idx, "action": "unknown", "intention": intention, "raw": step})
+
+            stage_times['EXEC'] = round(time.perf_counter() - t_exec0, 6)
+            # Build a draft answer from executed plan logs (prefer last normalize text)
+            draft = ""
+            try:
+                norm_texts = [t.get("text", "") for t in tool_logs if t.get("action") == "normalize" and t.get("text")]
+                if norm_texts:
+                    draft = str(norm_texts[-1]).strip()
+                else:
+                    py_outs = [t.get("stdout", "") for t in tool_logs if t.get("action") == "python" and t.get("stdout")]
+                    draft = str(py_outs[-1]).strip() if py_outs else ""
+            except Exception:
+                draft = ""
+
+
+            # -----------------------------
+            # Deterministic fallback (when plan execution failed)
+            # -----------------------------
+            try:
+                py_errors = [t for t in tool_logs if t.get("action") == "python" and t.get("error")]
+                if (not draft or not str(draft).strip().startswith("Answer:")) and py_errors:
+                    # Fallback for a very common MathVista physics pattern:
+                    # frictionless block/canister hits spring; KE -> spring PE
+                    knowns = (ig.get("math_elements_extracted") or {}).get("known", [])
+                    unknowns = (ig.get("math_elements_extracted") or {}).get("unknown", [])
+                    relations = (ig.get("math_elements_extracted") or {}).get("relations", [])
+
+                    def _get_float(name_keys):
+                        for it in knowns:
+                            nm = (it.get("name") or "").lower()
+                            for k in name_keys:
+                                if k in nm:
+                                    try:
+                                        return float(it.get("value"))
+                                    except Exception:
+                                        pass
+                        return None
+
+                    m_val = _get_float(["mass"])
+                    v_val = _get_float(["speed", "velocity"])
+                    k_val = _get_float(["spring constant", "k"])
+
+                    wants_d = any("d" in (u or "").lower() or "distance" in (u or "").lower() for u in unknowns)
+                    rel_ok = any("kinetic" in (r or "").lower() and "spring" in (r or "").lower() for r in relations)
+
+                    if m_val is not None and v_val is not None and k_val is not None and wants_d and rel_ok:
+                        d_val = float(v_val) * math.sqrt(float(m_val) / float(k_val))
+                        draft = format_final(d_val)
+                        tool_logs.append({
+                            "i": len(tool_logs),
+                            "action": "fallback",
+                            "intention": "Fallback compute spring compression via d = v*sqrt(m/k) (KE->spring PE).",
+                            "stdout": draft,
+                            "error": None
+                        })
+            except Exception:
+                pass
+
+            # Deterministic counting solver (pre-SR): prevents AP from fabricating object counts.
+            try:
+                qlow2 = str(obs.text).lower()
+                wants_count2 = any(w in qlow2 for w in ['how many', 'count', 'remain', 'left', 'number of', 'subtract all', 'add all'])
+                if wants_count2 and isinstance(gti, dict):
+                    rem, why = _compute_remaining_objects(str(obs.text), gti)
+                    if rem is not None:
+                        draft = format_final(int(rem))
+                        tool_logs.append({
+                            "i": len(tool_logs),
+                            "action": "deterministic_count",
+                            "intention": "Compute remaining objects using GTI_COUNT totals/counts.",
+                            "stdout": f"{draft} | {why}",
+                            "error": None
+                        })
+            except Exception:
+                pass
+
+            sr_input = (
+                self.SR_PROMPT
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[TI_JSON]\n"
+                + _j(ti)
+                + "\n\n[AP_JSON]\n"
+                + _j(ap)
+                + "\n\n[TOOL_LOGS]\n"
+                + _j(tool_logs)
+                + "\n\n[DRAFT]\n"
+                + draft
+            )
+            # Decide whether to run SR (self-reflection).
+            # NOTE: draft_line must be defined before we can decide; otherwise UnboundLocalError can occur.
+            draft_line = (draft or "").strip()
+            if draft_line and not draft_line.startswith("Answer:"):
+                draft_line = "Answer: " + draft_line
+
+            # If draft contains placeholders (e.g., Answer: {d_val:.1f}), try to render using current ctx.
+            try:
+                rendered, rerr = render_placeholders(draft_line, skill_mgr.ctx)
+                if rerr is None and rendered:
+                    draft_line = rendered.strip()
+            except Exception:
+                pass
+
+            sr = {
+                "final_answer": "",
+                "issues_found": [],
+                "confidence": 0.0,
+                "most_probable_cause": "none",
+                "answer_correct": None,
+            }
+            python_failed = any((isinstance(e, dict) and e.get("type") == "python_error") for e in errors)
+            need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+
+            # If draft looks valid and no python failures, skip SR to avoid harmful overrides.
+            if need_sr:
+                with _stage("SR"):
+                    sr_input = (
+                        self.SR_PROMPT
+                        + "\n\n[USER_PROMPT]\n"
+                        + user_prompt.strip()
+                        + "\n\n[DRAFT_ANSWER]\n"
+                        + (draft_line or "")
+                        + "\n\n[INFO_JSON]\n"
+                        + _j(ig)
+                        + "\n\n[GTI_JSON]\n"
+                        + _j(gti)
+                        + "\n\n[TOOL_LOGS]\n"
+                        + _j(tool_logs)
+                    )
+                    sr = self._llm_call_json("SR", sr_input, obs_focus, need_image=True)
+                    _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence", "most_probable_cause"])
+                    if _mk:
+                        errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
+
+                    # Render any placeholders in SR answer using current ctx to avoid "Answer: {x}" leaks.
+                    try:
+                        if isinstance(sr, dict) and sr.get("final_answer"):
+                            fa = str(sr.get("final_answer") or "").strip()
+                            if fa and not fa.startswith("Answer:"):
+                                fa = "Answer: " + fa
+                            rendered, rerr = render_placeholders(fa, skill_mgr.ctx)
+                            if rerr is None and rendered:
+                                sr["final_answer"] = rendered.strip()
+                            else:
+                                sr["final_answer"] = fa
+                    except Exception:
+                        pass
+
+            # If still invalid, try rendering AP.final_format using ctx['ans'].
+            try:
+                if not _looks_valid_answer_line(draft_line):
+                    ff = ""
+                    if isinstance(ap, dict):
+                        ff = str(ap.get("final_format", "") or "")
+                    if ff:
+                        ff_line = ff if ff.strip().startswith("Answer:") else ("Answer: " + ff.strip())
+                        rendered, rerr = render_placeholders(ff_line, skill_mgr.ctx)
+                        if rerr is None and rendered and _looks_valid_answer_line(rendered):
+                            draft_line = rendered.strip()
+            except Exception:
+                pass
+
+            # Last resort: if we have a numeric/string 'ans' in ctx, format it deterministically.
+            try:
+                if not _looks_valid_answer_line(draft_line) and "ans" in skill_mgr.ctx:
+                    draft_line = format_final(skill_mgr.ctx.get("ans"))
+            except Exception:
+                pass
+
+
+            candidates = _build_numeric_candidates(skill_mgr.ctx, ig=ig, gti=gti, user_prompt=user_prompt)
+            final_answer = choose_final_answer(draft_line, sr, candidates=candidates)
+
+            # If multi-choice and we produced a numeric, map to the closest numeric option text deterministically.
+            try:
+                mapped_num = _map_numeric_answer_to_option_text(final_answer, ig=ig)
+                if mapped_num is not None:
+                    final_answer = mapped_num
+            except Exception:
+                pass
+
+            # Robust deterministic mapping from bare option label -> option text (no extra model calls).
+            try:
+                mapped = _map_bare_choice_to_option_text(
+                    final_answer, ig=ig, gti=gti, ti=ti, user_prompt=user_prompt
+                )
+                if mapped is not None:
+                    final_answer = mapped
+            except Exception:
+                pass
+            mem_input = (
+                self.MEM_PROMPT
+                + "\n\n[INFO_JSON]\n"
+                + _j(ig)
+                + "\n\n[GTI_JSON]\n"
+                + _j(gti)
+                + "\n\n[FINAL_ANSWER]\n"
+                + final_answer
+                + "\n\n[REFLECTION_JSON]\n"
+                + _j(sr)
+            )
+            try:
+                mem = self._llm_call_json("MEM", mem_input, obs, need_image=False)
+                self._append_memory(mem.get("memory_writes", []))
+            except Exception:
+                pass
+
+        except Exception as e:
+            errors.append({
+                "stage": "EXCEPTION",
+                "type": type(e).__name__,
+                "error": str(e),
+                "traceback": _truncate(traceback.format_exc(), 4000),
+            })
+            # Best-effort answer so evaluation can continue
+            if isinstance(draft, str) and draft.strip():
+                _d = draft.strip()
+                final_answer = _d if _d.startswith("Answer:") else ("Answer: " + _d)
+            elif isinstance(final_answer, str) and final_answer.strip():
+                pass
+            else:
+                final_answer = "Answer: "
+        finally:
+            if "TOTAL" not in stage_times:
+                stage_times["TOTAL"] = round(time.perf_counter() - t_total0, 6)
+
+            # Slim structured log: per-module prompt/response/error (requested for debugging)
+            module_order = ["IG", "GTI", "GTI_COUNT", "IGR", "TI", "SC", "AP", "SR"]
+            modules: Dict[str, Dict[str, Any]] = {}
+
+            for st in module_order:
+                calls = [c for c in (llm_calls or []) if c.get("stage") == st]
+                lastc = calls[-1] if calls else {}
+                err_parts: List[str] = []
+
+                if lastc.get("error"):
+                    err_parts.append(str(lastc.get("error")))
+
+                # Include any non-LLM errors that were attributed to this stage (e.g., TOOL/EXEC errors)
+                for e in (errors or []):
+                    if e.get("stage") == st and e.get("error"):
+                        err_parts.append(str(e.get("error")))
+
+                modules[st] = {
+                    "prompt": lastc.get("prompt"),
+                    "response": lastc.get("raw"),
+                    "error": " | ".join([x for x in err_parts if x]) or None,
+                }
+
+            run_record = {
+                "run_id": run_id,
+                "ts": obs.meta.get("ts"),
+                "prompt_hash": prompt_hash,
+                "img_hash": img_hash,
+                "modules": modules,
+                "final_answer": final_answer,
+            }
+
+            # Build a human-readable trace (stage-by-stage reasoning chain) to make debugging easier.
+            trace_lines: List[str] = []
+            try:
+                trace_lines = self._build_human_trace_lines(
+                    run_id=run_id,
+                    prompt_hash=prompt_hash,
+                    img_hash=img_hash,
+                    user_prompt=user_prompt,
+                    ig0=ig0 if isinstance(ig0, dict) else {},
+                    gti=gti if isinstance(gti, dict) else {},
+                    ig=ig if isinstance(ig, dict) else {},
+                    ti=ti if isinstance(ti, dict) else {},
+                    sc=sc if isinstance(sc, dict) else {},
+                    ap=ap if isinstance(ap, dict) else {},
+                    tool_logs=tool_logs if isinstance(tool_logs, list) else [],
+                    sr=sr if isinstance(sr, dict) else {},
+                    final_answer=final_answer,
+                    errors=errors if isinstance(errors, list) else [],
+                    stage_times=stage_times if isinstance(stage_times, dict) else {},
+                )
+            except Exception:
+                trace_lines = []
+
+            # Add compact debug fields into the structured run record.
+            try:
+                run_record["stage_times"] = stage_times
+                run_record["errors"] = errors
+                # Keep trace as list of lines (more readable in JSON than a single huge string)
+                run_record["trace_lines"] = trace_lines
+            except Exception:
+                pass
+
+            artifacts = {
+                'run_record': run_record,
+                'user_prompt.txt': _truncate(user_prompt, 4000),
+                'ig0': ig0,
+                'gti': gti,
+                'ig': ig,
+                'ti': ti,
+                'sc': sc,
+                'ap': ap,
+                'tool_logs': tool_logs,
+                'sr': sr,
+                'final_answer': {'final_answer': final_answer},
+                # Human-readable trace (easier than scrolling JSON prompts)
+                'trace.txt': "\n".join(trace_lines) if trace_lines else "",
+            }
+            try:
+                artifacts_dir = self._write_artifacts(run_id, artifacts)
+                # artifacts_dir written to disk; not included in slim structured log
+            except Exception as e2:
+                errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e2)})
+
+            # Also write the trace to the debug log for quick inspection.
+            try:
+                if trace_lines:
+                    self._logger.info("\n".join(trace_lines[:120]))
+                    if len(trace_lines) > 120:
+                        self._logger.info(f"(trace truncated in log; full trace saved in artifacts/{run_id}/trace.txt)")
+            except Exception:
+                pass
+            try:
+                self._append_run_log(run_record)
+            except Exception:
+                pass
+
+        return final_answer

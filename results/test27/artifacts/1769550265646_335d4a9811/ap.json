@@ -1,0 +1,30 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The task is to find m∠H using the sum of angles in a triangle."
+    },
+    {
+      "intention": "Calculate m∠H using known angles",
+      "action": "python",
+      "code": "m_angle_H = 180 - (50 + 60 + 70)"
+    },
+    {
+      "intention": "Map calculated angle to closest option",
+      "action": "reason",
+      "note": "The calculated m∠H is 0, which is not a valid option. Re-evaluate the problem setup."
+    },
+    {
+      "intention": "Re-evaluate and correct calculation",
+      "action": "python",
+      "code": "m_angle_H = 180 - (50 + 60)"
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 70"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "i": 0,
+    "action": "python",
+    "intention": "Calculate the initial kinetic energy of the canister.",
+    "code": "mass = 0.40; velocity = 0.50; KE_initial = 0.5 * mass * velocity**2",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Set kinetic energy equal to potential energy of the spring and solve for d.",
+    "code": "k = 750; d_val = sympy_solve(f'0.5*{k}*d**2 - {KE_initial}', 'd')[0]",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer for the compression distance d.",
+    "text": "Answer: 1.2",
+    "raw_text": "Answer: {d_val:.1f}",
+    "render_error": null
+  }
+]

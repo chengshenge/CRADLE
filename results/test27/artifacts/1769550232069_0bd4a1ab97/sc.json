@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_by_attributes",
+      "signature": "(image:str, attributes:List[str])->List[Dict[str, Any]]",
+      "purpose": "Identify and count objects in an image based on specified attributes such as size, material, and appearance.",
+      "inputs": [
+        "image",
+        "attributes"
+      ],
+      "outputs": "A list of dictionaries, each containing details of identified objects matching the attributes.",
+      "edge_cases": [
+        "Image is unreadable",
+        "Attributes are ambiguous or not clearly defined"
+      ],
+      "tests": [
+        {
+          "input": "{\"image\": \"f4e0c08abffa\", \"attributes\": [\"large\", \"rubber\", \"sphere\"]}",
+          "expect": "[{\"type\": \"sphere\", \"material\": \"rubber\", \"size\": \"large\", \"count\": 3}]"
+        },
+        {
+          "input": "{\"image\": \"f4e0c08abffa\", \"attributes\": [\"big\", \"shiny\", \"cylinder\"]}",
+          "expect": "[{\"type\": \"cylinder\", \"appearance\": \"shiny\", \"size\": \"big\", \"count\": 2}]"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection",
+        "attribute identification"
+      ]
+    },
+    {
+      "name": "count_remaining_objects",
+      "signature": "(total_objects:int, objects_to_subtract:List[Dict[str, Any]])->int",
+      "purpose": "Calculate the number of remaining objects after subtracting identified objects from the total.",
+      "inputs": [
+        "total_objects",
+        "objects_to_subtract"
+      ],
+      "outputs": "The number of remaining objects.",
+      "edge_cases": [
+        "No objects to subtract",
+        "Total objects is zero"
+      ],
+      "tests": [
+        {
+          "input": "{\"total_objects\": 10, \"objects_to_subtract\": [{\"type\": \"sphere\", \"count\": 3}, {\"type\": \"cylinder\", \"count\": 2}]}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"total_objects\": 5, \"objects_to_subtract\": []}",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_by_attributes",
+    "count_remaining_objects"
+  ]
+}

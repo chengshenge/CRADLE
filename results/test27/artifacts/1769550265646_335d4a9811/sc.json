@@ -1,0 +1,87 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the measure of angle H using the sum of angles in a triangle.",
+      "how_to_use": "Use this skill to compute the measure of angle H by subtracting the sum of known angles from 180°."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use this skill to format the calculated measure of angle H as one of the given options."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_geometric_configuration",
+      "signature": "(diagram)->configuration",
+      "purpose": "Identify the geometric configuration involving angle H from the diagram.",
+      "inputs": [
+        "diagram"
+      ],
+      "outputs": "configuration",
+      "edge_cases": [
+        "Diagram is unclear or labels are missing"
+      ],
+      "tests": [
+        {
+          "input": "diagram_with_triangle",
+          "expect": "triangle_configuration"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram"
+      ]
+    },
+    {
+      "name": "map_calculated_measure_to_option",
+      "signature": "(calculated_measure, options)->option_label",
+      "purpose": "Map the calculated measure of angle H to one of the given multiple-choice options.",
+      "inputs": [
+        "calculated_measure",
+        "options"
+      ],
+      "outputs": "option_label",
+      "edge_cases": [
+        "Calculated measure does not match any option"
+      ],
+      "tests": [
+        {
+          "input": {
+            "calculated_measure": 97,
+            "options": [
+              {
+                "label": "A",
+                "text": "97"
+              },
+              {
+                "label": "B",
+                "text": "102"
+              },
+              {
+                "label": "C",
+                "text": "107"
+              },
+              {
+                "label": "D",
+                "text": "122"
+              }
+            ]
+          },
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_geometric_configuration",
+    "calc_numeric",
+    "map_calculated_measure_to_option",
+    "format_final"
+  ]
+}

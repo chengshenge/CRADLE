@@ -1,0 +1,43 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup. The measuring cup is likely depicted in an attached image as a diagram with volume markings. The task is to find the total volume, which is expected to be indicated by these markings. The user is required to provide an integer answer representing the total volume in grams. The image is crucial for solving the problem as it contains the necessary information to determine the volume. However, the image is currently unreadable, which poses a challenge in extracting the required data.",
+  "entities": [
+    "measuring cup"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Inspect the diagram for volume markings",
+    "Read the numerical markings to determine total volume",
+    "Convert the reading to an integer value if necessary"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "clarity of volume markings",
+    "unreadable image issues"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "volume",
+    "diagram",
+    "unreadable_image"
+  ]
+}
