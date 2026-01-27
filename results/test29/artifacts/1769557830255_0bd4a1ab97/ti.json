@@ -1,0 +1,46 @@
+{
+  "problem_state_summary": "The problem involves counting the remaining objects after removing specific types of objects from a diagram. The task is to subtract all large rubber spheres and big shiny cylinders from the total number of objects. The image provided is supposed to show these objects, but it lacks clarity, making it difficult to identify and count the specified objects. The attributes of the objects, such as size, material, and shape, are crucial for this task. The problem requires an integer answer representing the number of objects left after the specified subtractions. The visual ambiguity in the image is a significant challenge in solving this problem.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "total number of objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify large rubber spheres in the diagram",
+    "Identify big shiny cylinders in the diagram",
+    "Subtract identified objects from the total number of objects"
+  ],
+  "blockers": [
+    "The image does not clearly show large rubber spheres",
+    "The image does not clearly show big shiny cylinders",
+    "The image does not provide enough clarity to count the specified objects"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "clarity of object attributes such as size, material, and shape"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "counting",
+    "geometry",
+    "visual interpretation",
+    "object attributes"
+  ]
+}

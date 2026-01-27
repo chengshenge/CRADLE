@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known information.",
+      "action": "reason",
+      "note": "The image is unreadable, but the max marking is 500."
+    },
+    {
+      "intention": "Determine the total volume based on max marking.",
+      "action": "python",
+      "code": "total_volume = 500"
+    },
+    {
+      "intention": "Format the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

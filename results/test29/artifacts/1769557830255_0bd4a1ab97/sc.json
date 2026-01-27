@@ -1,0 +1,66 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_in_diagram",
+      "signature": "(image_hash:str, object_attributes:dict)->list",
+      "purpose": "Identify and count specific objects in a diagram based on given attributes such as size, material, and shape.",
+      "inputs": [
+        "image_hash",
+        "object_attributes"
+      ],
+      "outputs": "list of identified objects with their counts",
+      "edge_cases": [
+        "Image is unclear or objects are overlapping",
+        "Attributes do not match any objects in the image"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_attributes\": {\"size\": \"large\", \"material\": \"rubber\", \"shape\": \"sphere\"}}",
+          "expect": "[{\"type\": \"large rubber sphere\", \"count\": 3}]"
+        },
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_attributes\": {\"size\": \"big\", \"material\": \"shiny\", \"shape\": \"cylinder\"}}",
+          "expect": "[{\"type\": \"big shiny cylinder\", \"count\": 2}]"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "object detection",
+        "visual interpretation"
+      ]
+    },
+    {
+      "name": "subtract_objects",
+      "signature": "(total:int, objects_to_subtract:list)->int",
+      "purpose": "Subtract the count of specified objects from the total number of objects.",
+      "inputs": [
+        "total",
+        "objects_to_subtract"
+      ],
+      "outputs": "integer representing the remaining number of objects",
+      "edge_cases": [
+        "Total is less than the sum of objects to subtract",
+        "Objects to subtract list is empty"
+      ],
+      "tests": [
+        {
+          "input": "{\"total\": 10, \"objects_to_subtract\": [{\"type\": \"large rubber sphere\", \"count\": 3}, {\"type\": \"big shiny cylinder\", \"count\": 2}]}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"total\": 5, \"objects_to_subtract\": []}",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "subtract_objects"
+  ]
+}

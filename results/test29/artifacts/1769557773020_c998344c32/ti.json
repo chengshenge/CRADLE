@@ -1,0 +1,42 @@
+{
+  "problem_state_summary": "The problem involves determining the total volume of a measuring cup. The measuring cup is likely depicted in a diagram with volume markings. The task is to find the total volume, which is indicated by these markings. The known information extracted from the image is a maximum marking of 500, but the unit is unspecified. The image is unreadable, and no additional markings or labels could be extracted. The problem requires reading the volume markings on the measuring cup to determine its total capacity.",
+  "entities": [
+    "measuring cup",
+    "max_marking"
+  ],
+  "unknowns": [
+    "total volume of the measuring cup"
+  ],
+  "required_operations": [
+    "Read the volume markings on the measuring cup from the diagram",
+    "Determine the total volume based on the maximum marking"
+  ],
+  "blockers": [
+    "total volume of the measuring cup"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "unreadable image issues"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "volume",
+    "diagram",
+    "OCR"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram is expected to contain labeled points, including point H, and possibly other angles that relate to angle H. The task is to find the measure of angle H, which is currently unreadable from the diagram. The problem suggests that the measure of angle H is related to other angles in the diagram, and there may be constraints such as the sum of angles in a triangle being 180° if applicable. The problem is presented as a multiple-choice question with four options for the measure of angle H. The exact configuration of the diagram is unknown without further visual information.",
+  "entities": [
+    "angle H",
+    "points A, B, C, D, E, F, G, H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Identify the geometric properties and relationships in the diagram",
+    "Use angle sum properties or other geometric rules to determine m∠H",
+    "Map the computed value to one of the given options"
+  ],
+  "blockers": [
+    "m∠H is unreadable from the diagram"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is correct",
+    "Check for angle markers and their clarity",
+    "Verify any parallel/perpendicular indicators if present"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "diagram",
+    "multiple-choice"
+  ]
+}

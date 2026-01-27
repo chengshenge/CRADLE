@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the sum of angles B and C using the triangle angle sum property.",
+      "action": "python",
+      "code": "sum_BC = 180 - 110"
+    },
+    {
+      "intention": "Find the measure of angle BOC using the properties of angle bisectors.",
+      "action": "python",
+      "code": "angle_BOC = 180 - sum_BC / 2"
+    },
+    {
+      "intention": "Format the final answer to match the required output format.",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

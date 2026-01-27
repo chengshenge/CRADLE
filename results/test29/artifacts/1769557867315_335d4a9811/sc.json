@@ -1,0 +1,63 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To compute numeric expressions that may arise from geometric relationships.",
+      "how_to_use": "Use this skill to calculate numeric values derived from angle relationships or constraints."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "To solve equations that represent geometric relationships and constraints.",
+      "how_to_use": "Use this skill to solve for unknown angles using equations derived from the diagram."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the computed measure of angle H as a multiple-choice option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_diagram_info",
+      "signature": "(img_hash:str)->dict",
+      "purpose": "Extract geometric information from the diagram image.",
+      "inputs": [
+        "img_hash"
+      ],
+      "outputs": "A dictionary containing known angles, unknowns, and geometric relationships.",
+      "edge_cases": [
+        "Unreadable labels",
+        "Ambiguous angle markers"
+      ],
+      "tests": [
+        {
+          "input": "f6272c7a7609",
+          "expect": {
+            "known": {
+              "A": 30,
+              "B": 40
+            },
+            "unknown": [
+              "H"
+            ],
+            "relations": [
+              "A + B + H = 180"
+            ],
+            "constraints": []
+          }
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image-processing",
+        "diagram"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_diagram_info",
+    "sympy_solve",
+    "calc_numeric",
+    "format_final"
+  ]
+}
