@@ -581,15 +581,13 @@ def _inject_knowns_into_ctx(ig: Dict[str, Any], gti: Dict[str, Any], ctx: Dict[s
 # Placeholder rendering + answer selection helpers
 # ============================================================
 
-_PLACEHOLDER_RE = re.compile(r"\{([A-Za-z_]\w*)(?::([^}]+))?\}")
+_PLACEHOLDER_RE = re.compile(r"\{([^{}]+)\}")
 
 def _to_scalar(v: Any) -> Any:
     """Best-effort conversion of tool outputs to a scalar for formatting."""
     if isinstance(v, (list, tuple)) and len(v) == 1:
         v = v[0]
-    # SolveResult is a float subclass; treat as scalar automatically.
     try:
-        # sympy-like
         if hasattr(v, "evalf") and callable(getattr(v, "evalf")):
             try:
                 v = float(v.evalf())
@@ -599,10 +597,58 @@ def _to_scalar(v: Any) -> Any:
         pass
     return v
 
+
+def _resolve_placeholder_expr(expr: str, ctx: Dict[str, Any]) -> Tuple[Optional[Any], Optional[str]]:
+    """Resolve a conservative subset of python-like expressions used in placeholders.
+
+    Supports:
+      - name
+      - name[idx] where idx is int
+      - name['key'] / name["key"]
+      - chained indexing, e.g. d_val[0]
+    Does NOT support function calls, arithmetic, slices, or attribute access.
+    """
+    try:
+        expr = (expr or "").strip()
+        m = re.match(r"^([A-Za-z_]\w*)(.*)$", expr)
+        if not m:
+            return None, "bad_expr"
+        name = m.group(1)
+        rest = (m.group(2) or "").strip()
+        if name not in ctx:
+            return None, "missing_var"
+        v = ctx[name]
+        while rest:
+            if not rest.startswith("["):
+                return None, "unsupported_tail"
+            rb = rest.find("]")
+            if rb < 0:
+                return None, "unclosed_bracket"
+            key_raw = rest[1:rb].strip()
+            if re.fullmatch(r"-?\d+", key_raw or ""):
+                key = int(key_raw)
+            elif (len(key_raw) >= 2) and ((key_raw[0] == key_raw[-1] == "'") or (key_raw[0] == key_raw[-1] == '"')):
+                key = key_raw[1:-1]
+            else:
+                try:
+                    key = int(key_raw)
+                except Exception:
+                    return None, "bad_index"
+            try:
+                v = v[key]
+            except Exception:
+                return None, "index_fail"
+            rest = rest[rb + 1 :].strip()
+        return v, None
+    except Exception:
+        return None, "resolve_fail"
+
+
 def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[str]]:
-    """Render {var} and {var:format} placeholders using values in ctx.
+    """Render {expr} and {expr:format} placeholders using values in ctx.
 
     Returns (rendered_text, error_str). On error, rendered_text is the original.
+
     Includes a conservative heuristic: if fixed-point formatting would round a small non-zero
     *length-like* value to 0.0 with low precision, try meters->centimeters.
     """
@@ -611,7 +657,6 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
     if ctx is None:
         ctx = {}
 
-    # Use decimal ROUND_HALF_UP for fixed-point formats to avoid banker's rounding surprises.
     def _format_fixed_half_up(val: float, fmt: str) -> Optional[str]:
         mfmt = re.search(r"\.(\d+)f$", (fmt or '').strip())
         if not mfmt:
@@ -619,13 +664,11 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
         try:
             from decimal import Decimal, ROUND_HALF_UP
             decimals = int(mfmt.group(1))
-            q = Decimal('1').scaleb(-decimals)  # 10**(-decimals)
+            q = Decimal('1').scaleb(-decimals)
             d = Decimal(str(float(val))).quantize(q, rounding=ROUND_HALF_UP)
-            # Ensure fixed number of decimals
             return format(d, f".{decimals}f")
         except Exception:
             return None
-
 
     def _maybe_rescale_length(v: float, fmt: str) -> float:
         try:
@@ -643,9 +686,8 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
 
         q = str(ctx.get('_question_text', '')).lower()
         unit = str(ctx.get('_unit', '')).strip().lower()
-        # If the question explicitly requests a unit, do not auto-rescale.
         try:
-            if unit in {'cm','mm'}:
+            if unit in {'cm', 'mm'}:
                 return v
             if re.search(r"\b(in\s*cm|centimeters?)\b", q) or re.search(r"\b(in\s*mm|millimeters?)\b", q):
                 return v
@@ -673,20 +715,27 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
         return v
 
     def _render_one(m: re.Match) -> str:
-        var = m.group(1)
-        fmt = m.group(2) or ''
-        if var not in ctx:
+        inside = (m.group(1) or "").strip()
+        expr, fmt = inside, ''
+        if ':' in inside:
+            expr, fmt = inside.split(':', 1)
+            expr, fmt = expr.strip(), (fmt or '').strip()
+
+        val, err = _resolve_placeholder_expr(expr, ctx)
+        if err is not None:
             return m.group(0)
-        v = ctx[var]
+
+        v = _to_scalar(val)
         try:
-            if fmt and isinstance(v, (int, float)):
-                v = _maybe_rescale_length(v, fmt)
-                s = _format_fixed_half_up(v, fmt)
-                return s if s is not None else ("{:" + fmt + "}").format(v)
             if fmt:
-                s = _format_fixed_half_up(v, fmt)
-                return s if s is not None else ("{:" + fmt + "}").format(v)
-            # Coerce int-like floats when the question expects an integer answer.
+                if isinstance(v, (int, float)):
+                    v = _maybe_rescale_length(v, fmt)
+                if isinstance(v, (int, float)):
+                    s = _format_fixed_half_up(float(v), fmt)
+                    if s is not None:
+                        return s
+                return ("{:" + fmt + "}").format(v)
+
             try:
                 if ctx.get('_expect_int', False) and isinstance(v, float) and math.isfinite(v) and abs(v - round(v)) < 1e-9:
                     return str(int(round(v)))
@@ -744,503 +793,121 @@ def _looks_valid_answer_line(s: str) -> bool:
         return False
     return True
 
-def choose_final_answer(draft: str, sr: Dict[str, Any]) -> str:
-    """Prefer a valid draft answer unless SR is clearly fixing a formatting/mapping issue.
+def _build_numeric_candidates(ctx: Dict[str, Any], ig: Optional[Dict[str, Any]] = None, gti: Optional[Dict[str, Any]] = None, user_prompt: str = "") -> List[float]:
+    """Collect numeric candidates from the execution context and image readings.
 
-    SR is useful for:
-    - adding/removing the required 'Answer:' line
-    - option-letter <-> option-text mapping
-    - rounding/precision/unit formatting
-
-    SR is *not* trusted to re-solve arithmetic/relations. We therefore gate SR overrides.
+    Used to guard SR overrides from hallucinating new numbers.
     """
-    draft_line = _sanitize_answer_line(draft)
-    sr_line = _sanitize_answer_line(str(sr.get('final_answer', '')))
+    cands: List[float] = []
+
+    def _add(v):
+        try:
+            fv = float(v)
+            if math.isfinite(fv):
+                cands.append(fv)
+        except Exception:
+            return
+
+    if isinstance(ctx, dict):
+        for k in ["ans", "_last_solution", "_last", "result", "value", "final_value"]:
+            if k in ctx:
+                _add(ctx.get(k))
+        for _, v in list(ctx.items()):
+            if isinstance(v, (list, tuple)) and len(v) == 1:
+                _add(v[0])
+
+    try:
+        if isinstance(gti, dict):
+            info = gti.get("information")
+            if isinstance(info, list):
+                for s in info[:200]:
+                    if isinstance(s, str) and re.fullmatch(r"-?\d+(?:\.\d+)?", s.strip()):
+                        _add(s.strip())
+    except Exception:
+        pass
+
+    expanded: List[float] = []
+    for v in cands:
+        expanded.extend([v, v * 100.0, v / 100.0, v * 1000.0, v / 1000.0])
+        for nd in [0, 1, 2, 3]:
+            try:
+                expanded.append(round(v, nd))
+                expanded.append(round(v * 100.0, nd))
+            except Exception:
+                pass
+
+    uniq: List[float] = []
+    for v in expanded:
+        if not any(abs(v - u) <= 1e-9 for u in uniq):
+            uniq.append(v)
+    return uniq
+
+
+def choose_final_answer(
+    draft_line: str,
+    sr: Optional[Dict[str, Any]],
+    candidates: Optional[List[float]] = None,
+) -> str:
+    """Pick final answer with SR guardrails.
+
+    Priority:
+      1) A valid draft_line (already grounded in tool logs / ctx)
+      2) SR only if it does NOT introduce a new numeric outside candidate set
+    """
+    draft_line = _sanitize_answer_line(draft_line)
+    if candidates is None:
+        candidates = []
+
+    sr_line = ""
+    sr_cause = "none"
+    try:
+        if isinstance(sr, dict):
+            sr_line = _sanitize_answer_line(sr.get("final_answer") or "")
+            sr_cause = str(sr.get("most_probable_cause") or "none")
+    except Exception:
+        pass
 
     draft_ok = _looks_valid_answer_line(draft_line)
     sr_ok = _looks_valid_answer_line(sr_line)
 
-    sr_cause = str(sr.get('most_probable_cause', '') or '').strip().lower()
+    if not sr_ok:
+        return draft_line if draft_ok else "Answer: "
 
-    safe_causes = {
-        'format_error',
-        'rounding_error',
-        'precision_error',
-        'unit_error',
-        'missing_answer_line',
-        'option_mapping_error',
-    }
-
-    def _extract_num(s: str):
-        payload = s.split('Answer:', 1)[-1].strip() if 'Answer:' in s else s.strip()
-        m = re.search(r"[-+]?\d+(?:\.\d+)?", payload)
-        return float(m.group(0)) if m else None
-
-    def _payload(s: str) -> str:
-        return s.split('Answer:', 1)[-1].strip() if 'Answer:' in s else s.strip()
-
-    if draft_ok:
-        if sr_ok and sr_cause in safe_causes:
-            nd, ns = _extract_num(draft_line), _extract_num(sr_line)
-            if nd is not None and ns is not None:
-                # Allow small numeric edits (rounding) or 100x unit swap (unit_error)
-                if abs(ns - nd) <= max(1e-6, 0.05 * max(1.0, abs(nd))):
-                    return sr_line
-                if sr_cause == 'unit_error' and nd != 0:
-                    ratio = ns / nd
-                    if abs(ratio - 100.0) < 1e-3 or abs(ratio - 0.01) < 1e-3:
-                        return sr_line
-                return draft_line
-            # Non-numeric: mapping/formatting fix
-            if _payload(draft_line) != _payload(sr_line):
-                return sr_line
-            return sr_line
+    if draft_ok and sr_cause == "none":
         return draft_line
 
-    if sr_ok:
-        return sr_line
-    # Neither looks valid; do not return placeholder holes.
-    return "Answer: "
-
-# ============================================================
-# Deterministic multiple-choice label -> option text mapping
-# ============================================================
-
-_CHOICE_LABEL_RE = re.compile(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]?\s*$')
-_PREFIX_WORD_RE = re.compile(r'^\s*(?:option|choice|answer)\s*[:\-]?\s*', flags=re.IGNORECASE)
-
-def _extract_bare_choice_label(payload: str) -> Optional[str]:
-    """Return 'A'..'H' if payload is essentially a bare option label, else None.
-
-    Deterministic and conservative: it only returns a label when the payload can be reduced
-    (by stripping wrappers like 'Option', punctuation, brackets) to a single A-H letter.
-    """
-    if not isinstance(payload, str):
-        return None
-    s = payload.strip()
-    if not s:
-        return None
-
-    # Common leading words (e.g., "Option B", "Choice: C")
-    s = _PREFIX_WORD_RE.sub("", s).strip()
-
-    # If the whole thing looks like just "(B)" / "B." / "[C]" / "D)"
-    m = _CHOICE_LABEL_RE.fullmatch(s)
-    if m:
-        return m.group(1).upper()
-
-    # Sometimes models output "B )" or "B ," etc.
-    s2 = s.strip().strip("`'\"").strip()
-    s2 = s2.strip("[](){}<> \t\r\n")
-    s2 = re.sub(r'^[\s\.\,\;\:\-]+', '', s2)
-    s2 = re.sub(r'[\s\.\,\;\:\-]+$', '', s2)
-    m2 = _CHOICE_LABEL_RE.fullmatch(s2)
-    if m2:
-        return m2.group(1).upper()
-
-    return None
-
-
-def _norm_label(x: Any) -> Optional[str]:
-    if x is None:
-        return None
-    s = str(x).strip()
-    if not s:
-        return None
-    # Keep only first A-H if present
-    m = re.search(r'[A-Ha-h]', s)
-    if not m:
-        return None
-    return m.group(0).upper()
-
-
-def _strip_label_prefix(text: str, label: str) -> str:
-    """Remove an option label prefix like 'A.', '(A)', 'A)' from the start of text."""
-    if not isinstance(text, str):
-        return ""
-    t = text.strip()
-    if not t:
-        return ""
-    # Remove common leading label formats
-    pat = re.compile(r'^\s*(?:[\(\[\{<]?\s*' + re.escape(label) + r'\s*[\)\]\}>]?\s*[\.\:\)\-]\s*)', flags=re.IGNORECASE)
-    t2 = pat.sub("", t, count=1).strip()
-    return t2 if t2 else t
-
-
-def _coerce_option_item(item: Any) -> Optional[Dict[str, str]]:
-    """Normalize option item into {'label': 'A', 'text': '...'} when possible."""
-    if item is None:
-        return None
-    if isinstance(item, dict):
-        lab = _norm_label(item.get("label"))
-        txt = item.get("text")
-        if txt is None:
-            # tolerate alternative keys
-            txt = item.get("value") if "value" in item else item.get("content")
-        txts = str(txt).strip() if txt is not None else ""
-        if lab and txts:
-            return {"label": lab, "text": txts}
-        if lab and not txts:
-            # label only; keep but may be useless
-            return {"label": lab, "text": ""}
-        return None
-    if isinstance(item, str):
-        s = item.strip()
-        if not s:
+    def _parse_num(line: str) -> Optional[float]:
+        if not isinstance(line, str):
             return None
-        # Parse "A. something" or "(B) something"
-        m = re.match(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]\s*(.+?)\s*$', s)
-        if m:
-            return {"label": m.group(1).upper(), "text": m.group(2).strip()}
-        # Parse "A something" (space separated)
-        m2 = re.match(r'^\s*([A-Ha-h])\s+(.+?)\s*$', s)
-        if m2:
-            return {"label": m2.group(1).upper(), "text": m2.group(2).strip()}
-        return None
-    return None
-
-
-def _parse_options_from_text(text: str) -> List[Dict[str, str]]:
-    """Parse options from a question text (best-effort, line-based)."""
-    if not isinstance(text, str) or not text.strip():
-        return []
-    out: List[Dict[str, str]] = []
-    line_pat = re.compile(r'^\s*[\(\[\{<]?\s*([A-Ha-h])\s*[\)\]\}>]?\s*[\.\:\)\-]\s*(.+?)\s*$')
-    for line in text.splitlines():
-        m = line_pat.match(line)
-        if not m:
-            continue
-        lab = m.group(1).upper()
-        txt = m.group(2).strip()
-        if txt:
-            out.append({"label": lab, "text": txt})
-    # Deduplicate by label (keep first occurrence)
-    seen = set()
-    dedup: List[Dict[str, str]] = []
-    for o in out:
-        if o["label"] in seen:
-            continue
-        seen.add(o["label"])
-        dedup.append(o)
-    return dedup
-
-
-def _collect_options(ig: Optional[Dict[str, Any]],
-                     gti: Optional[Dict[str, Any]],
-                     ti: Optional[Dict[str, Any]],
-                     user_prompt: Optional[str]) -> Dict[str, str]:
-    """Collect option label->text mapping from multiple deterministic sources.
-
-    Priority (most trusted first):
-      1) IG-Refine: ig.math_elements_extracted.options
-      2) GTI: gti.targets_from_math_elements.options_extracted
-      3) TI: ti.multiple_choice.options
-      4) USER_PROMPT parsing
-    """
-    mapping: Dict[str, str] = {}
-
-    def _ingest(opt_list: Any):
-        if not isinstance(opt_list, list):
-            return
-        for it in opt_list:
-            o = _coerce_option_item(it)
-            if not o:
-                continue
-            lab = o["label"]
-            txt = o.get("text", "")
-            if not lab:
-                continue
-            if txt:
-                txt2 = _strip_label_prefix(txt, lab)
-                # Keep the first non-empty text for each label (deterministic)
-                if lab not in mapping or not mapping[lab]:
-                    mapping[lab] = txt2
-            else:
-                # ensure key exists
-                mapping.setdefault(lab, "")
-
-    try:
-        if isinstance(ig, dict):
-            _ingest(((ig.get("math_elements_extracted") or {}).get("options", [])))
-    except Exception:
-        pass
-    try:
-        if isinstance(gti, dict):
-            _ingest((((gti.get("targets_from_math_elements") or {}).get("options_extracted", []))))
-    except Exception:
-        pass
-    try:
-        if isinstance(ti, dict):
-            _ingest((((ti.get("multiple_choice") or {}).get("options", []))))
-    except Exception:
-        pass
-    try:
-        _ingest(_parse_options_from_text(user_prompt or ""))
-    except Exception:
-        pass
-
-    return mapping
-
-
-def _map_bare_choice_to_option_text(final_answer: str,
-                                    *,
-                                    ig: Optional[Dict[str, Any]] = None,
-                                    gti: Optional[Dict[str, Any]] = None,
-                                    ti: Optional[Dict[str, Any]] = None,
-                                    user_prompt: Optional[str] = None) -> Optional[str]:
-    """If final_answer is 'Answer: B' (bare label), deterministically map it to the option text.
-
-    Returns:
-      - Mapped 'Answer: <option_text>' if mapping is possible and non-empty.
-      - None if no mapping should be applied.
-    """
-    if not isinstance(final_answer, str) or not final_answer.strip():
+        payload = line.split("Answer:", 1)[-1].strip()
+        if re.fullmatch(r"-?\d+(?:\.\d+)?", payload):
+            try:
+                return float(payload)
+            except Exception:
+                return None
         return None
 
-    payload = final_answer.split("Answer:", 1)[1].strip() if "Answer:" in final_answer else final_answer.strip()
-    lab = _extract_bare_choice_label(payload)
-    if not lab:
-        return None
+    ns = _parse_num(sr_line)
+    nd = _parse_num(draft_line) if draft_ok else None
 
-    opt_map = _collect_options(ig, gti, ti, user_prompt)
-    txt = (opt_map.get(lab) or "").strip()
-    if not txt:
-        return None
-    return "Answer: " + txt
+    if ns is not None and candidates:
+        ok = any(abs(ns - c) <= max(1e-6, 1e-4 * max(1.0, abs(c))) for c in candidates)
+        if not ok:
+            if draft_ok:
+                return draft_line
+            best = min(candidates, key=lambda c: abs(c - ns))
+            return "Answer: " + (str(int(best)) if abs(best - round(best)) < 1e-9 else str(best))
 
+    if ns is not None and nd is not None and sr_cause == "unit_error":
+        try:
+            if nd != 0 and (abs(ns / nd - 100.0) < 0.02 or abs(ns / nd - 0.01) < 0.0002):
+                return sr_line
+        except Exception:
+            pass
 
-def _map_numeric_answer_to_option_text(answer_line: str, ig: Dict[str, Any]) -> Optional[str]:
-    """If answer is numeric but problem is multi_choice with numeric options, map to closest option text."""
-    try:
-        opts = ((ig.get("math_elements_extracted") or {}).get("options") or [])
-        if not isinstance(opts, list) or not opts:
-            return None
-        payload = answer_line.split("Answer:", 1)[-1].strip() if "Answer:" in answer_line else str(answer_line).strip()
-        val = _parse_number(payload)
-        if val is None:
-            return None
-        # Extract numeric for each option
-        best = None
-        best_d = None
-        for it in opts:
-            if not isinstance(it, dict):
-                continue
-            txt = str(it.get("text", "") or "").strip()
-            if not txt:
-                continue
-            ov = _parse_number(txt)
-            if ov is None:
-                continue
-            d = abs(float(ov) - float(val))
-            if best_d is None or d < best_d:
-                best_d = d
-                best = txt
-        if best is None:
-            return None
-        return "Answer: " + best
-    except Exception:
-        return None
-
-    return "Answer: " + txt
+    return draft_line if draft_ok else sr_line
 
 
-def _extract_first_balanced_json_object(s: str) -> Optional[str]:
-    """Return the first balanced {...} object substring, or None."""
-    if not isinstance(s, str):
-        return None
-    start = s.find("{")
-    if start < 0:
-        return None
-    depth = 0
-    in_str = False
-    esc = False
-    for i in range(start, len(s)):
-        ch = s[i]
-        if in_str:
-            if esc:
-                esc = False
-            elif ch == "\\":
-                esc = True
-            elif ch == '"':
-                in_str = False
-            continue
-        else:
-            if ch == '"':
-                in_str = True
-                continue
-            if ch == "{":
-                depth += 1
-            elif ch == "}":
-                depth -= 1
-                if depth == 0:
-                    return s[start : i + 1]
-    return None
-
-
-def _escape_newlines_inside_strings(s: str) -> str:
-    """JSON requires control characters in strings to be escaped.
-
-    LLMs often insert real newlines inside quoted strings for readability, which
-    makes the JSON invalid. This function deterministically escapes those.
-    """
-    if not isinstance(s, str):
-        return s
-    out = []
-    in_str = False
-    esc = False
-    for ch in s:
-        if in_str:
-            if esc:
-                out.append(ch)
-                esc = False
-                continue
-            if ch == "\\":
-                out.append(ch)
-                esc = True
-                continue
-            if ch == '"':
-                out.append(ch)
-                in_str = False
-                continue
-            if ch == "\n":
-                out.append("\\n")
-                continue
-            if ch == "\r":
-                out.append("\\r")
-                continue
-            if ch == "\t":
-                out.append("\\t")
-                continue
-            # Other control chars (<0x20) are illegal in JSON strings.
-            if ord(ch) < 0x20:
-                out.append(" ")
-                continue
-            out.append(ch)
-        else:
-            if ch == '"':
-                out.append(ch)
-                in_str = True
-            else:
-                out.append(ch)
-    return "".join(out)
-
-
-
-
-
-def _repair_dot_format_calls(s: str) -> str:
-    """Repair common LLM artifact: "text": "...".format(var)
-
-    Example:
-      "text": "Answer: {:.1f}".format(d_val)
-    becomes:
-      "text": "Answer: {d_val:.1f}"
-
-    This is deterministic and only touches patterns that are not valid JSON anyway.
-    """
-    if not isinstance(s, str) or ".format(" not in s:
-        return s
-
-    # Only repair for a few known string-valued keys to avoid unintended rewrites.
-    keys = ("text", "note", "intention")
-    key_pat = "|".join(re.escape(k) for k in keys)
-    # Match: "text": "....".format(var)
-    pattern = re.compile(rf'("({key_pat})"\s*:\s*)"([^"\\]*(?:\\.[^"\\]*)*)"\s*\.format\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)')
-    def repl(m: re.Match) -> str:
-        prefix = m.group(1)
-        inner = m.group(3)
-        var = m.group(4)
-        # If inner contains "{:" spec, inject var name.
-        if "{:" in inner:
-            inner2 = inner.replace("{:", "{"+var+":", 1)
-        elif "{}" in inner:
-            inner2 = inner.replace("{}", "{"+var+"}", 1)
-        else:
-            # No obvious placeholder: keep string as-is (drop .format call)
-            inner2 = inner
-        return f'{prefix}"{inner2}"'
-    return pattern.sub(repl, s)
-
-
-def _remove_trailing_commas(s: str) -> str:
-    """Remove trailing commas before '}' or ']' outside of strings.
-
-    LLMs sometimes emit JSON with trailing commas, which is invalid for json.loads.
-    This function is deterministic and does not change content inside quoted strings.
-    """
-    if not isinstance(s, str) or not s:
-        return s
-    out = []
-    in_str = False
-    esc = False
-    n = len(s)
-    i = 0
-    while i < n:
-        ch = s[i]
-        if in_str:
-            out.append(ch)
-            if esc:
-                esc = False
-            elif ch == "\\":
-                esc = True
-            elif ch == '"':
-                in_str = False
-            i += 1
-            continue
-
-        if ch == '"':
-            in_str = True
-            out.append(ch)
-            i += 1
-            continue
-
-        if ch == ",":
-            j = i + 1
-            while j < n and s[j] in " \t\r\n":
-                j += 1
-            if j < n and s[j] in "}]":
-                i += 1
-                continue
-
-        out.append(ch)
-        i += 1
-    return "".join(out)
-
-def _extract_json_obj(text: str) -> Dict[str, Any]:
-    """Parse a JSON object from model output with light, deterministic sanitation.
-
-    This is CRADLE-aligned in spirit: we do NOT ask the model to "repair" its own
-    output by feeding the previous output back. We only strip common wrappers
-    (markdown fences) and sanitize illegal newline characters inside JSON strings.
-    """
-    if not isinstance(text, str):
-        raise ValueError("Model output is not a string.")
-
-    s = _strip_markdown_fences(text)
-
-    # First try direct parse
-    try:
-        return json.loads(_remove_trailing_commas(_repair_dot_format_calls(s)))
-    except Exception:
-        pass
-
-    # Try extracting the first balanced JSON object
-    candidate = _extract_first_balanced_json_object(s)
-    if candidate is None:
-        raise ValueError(f"Cannot find JSON object in: {s[:200]}...")
-
-    # Sanitize newlines inside strings (common LLM formatting artifact)
-    candidate2 = _escape_newlines_inside_strings(candidate)
-
-    # Repair invalid JSON artifacts like "text": "...".format(var)
-    candidate2 = _repair_dot_format_calls(candidate2)
-
-    return json.loads(_remove_trailing_commas(candidate2))
-
-
-# ============================================================
-# Observation (CRADLE alignment: single source of truth)
-# ============================================================
 
 
 @dataclass
@@ -2180,6 +1847,7 @@ Region choice rules:
 2) If the problem involves a plot/graph (axes/legend/curve/bars), choose "chart".
 3) If the problem involves a table (rows/columns/cells), choose "table".
 4) If the problem involves geometry (shapes/angles/length labels), choose "diagram".
+4b) If the task asks to count objects or compare spatial relations of objects in the image (how many/count/left/right/remain), choose "diagram".
 5) If the problem is purely textual and all necessary info is already in user_prompt, choose "null".
 6) If the image is missing/blank/unreadable, choose "null".
 
@@ -2230,6 +1898,7 @@ Extra extraction rules (important):
 - If the question is a counting task ("how many", "count", "left", "remain"), count objects mentioned in the question and also the total if possible. Record counts in structured.diagram under a key "counts" (free-form list).
 - Never invent numbers; if unreadable, add a note to readability_issues.
 - Never output python string formatting like ".format(...)" inside JSON strings.
+- If region_used is "diagram" and you cannot read labels/numbers, you MUST add a readable note such as "unreadable" into readability_issues (do not leave everything empty).
 
 
 How to use inputs explicitly:
@@ -3122,6 +2791,19 @@ Return STRICT JSON:
             except Exception:
                 pass
             # Build a focus-cropped/zoomed image if IG provided a bbox (helps chart/table/diagram reading).
+            
+            # Heuristic: for object-counting / spatial-relation tasks, prefer diagram rather than text.
+            try:
+                qlow = str(obs.text or "").lower()
+                if isinstance(ig0, dict):
+                    if ig0.get("region_to_detect") == "text" and any(k in qlow for k in ["how many", "count ", "count?", "number of", "left of", "to the left", "to the right", "remain", "subtract all", "remove all"]):
+                        ig0["region_to_detect"] = "diagram"
+                        ig0.setdefault("reasoning_of_region", [])
+                        if isinstance(ig0["reasoning_of_region"], list):
+                            ig0["reasoning_of_region"].append("Heuristic override: counting/object relation tasks are best treated as diagram.")
+            except Exception:
+                pass
+
             obs_focus = obs
             try:
                 fb = ig0.get("focus_bbox") or ig0.get("bbox") or ig0.get("focus_box")
@@ -3535,11 +3217,37 @@ Return STRICT JSON:
                 + "\n\n[DRAFT]\n"
                 + draft
             )
-            with _stage("SR"):
-                sr = self._llm_call_json("SR", sr_input, obs_focus, need_image=True)
-                _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence"])
-                if _mk:
-                    errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
+            # Decide whether to run SR (self-reflection).
+            sr = {
+                "final_answer": "",
+                "issues_found": [],
+                "confidence": 0.0,
+                "most_probable_cause": "none",
+                "answer_correct": None,
+            }
+            python_failed = any((isinstance(e, dict) and e.get("type") == "python_error") for e in errors)
+            need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+            # If draft looks valid and no python failures, skip SR to avoid harmful overrides.
+            if need_sr:
+                with _stage("SR"):
+                    sr_input = (
+                        self.SR_PROMPT
+                        + "\n\n[USER_PROMPT]\n"
+                        + user_prompt.strip()
+                        + "\n\n[DRAFT_ANSWER]\n"
+                        + (draft_line or "")
+                        + "\n\n[INFO_JSON]\n"
+                        + _j(ig)
+                        + "\n\n[GTI_JSON]\n"
+                        + _j(gti)
+                        + "\n\n[TOOL_LOGS]\n"
+                        + _j(tool_logs)
+                    )
+                    sr = self._llm_call_json("SR", sr_input, obs_focus, need_image=True)
+                    _mk = _missing_keys(sr, ["final_answer", "issues_found", "confidence", "most_probable_cause"])
+                    if _mk:
+                        errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
+
 
             draft_line = (draft or "").strip()
             if draft_line and not draft_line.startswith("Answer:"):
@@ -3576,7 +3284,8 @@ Return STRICT JSON:
                 pass
 
 
-            final_answer = choose_final_answer(draft_line, sr)
+            candidates = _build_numeric_candidates(skill_mgr.ctx, ig=ig, gti=gti, user_prompt=user_prompt)
+            final_answer = choose_final_answer(draft_line, sr, candidates=candidates)
 
             # If multi-choice and we produced a numeric, map to the closest numeric option text deterministically.
             try:
