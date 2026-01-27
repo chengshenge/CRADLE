@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "The problem involves a comparison between two quantities related to the positions of bicycles and other objects in a diagram. Specifically, it asks whether the number of tiny gray bicycles on the left side of a brown metal sedan is greater than the number of things to the left of a tiny green bicycle. The task requires analyzing a diagram to count these objects and compare their numbers. However, the image needed to verify these counts is not available, making it impossible to determine the exact numbers. The problem is presented as a multiple-choice question with two options: 'Yes' or 'No'. The solution requires mapping the final answer to one of these options.",
+  "entities": [
+    "tiny gray bicycles",
+    "brown metal sedan",
+    "tiny green bicycle"
+  ],
+  "unknowns": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "required_operations": [
+    "Analyze the diagram to identify the positions of the objects.",
+    "Count the number of tiny gray bicycles on the left side of the brown metal sedan.",
+    "Count the number of things to the left of the tiny green bicycle.",
+    "Compare the two counts to determine which is greater.",
+    "Map the result to the corresponding multiple-choice option."
+  ],
+  "blockers": [
+    "number of tiny gray bicycles on the left side of the brown metal sedan",
+    "number of things to the left of the tiny green bicycle"
+  ],
+  "risk_checks": [
+    "diagram: label-to-segment mapping",
+    "diagram: ensure all relevant objects are visible and countable"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "Yes"
+      },
+      {
+        "label": "B",
+        "text": "No"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "comparison",
+    "counting",
+    "diagram analysis",
+    "spatial reasoning"
+  ]
+}

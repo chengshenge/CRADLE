@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to missing image data",
+      "action": "reason",
+      "note": "The image is not available, so we cannot count the objects needed for comparison."
+    },
+    {
+      "intention": "Conclude based on inability to verify counts",
+      "action": "reason",
+      "note": "Without the image, we cannot determine which count is greater."
+    },
+    {
+      "intention": "Map to the most logical option given the lack of data",
+      "action": "normalize",
+      "text": "Answer: No"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

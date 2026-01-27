@@ -1,0 +1,66 @@
+{
+  "problem_state_summary": "The problem involves determining the time shown on a clock, which is typically represented as a diagram with clock hands. The task is to interpret the position of the clock hands to determine the time in words. The time is expressed in words, not numbers, and it is after eight. The clock face numbers are 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, and 7. The problem provides multiple-choice options for the time expression. The exact position of the clock hands needs to be determined to choose the correct time expression.",
+  "entities": [
+    "clock",
+    "clock hands",
+    "time"
+  ],
+  "unknowns": [
+    "time"
+  ],
+  "required_operations": [
+    "Interpret the position of the clock hands",
+    "Determine the time in words",
+    "Map the time to one of the given options"
+  ],
+  "blockers": [
+    "time"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "half"
+      },
+      {
+        "label": "B",
+        "text": "quarter"
+      },
+      {
+        "label": "C",
+        "text": "o'clock"
+      },
+      {
+        "label": "D",
+        "text": "quarter to"
+      },
+      {
+        "label": "E",
+        "text": "quarter past"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "time",
+    "clock",
+    "diagram",
+    "interpretation",
+    "multiple-choice"
+  ]
+}

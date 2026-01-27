@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and constraints",
+      "action": "reason",
+      "note": "The unresolved target is 'time'. The time is after eight."
+    },
+    {
+      "intention": "Interpret clock hands position",
+      "action": "reason",
+      "note": "The clock face numbers are 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7."
+    },
+    {
+      "intention": "Determine the time in words",
+      "action": "reason",
+      "note": "The time is likely 'quarter past' as it is after eight."
+    },
+    {
+      "intention": "Map the time to the correct option",
+      "action": "normalize",
+      "text": "Answer: quarter past"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

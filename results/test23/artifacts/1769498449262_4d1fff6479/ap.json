@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and known values",
+      "action": "reason",
+      "note": "The problem involves a Pythagorean tree with squares A, B, and C. Areas of A and B are given."
+    },
+    {
+      "intention": "Apply Pythagorean theorem to find area of square C",
+      "action": "python",
+      "code": "area_A = 5; area_B = 3; area_C = area_A + area_B"
+    },
+    {
+      "intention": "Map calculated area to multiple-choice options",
+      "action": "reason",
+      "note": "Calculated area of square C is 8, which matches option D."
+    },
+    {
+      "intention": "Format the final answer",
+      "action": "normalize",
+      "text": "Answer: 8"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

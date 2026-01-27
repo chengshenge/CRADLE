@@ -1,0 +1,65 @@
+{
+  "problem_state_summary": "The problem involves identifying the next object in a sequence from a set of choices labeled A to E. This is a pattern recognition task based on visual information provided in a diagram. The sequence pattern is not explicitly stated, so it must be inferred from the image. The task requires selecting the correct object that logically follows the given sequence. The choices are presented as options A, B, C, D, and E. The problem is a logic-based question that relies on visual pattern recognition. The final answer must be provided as the exact content of the correct choice.",
+  "entities": [
+    "sequence",
+    "object",
+    "choices A to E"
+  ],
+  "unknowns": [
+    "next object in sequence"
+  ],
+  "required_operations": [
+    "analyze diagram",
+    "identify sequence pattern",
+    "determine next object",
+    "map to choice"
+  ],
+  "blockers": [
+    "next object in sequence"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "pattern inference from visual data"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "D"
+      },
+      {
+        "label": "E",
+        "text": "E"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "pattern recognition",
+    "logic",
+    "visual analysis"
+  ]
+}

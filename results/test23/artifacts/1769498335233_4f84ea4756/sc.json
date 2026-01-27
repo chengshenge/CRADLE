@@ -1,0 +1,47 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Calculate the length of segment AC using the midpoint property.",
+      "how_to_use": "Use calc_numeric to compute AC = 2 * DB since D is the midpoint of AC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the multiple-choice format.",
+      "how_to_use": "Use format_final to return the answer in the format 'Answer: X' where X is the option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_diagram",
+      "signature": "(img_hash, entities, relations)->dict",
+      "purpose": "Extract and verify geometric relationships from the diagram.",
+      "inputs": [
+        "img_hash",
+        "entities",
+        "relations"
+      ],
+      "outputs": "A dictionary confirming the relationships and properties such as midpoint.",
+      "edge_cases": [
+        "Diagram is unclear or mislabeled",
+        "Entities not correctly identified"
+      ],
+      "tests": [
+        {
+          "input": "{\"img_hash\": \"b66d56187399\", \"entities\": [\"A\", \"B\", \"C\", \"D\"], \"relations\": [\"D is midpoint of AC\"]}",
+          "expect": "{\"midpoint_verified\": true, \"AC_length\": null}"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation",
+        "midpoint verification"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_diagram",
+    "calc_numeric",
+    "format_final"
+  ]
+}

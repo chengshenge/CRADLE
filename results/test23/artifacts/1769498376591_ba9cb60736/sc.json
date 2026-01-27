@@ -1,0 +1,114 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_clock_hands",
+      "signature": "(image_hash:str)->str",
+      "purpose": "Interpret the position of the clock hands from an image and determine the time in words.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "Time in words",
+      "edge_cases": [
+        "Clock hands are ambiguous or overlapping",
+        "Image is unclear or distorted"
+      ],
+      "tests": [
+        {
+          "input": "77b300c1ce6d",
+          "expect": "quarter past eight"
+        },
+        {
+          "input": "some_other_hash",
+          "expect": "half past nine"
+        }
+      ],
+      "tags": [
+        "time",
+        "clock",
+        "interpretation"
+      ]
+    },
+    {
+      "name": "map_time_to_option",
+      "signature": "(time_in_words:str, options:list)->str",
+      "purpose": "Map the interpreted time in words to one of the given multiple-choice options.",
+      "inputs": [
+        "time_in_words",
+        "options"
+      ],
+      "outputs": "Option label",
+      "edge_cases": [
+        "Time in words does not match any option",
+        "Multiple options match the time"
+      ],
+      "tests": [
+        {
+          "input": {
+            "time_in_words": "quarter past eight",
+            "options": [
+              {
+                "label": "A",
+                "text": "half"
+              },
+              {
+                "label": "B",
+                "text": "quarter"
+              },
+              {
+                "label": "C",
+                "text": "o'clock"
+              },
+              {
+                "label": "D",
+                "text": "quarter to"
+              },
+              {
+                "label": "E",
+                "text": "quarter past"
+              }
+            ]
+          },
+          "expect": "E"
+        },
+        {
+          "input": {
+            "time_in_words": "half past nine",
+            "options": [
+              {
+                "label": "A",
+                "text": "half"
+              },
+              {
+                "label": "B",
+                "text": "quarter"
+              },
+              {
+                "label": "C",
+                "text": "o'clock"
+              },
+              {
+                "label": "D",
+                "text": "quarter to"
+              },
+              {
+                "label": "E",
+                "text": "quarter past"
+              }
+            ]
+          },
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "time",
+        "multiple-choice",
+        "mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_clock_hands",
+    "map_time_to_option"
+  ]
+}

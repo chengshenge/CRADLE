@@ -1,0 +1,86 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer for output.",
+      "how_to_use": "Use this skill to return the final answer in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_text_from_image",
+      "signature": "(image_hash:str)->list",
+      "purpose": "Extract text from an image using OCR.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "A list of strings representing the text found in the image.",
+      "edge_cases": [
+        "Image with no text",
+        "Blurry or unclear text"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": [
+            "100 ml",
+            "200 ml",
+            "300 ml",
+            "400 ml",
+            "500 ml",
+            "600 ml",
+            "700 ml",
+            "800 ml",
+            "900 ml",
+            "1000 ml"
+          ]
+        }
+      ],
+      "tags": [
+        "image analysis",
+        "OCR",
+        "text extraction"
+      ]
+    },
+    {
+      "name": "interpret_volume_markings",
+      "signature": "(text_list:list)->float",
+      "purpose": "Interpret the largest volume marking from a list of text strings.",
+      "inputs": [
+        "text_list"
+      ],
+      "outputs": "The largest volume marking as a float.",
+      "edge_cases": [
+        "No valid volume markings",
+        "Non-numeric text"
+      ],
+      "tests": [
+        {
+          "input": [
+            "100 ml",
+            "200 ml",
+            "300 ml",
+            "400 ml",
+            "500 ml",
+            "600 ml",
+            "700 ml",
+            "800 ml",
+            "900 ml",
+            "1000 ml"
+          ],
+          "expect": 1000.0
+        }
+      ],
+      "tags": [
+        "volume",
+        "interpretation",
+        "text analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_text_from_image",
+    "interpret_volume_markings",
+    "format_final"
+  ]
+}

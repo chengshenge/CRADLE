@@ -1,0 +1,62 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "analyze_diagram",
+      "signature": "(image_hash:str, entities:list)->dict",
+      "purpose": "Analyze the diagram to identify the positions and counts of specified entities.",
+      "inputs": [
+        "image_hash",
+        "entities"
+      ],
+      "outputs": "A dictionary with counts and positions of the specified entities.",
+      "edge_cases": [
+        "Image is unclear or entities are not distinguishable."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"d7c548b2c54a\", \"entities\": [\"tiny gray bicycles\", \"brown metal sedan\", \"tiny green bicycle\"]}",
+          "expect": "{\"tiny_gray_bicycles\": 3, \"brown_metal_sedan\": 1, \"tiny_green_bicycle\": 1}"
+        }
+      ],
+      "tags": [
+        "diagram analysis",
+        "spatial reasoning"
+      ]
+    },
+    {
+      "name": "compare_counts",
+      "signature": "(count1:int, count2:int)->str",
+      "purpose": "Compare two counts and return 'A' if the first is greater, otherwise 'B'.",
+      "inputs": [
+        "count1",
+        "count2"
+      ],
+      "outputs": "A string 'A' or 'B' indicating which count is greater.",
+      "edge_cases": [
+        "Counts are equal."
+      ],
+      "tests": [
+        {
+          "input": "{\"count1\": 5, \"count2\": 3}",
+          "expect": "A"
+        },
+        {
+          "input": "{\"count1\": 2, \"count2\": 4}",
+          "expect": "B"
+        },
+        {
+          "input": "{\"count1\": 3, \"count2\": 3}",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "comparison"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "analyze_diagram",
+    "compare_counts"
+  ]
+}

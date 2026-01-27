@@ -1,0 +1,49 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform arithmetic operations such as subtraction to find the number of remaining objects.",
+      "how_to_use": "Use this skill to calculate the total number of objects remaining after subtracting the identified objects."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer as a single line output.",
+      "how_to_use": "Use this skill to return the final count of remaining objects in the specified format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_from_text",
+      "signature": "(text:str, object_descriptions:list)->dict",
+      "purpose": "Identify and count specific types of objects described in the text.",
+      "inputs": [
+        "text",
+        "object_descriptions"
+      ],
+      "outputs": "A dictionary with object descriptions as keys and their counts as values.",
+      "edge_cases": [
+        "Text does not contain any of the specified object descriptions.",
+        "Descriptions are ambiguous or overlap."
+      ],
+      "tests": [
+        {
+          "input": "text='There are 3 large rubber spheres and 2 big shiny cylinders.', object_descriptions=['large rubber spheres', 'big shiny cylinders']",
+          "expect": "{'large rubber spheres': 3, 'big shiny cylinders': 2}"
+        },
+        {
+          "input": "text='No large rubber spheres or big shiny cylinders here.', object_descriptions=['large rubber spheres', 'big shiny cylinders']",
+          "expect": "{}"
+        }
+      ],
+      "tags": [
+        "text interpretation",
+        "object identification"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_from_text",
+    "calc_numeric",
+    "format_final"
+  ]
+}

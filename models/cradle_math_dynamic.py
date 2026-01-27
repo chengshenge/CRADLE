@@ -686,6 +686,12 @@ def render_placeholders(text: str, ctx: Dict[str, Any]) -> Tuple[str, Optional[s
             if fmt:
                 s = _format_fixed_half_up(v, fmt)
                 return s if s is not None else ("{:" + fmt + "}").format(v)
+            # Coerce int-like floats when the question expects an integer answer.
+            try:
+                if ctx.get('_expect_int', False) and isinstance(v, float) and math.isfinite(v) and abs(v - round(v)) < 1e-9:
+                    return str(int(round(v)))
+            except Exception:
+                pass
             return str(v)
         except Exception:
             return m.group(0)
@@ -1579,6 +1585,7 @@ def make_safe_context() -> Dict[str, Any]:
 
                     ctx["_last_roots"] = list(ordered_roots)
                     ctx["_last_solution"] = float(best)
+                    ctx["_last_solution_run_id"] = ctx.get("_current_run_id")
                     return _SolveResult(float(best), ordered_roots)
 
                 return sol
@@ -1737,6 +1744,7 @@ def make_safe_context() -> Dict[str, Any]:
         ctx["_last_roots"] = list(ordered_roots)
         if best is not None:
             ctx["_last_solution"] = float(best)
+            ctx["_last_solution_run_id"] = ctx.get("_current_run_id")
             return _SolveResult(float(best), ordered_roots)
 
         return roots
@@ -1771,21 +1779,36 @@ def make_safe_context() -> Dict[str, Any]:
             pass
 
         # If AP hard-codes a rounded number but we have a computed last solution,
-        # prefer the computed one when they differ significantly.
+        # only prefer the computed one when the hard-coded value looks like a rounded version of it.
+        # (Important: do NOT override multiple-choice numeric labels / unrelated literals.)
         try:
-            sol = ctx.get("_last_solution", None)
-            if isinstance(sol, (int, float)) and isinstance(a, (int, float)) and math.isfinite(sol) and math.isfinite(a):
-                rel = abs(a - sol) / max(abs(sol), 1e-12)
-                is_rounded = any(abs(a - round(a, nd)) < 1e-12 for nd in (0, 1, 2, 3))  # 0-3 dp rounding
-                if rel > 0.15 and is_rounded:
-                    a = float(sol)
+            if not ctx.get("_is_mcq", False):
+                sol = ctx.get("_last_solution", None)
+                sol_run = ctx.get("_last_solution_run_id", None)
+                if sol_run is None or sol_run == ctx.get("_current_run_id"):
+                    if isinstance(sol, (int, float)) and isinstance(a, (int, float)) and math.isfinite(float(sol)) and math.isfinite(float(a)):
+                        s = float(sol)
+                        av = float(a)
+                        for nd in (0, 1, 2, 3):
+                            if abs(av - round(s, nd)) < 1e-12:
+                                a = float(sol)
+                                break
         except Exception:
             pass
 
-        # Default numeric formatting: 4 significant digits (keeps MathVista tolerant).
-        if isinstance(a, (int, float)) and math.isfinite(a):
-            a_str = f"{float(a):.4g}"
-        else:
+        # Default numeric formatting (respects question expectations when available).
+        try:
+            if isinstance(a, (int, float)) and math.isfinite(float(a)):
+                dp = ctx.get("_expect_dp", None)
+                if ctx.get("_expect_int", False) and dp is None:
+                    a_str = str(int(round(float(a))))
+                elif dp is not None:
+                    a_str = f"{float(a):.{int(dp)}f}"
+                else:
+                    a_str = f"{float(a):.4g}"
+            else:
+                a_str = str(a)
+        except Exception:
             a_str = str(a)
 
         return f"Answer: {a_str}"
@@ -1958,6 +1981,37 @@ class SkillManager:
                     _, run_err = safe_exec(rec.code, self.ctx)
                     if run_err is None:
                         self._loaded[rec.name] = rec
+
+    def new_run_context(self, run_id: str, user_prompt: str = "") -> None:
+        """Rebuild a fresh execution context per problem to avoid cross-run state leakage."""
+        self.ctx = make_safe_context()
+
+        # Re-register learned skills into the fresh ctx.
+        for rec in self._loaded.values():
+            try:
+                _, err = safe_exec(rec.code, self.ctx)
+                if err is not None and self.debug:
+                    pass
+            except Exception:
+                continue
+
+        # Per-run metadata
+        self.ctx["_current_run_id"] = run_id
+        self.ctx["_question_text"] = user_prompt or ""
+
+        # Infer output formatting expectations from the prompt (best-effort).
+        up = (user_prompt or "").lower()
+        try:
+            if ("integer answer" in up) or ("an integer answer" in up) or re.search(r"\brequiring\s+an\s+integer\s+answer\b", up):
+                self.ctx["_expect_int"] = True
+            if re.search(r"\bone\s+decimal\s+place\b|\b1\s+decimal\s+place\b", up):
+                self.ctx["_expect_dp"] = 1
+            if re.search(r"\btwo\s+decimal\s+places\b|\b2\s+decimal\s+places\b", up):
+                self.ctx["_expect_dp"] = 2
+            if re.search(r"\bthree\s+decimal\s+places\b|\b3\s+decimal\s+places\b", up):
+                self.ctx["_expect_dp"] = 3
+        except Exception:
+            pass
 
     def catalog(self) -> List[Dict[str, Any]]:
         cat = []
@@ -3043,6 +3097,10 @@ Return STRICT JSON:
                     debug=self.debug,
                 )
             skill_mgr: SkillManager = self._skill_mgr
+            try:
+                skill_mgr.new_run_context(run_id, user_prompt)
+            except Exception:
+                pass
             skill_mgr.ctx['_question_text'] = obs.text
 
             with _stage("IG"):
@@ -3145,7 +3203,7 @@ Return STRICT JSON:
                         t0 = time.perf_counter()
                         target_str = ("; ".join(targets)) if targets else ""
                         count_prompt = (
-                            "Counting focus: Count objects relevant to the question directly from the image.\n"
+                            "Counting focus: Count objects relevant to the question.irectly from the image.\n"
                             "If the question mentions specific object types, count EACH mentioned type and also the TOTAL objects.\n"
                             "IMPORTANT: Use EXACT object strings for the mentioned targets when possible.\n"
                             + (f"Mentioned targets: {target_str}\n" if target_str else "")
@@ -3308,6 +3366,12 @@ Return STRICT JSON:
 
             tool_logs = []
             t_exec0 = time.perf_counter()
+            # Mark multiple-choice for downstream formatting guards (e.g., format_final heuristics).
+            try:
+                me = (ig.get("math_elements_extracted") or {}) if isinstance(ig, dict) else {}
+                skill_mgr.ctx["_is_mcq"] = isinstance(me.get("options", None), list) and len(me.get("options", [])) > 0
+            except Exception:
+                skill_mgr.ctx["_is_mcq"] = False
             steps = ap.get("steps", [])
             if isinstance(steps, list):
                 for idx, step in enumerate(steps[: self.max_steps]):

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret the largest volume marking.",
+      "action": "reason",
+      "note": "The largest visible marking is 1000 ml, which is likely the total volume."
+    },
+    {
+      "intention": "Convert the largest volume marking to the required unit.",
+      "action": "python",
+      "code": "total_volume_ml = 1000; total_volume_g = total_volume_ml"
+    },
+    {
+      "intention": "Format the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 1000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

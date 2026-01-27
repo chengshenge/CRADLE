@@ -1,0 +1,33 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "visual_pattern_recognition",
+      "signature": "(image_hash:str, options:list)->str",
+      "purpose": "Identify the next object in a visual sequence from a set of choices.",
+      "inputs": [
+        "image_hash",
+        "options"
+      ],
+      "outputs": "The label of the correct choice.",
+      "edge_cases": [
+        "Ambiguous patterns",
+        "Multiple valid sequences"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"1912e7f3f535\", \"options\": [\"A\", \"B\", \"C\", \"D\", \"E\"]}",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "pattern recognition",
+        "visual analysis",
+        "logic"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "visual_pattern_recognition"
+  ]
+}

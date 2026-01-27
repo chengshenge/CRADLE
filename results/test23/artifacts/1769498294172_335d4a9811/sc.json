@@ -1,0 +1,72 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use this skill to format the selected option label as the final answer."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_angle_in_diagram",
+      "signature": "(diagram:str, angle_label:str)->float",
+      "purpose": "Identify and return the measure of a specified angle from a geometric diagram.",
+      "inputs": [
+        "diagram",
+        "angle_label"
+      ],
+      "outputs": "The measure of the specified angle as a float.",
+      "edge_cases": [
+        "The angle label does not exist in the diagram.",
+        "The diagram is not clear or is missing."
+      ],
+      "tests": [
+        {
+          "input": "diagram_with_angle_H_102, 'H'",
+          "expect": 102.0
+        },
+        {
+          "input": "diagram_with_angle_H_missing, 'H'",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "diagram interpretation"
+      ]
+    },
+    {
+      "name": "map_value_to_option",
+      "signature": "(value:float, options:list)->str",
+      "purpose": "Map a given value to the correct multiple-choice option.",
+      "inputs": [
+        "value",
+        "options"
+      ],
+      "outputs": "The label of the option that matches the value.",
+      "edge_cases": [
+        "The value does not match any option.",
+        "Options list is empty."
+      ],
+      "tests": [
+        {
+          "input": "102.0, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "B"
+        },
+        {
+          "input": "110.0, [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "value mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_angle_in_diagram",
+    "map_value_to_option",
+    "format_final"
+  ]
+}

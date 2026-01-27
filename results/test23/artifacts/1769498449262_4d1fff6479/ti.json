@@ -1,0 +1,63 @@
+{
+  "problem_state_summary": "The problem involves a geometric figure known as a 'Pythagorean tree', which consists of squares and right triangles. The task is to determine the area of the largest square, labeled as C, given the areas of two smaller squares, A and B. The areas of squares A and B are provided as 5 and 3 square units, respectively. The relationship between these squares and the triangles is governed by the Pythagorean theorem, which suggests a mathematical relationship between their areas. The problem is presented with multiple-choice options for the area of square C. The diagram is expected to show the configuration of the Pythagorean tree, including labels for squares A, B, and C. The exact configuration must be inferred from the diagram to solve the problem.",
+  "entities": [
+    "Area of square A",
+    "Area of square B",
+    "Area of square C"
+  ],
+  "unknowns": [
+    "Area of square C"
+  ],
+  "required_operations": [
+    "Identify the configuration of the Pythagorean tree in the diagram",
+    "Apply the Pythagorean theorem to relate the areas of squares A, B, and C",
+    "Calculate the area of square C",
+    "Map the calculated area to one of the multiple-choice options"
+  ],
+  "blockers": [
+    "Area of square C"
+  ],
+  "risk_checks": [
+    "Ensure correct label-to-segment mapping in the diagram",
+    "Verify that all quadrilaterals are squares and all triangles are right triangles",
+    "Check for any missing or unclear labels in the diagram"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "15"
+      },
+      {
+        "label": "B",
+        "text": "13"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "Pythagorean theorem",
+    "diagram interpretation",
+    "area calculation"
+  ]
+}

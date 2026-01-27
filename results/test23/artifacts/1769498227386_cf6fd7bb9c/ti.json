@@ -1,0 +1,57 @@
+{
+  "problem_state_summary": "The problem involves a triangle ABC where two angle bisectors, OB and OC, intersect at point O. The measure of angle A is given as 110°. The task is to find the measure of angle BOC. The problem is purely textual, and all necessary information is provided in the prompt. The known information includes the measure of angle A and the fact that OB and OC are angle bisectors. The unknown is the measure of angle BOC. The problem is a geometry question involving angle bisectors in a triangle.",
+  "entities": [
+    "∠A",
+    "∠BOC",
+    "OB",
+    "OC",
+    "triangle ABC"
+  ],
+  "unknowns": [
+    "∠BOC"
+  ],
+  "required_operations": [
+    "Use the property of angle bisectors in a triangle to find the measure of angle BOC."
+  ],
+  "blockers": [],
+  "risk_checks": [
+    "Ensure the understanding of angle bisector properties in a triangle."
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "text",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle bisectors",
+    "triangle"
+  ]
+}
