@@ -1690,6 +1690,9 @@ def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
 # (sys is used in safe_exec; keep import local to avoid global denylist concerns)
 import sys  # noqa: E402
 
+AGENT_VERSION = "trace_v9_2026-01-27"
+
+
 
 # ============================================================
 # Skill Manager
@@ -2518,7 +2521,7 @@ Return STRICT JSON:
     ) -> List[str]:
         """Create a readable, stage-by-stage trace (no gigantic prompts)."""
         lines: List[str] = []
-        lines.append(f"RUN {run_id} | prompt_hash={prompt_hash} | img_hash={img_hash}")
+        lines.append(f"RUN {run_id} | agent_version={AGENT_VERSION} | prompt_hash={prompt_hash} | img_hash={img_hash}")
         # Include a short question preview for humans
         q_preview = _one_line(user_prompt, 240)
         lines.append(f"QUESTION: {q_preview}")
@@ -2860,6 +2863,7 @@ Return STRICT JSON:
             img_hash = None
 
         obs.meta["run_id"] = run_id
+        obs.meta["agent_version"] = AGENT_VERSION
         obs.meta["llm_calls"] = llm_calls
         obs.meta["img_hash"] = img_hash
 
@@ -2876,6 +2880,7 @@ Return STRICT JSON:
         tool_logs = []
         draft = ""
         final_answer = ""
+        draft_line = ""  # always defined to avoid UnboundLocalError
 
         try:
 
@@ -3382,7 +3387,11 @@ Return STRICT JSON:
                 "answer_correct": None,
             }
             python_failed = any((isinstance(e, dict) and e.get("type") == "python_error") for e in errors)
-            need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+            try:
+                need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+            except Exception as _e:
+                errors.append({"stage": "SR_GUARD", "type": "guard_error", "error": str(_e)})
+                need_sr = True
 
             # If draft looks valid and no python failures, skip SR to avoid harmful overrides.
             if need_sr:

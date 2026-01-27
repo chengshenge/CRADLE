@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expressions to find angle measures.",
+      "how_to_use": "Use to calculate the measures of angles B and C using the sum of angles in triangle ABC."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer for output.",
+      "how_to_use": "Use to format the final answer as a single line with the correct option label."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_boc",
+      "signature": "(angle_a, options)->str",
+      "purpose": "Calculate the measure of angle BOC using properties of angle bisectors and select the correct option.",
+      "inputs": [
+        "angle_a",
+        "options"
+      ],
+      "outputs": "The correct option label for the measure of angle BOC.",
+      "edge_cases": [
+        "Ensure angle A is valid and options are provided."
+      ],
+      "tests": [
+        {
+          "input": "110, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "B"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_boc",
+    "calc_numeric",
+    "format_final"
+  ]
+}

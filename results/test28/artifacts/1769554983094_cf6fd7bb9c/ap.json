@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Determine the measures of angles B and C using the sum of angles in triangle ABC.",
+      "action": "python",
+      "code": "angle_B_plus_C = 180 - 110"
+    },
+    {
+      "intention": "Calculate the measure of angle BOC using angle bisector properties.",
+      "action": "python",
+      "code": "angle_BOC = 180 - (angle_B_plus_C / 2)"
+    },
+    {
+      "intention": "Map the calculated angle BOC to the closest option.",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

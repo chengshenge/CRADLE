@@ -1,0 +1,45 @@
+{
+  "problem_state_summary": "The problem involves determining the number of objects left after removing specific types of objects from a diagram. The task is to subtract all large rubber spheres and big shiny cylinders from the total number of objects. The image provided is a diagram that requires visual inspection to identify and categorize objects based on their attributes such as size, material, and shape. However, the image does not clearly show any large rubber spheres or big shiny cylinders, making it difficult to perform the required subtraction. The criteria for 'large', 'rubber', 'shiny', and 'big' are not specified, adding to the ambiguity. The task requires an integer answer representing the number of objects left after the specified subtractions.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "total number of objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify large rubber spheres in the diagram",
+    "Identify big shiny cylinders in the diagram",
+    "Subtract identified objects from the total number of objects"
+  ],
+  "blockers": [
+    "The image does not clearly show any large rubber spheres",
+    "The image does not clearly show any big shiny cylinders"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear",
+    "Check for any angle markers or parallel/perpendicular indicators that might help in identifying objects"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "visual inspection",
+    "object categorization",
+    "subtraction"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_in_diagram",
+      "signature": "(image_hash:str, object_criteria:dict)->list",
+      "purpose": "Identify and categorize objects in a diagram based on specified criteria such as size, material, and shape.",
+      "inputs": [
+        "image_hash",
+        "object_criteria"
+      ],
+      "outputs": "list of identified objects",
+      "edge_cases": [
+        "Image does not clearly show objects",
+        "Criteria for object identification are ambiguous"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_criteria\": {\"size\": \"large\", \"material\": \"rubber\", \"shape\": \"sphere\"}}",
+          "expect": "[]"
+        },
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_criteria\": {\"size\": \"big\", \"material\": \"shiny\", \"shape\": \"cylinder\"}}",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "visual inspection",
+        "object categorization"
+      ]
+    },
+    {
+      "name": "subtract_objects",
+      "signature": "(total:int, objects_to_subtract:list)->int",
+      "purpose": "Subtract identified objects from the total number of objects.",
+      "inputs": [
+        "total",
+        "objects_to_subtract"
+      ],
+      "outputs": "integer representing the number of objects left",
+      "edge_cases": [
+        "No objects to subtract",
+        "Total is less than the number of objects to subtract"
+      ],
+      "tests": [
+        {
+          "input": "{\"total\": 10, \"objects_to_subtract\": [\"large rubber sphere\", \"big shiny cylinder\"]}",
+          "expect": "10"
+        },
+        {
+          "input": "{\"total\": 5, \"objects_to_subtract\": []}",
+          "expect": "5"
+        }
+      ],
+      "tags": [
+        "subtraction",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "subtract_objects"
+  ]
+}

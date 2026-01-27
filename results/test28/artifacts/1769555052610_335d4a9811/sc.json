@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_in_diagram",
+      "purpose": "To identify and categorize objects in the diagram, specifically to locate and interpret angle H.",
+      "how_to_use": "Use the image hash and criteria for identifying angles to extract relevant information about angle H."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "interpret_angle_measurement",
+      "signature": "(angle_info:list, options:list)->str",
+      "purpose": "Interpret the angle measurement from the diagram and map it to one of the provided multiple-choice options.",
+      "inputs": [
+        "angle_info",
+        "options"
+      ],
+      "outputs": "The label of the correct multiple-choice option.",
+      "edge_cases": [
+        "Ambiguous angle labeling",
+        "Multiple angles with similar measures"
+      ],
+      "tests": [
+        {
+          "input": "[{'label': 'H', 'measure': 102}], [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "B"
+        },
+        {
+          "input": "[{'label': 'H', 'measure': 107}], [{'label': 'A', 'text': '97'}, {'label': 'B', 'text': '102'}, {'label': 'C', 'text': '107'}, {'label': 'D', 'text': '122'}]",
+          "expect": "C"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle measurement",
+        "diagram interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "interpret_angle_measurement"
+  ]
+}

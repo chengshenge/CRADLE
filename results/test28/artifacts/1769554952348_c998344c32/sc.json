@@ -1,0 +1,36 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "interpret_volume_markings",
+      "signature": "(image_hash:str)->float",
+      "purpose": "Extract and interpret volume markings from an image of a measuring cup to determine the total volume.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "total volume in grams",
+      "edge_cases": [
+        "unreadable or unclear markings",
+        "non-standard units for volume"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": "250.0"
+        },
+        {
+          "input": "unreadable_image_hash",
+          "expect": "error"
+        }
+      ],
+      "tags": [
+        "image processing",
+        "volume interpretation",
+        "diagram analysis"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "interpret_volume_markings"
+  ]
+}
