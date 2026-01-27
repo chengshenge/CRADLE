@@ -1,0 +1,44 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "To perform any necessary numeric calculations to find the measure of angle BOC.",
+      "how_to_use": "Use this skill to compute any numeric expressions derived from the properties of angle bisectors."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use this skill to format the final answer as 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "find_angle_boc",
+      "signature": "(angle_a: float)->float",
+      "purpose": "Calculate the measure of angle BOC using the properties of angle bisectors in a triangle.",
+      "inputs": [
+        "angle_a"
+      ],
+      "outputs": "The measure of angle BOC.",
+      "edge_cases": [
+        "Ensure angle A is valid (0 < angle A < 180)."
+      ],
+      "tests": [
+        {
+          "input": "110",
+          "expect": "145"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "find_angle_boc",
+    "calc_numeric",
+    "format_final"
+  ]
+}

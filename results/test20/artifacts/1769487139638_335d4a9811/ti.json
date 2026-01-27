@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The task is to find the value of m∠H, which is part of a geometric figure. The diagram likely contains angle H, which is marked with a value of 97 degrees. The problem is presented as a multiple-choice question with four options. The correct answer must be selected from these options. The context and position of angle H in the diagram are not fully clear without viewing the image.",
+  "entities": [
+    "angle H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Identify angle H in the diagram",
+    "Verify the marked value of angle H",
+    "Map the value to the correct option"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping for angle H is correct",
+    "Verify angle markers are clear and unambiguous"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle",
+    "diagram",
+    "multiple-choice"
+  ]
+}

@@ -93,6 +93,28 @@ def _atomic_write_json(path: str, obj: Any) -> None:
         json.dump(obj, f, ensure_ascii=False, indent=2)
     os.replace(tmp, path)
 
+
+def _as_list(x: Any) -> List[Any]:
+    """Return x as a list (None -> [], scalar -> [scalar])."""
+    if x is None:
+        return []
+    if isinstance(x, list):
+        return x
+    return [x]
+
+
+def _one_line(s: Any, n: int = 420) -> str:
+    """Best-effort stringify to a single line and truncate for logs."""
+    if s is None:
+        return ""
+    try:
+        t = str(s)
+    except Exception:
+        t = repr(s)
+    t = t.replace("\r", " ").replace("\n", " ")
+    t = re.sub(r"\s+", " ", t).strip()
+    return _truncate(t, n)
+
 # ============================================================
 # Image focus helpers (crop/zoom) + knowns injection
 # ============================================================
@@ -2463,6 +2485,255 @@ Return STRICT JSON:
                     pass
         return adir
 
+    # -----------------------------
+    # Human-readable trace helpers
+    # -----------------------------
+
+    def _extract_numeric_stats(self, items: Any) -> Dict[str, Any]:
+        """Extract count/min/max from a list of strings/numbers."""
+        vals: List[float] = []
+        for it in _as_list(items):
+            try:
+                if isinstance(it, (int, float)):
+                    vals.append(float(it))
+                else:
+                    s = str(it).strip()
+                    # keep things like '5,000' or '5000g'
+                    s2 = re.sub(r"[^0-9.\-]", "", s)
+                    if s2 and s2 not in {"-", "."}:
+                        vals.append(float(s2))
+            except Exception:
+                continue
+        if not vals:
+            return {"count": 0}
+        return {"count": len(vals), "min": min(vals), "max": max(vals)}
+
+    def _build_human_trace_lines(
+        self,
+        run_id: str,
+        prompt_hash: str,
+        img_hash: Optional[str],
+        user_prompt: str,
+        ig0: Dict[str, Any],
+        gti: Dict[str, Any],
+        ig: Dict[str, Any],
+        ti: Dict[str, Any],
+        sc: Dict[str, Any],
+        ap: Dict[str, Any],
+        tool_logs: List[Dict[str, Any]],
+        sr: Dict[str, Any],
+        final_answer: str,
+        errors: List[Dict[str, Any]],
+        stage_times: Dict[str, float],
+    ) -> List[str]:
+        """Create a readable, stage-by-stage trace (no gigantic prompts)."""
+        lines: List[str] = []
+        lines.append(f"RUN {run_id} | prompt_hash={prompt_hash} | img_hash={img_hash}")
+        # Include a short question preview for humans
+        q_preview = _one_line(user_prompt, 240)
+        lines.append(f"QUESTION: {q_preview}")
+
+        # IG
+        try:
+            me = (ig0.get("math_elements_extracted") or {})
+            lines.append("\n[IG] Information Gathering")
+            lines.append(f"- region_to_detect: {ig0.get('region_to_detect')}")
+            lines.append(f"- focus_bbox: {ig0.get('focus_bbox')} | focus_zoom: {ig0.get('focus_zoom')}")
+            lines.append(f"- need_ocr: {ig0.get('need_ocr')}")
+            lines.append(f"- asks: {ig0.get('asks')}")
+            lines.append(f"- unknown: {me.get('unknown')}")
+            r = _as_list(ig0.get("reasoning_of_region"))
+            if r:
+                lines.append("- reasoning_of_region:")
+                for x in r[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+            rt = _as_list(ig0.get("reasoning_of_task"))
+            if rt:
+                lines.append("- reasoning_of_task:")
+                for x in rt[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # GTI
+        try:
+            lines.append("\n[GTI] Gather Text/Values")
+            lines.append(f"- region_used: {gti.get('region_used')}")
+            info = gti.get("information")
+            stats = self._extract_numeric_stats(info)
+            if stats.get("count", 0) > 0:
+                lines.append(f"- extracted_numbers: count={stats['count']} min={stats.get('min')} max={stats.get('max')}")
+            else:
+                tl = (gti.get("structured") or {}).get("text_lines")
+                lines.append(f"- extracted_text_lines: {len(_as_list(tl))}")
+
+            unresolved = ((gti.get("targets_from_math_elements") or {}).get("unresolved_targets"))
+            if unresolved:
+                lines.append(f"- unresolved_targets: {unresolved}")
+            ri = _as_list(gti.get("readability_issues"))
+            if ri:
+                lines.append("- readability_issues:")
+                for x in ri[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+            rr = _as_list(gti.get("reasoning"))
+            if rr:
+                lines.append("- gti_reasoning:")
+                for x in rr[:8]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # IGR (refined info)
+        try:
+            lines.append("\n[IGR] IG Refine (merged IG+GTI)")
+            lines.append(f"- region_to_detect: {ig.get('region_to_detect')}")
+            vf = _as_list(ig.get("visual_facts"))
+            if vf:
+                lines.append("- visual_facts:")
+                for x in vf[:10]:
+                    lines.append(f"  • {_one_line(x, 300)}")
+            amb = _as_list(ig.get("ambiguity"))
+            if amb:
+                lines.append("- ambiguity:")
+                for x in amb[:6]:
+                    lines.append(f"  • {_one_line(x, 260)}")
+        except Exception:
+            pass
+
+        # TI
+        try:
+            lines.append("\n[TI] Task Inference")
+            pss = ti.get("problem_state_summary")
+            if pss:
+                lines.append(f"- problem_state_summary: {_one_line(pss, 520)}")
+            ops = _as_list(ti.get("required_operations"))
+            if ops:
+                lines.append("- required_operations:")
+                for i, x in enumerate(ops[:12], 1):
+                    lines.append(f"  {i}. {_one_line(x, 340)}")
+            bl = _as_list(ti.get("blockers"))
+            if bl:
+                lines.append(f"- blockers: {[_one_line(x, 220) for x in bl[:10]]}")
+            rc = _as_list(ti.get("risk_checks"))
+            if rc:
+                lines.append("- risk_checks:")
+                for x in rc[:12]:
+                    lines.append(f"  • {_one_line(x, 340)}")
+        except Exception:
+            pass
+
+        # SC
+        try:
+            lines.append("\n[SC] Skill Curation")
+            ss = _as_list(sc.get("selected_skills"))
+            if ss:
+                lines.append("- selected_skills:")
+                for it in ss[:10]:
+                    nm = (it.get("name") if isinstance(it, dict) else str(it))
+                    pur = (it.get("purpose") if isinstance(it, dict) else "")
+                    lines.append(f"  • {nm}: {_one_line(pur, 260)}")
+            ns = _as_list(sc.get("new_skill_specs"))
+            if ns:
+                lines.append("- new_skill_specs:")
+                for it in ns[:10]:
+                    nm = (it.get("name") if isinstance(it, dict) else str(it))
+                    sig = (it.get("signature") if isinstance(it, dict) else "")
+                    lines.append(f"  • {nm} {sig}")
+        except Exception:
+            pass
+
+        # AP
+        try:
+            lines.append("\n[AP] Action Plan")
+            steps = _as_list(ap.get("steps"))
+            if steps:
+                for i, st in enumerate(steps[:12], 1):
+                    if not isinstance(st, dict):
+                        lines.append(f"  {i}. {_one_line(st, 320)}")
+                        continue
+                    action = st.get("action")
+                    intention = st.get("intention")
+                    lines.append(f"  {i}. ({action}) {_one_line(intention, 240)}")
+                    if st.get("note"):
+                        lines.append(f"     note: {_one_line(st.get('note'), 360)}")
+                    if st.get("code"):
+                        lines.append(f"     code: {_one_line(st.get('code'), 360)}")
+                    if st.get("text"):
+                        lines.append(f"     text: {_one_line(st.get('text'), 360)}")
+        except Exception:
+            pass
+
+        # EXEC
+        try:
+            lines.append("\n[EXEC] Plan Execution")
+            for t in (tool_logs or [])[:18]:
+                if not isinstance(t, dict):
+                    continue
+                act = t.get("action")
+                intent = t.get("intention")
+                if act == "python":
+                    out = t.get("stdout")
+                    err = t.get("error")
+                    lines.append(f"  - python: {_one_line(intent, 220)}")
+                    if out:
+                        lines.append(f"    stdout: {_one_line(out, 320)}")
+                    if err:
+                        lines.append(f"    ERROR: {_one_line(err, 320)}")
+                elif act == "normalize":
+                    lines.append(f"  - normalize: {_one_line(t.get('text'), 220)}")
+                elif act == "fallback":
+                    lines.append(f"  - fallback: {_one_line(intent, 260)}")
+                    if t.get("stdout"):
+                        lines.append(f"    stdout: {_one_line(t.get('stdout'), 320)}")
+                elif act == "tool":
+                    lines.append(f"  - tool: {_one_line(intent, 220)}")
+                    if t.get("rendered"):
+                        lines.append(f"    rendered: {_one_line(t.get('rendered'), 320)}")
+                    if t.get("render_error"):
+                        lines.append(f"    ERROR: {_one_line(t.get('render_error'), 320)}")
+                else:
+                    lines.append(f"  - {act}: {_one_line(intent, 240)}")
+        except Exception:
+            pass
+
+        # SR
+        try:
+            lines.append("\n[SR] Self-Reflection / Answer Polishing")
+            if isinstance(sr, dict):
+                if sr.get("issues_found"):
+                    lines.append("- issues_found:")
+                    for x in _as_list(sr.get("issues_found"))[:12]:
+                        lines.append(f"  • {_one_line(x, 360)}")
+                if sr.get("final_answer"):
+                    lines.append(f"- sr_final_answer: {_one_line(sr.get('final_answer'), 200)}")
+                if sr.get("confidence") is not None:
+                    lines.append(f"- confidence: {sr.get('confidence')}")
+        except Exception:
+            pass
+
+        # Final
+        lines.append("\n[FINAL]")
+        lines.append(f"- final_answer: {_one_line(final_answer, 220)}")
+
+        # Errors + timings
+        if errors:
+            lines.append("\n[ERRORS]")
+            for e in errors[:24]:
+                if not isinstance(e, dict):
+                    lines.append(f"- {_one_line(e, 360)}")
+                    continue
+                st = e.get("stage")
+                et = e.get("type")
+                msg = e.get("error") or e.get("missing") or e.get("raw") or ""
+                lines.append(f"- ({st}/{et}) {_one_line(msg, 520)}")
+
+        if stage_times:
+            lines.append("\n[TIMINGS]")
+            for k in sorted(stage_times.keys()):
+                lines.append(f"- {k}: {stage_times[k]}s")
+
+        return lines
+
     def _should_attach_image(self, step: str, need_image: bool) -> bool:
         if self.always_attach_image:
             return True
@@ -3150,6 +3421,38 @@ Return STRICT JSON:
                 "final_answer": final_answer,
             }
 
+            # Build a human-readable trace (stage-by-stage reasoning chain) to make debugging easier.
+            trace_lines: List[str] = []
+            try:
+                trace_lines = self._build_human_trace_lines(
+                    run_id=run_id,
+                    prompt_hash=prompt_hash,
+                    img_hash=img_hash,
+                    user_prompt=user_prompt,
+                    ig0=ig0 if isinstance(ig0, dict) else {},
+                    gti=gti if isinstance(gti, dict) else {},
+                    ig=ig if isinstance(ig, dict) else {},
+                    ti=ti if isinstance(ti, dict) else {},
+                    sc=sc if isinstance(sc, dict) else {},
+                    ap=ap if isinstance(ap, dict) else {},
+                    tool_logs=tool_logs if isinstance(tool_logs, list) else [],
+                    sr=sr if isinstance(sr, dict) else {},
+                    final_answer=final_answer,
+                    errors=errors if isinstance(errors, list) else [],
+                    stage_times=stage_times if isinstance(stage_times, dict) else {},
+                )
+            except Exception:
+                trace_lines = []
+
+            # Add compact debug fields into the structured run record.
+            try:
+                run_record["stage_times"] = stage_times
+                run_record["errors"] = errors
+                # Keep trace as list of lines (more readable in JSON than a single huge string)
+                run_record["trace_lines"] = trace_lines
+            except Exception:
+                pass
+
             artifacts = {
                 'run_record': run_record,
                 'user_prompt.txt': _truncate(user_prompt, 4000),
@@ -3162,12 +3465,23 @@ Return STRICT JSON:
                 'tool_logs': tool_logs,
                 'sr': sr,
                 'final_answer': {'final_answer': final_answer},
+                # Human-readable trace (easier than scrolling JSON prompts)
+                'trace.txt': "\n".join(trace_lines) if trace_lines else "",
             }
             try:
                 artifacts_dir = self._write_artifacts(run_id, artifacts)
                 # artifacts_dir written to disk; not included in slim structured log
             except Exception as e2:
                 errors.append({'stage':'ARTIFACTS','type':'write_failed','error':str(e2)})
+
+            # Also write the trace to the debug log for quick inspection.
+            try:
+                if trace_lines:
+                    self._logger.info("\n".join(trace_lines[:120]))
+                    if len(trace_lines) > 120:
+                        self._logger.info(f"(trace truncated in log; full trace saved in artifacts/{run_id}/trace.txt)")
+            except Exception:
+                pass
             try:
                 self._append_run_log(run_record)
             except Exception:

@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret the image correctly.",
+      "action": "reason",
+      "note": "The task is to determine the total volume of the measuring cup from the image. The largest visible marking is 1000 ml, which likely represents the total volume. The unit in the question is grams, but no conversion is needed as the task is to read the volume marking."
+    },
+    {
+      "intention": "Determine the total volume from the image markings.",
+      "action": "python",
+      "code": "total_volume_ml = 1000"
+    },
+    {
+      "intention": "Format the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 1000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

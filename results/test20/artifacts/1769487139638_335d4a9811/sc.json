@@ -1,0 +1,65 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer to match the required output format.",
+      "how_to_use": "Use this skill to return the answer in the format 'Answer: ...'."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "identify_angle_in_diagram",
+      "signature": "(image_hash:str, angle_label:str)->float",
+      "purpose": "Identify and verify the measure of a specific angle in a geometric diagram.",
+      "inputs": [
+        "image_hash",
+        "angle_label"
+      ],
+      "outputs": "The measure of the angle as a float.",
+      "edge_cases": [
+        "The angle label is not visible or obscured.",
+        "Multiple angles with the same label."
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\":\"f6272c7a7609\", \"angle_label\":\"H\"}",
+          "expect": "97.0"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "image processing",
+        "angle detection"
+      ]
+    },
+    {
+      "name": "map_value_to_option",
+      "signature": "(value:float, options:list)->str",
+      "purpose": "Map a numeric value to the corresponding multiple-choice option.",
+      "inputs": [
+        "value",
+        "options"
+      ],
+      "outputs": "The label of the correct option.",
+      "edge_cases": [
+        "Value does not match any option.",
+        "Multiple options with the same value."
+      ],
+      "tests": [
+        {
+          "input": "{\"value\":97.0, \"options\":[{\"label\":\"A\", \"text\":\"97\"}, {\"label\":\"B\", \"text\":\"102\"}, {\"label\":\"C\", \"text\":\"107\"}, {\"label\":\"D\", \"text\":\"122\"}]}",
+          "expect": "A"
+        }
+      ],
+      "tags": [
+        "multiple-choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_angle_in_diagram",
+    "map_value_to_option",
+    "format_final"
+  ]
+}
