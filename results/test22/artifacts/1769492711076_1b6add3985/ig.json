@@ -1,0 +1,93 @@
+{
+  "region_to_detect": "diagram",
+  "focus_bbox": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "focus_zoom": 1.0,
+  "reasoning_of_region": [
+    "The problem involves a spring and a canister, which suggests a physical setup likely depicted in a diagram. The diagram will provide visual information about the spring and the canister, which is crucial for understanding the problem."
+  ],
+  "problem_understanding": "A cumin canister slides across a frictionless counter and compresses a spring. We need to find the distance by which the spring is compressed when the canister is momentarily stopped.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "mass",
+        "value": "0.40",
+        "unit": "kg",
+        "source": "text",
+        "note": "mass of the canister"
+      },
+      {
+        "name": "speed",
+        "value": "0.50",
+        "unit": "m/s",
+        "source": "text",
+        "note": "initial speed of the canister"
+      },
+      {
+        "name": "spring constant",
+        "value": "750",
+        "unit": "N/m",
+        "source": "text",
+        "note": "spring constant of the spring"
+      }
+    ],
+    "unknown": [
+      "distance d"
+    ],
+    "relations": [
+      "The kinetic energy of the canister is converted into the potential energy of the spring."
+    ],
+    "constraints": [
+      "The counter is frictionless."
+    ],
+    "options": []
+  },
+  "question_type_guess": "physics",
+  "need_ocr": "yes",
+  "noun_and_verb": "spring compresses",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task involves understanding the conversion of kinetic energy to potential energy in a spring system, which is a common physics problem involving energy conservation."
+  ],
+  "problem_summary": "A canister slides on a frictionless surface and compresses a spring. Find the compression distance when the canister is stopped.",
+  "knowns": [
+    {
+      "name": "mass",
+      "value": "0.40",
+      "unit": "kg",
+      "source": "text",
+      "note": "mass of the canister"
+    },
+    {
+      "name": "speed",
+      "value": "0.50",
+      "unit": "m/s",
+      "source": "text",
+      "note": "initial speed of the canister"
+    },
+    {
+      "name": "spring constant",
+      "value": "750",
+      "unit": "N/m",
+      "source": "text",
+      "note": "spring constant of the spring"
+    }
+  ],
+  "asks": [
+    "distance d"
+  ],
+  "constraints": [
+    "The counter is frictionless."
+  ],
+  "visual_facts": [
+    "The diagram shows the canister, spring, initial position, and final position.",
+    "The compression distance 'd' is marked on the diagram."
+  ],
+  "ambiguity": [
+    "The exact setup of the canister and spring interaction might need clarification from the diagram."
+  ]
+}

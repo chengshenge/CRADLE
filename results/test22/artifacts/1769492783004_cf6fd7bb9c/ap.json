@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Identify the known angle and properties of the triangle.",
+      "action": "reason",
+      "note": "∠A = 110°; OB and OC are angle bisectors intersecting at O."
+    },
+    {
+      "intention": "Use triangle angle sum property and bisector properties.",
+      "action": "reason",
+      "note": "In △ABC, ∠A + ∠B + ∠C = 180°. OB and OC bisect ∠B and ∠C."
+    },
+    {
+      "intention": "Calculate ∠BOC using angle bisector properties.",
+      "action": "python",
+      "code": "angle_BC = 180 - 110; angle_BOC = 180 - (angle_BC / 2)"
+    },
+    {
+      "intention": "Format the final answer based on the calculated angle.",
+      "action": "normalize",
+      "text": "Answer: 145°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

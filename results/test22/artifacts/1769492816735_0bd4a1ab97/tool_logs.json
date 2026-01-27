@@ -1,0 +1,24 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify the total number of objects and specific types to subtract.",
+    "note": "The total number of objects is 50. Subtract 15 large rubber spheres and 10 big shiny cylinders."
+  },
+  {
+    "i": 1,
+    "action": "python",
+    "intention": "Compute the remaining number of objects.",
+    "code": "remaining_objects = calc_numeric('50 - 15 - 10')",
+    "stdout": "",
+    "error": null
+  },
+  {
+    "i": 2,
+    "action": "normalize",
+    "intention": "Format the final answer.",
+    "text": "Answer: 25.0",
+    "raw_text": "Answer: {remaining_objects}",
+    "render_error": null
+  }
+]

@@ -315,6 +315,111 @@ def _parse_number(v: Any) -> Optional[float]:
     return None
 
 
+
+# ============================================================
+# Counting-task helpers
+# ============================================================
+
+_SUBTRACT_TARGET_RE = re.compile(r"\bsubtract\s+all\s+([^\.\n\r]+)", flags=re.IGNORECASE)
+_ADD_TARGET_RE = re.compile(r"\badd\s+all\s+([^\.\n\r]+)", flags=re.IGNORECASE)
+
+def _extract_subtract_targets(q: str) -> List[str]:
+    """Extract object descriptions from prompts like 'Subtract all X. Subtract all Y.'"""
+    if not isinstance(q, str):
+        return []
+    q2 = q.replace("\n", " ")
+    t = [m.group(1).strip() for m in _SUBTRACT_TARGET_RE.finditer(q2)]
+    # de-dup while preserving order
+    out = []
+    seen = set()
+    for x in t:
+        k = x.lower()
+        if k not in seen:
+            seen.add(k)
+            out.append(x)
+    return out
+
+def _normalize_obj_name(s: str) -> str:
+    if not isinstance(s, str):
+        return ""
+    t = s.lower().strip()
+    t = re.sub(r"[^a-z0-9]+", " ", t).strip()
+    t = re.sub(r"\s+", " ", t)
+    return t
+
+def _get_counts_from_gti(gti: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Optional[int]]:
+    """Return (counts_list, total_int_or_none) from gti.structured.diagram."""
+    try:
+        diag = (gti or {}).get("structured", {}).get("diagram", {}) or {}
+        counts = diag.get("counts", []) or []
+        total = diag.get("total_objects", None)
+        if isinstance(total, str):
+            total = int(float(total))
+        if isinstance(total, (int, float)):
+            total = int(total)
+        else:
+            total = None
+        # sanitize counts entries
+        cleaned = []
+        for c in counts:
+            if not isinstance(c, dict):
+                continue
+            obj = str(c.get("object", "") or "").strip()
+            cnt = c.get("count", None)
+            if isinstance(cnt, str):
+                try:
+                    cnt = int(float(cnt))
+                except Exception:
+                    cnt = None
+            if isinstance(cnt, (int, float)):
+                cnt = int(cnt)
+            if obj and cnt is not None:
+                cleaned.append({"object": obj, "count": cnt, "note": str(c.get("note", "") or "").strip()})
+        return cleaned, total
+    except Exception:
+        return [], None
+
+def _compute_remaining_objects(question: str, gti: Dict[str, Any]) -> Tuple[Optional[int], str]:
+    """Compute remaining objects for common prompts: subtract listed targets from total."""
+    counts, total = _get_counts_from_gti(gti)
+    if not counts and total is None:
+        return None, "no counts/total available"
+    # If total missing, try summing all counted categories
+    if total is None and counts:
+        total = sum(int(c.get("count", 0)) for c in counts)
+    targets = _extract_subtract_targets(question or "")
+    if not targets:
+        # if no explicit subtract targets, and total exists, answer total
+        if total is not None:
+            return int(total), "no subtract targets; using total"
+        return None, "no subtract targets and no total"
+    # Build map by normalized name
+    cmap = {}
+    for c in counts:
+        cmap[_normalize_obj_name(c["object"])] = int(c["count"])
+    subtract = 0
+    missing = []
+    for t in targets:
+        nk = _normalize_obj_name(t)
+        if nk in cmap:
+            subtract += cmap[nk]
+            continue
+        # fuzzy contains match
+        found = None
+        for ck, cv in cmap.items():
+            if nk in ck or ck in nk:
+                found = cv
+                break
+        if found is None:
+            missing.append(t)
+        else:
+            subtract += int(found)
+    if missing:
+        return None, "missing counts for targets: " + ", ".join(missing[:3])
+    if total is None:
+        return None, "total missing"
+    return int(total - subtract), "computed from total - sum(target_counts)"
+
 def _normalize_simple_unit(val: float, unit: str) -> Tuple[float, str]:
     """Very small unit normalizer for common MathVista units. Only handles simple single units."""
     if unit is None:
@@ -357,6 +462,21 @@ def _guess_var_keys(name: str) -> List[str]:
         return []
     n = str(name).strip().lower()
     keys: List[str] = []
+
+    # counting/objects variables (used in counting tasks)
+    try:
+        if n.startswith("count::"):
+            kk = "count_" + re.sub(r"[^a-z0-9_]+", "_", n.split("count::", 1)[1]).strip("_")
+            keys.append(kk)
+        if n.startswith("count_"):
+            kk = re.sub(r"[^a-z0-9_]+", "_", n).strip("_")
+            keys.append(kk)
+        if "total objects" in n or n in ("total", "total_object", "total_objects", "objects total"):
+            keys.append("total_objects")
+        if "remaining objects" in n or "objects left" in n or "how many objects are left" in n:
+            keys.append("remaining_objects")
+    except Exception:
+        pass
 
     # direct single-letter variable mention
     try:
@@ -583,8 +703,9 @@ def _sanitize_answer_line(s: str) -> str:
     """Normalize an 'Answer: ...' line for downstream parsing/validation.
 
     - Strips markdown fences and leading/trailing whitespace
-    - If an 'Answer:' prefix exists, keep from the first occurrence onward
+    - If an 'Answer:' prefix exists, keep from the last occurrence onward
     - Collapses to a single line
+    - Always standardizes to 'Answer: <payload>' with ONE space after colon
     """
     if not isinstance(s, str):
         return ""
@@ -593,11 +714,9 @@ def _sanitize_answer_line(s: str) -> str:
     # Keep only the first non-empty line
     t = t.splitlines()[0].strip() if t.splitlines() else t
 
-    # If the model returned extra text before the answer, keep the last 'Answer:' block.
     if "Answer:" in t:
-        # take the *last* occurrence to avoid picking up examples in the prompt
-        t = "Answer:" + t.split("Answer:")[-1].strip()
-
+        payload = t.split("Answer:")[-1].strip()
+        t = "Answer: " + payload
     # Remove stray code fence remnants
     t = t.strip("`").strip()
     return t
@@ -881,6 +1000,7 @@ def _map_bare_choice_to_option_text(final_answer: str,
     txt = (opt_map.get(lab) or "").strip()
     if not txt:
         return None
+    return "Answer: " + txt
 
 
 def _map_numeric_answer_to_option_text(answer_line: str, ig: Dict[str, Any]) -> Optional[str]:
@@ -3016,35 +3136,68 @@ Return STRICT JSON:
                                     except Exception:
                                         pass
 
-                # Optional GTI_COUNT: re-read for pure counting tasks (objects/remaining/how many).
+                # Optional GTI_COUNT: targeted vision pass for counting tasks (how many/left/remain/subtract/add).
                 try:
                     qlow = str(obs.text).lower()
-                    wants_count = any(w in qlow for w in ['how many', 'count', 'remain', 'left', 'number of'])
+                    wants_count = any(w in qlow for w in ['how many', 'count', 'remain', 'left', 'number of', 'subtract all', 'add all'])
                     if wants_count:
-                        # If initial GTI did not extract any useful numeric labels, ask again focused on counting.
-                        labels = []
-                        if isinstance(gti, dict):
-                            labels = (gti.get('structured', {}).get('diagram', {}).get('labels', []) or [])
-                        if not labels:
-                            t0 = time.perf_counter()
-                            count_prompt = (
-                                "Counting focus: Count the objects relevant to the question directly from the image.\n"
-                                "If the question mentions specific object types, count each type and also the total.\n"
-                                "Return STRICT JSON: {\"counts\": [{\"object\":\"...\",\"count\":<int>,\"note\":\"...\"}], \"total\": <int or null>, \"notes\": [..]}\n"
-                                "Only report counts you can justify from the image.\n\n"
-                                + obs.text
-                            )
-                            cnt = self._llm_call_json("GTI_COUNT", count_prompt, obs, need_image=True)
-                            stage_times['GTI_COUNT'] = round(time.perf_counter() - t0, 6)
-                            llm_calls.append({
-                                'run_id': run_id,'stage':'GTI_COUNT','attempt':0,'need_image':True,'attach_image':True,
-                                'prompt_len': len(count_prompt),'latency_s': stage_times.get('GTI_COUNT'),
-                                'parse_ok': True,'raw_head': _truncate(_j(cnt), 400),'error':''
-                            })
-                            if isinstance(cnt, dict) and isinstance(gti, dict):
-                                # Merge into gti.information for IGR/TI/AP grounding
-                                gti.setdefault('information', [])
-                                gti['information'].append("Counting read: " + _truncate(_j(cnt), 500))
+                        targets = _extract_subtract_targets(str(obs.text))
+                        t0 = time.perf_counter()
+                        target_str = ("; ".join(targets)) if targets else ""
+                        count_prompt = (
+                            "Counting focus: Count objects relevant to the question directly from the image.\n"
+                            "If the question mentions specific object types, count EACH mentioned type and also the TOTAL objects.\n"
+                            "IMPORTANT: Use EXACT object strings for the mentioned targets when possible.\n"
+                            + (f"Mentioned targets: {target_str}\n" if target_str else "")
+                            + "Return STRICT JSON: {\"counts\":[{\"object\":\"...\",\"count\":<int>,\"note\":\"...\"}], \"total\":<int or null>, \"notes\":[\"...\"]}\n"
+                            "Only report counts you can justify from the image; if unclear, set count to null and explain in notes.\n\n"
+                            + obs.text
+                        )
+                        cnt = self._llm_call_json("GTI_COUNT", count_prompt, obs, need_image=True)
+                        stage_times['GTI_COUNT'] = round(time.perf_counter() - t0, 6)
+
+                        if isinstance(cnt, dict) and isinstance(gti, dict):
+                            # Store counts in structured.diagram for downstream grounding
+                            gti.setdefault('structured', {})
+                            gti['structured'].setdefault('diagram', {})
+                            gti['structured']['diagram']['counts'] = cnt.get('counts', []) or []
+                            gti['structured']['diagram']['total_objects'] = cnt.get('total', None)
+
+                            # Also add as known_additions so ctx can ingest them deterministically
+                            gti.setdefault('targets_from_math_elements', {})
+                            gti['targets_from_math_elements'].setdefault('known_additions', [])
+                            try:
+                                if cnt.get('total', None) is not None:
+                                    gti['targets_from_math_elements']['known_additions'].append({
+                                        'name': 'total objects',
+                                        'value': str(cnt.get('total')),
+                                        'unit': '',
+                                        'source': 'image',
+                                        'note': 'counting total from GTI_COUNT'
+                                    })
+                            except Exception:
+                                pass
+
+                            try:
+                                for c in (cnt.get('counts', []) or []):
+                                    if not isinstance(c, dict):
+                                        continue
+                                    obj = str(c.get('object', '') or '').strip()
+                                    cc = c.get('count', None)
+                                    if obj and cc is not None:
+                                        gti['targets_from_math_elements']['known_additions'].append({
+                                            'name': 'count::' + obj,
+                                            'value': str(cc),
+                                            'unit': '',
+                                            'source': 'image',
+                                            'note': 'counting from GTI_COUNT'
+                                        })
+                            except Exception:
+                                pass
+
+                            # Human-readable hint for logs/debugging
+                            gti.setdefault('information', [])
+                            gti['information'].append("Counting JSON: " + _truncate(_j(cnt), 800))
                 except Exception:
                     pass
 
@@ -3285,6 +3438,24 @@ Return STRICT JSON:
             except Exception:
                 pass
 
+            # Deterministic counting solver (pre-SR): prevents AP from fabricating object counts.
+            try:
+                qlow2 = str(obs.text).lower()
+                wants_count2 = any(w in qlow2 for w in ['how many', 'count', 'remain', 'left', 'number of', 'subtract all', 'add all'])
+                if wants_count2 and isinstance(gti, dict):
+                    rem, why = _compute_remaining_objects(str(obs.text), gti)
+                    if rem is not None:
+                        draft = format_final(int(rem))
+                        tool_logs.append({
+                            "i": len(tool_logs),
+                            "action": "deterministic_count",
+                            "intention": "Compute remaining objects using GTI_COUNT totals/counts.",
+                            "stdout": f"{draft} | {why}",
+                            "error": None
+                        })
+            except Exception:
+                pass
+
             sr_input = (
                 self.SR_PROMPT
                 + "\n\n[INFO_JSON]\n"
@@ -3397,7 +3568,7 @@ Return STRICT JSON:
                 stage_times["TOTAL"] = round(time.perf_counter() - t_total0, 6)
 
             # Slim structured log: per-module prompt/response/error (requested for debugging)
-            module_order = ["IG", "GTI", "IGR", "TI", "SC", "AP"]
+            module_order = ["IG", "GTI", "GTI_COUNT", "IGR", "TI", "SC", "AP", "SR"]
             modules: Dict[str, Dict[str, Any]] = {}
 
             for st in module_order:

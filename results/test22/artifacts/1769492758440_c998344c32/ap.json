@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers and interpret image markings.",
+      "action": "reason",
+      "note": "The largest visible marking is 1000 ml, likely the total volume. Unit is grams, unusual for volume."
+    },
+    {
+      "intention": "Determine the total volume from image markings.",
+      "action": "python",
+      "code": "total_volume_ml = 1000"
+    },
+    {
+      "intention": "Format the final answer as an integer.",
+      "action": "normalize",
+      "text": "Answer: 1000"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

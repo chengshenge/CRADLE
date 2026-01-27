@@ -1,0 +1,39 @@
+{
+  "selected_skills": [
+    {
+      "name": "format_final",
+      "purpose": "Format the final answer as a single line output.",
+      "how_to_use": "Use this skill to ensure the answer is presented in the required format."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "extract_volume_from_image",
+      "signature": "(image_hash:str)->int",
+      "purpose": "Extract the largest volume marking from the image of a measuring cup.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "The largest volume marking as an integer.",
+      "edge_cases": [
+        "Image contains unclear or overlapping markings",
+        "Markings are in different units"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 1000
+        }
+      ],
+      "tags": [
+        "image interpretation",
+        "volume",
+        "measurement"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_volume_from_image",
+    "format_final"
+  ]
+}
