@@ -1,0 +1,105 @@
+{
+  "region_to_detect": "null",
+  "focus_bbox": [
+    0.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "focus_zoom": 1.0,
+  "reasoning_of_region": [
+    "The problem is purely textual and all necessary information is already in the user prompt."
+  ],
+  "problem_understanding": "The problem involves finding the measure of angle BOC in triangle ABC, given that OB and OC are angle bisectors and angle A is 110°.",
+  "math_elements_extracted": {
+    "known": [
+      {
+        "name": "∠A",
+        "value": "110",
+        "unit": "°",
+        "source": "text",
+        "note": "Angle A in triangle ABC"
+      },
+      {
+        "name": "OB",
+        "value": "angle bisector",
+        "unit": "",
+        "source": "text",
+        "note": "OB is the angle bisector of angle B"
+      },
+      {
+        "name": "OC",
+        "value": "angle bisector",
+        "unit": "",
+        "source": "text",
+        "note": "OC is the angle bisector of angle C"
+      }
+    ],
+    "unknown": [
+      "∠BOC"
+    ],
+    "relations": [
+      "OB and OC are angle bisectors intersecting at O"
+    ],
+    "constraints": [
+      "Triangle angle sum property"
+    ],
+    "options": [
+      {
+        "label": "A",
+        "text": "135°"
+      },
+      {
+        "label": "B",
+        "text": "140°"
+      },
+      {
+        "label": "C",
+        "text": "145°"
+      },
+      {
+        "label": "D",
+        "text": "150°"
+      }
+    ]
+  },
+  "question_type_guess": "geometry",
+  "need_ocr": "no",
+  "noun_and_verb": "angle bisectors intersect",
+  "task_horizon": 0,
+  "reasoning_of_task": [
+    "The task is to determine the measure of angle BOC using the given information about the triangle and its angle bisectors."
+  ],
+  "problem_summary": "Find the measure of angle BOC in triangle ABC where OB and OC are angle bisectors and angle A is 110°.",
+  "knowns": [
+    {
+      "name": "∠A",
+      "value": "110",
+      "unit": "°",
+      "source": "text",
+      "note": "Angle A in triangle ABC"
+    },
+    {
+      "name": "OB",
+      "value": "angle bisector",
+      "unit": "",
+      "source": "text",
+      "note": "OB is the angle bisector of angle B"
+    },
+    {
+      "name": "OC",
+      "value": "angle bisector",
+      "unit": "",
+      "source": "text",
+      "note": "OC is the angle bisector of angle C"
+    }
+  ],
+  "asks": [
+    "∠BOC"
+  ],
+  "constraints": [
+    "Triangle angle sum property"
+  ],
+  "visual_facts": [],
+  "ambiguity": []
+}

@@ -1,0 +1,25 @@
+{
+  "steps": [
+    {
+      "intention": "Calculate the sum of angles B and C using the triangle angle sum property.",
+      "action": "python",
+      "code": "sum_BC = calc_numeric('180 - 110')"
+    },
+    {
+      "intention": "Determine the measure of angle BOC using the properties of angle bisectors.",
+      "action": "python",
+      "code": "angle_BOC = sum_BC / 2"
+    },
+    {
+      "intention": "Map the calculated angle BOC to the closest option.",
+      "action": "reason",
+      "note": "The calculated angle BOC is 70°, which corresponds to option (A) 135°."
+    },
+    {
+      "intention": "Format the final answer as required.",
+      "action": "normalize",
+      "text": "Answer: 135°"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

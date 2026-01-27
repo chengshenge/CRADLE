@@ -1,0 +1,35 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "extract_volume_from_image",
+      "signature": "(image_hash:str)->float",
+      "purpose": "Extract the total volume marking from an image of a measuring cup.",
+      "inputs": [
+        "image_hash"
+      ],
+      "outputs": "float",
+      "edge_cases": [
+        "Image is unreadable",
+        "Markings are unclear or missing"
+      ],
+      "tests": [
+        {
+          "input": "11905bd8ff0d",
+          "expect": 500.0
+        },
+        {
+          "input": "unreadable_image_hash",
+          "expect": null
+        }
+      ],
+      "tags": [
+        "image_processing",
+        "volume_extraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "extract_volume_from_image"
+  ]
+}

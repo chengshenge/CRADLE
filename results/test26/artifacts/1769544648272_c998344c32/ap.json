@@ -1,0 +1,20 @@
+{
+  "steps": [
+    {
+      "intention": "Identify blockers due to unreadable image",
+      "action": "reason",
+      "note": "The image is unreadable, making it difficult to confirm the total volume."
+    },
+    {
+      "intention": "Use known max marking as the best estimate",
+      "action": "reason",
+      "note": "The max marking extracted is 500, which is the best available estimate for total volume."
+    },
+    {
+      "intention": "Format the final answer using the known max marking",
+      "action": "normalize",
+      "text": "Answer: 500"
+    }
+  ],
+  "final_format": "Answer: {ans}"
+}

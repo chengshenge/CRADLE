@@ -1,0 +1,59 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram is expected to contain labeled points, including point H, and possibly other geometric figures such as triangles. The task is to find the measure of angle H, which is currently unreadable from the diagram. The problem provides multiple-choice options for the measure of angle H. The solution requires understanding geometric properties and possibly using angle sum properties if triangles are involved. The measure of angle H is related to other angles or geometric properties in the diagram, but these relationships are not explicitly provided. The problem is a geometry question that requires visual inspection of the diagram.",
+  "entities": [
+    "angle H",
+    "points A through H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Inspect the diagram to identify angle H",
+    "Determine the measure of angle H using geometric properties",
+    "Map the measure to one of the provided options"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "angle markers"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram interpretation"
+  ]
+}

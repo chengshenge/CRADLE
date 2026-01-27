@@ -1,0 +1,71 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_in_diagram",
+      "purpose": "To identify and extract geometric elements such as points and angles from the diagram.",
+      "how_to_use": "Use the image hash and object properties to identify angle H and other relevant geometric elements in the diagram."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "determine_angle_measure",
+      "signature": "(angle_label:str, known_angles:dict, constraints:dict)->float",
+      "purpose": "To calculate the measure of a specific angle using known angles and geometric constraints.",
+      "inputs": [
+        "angle_label",
+        "known_angles",
+        "constraints"
+      ],
+      "outputs": "The measure of the specified angle.",
+      "edge_cases": [
+        "If the angle cannot be determined due to insufficient information, return None."
+      ],
+      "tests": [
+        {
+          "input": "{\"angle_label\": \"H\", \"known_angles\": {\"A\": 30, \"B\": 60}, \"constraints\": {\"sum\": 180}}",
+          "expect": "90"
+        },
+        {
+          "input": "{\"angle_label\": \"H\", \"known_angles\": {}, \"constraints\": {}}",
+          "expect": "None"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle calculation"
+      ]
+    },
+    {
+      "name": "map_measure_to_option",
+      "signature": "(measure:float, options:list)->str",
+      "purpose": "To map a calculated angle measure to the closest multiple-choice option.",
+      "inputs": [
+        "measure",
+        "options"
+      ],
+      "outputs": "The label of the closest matching option.",
+      "edge_cases": [
+        "If the measure does not match any option, return 'None'."
+      ],
+      "tests": [
+        {
+          "input": "{\"measure\": 97, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}]}",
+          "expect": "\"A\""
+        },
+        {
+          "input": "{\"measure\": 100, \"options\": [{\"label\": \"A\", \"text\": \"97\"}, {\"label\": \"B\", \"text\": \"102\"}]}",
+          "expect": "\"B\""
+        }
+      ],
+      "tags": [
+        "multiple choice",
+        "option mapping"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "determine_angle_measure",
+    "map_measure_to_option"
+  ]
+}

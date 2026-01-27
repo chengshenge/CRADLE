@@ -1,0 +1,65 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_in_diagram",
+      "signature": "(image_hash:str, object_properties:dict)->list",
+      "purpose": "Identify and count objects in a diagram based on specified properties such as size, material, and shape.",
+      "inputs": [
+        "image_hash",
+        "object_properties"
+      ],
+      "outputs": "list of identified objects with their properties",
+      "edge_cases": [
+        "Objects partially obscured",
+        "Objects with ambiguous properties"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_properties\": {\"size\": \"large\", \"material\": \"rubber\", \"shape\": \"sphere\"}}",
+          "expect": "[]"
+        },
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_properties\": {\"size\": \"big\", \"material\": \"shiny\", \"shape\": \"cylinder\"}}",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "object identification"
+      ]
+    },
+    {
+      "name": "count_remaining_objects",
+      "signature": "(total_objects:int, objects_to_subtract:list)->int",
+      "purpose": "Calculate the number of remaining objects after subtracting specified objects.",
+      "inputs": [
+        "total_objects",
+        "objects_to_subtract"
+      ],
+      "outputs": "integer representing remaining objects",
+      "edge_cases": [
+        "No objects to subtract",
+        "All objects subtracted"
+      ],
+      "tests": [
+        {
+          "input": "{\"total_objects\": 10, \"objects_to_subtract\": [2, 3]}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"total_objects\": 5, \"objects_to_subtract\": [5]}",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "object counting",
+        "subtraction"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "count_remaining_objects"
+  ]
+}

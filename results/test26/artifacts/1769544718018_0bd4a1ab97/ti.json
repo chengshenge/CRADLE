@@ -1,0 +1,48 @@
+{
+  "problem_state_summary": "The problem involves analyzing a diagram to count the remaining objects after removing specific types based on their properties. The task is to subtract all large rubber spheres and big shiny cylinders from the total number of objects. The image is supposed to contain various objects with different properties such as size, material, and shape. However, the image does not clearly show large rubber spheres or big shiny cylinders, making it difficult to perform the required subtractions. The problem requires an integer answer representing the number of objects left after the specified subtractions. The ambiguity in the image and the lack of clarity in object identification are significant challenges in solving this problem.",
+  "entities": [
+    "large rubber spheres",
+    "big shiny cylinders",
+    "objects"
+  ],
+  "unknowns": [
+    "number of objects left"
+  ],
+  "required_operations": [
+    "Identify large rubber spheres in the diagram",
+    "Identify big shiny cylinders in the diagram",
+    "Subtract identified large rubber spheres from total",
+    "Subtract identified big shiny cylinders from total",
+    "Count remaining objects"
+  ],
+  "blockers": [
+    "The image does not clearly show large rubber spheres",
+    "The image does not clearly show big shiny cylinders"
+  ],
+  "risk_checks": [
+    "label-to-segment mapping",
+    "clarity of object properties",
+    "subjective judgment on size and material"
+  ],
+  "multiple_choice": {
+    "is_mcq": false,
+    "options": [],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "object counting",
+    "visual analysis",
+    "ambiguity"
+  ]
+}
