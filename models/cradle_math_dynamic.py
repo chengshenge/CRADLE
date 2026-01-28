@@ -1,3 +1,4 @@
+AGENT_VERSION = "cradle_math_dynamic_trace_v10_2026-01-27"
 import ast
 import json
 import os
@@ -1621,6 +1622,31 @@ def _infer_ans_name_from_code(code: str) -> Optional[str]:
         return cand
     return cand
 
+def _auto_assign_tool_calls(code: str) -> str:
+    """Rewrite common bare helper calls so downstream placeholders can be rendered.
+
+    Examples:
+      "sympy_solve('x-1', 'x')" -> "ans = sympy_solve('x-1', 'x')"
+      "a=1; calc_numeric('2+2')" -> "a=1; ans = calc_numeric('2+2')"
+
+    This is intentionally conservative: only rewrites a statement when it has
+    no '=' and begins with one of the known helper functions.
+    """
+    if not isinstance(code, str) or not code.strip():
+        return code
+    parts = [p.strip() for p in code.split(";")]
+    new_parts: List[str] = []
+    for p in parts:
+        if not p:
+            continue
+        # Only rewrite if it's a bare call (no assignment) and starts with a known helper.
+        if ("=" not in p) and re.match(r"^(sympy_solve|calc_numeric)\s*\(", p):
+            new_parts.append("ans = " + p)
+        else:
+            new_parts.append(p)
+    return "; ".join(new_parts)
+
+
 
 def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
     """Execute python code in a constrained context.
@@ -1664,6 +1690,9 @@ def safe_exec(code: str, g: Dict[str, Any]) -> Tuple[str, Optional[str]]:
 
 # (sys is used in safe_exec; keep import local to avoid global denylist concerns)
 import sys  # noqa: E402
+
+AGENT_VERSION = "trace_v9_2026-01-27"
+
 
 
 # ============================================================
@@ -1900,6 +1929,12 @@ class CradleMathDynamicAgent:
             self.json_max_retries = max(int(self.json_max_retries), 2)
         except Exception:
             self.json_max_retries = 2
+
+        # Version + file path (helps verify which agent code is actually running)
+        try:
+            logging.info(f"CradleMathDynamicAgent version={AGENT_VERSION} file={__file__}")
+        except Exception:
+            pass
 
         # Normalize image_steps (if provided as comma string elsewhere, caller should split).
         if self.image_steps is not None and not isinstance(self.image_steps, list):
@@ -2493,7 +2528,7 @@ Return STRICT JSON:
     ) -> List[str]:
         """Create a readable, stage-by-stage trace (no gigantic prompts)."""
         lines: List[str] = []
-        lines.append(f"RUN {run_id} | prompt_hash={prompt_hash} | img_hash={img_hash}")
+        lines.append(f"RUN {run_id} | agent_version={AGENT_VERSION} | prompt_hash={prompt_hash} | img_hash={img_hash}")
         # Include a short question preview for humans
         q_preview = _one_line(user_prompt, 240)
         lines.append(f"QUESTION: {q_preview}")
@@ -2835,6 +2870,7 @@ Return STRICT JSON:
             img_hash = None
 
         obs.meta["run_id"] = run_id
+        obs.meta["agent_version"] = AGENT_VERSION
         obs.meta["llm_calls"] = llm_calls
         obs.meta["img_hash"] = img_hash
 
@@ -2851,6 +2887,7 @@ Return STRICT JSON:
         tool_logs = []
         draft = ""
         final_answer = ""
+        draft_line = ""  # always defined to avoid UnboundLocalError
 
         try:
 
@@ -3175,7 +3212,9 @@ Return STRICT JSON:
                     action = step.get("action")
                     intention = step.get("intention", "")
                     if action == "python":
-                        code = step.get("code", "")
+                        raw_code = step.get("code", "")
+
+                        code = _auto_assign_tool_calls(str(raw_code))
                         out, err = safe_exec(code, skill_mgr.ctx)
                         # Infer a generic 'ans' variable for later placeholders.
                         try:
@@ -3191,6 +3230,7 @@ Return STRICT JSON:
                                 "action": "python",
                                 "intention": intention,
                                 "code": code,
+                                "raw_code": raw_code,
                                 "stdout": out,
                                 "error": err,
                             }
@@ -3333,6 +3373,19 @@ Return STRICT JSON:
                 + draft
             )
             # Decide whether to run SR (self-reflection).
+            # NOTE: draft_line must be defined before we can decide; otherwise UnboundLocalError can occur.
+            draft_line = (draft or "").strip()
+            if draft_line and not draft_line.startswith("Answer:"):
+                draft_line = "Answer: " + draft_line
+
+            # If draft contains placeholders (e.g., Answer: {d_val:.1f}), try to render using current ctx.
+            try:
+                rendered, rerr = render_placeholders(draft_line, skill_mgr.ctx)
+                if rerr is None and rendered:
+                    draft_line = rendered.strip()
+            except Exception:
+                pass
+
             sr = {
                 "final_answer": "",
                 "issues_found": [],
@@ -3341,7 +3394,12 @@ Return STRICT JSON:
                 "answer_correct": None,
             }
             python_failed = any((isinstance(e, dict) and e.get("type") == "python_error") for e in errors)
-            need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+            try:
+                need_sr = (not _looks_valid_answer_line(draft_line)) or python_failed
+            except Exception as _e:
+                errors.append({"stage": "SR_GUARD", "type": "guard_error", "error": str(_e)})
+                need_sr = True
+
             # If draft looks valid and no python failures, skip SR to avoid harmful overrides.
             if need_sr:
                 with _stage("SR"):
@@ -3363,19 +3421,19 @@ Return STRICT JSON:
                     if _mk:
                         errors.append({'stage':'SR','type':'missing_keys','missing':_mk})
 
-
-            draft_line = (draft or "").strip()
-            if draft_line and not draft_line.startswith("Answer:"):
-                draft_line = "Answer: " + draft_line
-
-
-            # If draft still contains unresolved placeholders (e.g., Answer: {ans}), try to render from ctx.
-            try:
-                rendered, rerr = render_placeholders(draft_line, skill_mgr.ctx)
-                if rerr is None and rendered:
-                    draft_line = rendered.strip()
-            except Exception:
-                pass
+                    # Render any placeholders in SR answer using current ctx to avoid "Answer: {x}" leaks.
+                    try:
+                        if isinstance(sr, dict) and sr.get("final_answer"):
+                            fa = str(sr.get("final_answer") or "").strip()
+                            if fa and not fa.startswith("Answer:"):
+                                fa = "Answer: " + fa
+                            rendered, rerr = render_placeholders(fa, skill_mgr.ctx)
+                            if rerr is None and rendered:
+                                sr["final_answer"] = rendered.strip()
+                            else:
+                                sr["final_answer"] = fa
+                    except Exception:
+                        pass
 
             # If still invalid, try rendering AP.final_format using ctx['ans'].
             try:

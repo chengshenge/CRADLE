@@ -1,0 +1,58 @@
+{
+  "problem_state_summary": "The problem involves determining the measure of angle H from a geometric diagram. The diagram is expected to contain labeled points, including point H, where the angle measure is required. The task is to find the measure of angle H, which is related to other angles or geometric properties in the diagram. The measure of angle H is currently unreadable in the diagram, creating a challenge in directly obtaining the value. The problem is presented as a multiple-choice question with four options. The final answer must be mapped to one of these options.",
+  "entities": [
+    "angle H",
+    "points A, B, C, D, E, F, G, H"
+  ],
+  "unknowns": [
+    "m∠H"
+  ],
+  "required_operations": [
+    "Identify relationships or properties in the diagram that can help deduce m∠H",
+    "Map the deduced value to one of the given options"
+  ],
+  "blockers": [
+    "m∠H"
+  ],
+  "risk_checks": [
+    "Ensure label-to-segment mapping is clear",
+    "Check for any angle markers or indicators that might assist in deducing m∠H"
+  ],
+  "multiple_choice": {
+    "is_mcq": true,
+    "options": [
+      {
+        "label": "A",
+        "text": "97"
+      },
+      {
+        "label": "B",
+        "text": "102"
+      },
+      {
+        "label": "C",
+        "text": "107"
+      },
+      {
+        "label": "D",
+        "text": "122"
+      }
+    ],
+    "answer_format": "Return final as option label or exact value per instruction"
+  },
+  "grounding": {
+    "region_to_detect": "diagram",
+    "must_use_fields": [
+      "math_elements_extracted.known",
+      "math_elements_extracted.unknown",
+      "math_elements_extracted.relations",
+      "math_elements_extracted.constraints",
+      "math_elements_extracted.options"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "angle measurement",
+    "diagram interpretation"
+  ]
+}

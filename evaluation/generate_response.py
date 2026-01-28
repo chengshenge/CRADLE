@@ -177,6 +177,8 @@ def main():
     # agent wrapper
     if args.agent == 'cradle_math_dynamic':
         from models import cradle_math_dynamic
+        logging.info(f"Using cradle_math_dynamic module file: {cradle_math_dynamic.__file__}")
+        logging.info(f"cradle_math_dynamic.AGENT_VERSION: {getattr(cradle_math_dynamic, 'AGENT_VERSION', 'unknown')}")
 
         attach_all = (args.attach_image_mode == 'all')
         image_steps = [s.strip() for s in args.image_steps.split(',') if s.strip()]

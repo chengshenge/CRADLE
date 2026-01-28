@@ -1,0 +1,56 @@
+{
+  "selected_skills": [
+    {
+      "name": "identify_objects_in_diagram",
+      "purpose": "To identify and extract relevant geometric elements and their relationships from the diagram.",
+      "how_to_use": "Use the image hash and object attributes to identify points, lines, and angles in the diagram."
+    },
+    {
+      "name": "sympy_solve",
+      "purpose": "To solve equations derived from the geometric relationships in the diagram.",
+      "how_to_use": "Use the equations and variables to find the measure of angle H."
+    },
+    {
+      "name": "format_final",
+      "purpose": "To format the final answer in the required format.",
+      "how_to_use": "Use the final answer to return it in the format: Answer: ..."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "deduce_angle_measure",
+      "signature": "(known_angles:dict, relations:list)->float",
+      "purpose": "To deduce the measure of an unknown angle using known angles and geometric relationships.",
+      "inputs": [
+        "known_angles",
+        "relations"
+      ],
+      "outputs": "The measure of the unknown angle.",
+      "edge_cases": [
+        "All known angles are required to deduce the unknown angle.",
+        "Relations must be correctly identified and applicable."
+      ],
+      "tests": [
+        {
+          "input": "{\"A\": 90, \"B\": 45}, [\"A + B + C = 180\"]",
+          "expect": "45"
+        },
+        {
+          "input": "{\"A\": 60, \"B\": 60}, [\"A + B + C = 180\"]",
+          "expect": "60"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle deduction",
+        "diagram interpretation"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "deduce_angle_measure",
+    "sympy_solve",
+    "format_final"
+  ]
+}

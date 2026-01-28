@@ -1,0 +1,31 @@
+[
+  {
+    "i": 0,
+    "action": "reason",
+    "intention": "Identify blockers and known values",
+    "note": "The problem requires finding ∠BOC using given ∠A = 110° and angle bisectors OB, OC."
+  },
+  {
+    "i": 1,
+    "action": "reason",
+    "intention": "Use angle sum property and bisector properties",
+    "note": "In △ABC, ∠A + ∠B + ∠C = 180°. OB and OC bisect ∠B and ∠C, so ∠BOC = 90° + ∠A/2."
+  },
+  {
+    "i": 2,
+    "action": "python",
+    "intention": "Calculate ∠BOC using known values",
+    "code": "angle_A = 110; angle_BOC = 90 + angle_A / 2; angle_BOC",
+    "raw_code": "angle_A = 110; angle_BOC = 90 + angle_A / 2; angle_BOC",
+    "stdout": "145.0",
+    "error": null
+  },
+  {
+    "i": 3,
+    "action": "normalize",
+    "intention": "Format the final answer",
+    "text": "Answer: 145°",
+    "raw_text": "Answer: 145°",
+    "render_error": null
+  }
+]

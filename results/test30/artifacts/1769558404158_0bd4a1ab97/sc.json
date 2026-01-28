@@ -1,0 +1,65 @@
+{
+  "selected_skills": [],
+  "new_skill_specs": [
+    {
+      "name": "identify_objects_in_diagram",
+      "signature": "(image_hash:str, object_attributes:dict)->list",
+      "purpose": "Identify and count objects in a diagram based on specified attributes such as size, material, and shape.",
+      "inputs": [
+        "image_hash",
+        "object_attributes"
+      ],
+      "outputs": "list of identified objects with their counts",
+      "edge_cases": [
+        "Objects are partially obscured",
+        "Attributes are not clearly distinguishable"
+      ],
+      "tests": [
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_attributes\": {\"size\": \"large\", \"material\": \"rubber\", \"shape\": \"sphere\"}}",
+          "expect": "[]"
+        },
+        {
+          "input": "{\"image_hash\": \"f4e0c08abffa\", \"object_attributes\": {\"size\": \"big\", \"material\": \"shiny\", \"shape\": \"cylinder\"}}",
+          "expect": "[]"
+        }
+      ],
+      "tags": [
+        "visual analysis",
+        "object recognition"
+      ]
+    },
+    {
+      "name": "subtract_objects",
+      "signature": "(total:int, objects_to_subtract:list)->int",
+      "purpose": "Subtract specified objects from the total count.",
+      "inputs": [
+        "total",
+        "objects_to_subtract"
+      ],
+      "outputs": "remaining object count",
+      "edge_cases": [
+        "Subtracting more objects than present",
+        "Empty list of objects to subtract"
+      ],
+      "tests": [
+        {
+          "input": "{\"total\": 10, \"objects_to_subtract\": [2, 3]}",
+          "expect": "5"
+        },
+        {
+          "input": "{\"total\": 5, \"objects_to_subtract\": [6]}",
+          "expect": "0"
+        }
+      ],
+      "tags": [
+        "arithmetic",
+        "object counting"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "identify_objects_in_diagram",
+    "subtract_objects"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "selected_skills": [
+    {
+      "name": "calc_numeric",
+      "purpose": "Compute numeric expression in python.",
+      "how_to_use": "Use to calculate the measure of angle ∠BOC using the angle sum property and properties of angle bisectors."
+    },
+    {
+      "name": "format_final",
+      "purpose": "Return exactly one line: Answer: ...",
+      "how_to_use": "Use to format the final answer as a single line output."
+    }
+  ],
+  "new_skill_specs": [
+    {
+      "name": "calculate_angle_bisector_intersection",
+      "signature": "(angle_A, options)->angle_BOC",
+      "purpose": "Calculate the measure of angle ∠BOC using the given angle ∠A and properties of angle bisectors.",
+      "inputs": [
+        "angle_A",
+        "options"
+      ],
+      "outputs": "angle_BOC",
+      "edge_cases": [
+        "Ensure angle ∠A is valid and within the range of possible triangle angles."
+      ],
+      "tests": [
+        {
+          "input": "110°, [{'label': 'A', 'text': '135°'}, {'label': 'B', 'text': '140°'}, {'label': 'C', 'text': '145°'}, {'label': 'D', 'text': '150°'}]",
+          "expect": "145°"
+        }
+      ],
+      "tags": [
+        "geometry",
+        "angle bisectors",
+        "triangle"
+      ]
+    }
+  ],
+  "skill_priority": [
+    "calculate_angle_bisector_intersection",
+    "calc_numeric",
+    "format_final"
+  ]
+}
