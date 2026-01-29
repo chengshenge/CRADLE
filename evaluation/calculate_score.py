@@ -16,12 +16,12 @@ from utilities import read_json, save_json
 
 def get_most_similar(prediction, choices):
     """
-    Use the Levenshtein distance (or edit distance) to determine which of the choices is most similar to the given prediction
+    Use the Levenshtein distance (or edit distance) to determine which of the choices
+    is most similar to the given prediction
     """
     distances = [distance(prediction, choice) for choice in choices]
     ind = distances.index(min(distances))
     return choices[ind]
-    # return min(choices, key=lambda choice: distance(prediction, choice))
 
 
 def normalize_extracted_answer(
@@ -58,6 +58,7 @@ def normalize_extracted_answer(
         else:
             # select the most similar option
             normalized_extraction = get_most_similar(extraction, choices)
+
         assert normalized_extraction in choices
 
     elif answer_type == 'integer':
@@ -78,6 +79,13 @@ def normalize_extracted_answer(
         except Exception:
             normalized_extraction = None
 
+    else:
+        # fallback
+        try:
+            normalized_extraction = str(extraction)
+        except Exception:
+            normalized_extraction = None
+
     return normalized_extraction
 
 
@@ -86,25 +94,30 @@ def safe_equal(prediction, answer):
     Check if the prediction is equal to the answer, even if they are of different types
     """
     try:
-        if prediction == answer:
-            return True
-        return False
+        return prediction == answer
     except Exception as e:
         logging.info(e)
         return False
 
 
 def get_acc_with_contion(res_pd, key, value):
+    """
+    Return: (correct_count, total_count, accuracy)
+    Robust against empty slices and malformed 'skills' values.
+    """
     if key == 'skills':
-        # if value in res_pd[key]:
-        total_pd = res_pd[res_pd[key].apply(lambda x: value in x)]
+        total_pd = res_pd[res_pd[key].apply(lambda x: isinstance(x, list) and value in x)]
     else:
         total_pd = res_pd[res_pd[key] == value]
 
-    correct_pd = total_pd[total_pd['true_false'] == True]
-    acc = len(correct_pd) / len(total_pd)
+    total = len(total_pd)
+    if total == 0:
+        return 0, 0, 0.0
 
-    return len(correct_pd), len(total_pd), acc
+    correct_pd = total_pd[total_pd['true_false'] == True]
+    correct = len(correct_pd)
+    acc = correct / total
+    return correct, total, acc
 
 
 def parse_args():
@@ -118,7 +131,8 @@ def parse_args():
     parser.add_argument('--rerun', action='store_true', help='rerun the evaluation')
     parser.add_argument('--caculate_gain', action='store_true', help='caculate the socre gains over random guess')
     parser.add_argument(
-        '--ignore_empty_extractions', action='store_true', help='If true, ignore empty extractions, otherwise process'
+        '--ignore_empty_extractions', action='store_true',
+        help='If true, ignore empty extractions, otherwise process'
     )
     parser.add_argument('--random_file', type=str, default='score_random_guess.json')
     # output
@@ -135,8 +149,6 @@ def main():
 
     logging.info(f"Loading dataset {args.dataset_name}, split {args.test_split_name}...")
     data_list = load_dataset(args.dataset_name, split=args.test_split_name)
-    # Convert Hugging Face data into dictionary to match local data format
-    # TODO: Convert scripts not to depend on dictionary .json format. Update to use .jsonl format
     ground_truth_problems = {item['pid']: item for item in data_list}
 
     output_file_path = os.path.join(args.output_dir, args.output_file)
@@ -153,6 +165,7 @@ def main():
 
     logging.info("For each problem normalize extractions and get True False value")
     update_json_flag = False
+
     for pid in tqdm(test_pids):
         problem = results[pid]
 
@@ -162,11 +175,13 @@ def main():
             if 'true_false' in problem:
                 del problem['true_false']
 
-        choices = problem['choices']
-        question_type = problem['question_type']
-        answer_type = problem['answer_type']
-        precision = problem['precision']
-        extraction = problem['extraction']
+        choices = problem.get('choices', None)
+        question_type = problem.get('question_type', None)
+        answer_type = problem.get('answer_type', None)
+        precision = problem.get('precision', None)
+
+        # extraction 必须存在；如果不存在就给 None（会导致 prediction=None）
+        extraction = problem.get('extraction', None)
 
         if 'answer' in problem:
             answer = problem['answer']
@@ -174,7 +189,6 @@ def main():
             answer = ground_truth_problems[pid]['answer']
             problem['answer'] = answer
 
-        # normalize the extracted answer to match the answer type
         prediction = normalize_extracted_answer(
             extraction,
             choices,
@@ -184,26 +198,22 @@ def main():
             ignore_empty_extractions=args.ignore_empty_extractions,
         )
 
-        # verify the prediction is true or false
         true_false = safe_equal(prediction, answer)
 
-        # update the problem
+        # update flags
         if "true_false" not in problem:
             update_json_flag = True
-
-        elif true_false != problem['true_false']:
+        elif true_false != problem.get('true_false'):
             update_json_flag = True
 
         if "prediction" not in problem:
             update_json_flag = True
-
-        elif prediction != problem['prediction']:
+        elif prediction != problem.get('prediction'):
             update_json_flag = True
 
         problem['prediction'] = prediction
         problem['true_false'] = true_false
 
-    # save the updated json
     if update_json_flag:
         logging.info("Updating input file with predictions and true_false...")
         save_json(results, output_file_path)
@@ -213,21 +223,21 @@ def main():
     total = len(test_pids)
     correct = 0
     for pid in tqdm(test_pids):
-        if results[pid]['true_false']:
+        if results[pid].get('true_false', False):
             correct += 1
 
-    accuracy = correct / total
+    accuracy = (correct / total) if total > 0 else 0.0
     scores = {"average": {"accuracy": accuracy, "correct": correct, "total": total}}
 
     # [3] Calculate the fine-grained accuracy scores
-    # merge the 'metadata' attribute into the data
-    for pid in results:
-        results[pid].update(results[pid].pop('metadata'))
+    # merge the 'metadata' attribute into the data (robust to missing metadata)
+    for pid in list(results.keys()):
+        meta = results[pid].pop('metadata', {}) or {}
+        if isinstance(meta, dict):
+            results[pid].update(meta)
 
-    # convert the data to a pandas DataFrame
     results_df = pd.DataFrame(results).T
 
-    # asign the target keys for evaluation
     target_keys = [
         'question_type',
         'answer_type',
@@ -241,25 +251,29 @@ def main():
     ]
 
     for key in target_keys:
-        # get the unique values of the key
+        if key not in results_df.columns:
+            # 某些字段可能缺失，直接跳过
+            continue
+
         if key == 'skills':
-            # the value is a list
+            # 修复点：不能用 results_df[key][i]（按label取），要用 iloc 或更稳的 flatten
             values = []
-            for i in range(len(results_df)):
-                values += results_df[key][i]
+            for x in results_df[key].tolist():
+                if isinstance(x, list):
+                    values.extend(x)
             values = list(set(values))
         else:
-            values = results_df[key].unique()
+            values = results_df[key].dropna().unique()
 
-        # calculate the accuracy for each value
         scores[key] = {}
         for value in values:
-            correct, total, acc = get_acc_with_contion(results_df, key, value)
-            if total > 0:
-                scores[key][value] = {"accuracy": acc, "correct": correct, "total": total}
+            c, t, acc = get_acc_with_contion(results_df, key, value)
+            if t > 0:
+                scores[key][value] = {"accuracy": acc, "correct": c, "total": t}
 
-        # sort the scores by accuracy
-        scores[key] = dict(sorted(scores[key].items(), key=lambda item: float(item[1]['accuracy']), reverse=True))
+        scores[key] = dict(
+            sorted(scores[key].items(), key=lambda item: float(item[1]['accuracy']), reverse=True)
+        )
 
     # [4] Calculate the score gains over random guess
     if args.caculate_gain:
@@ -311,7 +325,6 @@ def get_full_metrics_str(metrics_dict) -> str:
             correct = sub_item["correct"]
             total = sub_item["total"]
             values = [f"{acc * 100:.2f}%", f"({correct}/{total})"]
-
             formatted_item_dict[sub_key] = values
 
         category_df = pd.DataFrame(formatted_item_dict, index=["Accuracy", "Correct/Total"])
