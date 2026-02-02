@@ -163,6 +163,7 @@ def answers_agree(a: str, b: str, problem: Dict[str, Any]) -> bool:
 # Safe-ish code execution
 # -----------------------------
 _BANNED_CODE_PATTERNS = [
+    r"(?m)^\s*(import|from)\b",
     r"\bimport\s+os\b",
     r"\bimport\s+sys\b",
     r"\bimport\s+subprocess\b",
@@ -193,6 +194,78 @@ def _is_code_safe_enough(code: str) -> Tuple[bool, str]:
         if re.search(pat, code):
             return False, f"Blocked by safety pattern: {pat}"
     return True, ""
+
+
+# Allow-listed import rewriting (since sandbox disables __import__)
+_ALLOWED_IMPORT_MODULES = {"math", "fractions", "decimal"}
+_IMPORT_LINE_RE = re.compile(r"^\s*import\s+(.+?)\s*$")
+_FROM_IMPORT_LINE_RE = re.compile(r"^\s*from\s+([a-zA-Z_]\w*)\s+import\s+(.+?)\s*$")
+
+def rewrite_safe_imports(code: str) -> Tuple[str, Optional[str]]:
+    """Rewrite a small subset of safe imports to assignments.
+
+    Why: the sandbox removes the __import__ builtin, so `import math` raises:
+          ImportError: __import__ not found
+
+    Supported patterns:
+      - import math
+      - import math as m
+      - import math, decimal
+      - from math import sqrt
+      - from math import sqrt as s, sin
+
+    Everything else is rejected.
+    """
+    if not isinstance(code, str):
+        try:
+            code = str(code)
+        except Exception:
+            return "", "Code is not a string"
+
+    out_lines: List[str] = []
+    for line in code.splitlines():
+        m = _IMPORT_LINE_RE.match(line)
+        if m:
+            rest = m.group(1)
+            parts = [p.strip() for p in rest.split(",")]
+            for part in parts:
+                if not part:
+                    continue
+                m2 = re.match(r"^([a-zA-Z_]\w*)(?:\s+as\s+([a-zA-Z_]\w*))?$", part)
+                if not m2:
+                    return "", f"Disallowed import syntax: {line.strip()}"
+                mod = m2.group(1)
+                alias = m2.group(2)
+                if mod not in _ALLOWED_IMPORT_MODULES:
+                    return "", f"Disallowed import: {mod}"
+                # Module object is already in globals; just bind alias if needed.
+                if alias:
+                    out_lines.append(f"{alias} = {mod}")
+            continue
+
+        m = _FROM_IMPORT_LINE_RE.match(line)
+        if m:
+            mod = m.group(1)
+            items = (m.group(2) or "").strip()
+            if mod not in _ALLOWED_IMPORT_MODULES:
+                return "", f"Disallowed import: {mod}"
+            if items == "*" or "*" in items:
+                return "", f"Disallowed star import from {mod}"
+            parts = [p.strip() for p in items.split(",") if p.strip()]
+            if not parts:
+                return "", f"Disallowed import syntax: {line.strip()}"
+            for part in parts:
+                m2 = re.match(r"^([a-zA-Z_]\w*)(?:\s+as\s+([a-zA-Z_]\w*))?$", part)
+                if not m2:
+                    return "", f"Disallowed import syntax: {line.strip()}"
+                name = m2.group(1)
+                alias = m2.group(2) or name
+                out_lines.append(f"{alias} = {mod}.{name}")
+            continue
+
+        out_lines.append(line)
+
+    return "\n".join(out_lines), None
 
 
 def _sandbox_worker(code: str, q) -> None:
@@ -257,6 +330,12 @@ def evaluate_code_sandbox(code_string: str, timeout_s: int = 5) -> Tuple[str, Op
     Returns: (stdout, error_string_or_None)
     """
     code = code_string or ""
+
+    # Rewrite allow-listed imports to avoid __import__ in the sandbox
+    code, import_err = rewrite_safe_imports(code)
+    if import_err:
+        return "", import_err
+
     ok, reason = _is_code_safe_enough(code)
     if not ok:
         return "", reason
@@ -410,6 +489,7 @@ Goal: Write a SHORT Python program to solve the problem.
 Rules:
 - Output ONLY a python code block fenced with ```python ...```. No prose.
 - The code MUST end by printing ONLY the final answer (single line) via print(...).
+- Do NOT use any import/from statements. The modules math, fractions, decimal are already available as variables.
 - No file I/O, no network, no subprocess, no OS/system access.
 - You may use: math, fractions, decimal.
 - If choices are provided, you MUST print EXACTLY one of the provided choices (copy-paste the text).
@@ -601,6 +681,7 @@ def parse_args():
     # output
     parser.add_argument('--output_dir', type=str, default='./results/bard')
     parser.add_argument('--output_file', type=str, default='output_bard.json')
+    parser.add_argument('--log_file', type=str, default='agent_logs.json', help='Write detailed agent module logs/errors to this separate JSON file (in output_dir).')
     parser.add_argument('--max_num_problems', type=int, default=-1, help='The number of problems to run')
     parser.add_argument('--save_every', type=int, default=100, help='save every n problems')
 
@@ -721,6 +802,7 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
     output_file_path = os.path.join(args.output_dir, args.output_file)
+    log_file_path = os.path.join(args.output_dir, args.log_file)
 
     # load results
     if os.path.exists(output_file_path):
@@ -729,6 +811,16 @@ def main():
         results = read_json(output_file_path)
     else:
         results = {}
+
+    # load agent logs (kept separate from answers)
+    if os.path.exists(log_file_path):
+        try:
+            logging.info(f"Reading existing agent logs: {log_file_path}...")
+            agent_logs = read_json(log_file_path)
+        except Exception:
+            agent_logs = {}
+    else:
+        agent_logs = {}
 
     # skipping
     skip_pids = []
@@ -784,16 +876,29 @@ def main():
                 # For compatibility with MathVista scoring scripts, keep top-level 'response'
                 results[problem_id]['response'] = final_answer
 
-                # Structured module logs (per your requested format)
-                results[problem_id]['agent_trace'] = trace
-
-                # Also bubble-up an easy-to-scan error list
+                # Save detailed module logs/errors to the separate log file (NOT mixed into output_file)
                 errors = []
                 for mname, mval in trace.get("modules", {}).items():
                     err = mval.get("error") if isinstance(mval, dict) else None
                     if err:
                         errors.append({"module": mname, "error": err})
-                results[problem_id]['errors'] = errors
+
+                agent_logs[problem_id] = {
+                    "pid": problem_id,
+                    "final_answer": final_answer,
+                    "answer_a": trace.get("answer_a", ""),
+                    "answer_b": trace.get("answer_b", ""),
+                    "modules": trace.get("modules", {}),
+                    "errors": errors,
+                    # Include minimal context for debugging (kept out of scoring file)
+                    "question": problem.get("question", ""),
+                    "image": problem.get("image", ""),
+                    "choices": problem.get("choices", None),
+                    "unit": problem.get("unit", None),
+                    "precision": problem.get("precision", None),
+                    "answer_type": problem.get("answer_type", None),
+                    "question_type": problem.get("question_type", None),
+                }
 
                 logging.debug(f"[Agent] answer_a={trace.get('answer_a')} answer_b={trace.get('answer_b')} final={final_answer}")
 
@@ -802,11 +907,22 @@ def main():
             logging.error(e)
             results[problem_id]['error'] = str(e)
             results[problem_id]['response'] = "UNSURE"
+            agent_logs[problem_id] = {
+                "pid": problem_id,
+                "final_answer": "UNSURE",
+                "errors": [{"module": "pipeline", "error": str(e)}],
+                "question": problem.get("question", ""),
+                "image": problem.get("image", ""),
+                "choices": problem.get("choices", None),
+            }
 
         if (i % args.save_every == 0 and i > 0) or i == len(test_pids) - 1:
             try:
                 save_json(results, output_file_path)
                 logging.info(f"Saved results to {output_file_path}")
+                if args.agent_pipeline == "agent":
+                    save_json(agent_logs, log_file_path)
+                    logging.info(f"Saved agent logs to {log_file_path}")
             except Exception as e:
                 logging.info(f"Error in saving {output_file_path}")
                 logging.info(e)
