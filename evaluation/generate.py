@@ -160,6 +160,192 @@ def answers_agree(a: str, b: str, problem: Dict[str, Any]) -> bool:
 
 
 # -----------------------------
+# Post-processing / heuristics
+# -----------------------------
+_DISTANCE_KEYWORDS = {
+    "distance", "displacement", "compressed", "compression", "stretch", "stretched",
+    "length", "height", "width", "radius", "diameter", "depth", "separation",
+    "spring", "extension"
+}
+_VISION_ONLY_KEYWORDS = {
+    "how many", "count", "number of", "total volume", "what is the total", "measuring cup",
+    "shown", "in the image", "in the picture", "in the diagram", "in the chart", "in the graph",
+    "see the figure", "from the figure", "from the image", "read", "estimate", "measure"
+}
+_CLEVR_OBJECT_WORDS = {"sphere","cylinder","cube","block","metal","rubber","shiny","matte","large","small","gray","grey","red","blue","green","yellow","brown","purple","cyan"}
+def _count_numeric_tokens(s: str) -> int:
+    if not s:
+        return 0
+    return len(_NUM_RE.findall(s))
+
+def _infer_decimal_places(problem: Dict[str, Any]) -> Optional[int]:
+    """
+    Infer how many decimal places to output for numeric answers.
+
+    MathVista sometimes uses:
+      - precision as integer-like: 1 -> one decimal place (per their hints)
+      - or as a step size: 0.01 -> 2 decimals
+    We support both with a heuristic.
+    """
+    prec = problem.get("precision", None)
+    if prec is None:
+        return None
+    try:
+        p = float(prec)
+    except Exception:
+        return None
+
+    # Integer-like -> treat as decimal places
+    if abs(p - round(p)) < 1e-9 and 0 <= p <= 6:
+        return int(round(p))
+
+    # Step size -> decimals = -log10(step)
+    if p > 0 and p < 1:
+        try:
+            d = int(round(-math.log10(p)))
+            if 0 <= d <= 10:
+                return d
+        except Exception:
+            return None
+    return None
+
+def _format_float(x: float, digits: int) -> str:
+    s = f"{x:.{digits}f}"
+    # normalize negative zero
+    if s.startswith("-0"):
+        try:
+            if abs(float(s)) == 0.0:
+                s = s[1:]
+        except Exception:
+            pass
+    return s
+
+def _distance_like(problem: Dict[str, Any]) -> bool:
+    q = (problem.get("question") or "").lower()
+    if any(k in q for k in _DISTANCE_KEYWORDS):
+        return True
+    # If unit explicitly given and is length-like, also treat as distance-like
+    unit = (problem.get("unit") or "").lower()
+    if unit in {"m", "cm", "mm", "meter", "metre", "centimeter", "centimetre", "millimeter", "millimetre"}:
+        return True
+    return False
+
+def postprocess_answer(answer: str, problem: Dict[str, Any]) -> Tuple[str, List[str]]:
+    """
+    Postprocess an extracted answer string:
+      - normalize choice answers (already mostly handled by extraction)
+      - enforce integer formatting if needed
+      - enforce decimal places if precision is provided
+      - apply a conservative unit/scale rescue for distance-like problems when rounding collapses to 0.0
+    Returns: (processed_answer, flags)
+    """
+    flags: List[str] = []
+    ans = (answer or "").strip()
+    if ans == "":
+        return "", flags
+    if ans.lower() in {"unsure", "unable to determine", "cannot determine", "unknown"}:
+        return "UNSURE", flags
+
+    # Multi-choice: ensure exact match to a choice if possible
+    choices = problem.get("choices")
+    if choices:
+        extracted = extract_answer_from_text(ans, problem)
+        extracted = (extracted or "").strip()
+        if extracted:
+            return extracted, flags
+        return ans, flags
+
+    # Numeric formatting
+    atype = (problem.get("answer_type") or "").lower()
+    digits = _infer_decimal_places(problem)
+    fa = _try_parse_float(ans)
+    if fa is None:
+        return ans, flags
+
+    # integer requested
+    if atype in {"integer", "int"}:
+        iv = int(round(fa))
+        flags.append("formatted_integer")
+        return str(iv), flags
+
+    # float/number
+    if digits is None:
+        # leave as-is but normalize possible "-0.0"
+        if isinstance(fa, float) and abs(fa) == 0.0:
+            return "0", flags
+        return ans, flags
+
+    formatted = _format_float(fa, digits)
+    flags.append(f"formatted_dp_{digits}")
+
+    # Unit/scale rescue: if rounding collapses to 0.0 but value is small non-zero and distance-like
+    if _distance_like(problem) and digits >= 1:
+        zero_str = "0." + ("0" * digits)
+        if formatted == zero_str and abs(fa) > 0 and abs(fa) < 1:
+            for scale in (100.0, 1000.0):
+                y = fa * scale
+                cand = _format_float(y, digits)
+                if cand != zero_str:
+                    # plausibility window to avoid wild rescaling
+                    if 0.1 <= abs(y) <= 1000:
+                        formatted = cand
+                        flags.append(f"unit_rescale_x{int(scale)}")
+                        break
+
+    return formatted, flags
+
+def should_gate_task_inference(problem: Dict[str, Any], extra_context: str) -> Tuple[bool, str]:
+    """
+    Decide if Module-1 should be forced to UNSURE because the problem is likely vision-only.
+
+    Heuristic:
+      - If there are NO numeric tokens anywhere in question + choices, and the question looks like a measurement/counting task,
+        it's almost certainly vision-only.
+      - If CLEVR-like object words are present + counting operations are requested, and there is no explicit object list in text,
+        gate it.
+    """
+    q = (problem.get("question") or "")
+    choices = problem.get("choices") or []
+    text_blob = q + "\n" + "\n".join([str(c) for c in choices])
+    n_nums = _count_numeric_tokens(text_blob)
+
+    qlow = q.lower()
+    looks_vision = any(k in qlow for k in _VISION_ONLY_KEYWORDS)
+    has_obj_words = any(w in qlow for w in _CLEVR_OBJECT_WORDS)
+    county = ("how many" in qlow) or ("count" in qlow) or ("number of" in qlow)
+
+    # If no numbers at all, and it looks like read/measure/count -> gate
+    if n_nums == 0 and (looks_vision or county or has_obj_words):
+        return True, "vision_only_no_numbers"
+
+    # CLEVR-like: counting/manipulation with no structured object list in extra_context
+    if has_obj_words and county:
+        # naive check for an explicit object listing in extra_context (rare unless you have a detector)
+        if "objects" not in (extra_context or "").lower():
+            return True, "vision_only_clevr_like"
+
+    return False, ""
+
+def is_code_suspicious(code: str) -> Tuple[bool, str]:
+    """
+    Detect when Module-1 code likely 'invented' unseen scene/values (common failure mode for vision-only problems).
+    """
+    c = (code or "").strip().lower()
+    if not c:
+        return False, ""
+    if "print('unsure" in c or 'print("unsure' in c:
+        return False, ""
+    if "objects" in c and "[" in c and "]" in c:
+        if any(w in c for w in _CLEVR_OBJECT_WORDS):
+            return True, "constructed_objects_list"
+    # many string literals can be a sign of fabricated structured scene
+    n_quotes = c.count("'") + c.count('"')
+    if n_quotes >= 16 and any(w in c for w in _CLEVR_OBJECT_WORDS):
+        return True, "many_string_literals_clevr"
+    return False, ""
+
+
+# -----------------------------
 # Safe-ish code execution
 # -----------------------------
 _BANNED_CODE_PATTERNS = [
@@ -484,7 +670,7 @@ def build_problem_context(problem: Dict[str, Any], extra_context: Optional[str] 
 
 
 TASK_INFERENCE_SYSTEM = """You are Module-1 (Task Inference).
-Goal: Write a SHORT Python program to solve the problem.
+Goal: Write a SHORT Python program to solve the problem from the PROVIDED TEXT ONLY (no image).
 
 Rules:
 - Output ONLY a python code block fenced with ```python ...```. No prose.
@@ -493,6 +679,7 @@ Rules:
 - No file I/O, no network, no subprocess, no OS/system access.
 - You may use: math, fractions, decimal.
 - If choices are provided, you MUST print EXACTLY one of the provided choices (copy-paste the text).
+- If precision indicates decimal places, print with exactly that many decimal places (e.g., use format or round).
 - If you truly cannot solve from the given information, print UNSURE.
 
 Think silently; only output code."""
@@ -502,23 +689,30 @@ Think silently; only output code."""
 DIRECT_SOLVER_SYSTEM = """You are Module-3 (Direct Solver).
 Solve the problem using the provided image (if any) and text.
 
-Output format rules:
+Output format rules (very strict):
 - Output ONLY the final answer (no explanation).
 - If choices are provided, output EXACTLY one of the provided choices (copy-paste).
-- If numeric, output only the number (and unit only if explicitly requested by the question).
+- If answer_type is integer, output only the integer (no unit unless explicitly requested).
+- If precision indicates decimal places, output with exactly that many decimal places.
 - If you cannot determine, output UNSURE."""
 
 
 VERIFIER_SYSTEM = """You are Module-4 (Verifier).
-You will be given the original problem and two candidate answers:
+You will be given the original problem and two candidate answers plus additional evidence:
 
-- Answer_A: produced by executing code from Module-2 (may have runtime errors).
-- Answer_B: produced by the direct solver (Module-3).
+- Answer_A: produced by executing code from Module-2
+- Answer_B: produced by the direct solver (Module-3)
+- Code_A: the python program that produced Answer_A
+- Stdout_A: raw stdout from executing Code_A
+- Code_A_suspicious: whether Code_A likely fabricated unseen scene/values
 
-Task:
-- If both answers are the same (semantically), output that answer.
-- If one answer is UNSURE/empty/error and the other is not, choose the non-UNSURE answer.
-- If both differ and both look plausible, choose the one most consistent with the problem, choices, units, and precision.
+Decision rules:
+1) If both answers match semantically, output that answer.
+2) If one answer is UNSURE/empty/error and the other is not, choose the non-UNSURE answer.
+3) If Code_A_suspicious is True, distrust Answer_A unless Answer_B is also UNSURE/error.
+4) Prefer answers consistent with choices, units, and required precision/decimal places.
+5) If the problem can be solved purely from the textual information (e.g., uses given numbers/theorems) and Code_A is not suspicious,
+   prefer Answer_A. If the problem clearly requires reading/counting from the image and Answer_A is UNSURE, prefer Answer_B.
 
 Output ONLY the final answer (no explanation)."""
 
@@ -547,50 +741,76 @@ def run_agent_on_problem(
       M4 verifier -> final
     Returns (final_answer, agent_trace_dict)
     """
-    trace: Dict[str, Any] = {"modules": {}}
+    trace: Dict[str, Any] = {"modules": {}, "decision_flags": [], "notes": {}}
+
+    # Shared context string for prompts/logging
+    base_ctx = build_problem_context(problem, extra_context=query)
 
     # -------- Module 1: Task inference (code gen) --------
     m1 = ModuleLog()
-    m1.prompt = build_problem_context(problem, extra_context=query)
-    try:
-        raw = model.chat(
-            messages=[
-                {"role": "system", "content": TASK_INFERENCE_SYSTEM},
-                {"role": "user", "content": m1.prompt},
-            ],
-            decoded_image=None,
-            temperature=0.2,
-            max_tokens=max_tokens,
-        )
-        m1.raw = raw
-        m1.extracted = extract_python_code(raw)
-    except Exception as e:
-        m1.error = f"{e}"
+    m1.prompt = base_ctx
+
+    gate, gate_reason = should_gate_task_inference(problem, query)
+    if gate:
+        trace["decision_flags"].append(f"m1_gated:{gate_reason}")
+        m1.raw = "(skipped: vision-only gating)"
+        m1.extracted = "print('UNSURE')"
+    else:
+        try:
+            raw = model.chat(
+                messages=[
+                    {"role": "system", "content": TASK_INFERENCE_SYSTEM},
+                    {"role": "user", "content": m1.prompt},
+                ],
+                decoded_image=None,
+                temperature=0.2,
+                max_tokens=max_tokens,
+            )
+            m1.raw = raw
+            m1.extracted = extract_python_code(raw)
+        except Exception as e:
+            m1.error = f"{e}"
     trace["modules"]["task_inference"] = m1.__dict__
 
+    suspicious, susp_reason = is_code_suspicious(m1.extracted)
+    trace["notes"]["code_a_suspicious"] = suspicious
+    trace["notes"]["code_a_suspicious_reason"] = susp_reason
+    if suspicious:
+        trace["decision_flags"].append(f"code_a_suspicious:{susp_reason}")
+
     # -------- Module 2: Code executor --------
-    m2: Dict[str, Any] = {"stdout": "", "answer": "", "error": ""}
+    m2: Dict[str, Any] = {"stdout": "", "answer_raw": "", "answer": "", "post_flags": [], "error": ""}
     try:
         if m1.extracted.strip():
             stdout, err = evaluate_code_sandbox(m1.extracted, timeout_s=executor_timeout)
             m2["stdout"] = stdout
             m2["error"] = "" if err is None else str(err)
-            m2["answer"] = extract_answer_from_text(last_nonempty_line(stdout), problem)
+
+            ans_raw = extract_answer_from_text(last_nonempty_line(stdout), problem)
+            m2["answer_raw"] = ans_raw
+
+            ans_proc, flags = postprocess_answer(ans_raw, problem)
+            m2["answer"] = ans_proc
+            m2["post_flags"] = flags
+            for f in flags:
+                if f.startswith("unit_rescale_"):
+                    trace["decision_flags"].append(f)
         else:
             m2["error"] = "No code from Module-1"
+            m2["answer_raw"] = "UNSURE"
             m2["answer"] = "UNSURE"
     except Exception as e:
         m2["error"] = f"{e}"
+        m2["answer_raw"] = "UNSURE"
         m2["answer"] = "UNSURE"
     trace["modules"]["code_executor"] = m2
 
-    ans_a = (m2.get("answer") or "").strip()
-    if not ans_a:
-        ans_a = "UNSURE"
+    ans_a = (m2.get("answer") or "").strip() or "UNSURE"
 
     # -------- Module 3: Direct solver (image + text) --------
     m3 = ModuleLog()
-    m3.prompt = build_problem_context(problem, extra_context=query)
+    m3.prompt = base_ctx
+    m3_raw_ans = "UNSURE"
     try:
         raw = model.chat(
             messages=[
@@ -602,42 +822,104 @@ def run_agent_on_problem(
             max_tokens=max_tokens,
         )
         m3.raw = raw
-        m3.extracted = extract_answer_from_text(raw, problem)
+        m3_raw_ans = extract_answer_from_text(raw, problem)
+        m3.extracted, m3_flags = postprocess_answer(m3_raw_ans, problem)
+        # store post flags as part of the module dict
+        m3_dict = m3.__dict__.copy()
+        m3_dict["answer_raw"] = m3_raw_ans
+        m3_dict["post_flags"] = m3_flags
+        trace["modules"]["direct_solver"] = m3_dict
     except Exception as e:
         m3.error = f"{e}"
         m3.extracted = "UNSURE"
-    trace["modules"]["direct_solver"] = m3.__dict__
+        m3_dict = m3.__dict__.copy()
+        m3_dict["answer_raw"] = m3_raw_ans
+        m3_dict["post_flags"] = []
+        trace["modules"]["direct_solver"] = m3_dict
 
-    ans_b = (m3.extracted or "").strip()
-    if not ans_b:
-        ans_b = "UNSURE"
+    ans_b = (trace["modules"]["direct_solver"].get("extracted") or "").strip() or "UNSURE"
 
     # -------- Module 4: Verifier --------
     m4 = ModuleLog()
+
+    # Record disagreement flag
+    if not answers_agree(ans_a, ans_b, problem):
+        trace["decision_flags"].append("a_b_disagree")
+
+    # Fast-path: agreement
     if answers_agree(ans_a, ans_b, problem) and ans_a.lower() != "unsure":
         final_answer = ans_a
         m4.prompt = "AGREED (skipped LLM verifier)"
-        m4.raw = ""
         m4.extracted = final_answer
-        m4.error = ""
         trace["modules"]["verifier"] = m4.__dict__
         trace["final_answer"] = final_answer
         trace["answer_a"] = ans_a
         trace["answer_b"] = ans_b
         return final_answer, trace
 
+    # Fast-path: UNSURE / error rules to avoid unnecessary verifier calls
+    if ans_a.lower() == "unsure" and ans_b.lower() != "unsure":
+        trace["decision_flags"].append("verifier_skipped:a_unsure")
+        final_answer = ans_b
+        m4.prompt = "RULE (skipped verifier): Answer_A UNSURE, use Answer_B"
+        m4.extracted = final_answer
+        trace["modules"]["verifier"] = m4.__dict__
+        trace["final_answer"] = final_answer
+        trace["answer_a"] = ans_a
+        trace["answer_b"] = ans_b
+        return final_answer, trace
+
+    if suspicious and ans_b.lower() != "unsure":
+        trace["decision_flags"].append("verifier_skipped:code_a_suspicious")
+        final_answer = ans_b
+        m4.prompt = "RULE (skipped verifier): Code_A suspicious, use Answer_B"
+        m4.extracted = final_answer
+        trace["modules"]["verifier"] = m4.__dict__
+        trace["final_answer"] = final_answer
+        trace["answer_a"] = ans_a
+        trace["answer_b"] = ans_b
+        return final_answer, trace
+
+    if ans_b.lower() == "unsure" and ans_a.lower() != "unsure" and not suspicious:
+        trace["decision_flags"].append("verifier_skipped:b_unsure")
+        final_answer = ans_a
+        m4.prompt = "RULE (skipped verifier): Answer_B UNSURE, use Answer_A"
+        m4.extracted = final_answer
+        trace["modules"]["verifier"] = m4.__dict__
+        trace["final_answer"] = final_answer
+        trace["answer_a"] = ans_a
+        trace["answer_b"] = ans_b
+        return final_answer, trace
+
+    # Otherwise invoke verifier model with more evidence
+    code_a = (m1.extracted or "").strip()
+    stdout_a = (m2.get("stdout") or "").strip()
+    # Truncate evidence to avoid blowing context
+    if len(code_a) > 1500:
+        code_a = code_a[:1500] + "\n# ...(truncated)"
+    if len(stdout_a) > 800:
+        stdout_a = stdout_a[:800] + "\n...(truncated)"
+
     verifier_user = "\n".join(
         [
-            build_problem_context(problem, extra_context=query),
+            base_ctx,
             "",
-            f"Answer_A (from code executor): {ans_a}",
+            f"Answer_A: {ans_a}",
             f"Answer_A_error: {m2.get('error','')}",
+            f"Code_A_suspicious: {suspicious} ({susp_reason})",
             "",
-            f"Answer_B (from direct solver): {ans_b}",
+            "Code_A:",
+            code_a,
+            "",
+            "Stdout_A:",
+            stdout_a,
+            "",
+            f"Answer_B: {ans_b}",
         ]
     ).strip()
 
     m4.prompt = verifier_user
+    trace["decision_flags"].append("verifier_called")
     try:
         raw = model.chat(
             messages=[
@@ -649,7 +931,13 @@ def run_agent_on_problem(
             max_tokens=128,
         )
         m4.raw = raw
-        m4.extracted = extract_answer_from_text(raw, problem)
+        chosen = extract_answer_from_text(raw, problem)
+        chosen, v_flags = postprocess_answer(chosen, problem)
+        m4.extracted = chosen
+        # store flags
+        m4_dict = m4.__dict__.copy()
+        m4_dict["post_flags"] = v_flags
+        trace["modules"]["verifier"] = m4_dict
     except Exception as e:
         m4.error = f"{e}"
         # Fallback heuristic
@@ -659,12 +947,19 @@ def run_agent_on_problem(
             m4.extracted = ans_a
         else:
             m4.extracted = "UNSURE"
+        trace["modules"]["verifier"] = m4.__dict__
 
-    final_answer = (m4.extracted or "").strip() or "UNSURE"
-    trace["modules"]["verifier"] = m4.__dict__
+    final_answer = (trace["modules"]["verifier"].get("extracted") or "").strip() or "UNSURE"
     trace["final_answer"] = final_answer
     trace["answer_a"] = ans_a
     trace["answer_b"] = ans_b
+
+    # Record override flags
+    if final_answer != ans_a and ans_a.lower() != "unsure":
+        trace["decision_flags"].append("verifier_overrode_a")
+    if final_answer != ans_b and ans_b.lower() != "unsure":
+        trace["decision_flags"].append("verifier_overrode_b")
+
     return final_answer, trace
 
 
@@ -889,6 +1184,8 @@ def main():
                     "answer_a": trace.get("answer_a", ""),
                     "answer_b": trace.get("answer_b", ""),
                     "modules": trace.get("modules", {}),
+                    "decision_flags": trace.get("decision_flags", []),
+                    "notes": trace.get("notes", {}),
                     "errors": errors,
                     # Include minimal context for debugging (kept out of scoring file)
                     "question": problem.get("question", ""),
