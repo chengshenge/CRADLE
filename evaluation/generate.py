@@ -1,353 +1,224 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-"""
-Four-module agent wrapper for MathVista-style generation:
-- Module 1: Task Inference (generate Python code)
-- Module 2: Code Executor (sandbox execute generated code)
-- Module 3: Direct Solver (normal 4o: image+text -> answer)
-- Module 4: Verifier (compare M2 and M3, choose final)
-Plus:
-- agent_debug.log: readable module start/done/fail logs
-- agent_errors.jsonl: structured per-error records (one JSON per line)
-- agent_errors_pretty.log: human-readable multi-line error log with real newlines
-"""
-
 import argparse
+import base64
 import io
-import json
 import logging
+import math
 import os
 import re
-import signal
 import sys
-import time
 import traceback
-from contextlib import redirect_stdout
-from dataclasses import dataclass, asdict
-from typing import Any, Dict, Optional, Tuple
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
 
-import pandas as pd
 from datasets import load_dataset
+from openai import OpenAI
 from rich.logging import RichHandler
 from tqdm import tqdm
 
-# -----------------------------
-# Utilities: json read/write
-# -----------------------------
-def read_json(path: str) -> Any:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+from evaluation.build_query import create_query_data
+from utilities import read_json, save_json
 
-def save_json(path: str, obj: Any) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
 
 # -----------------------------
-# Logging setup
+# Helpers (validation / parsing)
 # -----------------------------
-def setup_console_logging() -> None:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(message)s",
-        datefmt="[%H:%M:%S]",
-        handlers=[RichHandler(rich_tracebacks=True)],
-    )
-
-def setup_file_logging(output_dir: str, log_file: str) -> str:
+def verify_response(response: Any) -> bool:
     """
-    Attach a FileHandler to root logger. File logs contain DEBUG+.
-    Console stays INFO via RichHandler.
+    Decide whether an existing saved response is "valid" enough to skip reruns.
     """
-    os.makedirs(output_dir, exist_ok=True)
-    log_path = os.path.join(output_dir, log_file)
-
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-
-    fh = logging.FileHandler(log_path, encoding="utf-8")
-    fh.setLevel(logging.DEBUG)
-    fmt = logging.Formatter(
-        fmt="%(asctime)s %(levelname)s [%(name)s] %(message)s",
-        datefmt="[%H:%M:%S]",
-    )
-    fh.setFormatter(fmt)
-    root.addHandler(fh)
-
-    return log_path
-
-# -----------------------------
-# Error log writers
-# -----------------------------
-def _append_jsonl(path: str, record: Dict[str, Any]) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(record, ensure_ascii=False) + "\n")
-
-def _append_pretty_error_log(path: str, record: Dict[str, Any]) -> None:
-    """
-    Write a human-readable multi-line record with REAL newlines.
-    """
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    lines = []
-    lines.append("=" * 80)
-    lines.append(f"ts: {record.get('ts')}")
-    lines.append(f"pid: {record.get('pid')}")
-    lines.append(f"stage: {record.get('stage')}")
-    lines.append(f"error_type: {record.get('error_type')}")
-    lines.append(f"error: {record.get('error')}")
-    extra = record.get("extra")
-    if extra:
+    if response is None:
+        return False
+    if not isinstance(response, str):
         try:
-            lines.append("extra:")
-            lines.append(json.dumps(extra, ensure_ascii=False, indent=2))
+            response = str(response)
         except Exception:
-            lines.append(f"extra: {extra!r}")
-    tb = record.get("traceback")
-    if tb:
-        lines.append("traceback:")
-        lines.append(tb)
-    lines.append("")  # trailing newline
-    blob = "\n".join(lines) + "\n"
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(blob)
+            return False
 
-def record_module_error(
-    error_jsonl_path: str,
-    error_pretty_path: str,
-    pid: str,
-    stage: str,
-    exc: BaseException,
-    extra: Optional[Dict[str, Any]] = None,
-) -> None:
-    rec = {
-        "ts": time.time(),
-        "pid": str(pid),
-        "stage": stage,
-        "error_type": type(exc).__name__,
-        "error": str(exc),
-        "extra": extra or {},
-        "traceback": traceback.format_exc(),
-    }
-    _append_jsonl(error_jsonl_path, rec)
-    _append_pretty_error_log(error_pretty_path, rec)
+    resp = response.strip()
+    if resp == "":
+        return False
+    if "Response Error" in resp:
+        return False
+    if resp.lower() in {"unsure", "unable to determine", "cannot determine", "unknown"}:
+        return False
+    return True
 
-# -----------------------------
-# Prompt templates
-# -----------------------------
-TASK_INFERENCE_SYSTEM = """You are Module-1: Task Inference for MathVista-style problems.
 
-You will receive a PROBLEM_JSON that includes:
-- question (text)
-- choices (optional list of strings)
-- unit (optional)
-- precision (optional number of decimal places)
-- other metadata
+_CODE_FENCE_RE = re.compile(r"```(?:python)?\s*(.*?)```", re.DOTALL | re.IGNORECASE)
 
-Your job:
-1) Solve the problem by WRITING PYTHON CODE (no markdown).
-2) The code must compute the final answer deterministically.
-3) The code MUST end by printing the final answer on a single line.
 
-Hard rules:
-- Output ONLY valid Python code. No explanations.
-- Do NOT use import statements. (Imports are blocked in the sandbox.)
-- Use only basic arithmetic and built-ins.
-- If the problem is multiple choice, you MUST print the full choice string exactly as it appears in choices.
-- If precision is provided (e.g., 1.0), format numeric output with that many decimal places.
-
-Output format:
-print(FINAL_ANSWER)
-"""
-
-DIRECT_SOLVE_SYSTEM = """You are Module-3: Direct Solver.
-You will receive the question text plus an image (if provided).
-
-Return ONLY the final answer in one line.
-- If multiple choice, return the full choice string (not A/B/C/D).
-- If numeric, keep appropriate units if the problem includes units, and respect required precision if stated.
-No extra text.
-"""
-
-VERIFIER_SYSTEM = """You are Module-4: Verifier.
-Input contains:
-- PROBLEM_JSON (original)
-- MODULE2 outputs (stdout, error, extracted_answer)
-- MODULE3 answer
-
-Decide final_answer:
-- If MODULE2 and MODULE3 agree (after trivial normalization), choose that.
-- If they disagree, choose the more reasonable one:
-  Prefer an answer that:
-  1) is non-empty
-  2) matches one of the choices (if choices exist)
-  3) respects precision/unit requirements
-  4) comes from a module without execution/error flags
-
-Return STRICT JSON only:
-{"final_answer":"...","agree":true/false,"chosen":"code|direct","notes":"..."}
-"""
-
-# -----------------------------
-# Small helpers: normalization / JSON extraction
-# -----------------------------
-def normalize_answer_for_compare(s: str) -> str:
-    if s is None:
+def extract_python_code(text: str) -> str:
+    """
+    Extract python code from a model response.
+    Accepts either raw code or a ```python ... ``` fenced block.
+    """
+    if not isinstance(text, str):
         return ""
-    s = str(s).strip().lower()
-    s = s.replace("°", " degrees")
-    s = re.sub(r"\s+", " ", s)
-    s = s.strip()
+    m = _CODE_FENCE_RE.search(text)
+    if m:
+        return (m.group(1) or "").strip()
+    return text.strip()
+
+
+_NUM_RE = re.compile(r"[-+]?(?:\d+\.\d+|\d+)(?:[eE][-+]?\d+)?")
+
+
+def _try_parse_float(s: str) -> Optional[float]:
+    try:
+        return float(s)
+    except Exception:
+        return None
+
+
+def normalize_for_compare(s: str) -> str:
+    # Remove spaces and common punctuation that often varies.
+    s = (s or "").strip().lower()
+    s = re.sub(r"\s+", "", s)
+    s = s.replace(",", "")
     return s
 
-def extract_json_object(text: str) -> Optional[Dict[str, Any]]:
+
+def extract_answer_from_text(raw: str, problem: Dict[str, Any]) -> str:
     """
-    Try to extract a JSON object from a text blob.
+    Extract a clean answer string from potentially verbose model output.
+    Preference order:
+      1) Exact choice text if multi_choice
+      2) A/B/C/... mapping if multi_choice
+      3) Last number if numeric
+      4) First non-empty line
     """
-    if not text:
-        return None
-    text = text.strip()
-    # If it's already valid JSON
-    try:
-        obj = json.loads(text)
-        if isinstance(obj, dict):
-            return obj
-    except Exception:
-        pass
-
-    # Try to find the first {...} block
-    m = re.search(r"\{.*\}", text, flags=re.DOTALL)
-    if not m:
-        return None
-    try:
-        obj = json.loads(m.group(0))
-        if isinstance(obj, dict):
-            return obj
-    except Exception:
-        return None
-    return None
-
-# -----------------------------
-# OpenAI client wrapper (simple)
-# -----------------------------
-class SimpleOpenAIChat:
-    def __init__(self, model: str, api_key: str = ""):
-        self.model = model
-        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
-        if not self.api_key:
-            raise ValueError("OpenAI API key is empty. Provide --key or set OPENAI_API_KEY.")
-
+    if not isinstance(raw, str):
         try:
-            from openai import OpenAI
-        except Exception as e:
-            raise ImportError("openai package not found. pip install openai") from e
-
-        from openai import OpenAI  # type: ignore
-        self.client = OpenAI(api_key=self.api_key)
-
-    def chat(
-        self,
-        system_prompt: str,
-        user_prompt: str,
-        decoded_image: Optional[Any] = None,
-        temperature: float = 0.0,
-        max_tokens: int = 512,
-    ) -> str:
-        """
-        If decoded_image is provided, send as multimodal content.
-        `decoded_image` here should be a PIL.Image or bytes; to keep this file standalone,
-        we accept None by default.
-        """
-        # Build messages
-        messages = [{"role": "system", "content": system_prompt}]
-
-        if decoded_image is None:
-            messages.append({"role": "user", "content": user_prompt})
-            resp = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            return resp.choices[0].message.content or ""
-
-        # multimodal: image
-        try:
-            import base64
-            from io import BytesIO
-            from PIL import Image
+            raw = str(raw)
         except Exception:
-            # fallback to text-only if PIL not present
-            messages.append({"role": "user", "content": user_prompt})
-            resp = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            return resp.choices[0].message.content or ""
+            return ""
+    raw_str = raw.strip()
+    if raw_str == "":
+        return ""
 
-        if hasattr(decoded_image, "save"):
-            buf = BytesIO()
-            decoded_image.save(buf, format="PNG")
-            img_bytes = buf.getvalue()
-        elif isinstance(decoded_image, (bytes, bytearray)):
-            img_bytes = bytes(decoded_image)
+    choices = problem.get("choices", None)
+    if choices:
+        # 1) Exact choice substring match
+        for c in choices:
+            if isinstance(c, str) and c.strip() != "" and c in raw_str:
+                return c.strip()
+
+        # 2) A/B/C/D mapping
+        letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        # Search for single letter answer like "A" or "(B)" or "Answer: C"
+        m = re.search(r"(?:^|[\s:（(])([A-Z])(?:$|[\s\)）\.!,])", raw_str.upper())
+        if m:
+            letter = m.group(1)
+            idx = letters.find(letter)
+            if 0 <= idx < len(choices):
+                c = choices[idx]
+                return c.strip() if isinstance(c, str) else str(c)
+
+        # 3) fallback: first line
+        return raw_str.splitlines()[0].strip()
+
+    # Numeric-ish answer types
+    if problem.get("answer_type") in {"float", "integer", "number"} or problem.get("precision") is not None:
+        nums = _NUM_RE.findall(raw_str)
+        if nums:
+            return nums[-1].strip()
+
+    # Otherwise: first non-empty line
+    for line in raw_str.splitlines():
+        line = line.strip()
+        if line:
+            return line
+    return ""
+
+
+def answers_agree(a: str, b: str, problem: Dict[str, Any]) -> bool:
+    """
+    Soft equality check used before invoking verifier.
+    """
+    a = (a or "").strip()
+    b = (b or "").strip()
+    if a == "" or b == "":
+        return False
+
+    # If choices exist, compare normalized strings.
+    if problem.get("choices"):
+        return normalize_for_compare(a) == normalize_for_compare(b)
+
+    # Try numeric compare
+    fa = _try_parse_float(a)
+    fb = _try_parse_float(b)
+    if fa is not None and fb is not None:
+        # Precision-aware tolerance
+        prec = problem.get("precision", None)
+        if isinstance(prec, (int, float)) and prec > 0:
+            tol = 0.5 * float(prec)
         else:
-            # unknown type
-            messages.append({"role": "user", "content": user_prompt})
-            resp = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            return resp.choices[0].message.content or ""
+            tol = 1e-6
+        return abs(fa - fb) <= tol
 
-        b64 = base64.b64encode(img_bytes).decode("utf-8")
-        content = [
-            {"type": "text", "text": user_prompt},
-            {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}},
-        ]
-        messages.append({"role": "user", "content": content})
-        resp = self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
-        return resp.choices[0].message.content or ""
+    return normalize_for_compare(a) == normalize_for_compare(b)
+
 
 # -----------------------------
-# Module-2 sandbox executor
+# Safe-ish code execution
 # -----------------------------
-class TimeoutError(Exception):
-    pass
+_BANNED_CODE_PATTERNS = [
+    r"\bimport\s+os\b",
+    r"\bimport\s+sys\b",
+    r"\bimport\s+subprocess\b",
+    r"\bimport\s+socket\b",
+    r"\bimport\s+requests\b",
+    r"\bimport\s+pathlib\b",
+    r"\bimport\s+shutil\b",
+    r"\bfrom\s+os\b",
+    r"\bfrom\s+sys\b",
+    r"\bsubprocess\.",
+    r"\bsocket\.",
+    r"\bopen\(",
+    r"\b__import__\b",
+    r"\beval\(",
+    r"\bexec\(",
+    r"\bcompile\(",
+    r"\binput\(",
+    r"\bglobals\(",
+    r"\blocals\(",
+    r"\b__\w+__\b",
+]
 
-def _timeout_handler(signum, frame):
-    raise TimeoutError("Sandbox execution timed out")
 
-def safe_exec(code: str, timeout_sec: int = 3) -> Tuple[str, Optional[str]]:
+def _is_code_safe_enough(code: str) -> Tuple[bool, str]:
+    if not code.strip():
+        return False, "Empty code"
+    for pat in _BANNED_CODE_PATTERNS:
+        if re.search(pat, code):
+            return False, f"Blocked by safety pattern: {pat}"
+    return True, ""
+
+
+def _sandbox_worker(code: str, q) -> None:
     """
-    Execute python code in a restricted environment. Return (stdout, err_str).
-    - imports are blocked by not providing __import__
+    Run code in a separate process, capture stdout, return (stdout, error_str).
     """
-    if not isinstance(code, str):
-        return "", "code is not a string"
+    import io as _io
+    import sys as _sys
+    import math as _math
+    import fractions as _fractions
+    import decimal as _decimal
 
+    # Restrictive builtins
     safe_builtins = {
         "abs": abs,
         "min": min,
         "max": max,
         "sum": sum,
-        "len": len,
         "range": range,
+        "len": len,
         "round": round,
+        "pow": pow,
+        "print": print,
         "int": int,
         "float": float,
         "str": str,
-        "print": print,
         "enumerate": enumerate,
         "zip": zip,
         "map": map,
@@ -357,283 +228,393 @@ def safe_exec(code: str, timeout_sec: int = 3) -> Tuple[str, Optional[str]]:
         "tuple": tuple,
     }
 
-    env = {"__builtins__": safe_builtins}
-    stdout_buf = io.StringIO()
+    safe_globals = {
+        "__builtins__": safe_builtins,
+        "math": _math,
+        "fractions": _fractions,
+        "decimal": _decimal,
+    }
 
-    old = signal.signal(signal.SIGALRM, _timeout_handler)
-    signal.alarm(max(1, int(timeout_sec)))
+    old_stdout = _sys.stdout
+    new_stdout = _io.StringIO()
+    _sys.stdout = new_stdout
+
+    err = None
+    try:
+        exec(code, safe_globals, {})
+    except Exception as e:
+        err = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+
+    _sys.stdout = old_stdout
+    out = new_stdout.getvalue().strip()
+
+    q.put((out, err))
+
+
+def evaluate_code_sandbox(code_string: str, timeout_s: int = 5) -> Tuple[str, Optional[str]]:
+    """
+    Execute python code in a subprocess with basic safety checks and a timeout.
+    Returns: (stdout, error_string_or_None)
+    """
+    code = code_string or ""
+    ok, reason = _is_code_safe_enough(code)
+    if not ok:
+        return "", reason
 
     try:
-        with redirect_stdout(stdout_buf):
-            exec(code, env, env)
-        out = stdout_buf.getvalue()
-        signal.alarm(0)
-        return out, None
+        import multiprocessing as mp
+        ctx = mp.get_context("fork") if hasattr(mp, "get_context") else mp
+        q: Any = ctx.Queue()
+        p = ctx.Process(target=_sandbox_worker, args=(code, q))
+        p.daemon = True
+        p.start()
+        p.join(timeout_s)
+
+        if p.is_alive():
+            p.terminate()
+            p.join(1)
+            return "", f"Timeout after {timeout_s}s"
+
+        if q.empty():
+            return "", "No output from sandbox process"
+        out, err = q.get_nowait()
+        return out, err
     except Exception as e:
-        signal.alarm(0)
-        return stdout_buf.getvalue(), f"{type(e).__name__}: {e}"
-    finally:
-        signal.signal(signal.SIGALRM, old)
+        return "", f"Sandbox failure: {e}"
 
-def extract_answer_from_stdout(stdout: str) -> str:
-    """
-    Heuristic: prefer line starting with 'FINAL_ANSWER:' else last non-empty line.
-    """
-    if not stdout:
+
+def last_nonempty_line(s: str) -> str:
+    if not isinstance(s, str):
         return ""
-    lines = [ln.strip() for ln in stdout.splitlines() if ln.strip()]
-    if not lines:
-        return ""
-    for ln in reversed(lines):
-        if ln.lower().startswith("final_answer"):
-            # formats: FINAL_ANSWER: xxx
-            parts = ln.split(":", 1)
-            if len(parts) == 2:
-                return parts[1].strip()
-    return lines[-1].strip()
+    lines = [ln.strip() for ln in s.splitlines() if ln.strip()]
+    return lines[-1] if lines else ""
+
 
 # -----------------------------
-# Agent dataclasses
+# Image helper for OpenAI
 # -----------------------------
-@dataclass
-class AgentOutputs:
-    pid: str
-    module1_code: str = ""
-    module2_stdout: str = ""
-    module2_error: str = ""
-    module2_answer: str = ""
-    module3_answer: str = ""
-    module4_raw: str = ""
-    module4_json: Dict[str, Any] = None
-    final_answer: str = ""
+def pil_image_to_data_url(img, fmt: str = "PNG") -> str:
+    """
+    Convert PIL.Image -> data URL for OpenAI multimodal input.
+    """
+    try:
+        if hasattr(img, "mode") and img.mode not in ("RGB", "L"):
+            img = img.convert("RGB")
+    except Exception:
+        pass
 
-# -----------------------------
-# Four-module agent
-# -----------------------------
-class FourModuleAgent:
+    buf = io.BytesIO()
+    img.save(buf, format=fmt)
+    b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+    mime = "image/png" if fmt.upper() == "PNG" else "image/jpeg"
+    return f"data:{mime};base64,{b64}"
+
+
+class OpenAIChatModel:
+    """
+    Wrapper for OpenAI chat.completions with optional image input.
+    """
+
     def __init__(
         self,
-        model: SimpleOpenAIChat,
-        error_jsonl_path: str,
-        error_pretty_path: str,
-        logger: Optional[logging.Logger] = None,
-        exec_timeout_sec: int = 3,
-        ti_max_tokens: int = 900,
-        direct_max_tokens: int = 256,
-        verifier_max_tokens: int = 256,
+        client: OpenAI,
+        model: str = "gpt-4o",
+        temperature: float = 0.2,
+        max_tokens: int = 512,
     ):
+        self.client = client
         self.model = model
-        self.error_jsonl_path = error_jsonl_path
-        self.error_pretty_path = error_pretty_path
-        self.exec_timeout_sec = exec_timeout_sec
-        self.ti_max_tokens = ti_max_tokens
-        self.direct_max_tokens = direct_max_tokens
-        self.verifier_max_tokens = verifier_max_tokens
-        self.logger = logger or logging.getLogger("FourModuleAgent")
+        self.temperature = temperature
+        self.max_tokens = max_tokens
 
-    def run_one(self, pid: str, problem: Dict[str, Any], decoded_image: Optional[Any] = None) -> AgentOutputs:
-        out = AgentOutputs(pid=str(pid), module4_json={})
+    def _attach_image_to_last_user(self, messages: List[Dict[str, Any]], decoded_image: Optional[object]) -> List[Dict[str, Any]]:
+        if decoded_image is None:
+            return messages
 
-        user_blob = json.dumps(problem, ensure_ascii=False)
-        # -----------------
-        # Module-1: task inference (generate code)
-        # -----------------
-        try:
-            m1_user = f"PROBLEM_JSON:\n{user_blob}\n\nWrite Python code now."
-            self.logger.debug(f"[pid={pid}] [M1] start")
-            out.module1_code = self.model.chat(
-                system_prompt=TASK_INFERENCE_SYSTEM,
-                user_prompt=m1_user,
-                decoded_image=decoded_image,
-                temperature=0.0,
-                max_tokens=self.ti_max_tokens,
-            ).strip()
-            # Some models may wrap in ```python ...```
-            out.module1_code = strip_code_fences(out.module1_code)
-            self.logger.debug(f"[pid={pid}] [M1] done (len={len(out.module1_code)})")
-        except Exception as e:
-            self.logger.exception(f"[pid={pid}] [M1] failed")
-            record_module_error(self.error_jsonl_path, self.error_pretty_path, pid, "M1", e, extra={"hint": "task_inference/chat"})
-            out.module1_code = ""
+        # Find last user message
+        for i in range(len(messages) - 1, -1, -1):
+            if messages[i].get("role") == "user":
+                content = messages[i].get("content", "")
+                if isinstance(content, list):
+                    parts = content
+                else:
+                    parts = [{"type": "text", "text": str(content)}]
 
-        # -----------------
-        # Module-2: execute code
-        # -----------------
-        try:
-            self.logger.debug(f"[pid={pid}] [M2] start")
-            if out.module1_code.strip():
-                stdout, err = safe_exec(out.module1_code, timeout_sec=self.exec_timeout_sec)
-            else:
-                stdout, err = "", "empty code from M1"
-            out.module2_stdout = stdout or ""
-            out.module2_error = err or ""
-            out.module2_answer = extract_answer_from_stdout(out.module2_stdout)
+                try:
+                    data_url = pil_image_to_data_url(decoded_image, fmt="PNG")
+                    parts.append({"type": "image_url", "image_url": {"url": data_url}})
+                except Exception as e:
+                    logging.warning(f"Failed to attach image; fallback to text-only. Error: {e}")
 
-            if out.module2_error:
-                # record M2 errors even if no exception thrown
-                record_module_error(
-                    self.error_jsonl_path,
-                    self.error_pretty_path,
-                    pid,
-                    "M2",
-                    RuntimeError(out.module2_error),
-                    extra={
-                        "hint": "sandbox_exec",
-                        "stdout_tail": (out.module2_stdout[-500:] if out.module2_stdout else ""),
-                    },
-                )
-            self.logger.debug(f"[pid={pid}] [M2] done (ans={out.module2_answer!r}, err={bool(out.module2_error)})")
-        except Exception as e:
-            self.logger.exception(f"[pid={pid}] [M2] failed")
-            record_module_error(self.error_jsonl_path, self.error_pretty_path, pid, "M2", e, extra={"hint": "sandbox_exec/exception"})
-            out.module2_stdout = out.module2_stdout or ""
-            out.module2_error = out.module2_error or str(e)
-            out.module2_answer = out.module2_answer or ""
+                messages[i]["content"] = parts
+                break
+        return messages
 
-        # -----------------
-        # Module-3: direct solve
-        # -----------------
-        try:
-            m3_user = problem.get("question", "")
-            # add choices into prompt for clarity
-            if problem.get("choices"):
-                m3_user += "\n\nChoices:\n" + "\n".join([str(c) for c in problem["choices"]])
-            self.logger.debug(f"[pid={pid}] [M3] start")
-            out.module3_answer = self.model.chat(
-                system_prompt=DIRECT_SOLVE_SYSTEM,
-                user_prompt=m3_user,
-                decoded_image=decoded_image,
-                temperature=0.0,
-                max_tokens=self.direct_max_tokens,
-            ).strip()
-            out.module3_answer = out.module3_answer.strip()
-            self.logger.debug(f"[pid={pid}] [M3] done (ans={out.module3_answer!r})")
-        except Exception as e:
-            self.logger.exception(f"[pid={pid}] [M3] failed")
-            record_module_error(self.error_jsonl_path, self.error_pretty_path, pid, "M3", e, extra={"hint": "direct_solve/chat"})
-            out.module3_answer = ""
+    def chat(
+        self,
+        messages: List[Dict[str, Any]],
+        decoded_image: Optional[object] = None,
+        temperature: Optional[float] = None,
+        max_tokens: Optional[int] = None,
+    ) -> str:
+        messages = [dict(m) for m in messages]  # shallow copy
+        messages = self._attach_image_to_last_user(messages, decoded_image)
 
-        # quick agreement check (optional; still run verifier for tie-break and formatting sanity)
-        code_norm = normalize_answer_for_compare(out.module2_answer)
-        direct_norm = normalize_answer_for_compare(out.module3_answer)
-        agree_quick = (code_norm != "" and code_norm == direct_norm)
+        resp = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=self.temperature if temperature is None else temperature,
+            max_tokens=self.max_tokens if max_tokens is None else max_tokens,
+        )
+        msg = resp.choices[0].message.content
+        return msg if msg is not None else ""
 
-        # -----------------
-        # Module-4: verifier
-        # -----------------
-        try:
-            m4_user = (
-                f"PROBLEM_JSON:\n{user_blob}\n\n"
-                f"MODULE2:\n"
-                f"- stdout: {out.module2_stdout}\n"
-                f"- error: {out.module2_error}\n"
-                f"- extracted_answer: {out.module2_answer}\n\n"
-                f"MODULE3:\n"
-                f"- answer: {out.module3_answer}\n\n"
-                f"QuickCheck agree={str(agree_quick).lower()}.\n"
-                "Decide final_answer."
-            )
-            self.logger.debug(f"[pid={pid}] [M4] start")
-            out.module4_raw = self.model.chat(
-                system_prompt=VERIFIER_SYSTEM,
-                user_prompt=m4_user,
-                decoded_image=None,
-                temperature=0.0,
-                max_tokens=self.verifier_max_tokens,
-            ).strip()
+    def get_response(self, user_prompt: str, decoded_image: Optional[object] = None) -> str:
+        return self.chat([{"role": "user", "content": [{"type": "text", "text": user_prompt}]}], decoded_image=decoded_image)
 
-            m4_json = extract_json_object(out.module4_raw) or {}
-            out.module4_json = m4_json if isinstance(m4_json, dict) else {}
-
-            final_answer = out.module4_json.get("final_answer", "").strip() if isinstance(out.module4_json, dict) else ""
-            self.logger.debug(f"[pid={pid}] [M4] done (final={final_answer!r})")
-        except Exception as e:
-            self.logger.exception(f"[pid={pid}] [M4] failed")
-            record_module_error(self.error_jsonl_path, self.error_pretty_path, pid, "M4", e, extra={"hint": "verifier/chat_or_parse"})
-            out.module4_raw = out.module4_raw or ""
-            out.module4_json = {}
-            final_answer = ""
-
-        # -----------------
-        # Final fallback logic (if verifier fails/malformed)
-        # -----------------
-        if not final_answer:
-            if agree_quick and out.module3_answer.strip():
-                final_answer = out.module3_answer.strip()
-            elif out.module3_answer.strip():
-                final_answer = out.module3_answer.strip()
-            else:
-                final_answer = out.module2_answer.strip()
-
-        out.final_answer = final_answer
-        return out
-
-def strip_code_fences(s: str) -> str:
-    if not s:
-        return s
-    s = s.strip()
-    # remove ```python ... ```
-    if s.startswith("```"):
-        s = re.sub(r"^```[a-zA-Z0-9_+-]*\s*", "", s)
-        s = re.sub(r"\s*```$", "", s)
-    return s.strip()
 
 # -----------------------------
-# Main pipeline (MathVista-like)
+# Agent prompts
 # -----------------------------
-def create_query(problem: Dict[str, Any], caption_data: Optional[Dict[str, Any]], ocr_data: Optional[Dict[str, Any]], use_caption: bool, use_ocr: bool) -> Dict[str, Any]:
-    """
-    Create a PROBLEM_JSON bundle for the agent. Keep it simple.
-    """
-    q = {
-        "pid": problem.get("pid"),
-        "question": problem.get("question", ""),
-        "choices": problem.get("choices"),
-        "unit": problem.get("unit"),
-        "precision": problem.get("precision"),
-        "answer_type": problem.get("answer_type"),
-        "question_type": problem.get("question_type"),
-        "metadata": problem.get("metadata", {}),
-        "image": problem.get("image"),
-    }
-    if use_caption and caption_data is not None:
-        q["caption"] = caption_data.get(str(problem.get("pid")), "")
-    if use_ocr and ocr_data is not None:
-        q["ocr"] = ocr_data.get(str(problem.get("pid")), "")
-    return q
+def build_problem_context(problem: Dict[str, Any], extra_context: Optional[str] = None) -> str:
+    q = (problem.get("question") or "").strip()
+    choices = problem.get("choices")
+    unit = problem.get("unit")
+    precision = problem.get("precision")
+    qtype = problem.get("question_type")
+    atype = problem.get("answer_type")
 
-def load_image_if_available(img_path: str) -> Optional[Any]:
-    if not img_path:
-        return None
-    if not os.path.exists(img_path):
-        return None
+    parts = [
+        "PROBLEM",
+        f"question_type: {qtype}",
+        f"answer_type: {atype}",
+        f"precision: {precision}",
+        f"unit: {unit}",
+        "",
+        "Question:",
+        q,
+    ]
+    if choices:
+        parts += ["", "Choices:"]
+        for i, c in enumerate(choices):
+            letter = chr(ord("A") + i)
+            parts.append(f"{letter}. {c}")
+    if extra_context:
+        parts += ["", "Additional context (caption/OCR/few-shot/etc):", extra_context.strip()]
+    return "\n".join(parts).strip()
+
+
+TASK_INFERENCE_SYSTEM = """You are Module-1 (Task Inference).
+Goal: Write a SHORT Python program to solve the problem.
+
+Rules:
+- Output ONLY a python code block fenced with ```python ...```. No prose.
+- The code MUST end by printing ONLY the final answer (single line) via print(...).
+- No file I/O, no network, no subprocess, no OS/system access.
+- You may use: math, fractions, decimal.
+- If choices are provided, you MUST print EXACTLY one of the provided choices (copy-paste the text).
+- If you truly cannot solve from the given information, print UNSURE.
+
+Think silently; only output code."""
+# NOTE: we intentionally keep it image-free. The direct solver will use the image.
+
+
+DIRECT_SOLVER_SYSTEM = """You are Module-3 (Direct Solver).
+Solve the problem using the provided image (if any) and text.
+
+Output format rules:
+- Output ONLY the final answer (no explanation).
+- If choices are provided, output EXACTLY one of the provided choices (copy-paste).
+- If numeric, output only the number (and unit only if explicitly requested by the question).
+- If you cannot determine, output UNSURE."""
+
+
+VERIFIER_SYSTEM = """You are Module-4 (Verifier).
+You will be given the original problem and two candidate answers:
+
+- Answer_A: produced by executing code from Module-2 (may have runtime errors).
+- Answer_B: produced by the direct solver (Module-3).
+
+Task:
+- If both answers are the same (semantically), output that answer.
+- If one answer is UNSURE/empty/error and the other is not, choose the non-UNSURE answer.
+- If both differ and both look plausible, choose the one most consistent with the problem, choices, units, and precision.
+
+Output ONLY the final answer (no explanation)."""
+
+
+@dataclass
+class ModuleLog:
+    prompt: str = ""
+    raw: str = ""
+    extracted: str = ""
+    error: str = ""
+
+
+def run_agent_on_problem(
+    model: OpenAIChatModel,
+    problem: Dict[str, Any],
+    problem_decoded_image: Optional[object],
+    query: str,
+    executor_timeout: int,
+    max_tokens: int,
+) -> Tuple[str, Dict[str, Any]]:
+    """
+    Runs:
+      M1 task inference -> python code
+      M2 executor -> answer_A
+      M3 direct solver -> answer_B
+      M4 verifier -> final
+    Returns (final_answer, agent_trace_dict)
+    """
+    trace: Dict[str, Any] = {"modules": {}}
+
+    # -------- Module 1: Task inference (code gen) --------
+    m1 = ModuleLog()
+    m1.prompt = build_problem_context(problem, extra_context=query)
     try:
-        from PIL import Image
-        return Image.open(img_path).convert("RGB")
-    except Exception:
-        return None
+        raw = model.chat(
+            messages=[
+                {"role": "system", "content": TASK_INFERENCE_SYSTEM},
+                {"role": "user", "content": m1.prompt},
+            ],
+            decoded_image=None,
+            temperature=0.2,
+            max_tokens=max_tokens,
+        )
+        m1.raw = raw
+        m1.extracted = extract_python_code(raw)
+    except Exception as e:
+        m1.error = f"{e}"
+    trace["modules"]["task_inference"] = m1.__dict__
+
+    # -------- Module 2: Code executor --------
+    m2: Dict[str, Any] = {"stdout": "", "answer": "", "error": ""}
+    try:
+        if m1.extracted.strip():
+            stdout, err = evaluate_code_sandbox(m1.extracted, timeout_s=executor_timeout)
+            m2["stdout"] = stdout
+            m2["error"] = "" if err is None else str(err)
+            m2["answer"] = extract_answer_from_text(last_nonempty_line(stdout), problem)
+        else:
+            m2["error"] = "No code from Module-1"
+            m2["answer"] = "UNSURE"
+    except Exception as e:
+        m2["error"] = f"{e}"
+        m2["answer"] = "UNSURE"
+    trace["modules"]["code_executor"] = m2
+
+    ans_a = (m2.get("answer") or "").strip()
+    if not ans_a:
+        ans_a = "UNSURE"
+
+    # -------- Module 3: Direct solver (image + text) --------
+    m3 = ModuleLog()
+    m3.prompt = build_problem_context(problem, extra_context=query)
+    try:
+        raw = model.chat(
+            messages=[
+                {"role": "system", "content": DIRECT_SOLVER_SYSTEM},
+                {"role": "user", "content": m3.prompt},
+            ],
+            decoded_image=problem_decoded_image,
+            temperature=0.2,
+            max_tokens=max_tokens,
+        )
+        m3.raw = raw
+        m3.extracted = extract_answer_from_text(raw, problem)
+    except Exception as e:
+        m3.error = f"{e}"
+        m3.extracted = "UNSURE"
+    trace["modules"]["direct_solver"] = m3.__dict__
+
+    ans_b = (m3.extracted or "").strip()
+    if not ans_b:
+        ans_b = "UNSURE"
+
+    # -------- Module 4: Verifier --------
+    m4 = ModuleLog()
+    if answers_agree(ans_a, ans_b, problem) and ans_a.lower() != "unsure":
+        final_answer = ans_a
+        m4.prompt = "AGREED (skipped LLM verifier)"
+        m4.raw = ""
+        m4.extracted = final_answer
+        m4.error = ""
+        trace["modules"]["verifier"] = m4.__dict__
+        trace["final_answer"] = final_answer
+        trace["answer_a"] = ans_a
+        trace["answer_b"] = ans_b
+        return final_answer, trace
+
+    verifier_user = "\n".join(
+        [
+            build_problem_context(problem, extra_context=query),
+            "",
+            f"Answer_A (from code executor): {ans_a}",
+            f"Answer_A_error: {m2.get('error','')}",
+            "",
+            f"Answer_B (from direct solver): {ans_b}",
+        ]
+    ).strip()
+
+    m4.prompt = verifier_user
+    try:
+        raw = model.chat(
+            messages=[
+                {"role": "system", "content": VERIFIER_SYSTEM},
+                {"role": "user", "content": verifier_user},
+            ],
+            decoded_image=None,
+            temperature=0.0,
+            max_tokens=128,
+        )
+        m4.raw = raw
+        m4.extracted = extract_answer_from_text(raw, problem)
+    except Exception as e:
+        m4.error = f"{e}"
+        # Fallback heuristic
+        if ans_b.lower() != "unsure":
+            m4.extracted = ans_b
+        elif ans_a.lower() != "unsure":
+            m4.extracted = ans_a
+        else:
+            m4.extracted = "UNSURE"
+
+    final_answer = (m4.extracted or "").strip() or "UNSURE"
+    trace["modules"]["verifier"] = m4.__dict__
+    trace["final_answer"] = final_answer
+    trace["answer_a"] = ans_a
+    trace["answer_b"] = ans_b
+    return final_answer, trace
+
 
 # -----------------------------
-# CLI / Main
+# CLI
 # -----------------------------
 def parse_args():
     parser = argparse.ArgumentParser()
     # input
     parser.add_argument('--dataset_name', type=str, default='AI4Math/MathVista')
     parser.add_argument('--test_split_name', type=str, default='testmini')
-    parser.add_argument('--data_dir', type=str, default='../data')
+    parser.add_argument('--data_dir', type=str, default='./data')
     parser.add_argument('--input_file', type=str, default='testmini.json')
     # output
-    parser.add_argument('--output_dir', type=str, default='../results/bard')
+    parser.add_argument('--output_dir', type=str, default='./results/bard')
     parser.add_argument('--output_file', type=str, default='output_bard.json')
-    # logging
-    parser.add_argument('--log_file', type=str, default='agent_debug.log', help='debug log file written under output_dir')
-    parser.add_argument('--error_log_file', type=str, default='agent_errors.jsonl', help='structured module error log (jsonl) under output_dir')
-    parser.add_argument('--pretty_error_log_file', type=str, default='agent_errors_pretty.log',
-                        help='human-readable multi-line module error log (pretty) under output_dir')
-
     parser.add_argument('--max_num_problems', type=int, default=-1, help='The number of problems to run')
     parser.add_argument('--save_every', type=int, default=100, help='save every n problems')
+
+    # Pipeline switch
+    parser.add_argument(
+        '--agent_pipeline',
+        type=str,
+        default='agent',
+        choices=['direct', 'agent'],
+        help="direct: single gpt-4o call (original). agent: M1->M2->M3->M4 pipeline.",
+    )
+
+    # Executor
+    parser.add_argument('--executor_timeout', type=int, default=5, help='Timeout (seconds) for Module-2 sandbox.')
 
     # Local Model (not implemented)
     parser.add_argument('--model_path', type=str, default=None)
@@ -656,23 +637,15 @@ def parse_args():
 
     # query
     parser.add_argument('--query_file', type=str, default=None)
-    parser.add_argument('--caption_file', type=str, default='../data/texts/captions_bard.json')
-    parser.add_argument('--ocr_file', type=str, default='../data/texts/ocrs_easyocr.json')
-    parser.add_argument('--shot_type', type=str, default='solution', help='legacy arg (ignored)', choices=['solution', 'code'])
+    parser.add_argument('--caption_file', type=str, default='./data/texts/captions_bard.json')
+    parser.add_argument('--ocr_file', type=str, default='./data/texts/ocrs_easyocr.json')
+    parser.add_argument('--shot_type', type=str, default='solution', help='shot type', choices=['solution', 'code'])
     parser.add_argument('--shot_num', type=int, default=0, help='number of shot examples')
     parser.add_argument('--use_caption', action='store_true', help='use caption data')
     parser.add_argument('--use_ocr', action='store_true', help='use ocr data')
 
-    # agent settings
-    parser.add_argument('--agent_mode', type=str, default='four_module', choices=['direct', 'four_module'],
-                        help='direct: only Module-3; four_module: Modules 1-4 (default)')
-    parser.add_argument('--exec_timeout_sec', type=int, default=3, help='timeout for Module-2 code execution (seconds)')
-    parser.add_argument('--ti_max_tokens', type=int, default=900, help='max tokens for Module-1 (code generation)')
-    parser.add_argument('--direct_max_tokens', type=int, default=256, help='max tokens for Module-3 (direct)')
-    parser.add_argument('--verifier_max_tokens', type=int, default=256, help='max tokens for Module-4 (verifier)')
-
     # other settings
-    parser.add_argument('--rerun', action='store_true', help='rerun for all problems')
+    parser.add_argument('--rerun', action='store_true', help='rerun answer extraction for all problems')
     parser.add_argument('--debug', action='store_true', help='debug mode')
 
     args = parser.parse_args()
@@ -682,25 +655,6 @@ def parse_args():
 def main():
     logging.info("MathVista: Generating Responses - Start")
     args = parse_args()
-    # attach file logging under output_dir so you can inspect failures after the run
-    os.makedirs(args.output_dir, exist_ok=True)
-    debug_log_path = setup_file_logging(args.output_dir, args.log_file)
-    error_jsonl_path = os.path.join(args.output_dir, args.error_log_file)
-    pretty_name = getattr(args, 'pretty_error_log_file', 'agent_errors_pretty.log')
-    error_pretty_path = os.path.join(args.output_dir, pretty_name)
-    logging.info(f"Debug log: {debug_log_path}")
-    logging.info(f"Module error log (jsonl): {error_jsonl_path}")
-    logging.info(f"Module error log (pretty): {error_pretty_path}")
-
-    # Ensure DEBUG logs go to the file (FileHandler is DEBUG), but keep console readable
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-    for h in root.handlers:
-        try:
-            if isinstance(h, RichHandler):
-                h.setLevel(logging.INFO)
-        except Exception:
-            pass
 
     # load data
     logging.info(f"Loading dataset {args.dataset_name}, split {args.test_split_name}...")
@@ -717,124 +671,175 @@ def main():
             raise FileNotFoundError(f"Query file not found: {query_file}")
     else:
         logging.info("Creating new query...")
-        caption_data = None
-        ocr_data = None
-        if args.use_caption and os.path.exists(args.caption_file):
-            caption_data = read_json(args.caption_file)
-        if args.use_ocr and os.path.exists(args.ocr_file):
-            ocr_data = read_json(args.ocr_file)
 
-        query_data = {}
-        for pid, item in data.items():
-            query_data[str(pid)] = create_query(item, caption_data, ocr_data, args.use_caption, args.use_ocr)
+        caption_data = {}
+        if args.use_caption:
+            caption_file = args.caption_file
+            if os.path.exists(caption_file):
+                logging.info(f"Reading {caption_file}...")
+                try:
+                    caption_data = read_json(caption_file)["texts"]
+                    logging.info("Caption data loaded.")
+                except Exception:
+                    logging.info("Caption data not found!! Please Check.")
 
-    # init model + agent
-    model = SimpleOpenAIChat(model=args.model, api_key=(args.key or ""))
-    agent_logger = logging.getLogger("agent")
-    agent = FourModuleAgent(
-        model=model,
-        error_jsonl_path=error_jsonl_path,
-        error_pretty_path=error_pretty_path,
-        logger=agent_logger,
-        exec_timeout_sec=args.exec_timeout_sec,
-        ti_max_tokens=args.ti_max_tokens,
-        direct_max_tokens=args.direct_max_tokens,
-        verifier_max_tokens=args.verifier_max_tokens,
-    )
+        ocr_data = {}
+        if args.use_ocr:
+            ocr_file = args.ocr_file
+            if os.path.exists(ocr_file):
+                logging.info(f"Reading {ocr_file}...")
+                try:
+                    ocr_data = read_json(ocr_file)["texts"]
+                    logging.info("OCR data loaded.")
+                except Exception:
+                    logging.info("OCR data not found!! Please Check.")
 
-    # load output if exists
-    out_path = os.path.join(args.output_dir, args.output_file)
-    if os.path.exists(out_path) and not args.rerun:
-        logging.info(f"Loading existing output: {out_path}")
-        results = read_json(out_path)
+        query_data = create_query_data(data, caption_data, ocr_data, args)
+
+    # model init
+    if args.model_path:
+        logging.info(f"Loading model from {args.model_path}...")
+        raise NotImplementedError("Local models are not yet supported.")
+    else:
+        model_name = args.model
+        logging.info(f"Loading {model_name} via official OpenAI client...")
+
+        key = args.key.strip() if args.key else os.getenv("OPENAI_API_KEY", "").strip()
+        assert key != "", "OpenAI API key is missing. Set OPENAI_API_KEY env var or pass --key."
+
+        client = OpenAI(api_key=key)
+        model = OpenAIChatModel(
+            client=client,
+            model=model_name,
+            temperature=args.temperature,
+            max_tokens=args.max_new_tokens,
+        )
+
+    logging.info("Model loaded.")
+
+    full_pids = list(data.keys())
+
+    os.makedirs(args.output_dir, exist_ok=True)
+    output_file_path = os.path.join(args.output_dir, args.output_file)
+
+    # load results
+    if os.path.exists(output_file_path):
+        logging.info("Results already exist.")
+        logging.info(f"Reading {output_file_path}...")
+        results = read_json(output_file_path)
     else:
         results = {}
 
-    # run
-    pids = list(query_data.keys())
-    if args.max_num_problems and args.max_num_problems > 0:
-        pids = pids[: args.max_num_problems]
+    # skipping
+    skip_pids = []
+    if not args.rerun:
+        for problem_id in full_pids:
+            if problem_id in results and 'response' in results[problem_id]:
+                response = results[problem_id]['response']
+                if verify_response(response):
+                    skip_pids.append(problem_id)
 
-    for i, pid in enumerate(tqdm(pids)):
-        if (not args.rerun) and (pid in results):
-            continue
+    if len(skip_pids) > 0:
+        logging.info(
+            f"Found existing results file with {len(skip_pids)} problems with valid responses. Skipping these problems..."
+        )
 
-        problem = query_data[pid]
-        # resolve image absolute path
-        img_rel = problem.get("image")
-        decoded_image = None
-        if img_rel:
-            # in MathVista HF dataset, image path often like "images/xxx.jpg"
-            img_path = img_rel
-            if args.data_dir and not os.path.isabs(img_path):
-                img_path = os.path.join(args.data_dir, img_path)
-            decoded_image = load_image_if_available(img_path)
+    test_pids = [pid for pid in full_pids if pid not in skip_pids]
+
+    if args.max_num_problems > 0:
+        test_pids = test_pids[: min(args.max_num_problems, len(test_pids))]
+        logging.warning(f'Limiting number of problems to {args.max_num_problems}.')
+
+    logging.info(f"Number of test problems to run: {len(test_pids)}")
+
+    for i, problem_id in enumerate(tqdm(test_pids)):
+        problem: dict = data[problem_id].copy()
+
+        # Remove decoded Image for JSON serialization
+        problem_decoded_image = problem.get('decoded_image', None)
+        if 'decoded_image' in problem:
+            problem.pop('decoded_image')
+
+        query = query_data[problem_id]
+
+        logging.debug("--------------------------------------------------------------")
+        logging.debug(f"Generating response for problem: {problem_id}...")
+
+        results[problem_id] = problem
+        results[problem_id]['query'] = query
 
         try:
-            if args.agent_mode == "direct":
-                # Module-3 only
-                m3_user = problem.get("question", "")
-                if problem.get("choices"):
-                    m3_user += "\n\nChoices:\n" + "\n".join([str(c) for c in problem["choices"]])
-                ans = model.chat(
-                    system_prompt=DIRECT_SOLVE_SYSTEM,
-                    user_prompt=m3_user,
-                    decoded_image=decoded_image,
-                    temperature=0.0,
-                    max_tokens=args.direct_max_tokens,
-                ).strip()
-                results[pid] = {
-                    "pid": pid,
-                    "question": problem.get("question", ""),
-                    "response": ans,
-                    "agent": {
-                        "mode": "direct",
-                        "module3_answer": ans,
-                    },
-                }
+            if args.agent_pipeline == "direct":
+                response = model.get_response(user_prompt=query, decoded_image=problem_decoded_image)
+                results[problem_id]['response'] = response
             else:
-                # four-module
-                outs = agent.run_one(pid=pid, problem=problem, decoded_image=decoded_image)
-                results[pid] = {
-                    "pid": pid,
-                    "question": problem.get("question", ""),
-                    "response": outs.final_answer,
-                    "agent": {
-                        "mode": "four_module",
-                        "module1_code": outs.module1_code,
-                        "module2_stdout": outs.module2_stdout,
-                        "module2_error": outs.module2_error,
-                        "module2_answer": outs.module2_answer,
-                        "module3_answer": outs.module3_answer,
-                        "module4_raw": outs.module4_raw,
-                        "module4_json": outs.module4_json,
-                        "final_answer": outs.final_answer,
-                    },
-                }
+                final_answer, trace = run_agent_on_problem(
+                    model=model,
+                    problem=problem,
+                    problem_decoded_image=problem_decoded_image,
+                    query=query,
+                    executor_timeout=args.executor_timeout,
+                    max_tokens=args.max_new_tokens,
+                )
+                # For compatibility with MathVista scoring scripts, keep top-level 'response'
+                results[problem_id]['response'] = final_answer
+
+                # Structured module logs (per your requested format)
+                results[problem_id]['agent_trace'] = trace
+
+                # Also bubble-up an easy-to-scan error list
+                errors = []
+                for mname, mval in trace.get("modules", {}).items():
+                    err = mval.get("error") if isinstance(mval, dict) else None
+                    if err:
+                        errors.append({"module": mname, "error": err})
+                results[problem_id]['errors'] = errors
+
+                logging.debug(f"[Agent] answer_a={trace.get('answer_a')} answer_b={trace.get('answer_b')} final={final_answer}")
 
         except Exception as e:
-            logging.exception(f"[pid={pid}] main-loop failed")
-            record_module_error(error_jsonl_path, error_pretty_path, pid, "MAIN", e, extra={"hint": "outer_loop"})
-            # still save something
-            results[pid] = {
-                "pid": pid,
-                "question": problem.get("question", ""),
-                "response": "",
-                "agent": {
-                    "mode": args.agent_mode,
-                    "error": f"{type(e).__name__}: {e}",
-                },
-            }
+            logging.error(f"Error in extracting answer for {problem_id}")
+            logging.error(e)
+            results[problem_id]['error'] = str(e)
+            results[problem_id]['response'] = "UNSURE"
 
-        # periodic save
-        if args.save_every > 0 and (i + 1) % args.save_every == 0:
-            save_json(out_path, results)
+        if (i % args.save_every == 0 and i > 0) or i == len(test_pids) - 1:
+            try:
+                save_json(results, output_file_path)
+                logging.info(f"Saved results to {output_file_path}")
+            except Exception as e:
+                logging.info(f"Error in saving {output_file_path}")
+                logging.info(e)
 
-    # final save
-    save_json(out_path, results)
-    logging.info(f"Saved results to: {out_path}")
+    logging.info("MathVista: Generating Responses - Finish")
 
 
-if __name__ == "__main__":
-    setup_console_logging()
+if __name__ == '__main__':
+    logging.basicConfig(
+        level=os.environ.get("LOGLEVEL", "INFO").upper(),
+        format="[%(name)s] %(message)s",
+        datefmt="[%X]",
+        handlers=[
+            RichHandler(
+                rich_tracebacks=True,
+                markup=False,
+                show_path=False,
+                omit_repeated_times=False,
+            )
+        ],
+    )
+    logger_blocklist = [
+        "asyncio",
+        "datasets",
+        "httpx",
+        "httpcore",
+        "filelock",
+        "fsspec",
+        "openai",
+        "PIL",
+        "urllib3",
+    ]
+    for module in logger_blocklist:
+        logging.getLogger(module).setLevel(logging.WARNING)
+
     main()
