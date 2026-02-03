@@ -753,7 +753,7 @@ def _sandbox_worker(code: str, q) -> None:
 
     err = None
     try:
-        exec(code, safe_globals, {})
+        exec(code, safe_globals, safe_globals)
     except Exception as e:
         err = "".join(traceback.format_exception(type(e), e, e.__traceback__))
 
@@ -945,14 +945,14 @@ Think silently; only output code."""
 
 
 DIRECT_SOLVER_SYSTEM = """You are Module-3 (Direct Solver).
-Solve the problem using the provided image (if any) and text.
+Solve the problem using the provided image (if any) and the text.
 
-Output format rules (very strict):
-- Output ONLY the final answer (no explanation).
-- If choices are provided, output EXACTLY one of the provided choices (copy-paste).
-- If answer_type is integer, output only the integer (no unit unless explicitly requested).
-- If precision indicates decimal places, output with exactly that many decimal places.
-- If you cannot determine, output UNSURE."""
+Do the problem normally and show your reasoning step-by-step (you may use equations, intermediate steps, etc.).
+At the end, clearly state your final answer on a separate line.
+
+If choices are provided, the final answer should match one of the choices exactly.
+If you truly cannot determine the answer, write UNSURE as your final answer.
+"""
 
 
 VERIFIER_SYSTEM = """You are Module-4 (Verifier).
@@ -1200,6 +1200,10 @@ def run_agent_on_problem(
     if len(stdout_a) > 800:
         stdout_a = stdout_a[:800] + "\n...(truncated)"
 
+    m3_reasoning = (m3.raw or "").strip()
+    if len(m3_reasoning) > 2000:
+        m3_reasoning = m3_reasoning[:2000] + "\n...(truncated)"
+
     verifier_user = "\n".join(
         [
             base_ctx,
@@ -1215,6 +1219,9 @@ def run_agent_on_problem(
             stdout_a,
             "",
             f"Answer_B: {ans_b}",
+            "",
+            "Direct_Solver_Reasoning (Module-3 raw):",
+            m3_reasoning,
         ]
     ).strip()
 
