@@ -924,6 +924,34 @@ def build_problem_context(problem: Dict[str, Any], extra_context: Optional[str] 
     return "\n".join(parts).strip()
 
 
+def build_direct_problem_text(problem: Dict[str, Any]) -> str:
+    """A minimal 'raw' problem statement for the Direct Solver / Verifier.
+
+    IMPORTANT: This intentionally does NOT include build_query() output (few-shot, caption/OCR, or Hint lines),
+    and it also omits internal metadata like question_type/answer_type/precision.
+    """
+    q = (problem.get("question") or "").strip()
+    unit = problem.get("unit")
+    choices = problem.get("choices")
+
+    # Keep unit attached to the question line (matches MathVista convention)
+    if unit:
+        question_line = f"{q} (Unit: {unit})"
+    else:
+        question_line = q
+
+    parts = ["Question:", question_line]
+
+    if choices:
+        parts.append("Choices:")
+        # Use (A) style to match existing query formatting
+        for i, c in enumerate(choices):
+            parts.append(f"({chr(ord('A')+i)}) {c}")
+
+    return "\n".join(parts).strip()
+
+
+
 TASK_INFERENCE_SYSTEM = """You are Module-1 (Task Inference).
 Goal: Write a SHORT Python program to solve the problem from the PROVIDED TEXT ONLY (no image).
 
@@ -947,11 +975,7 @@ Think silently; only output code."""
 DIRECT_SOLVER_SYSTEM = """You are Module-3 (Direct Solver).
 Solve the problem using the provided image (if any) and the text.
 
-Do the problem normally and show your reasoning step-by-step (you may use equations, intermediate steps, etc.).
-At the end, clearly state your final answer on a separate line.
-
-If choices are provided, the final answer should match one of the choices exactly.
-If you truly cannot determine the answer, write UNSURE as your final answer.
+Show your reasoning step-by-step, then provide your final answer.
 """
 
 
@@ -1026,12 +1050,12 @@ def run_agent_on_problem(
     """
     trace: Dict[str, Any] = {"modules": {}, "decision_flags": [], "notes": {}}
 
-    # Shared context string for prompts/logging
-    base_ctx = build_problem_context(problem, extra_context=query)
-
-    # -------- Module 1: Task inference (code gen) --------
+    # Shared context strings for prompts/logging
+    base_ctx_agent = build_problem_context(problem, extra_context=query)
+    base_ctx_direct = build_direct_problem_text(problem)
+# -------- Module 1: Task inference (code gen) --------
     m1 = ModuleLog()
-    m1.prompt = base_ctx
+    m1.prompt = base_ctx_agent
 
     gate, gate_reason = should_gate_task_inference(problem, query)
     if gate:
@@ -1105,7 +1129,7 @@ def run_agent_on_problem(
 
     # -------- Module 3: Direct solver (image + text) --------
     m3 = ModuleLog()
-    m3.prompt = base_ctx
+    m3.prompt = base_ctx_direct
     m3_raw_ans = "UNSURE"
     try:
         raw = model.chat(
@@ -1206,7 +1230,7 @@ def run_agent_on_problem(
 
     verifier_user = "\n".join(
         [
-            base_ctx,
+            base_ctx_direct,
             "",
             f"Answer_A: {ans_a}",
             f"Answer_A_error: {m2.get('error','')}",
@@ -1538,6 +1562,8 @@ def main():
                     "final_answer": final_answer,
                     "answer_a": trace.get("answer_a", ""),
                     "answer_b": trace.get("answer_b", ""),
+                    "direct_solver_raw": (trace.get("modules", {}).get("direct_solver", {}) or {}).get("raw",""),
+                    "direct_solver_extracted": (trace.get("modules", {}).get("direct_solver", {}) or {}).get("extracted",""),
                     "modules": trace.get("modules", {}),
                     "decision_flags": trace.get("decision_flags", []),
                     "notes": trace.get("notes", {}),

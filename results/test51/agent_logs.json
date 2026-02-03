@@ -1,0 +1,652 @@
+{
+    "1": {
+        "pid": "1",
+        "final_answer": "1.2",
+        "answer_a": "1.2",
+        "answer_b": "1.1",
+        "direct_solver_raw": "To find the distance \\( d \\) by which the spring is compressed, we can use the principle of conservation of energy. The initial kinetic energy of the canister is converted into the potential energy stored in the spring when the canister is momentarily stopped.\n\n1. **Initial Kinetic Energy (KE):**\n\n   \\[\n   KE = \\frac{1}{2} m v^2\n   \\]\n\n   where \\( m = 0.40 \\, \\text{kg} \\) and \\( v = 0.50 \\, \\text{m/s} \\).\n\n   \\[\n   KE = \\frac{1}{2} \\times 0.40 \\times (0.50)^2 = 0.05 \\, \\text{J}\n   \\]\n\n2. **Potential Energy in the Spring (PE):**\n\n   \\[\n   PE = \\frac{1}{2} k d^2\n   \\]\n\n   where \\( k = 750 \\, \\text{N/m} \\).\n\n3. **Conservation of Energy:**\n\n   The initial kinetic energy is equal to the potential energy stored in the spring:\n\n   \\[\n   \\frac{1}{2} m v^2 = \\frac{1}{2} k d^2\n   \\]\n\n   \\[\n   0.05 = \\frac{1}{2} \\times 750 \\times d^2\n   \\]\n\n4. **Solve for \\( d \\):**\n\n   \\[\n   0.05 = 375 d^2\n   \\]\n\n   \\[\n   d^2 = \\frac{0.05}{375}\n   \\]\n\n   \\[\n   d^2 = \\frac{1}{7500}\n   \\]\n\n   \\[\n   d = \\sqrt{\\frac{1}{7500}}\n   \\]\n\n   \\[\n   d \\approx 0.0115 \\, \\text{m}\n   \\]\n\nTherefore, the spring is compressed by approximately \\( 0.0115 \\, \\text{m} \\) or \\( 1.15 \\, \\text{cm} \\).",
+        "direct_solver_extracted": "1.1",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: free_form\nanswer_type: float\nprecision: 1.0\nunit: None\n\nQuestion:\nWhen a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?\nHint: Please answer the question requiring a floating-point number with one decimal place and provide the final value, e.g., 1.2, 1.3, 1.4, at the end.\nSolution:",
+                "raw": "```python\n# Given values\nm = 0.40  # mass in kg\nv = 0.50  # velocity in m/s\nk = 750   # spring constant in N/m\n\n# Using conservation of energy principle\n# Initial kinetic energy = Potential energy stored in the spring\n# (1/2) * m * v^2 = (1/2) * k * d^2\n\n# Solving for d\nd = (m * v**2 / k)**0.5\n\nprint(d)\n```",
+                "extracted": "# Given values\nm = 0.40  # mass in kg\nv = 0.50  # velocity in m/s\nk = 750   # spring constant in N/m\n\n# Using conservation of energy principle\n# Initial kinetic energy = Potential energy stored in the spring\n# (1/2) * m * v^2 = (1/2) * k * d^2\n\n# Solving for d\nd = (m * v**2 / k)**0.5\n\nprint(d)",
+                "error": "",
+                "extracted_raw": "# Given values\nm = 0.40  # mass in kg\nv = 0.50  # velocity in m/s\nk = 750   # spring constant in N/m\n\n# Using conservation of energy principle\n# Initial kinetic energy = Potential energy stored in the spring\n# (1/2) * m * v^2 = (1/2) * k * d^2\n\n# Solving for d\nd = (m * v**2 / k)**0.5\n\nprint(d)",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "0.011547005383792516",
+                "answer_raw": "0.011547005383792516",
+                "answer": "1.2",
+                "post_flags": [
+                    "formatted_dp_1",
+                    "unit_rescale_x100"
+                ],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nWhen a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?",
+                "raw": "To find the distance \\( d \\) by which the spring is compressed, we can use the principle of conservation of energy. The initial kinetic energy of the canister is converted into the potential energy stored in the spring when the canister is momentarily stopped.\n\n1. **Initial Kinetic Energy (KE):**\n\n   \\[\n   KE = \\frac{1}{2} m v^2\n   \\]\n\n   where \\( m = 0.40 \\, \\text{kg} \\) and \\( v = 0.50 \\, \\text{m/s} \\).\n\n   \\[\n   KE = \\frac{1}{2} \\times 0.40 \\times (0.50)^2 = 0.05 \\, \\text{J}\n   \\]\n\n2. **Potential Energy in the Spring (PE):**\n\n   \\[\n   PE = \\frac{1}{2} k d^2\n   \\]\n\n   where \\( k = 750 \\, \\text{N/m} \\).\n\n3. **Conservation of Energy:**\n\n   The initial kinetic energy is equal to the potential energy stored in the spring:\n\n   \\[\n   \\frac{1}{2} m v^2 = \\frac{1}{2} k d^2\n   \\]\n\n   \\[\n   0.05 = \\frac{1}{2} \\times 750 \\times d^2\n   \\]\n\n4. **Solve for \\( d \\):**\n\n   \\[\n   0.05 = 375 d^2\n   \\]\n\n   \\[\n   d^2 = \\frac{0.05}{375}\n   \\]\n\n   \\[\n   d^2 = \\frac{1}{7500}\n   \\]\n\n   \\[\n   d = \\sqrt{\\frac{1}{7500}}\n   \\]\n\n   \\[\n   d \\approx 0.0115 \\, \\text{m}\n   \\]\n\nTherefore, the spring is compressed by approximately \\( 0.0115 \\, \\text{m} \\) or \\( 1.15 \\, \\text{cm} \\).",
+                "extracted": "1.1",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "1.15",
+                "post_flags": [
+                    "formatted_dp_1"
+                ]
+            },
+            "verifier": {
+                "prompt": "AGREED (skipped LLM verifier)",
+                "raw": "",
+                "extracted": "1.2",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "unit_rescale_x100"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?",
+        "image": "images/1.jpg",
+        "choices": null,
+        "unit": null,
+        "precision": 1.0,
+        "answer_type": "float",
+        "question_type": "free_form"
+    },
+    "2": {
+        "pid": "2",
+        "final_answer": "1000",
+        "answer_a": "UNSURE",
+        "answer_b": "1000",
+        "direct_solver_raw": "To determine the total volume of the measuring cup in grams, we need to look at the markings on the cup. The cup has markings for both volume in milliliters (ml) and weight in grams (g) for substances like flour and sugar.\n\nFrom the image, the measuring cup has markings up to 1000 grams for flour. Therefore, the total volume capacity of the measuring cup is 1000 grams.",
+        "direct_solver_extracted": "1000",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: free_form\nanswer_type: integer\nprecision: None\nunit: g\n\nQuestion:\nwhat is the total volume of the measuring cup?\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: what is the total volume of the measuring cup? (Unit: g)\nHint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nSolution:",
+                "raw": "(skipped: vision-only gating)",
+                "extracted": "print('UNSURE')",
+                "error": "",
+                "extracted_raw": "print('UNSURE')",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nwhat is the total volume of the measuring cup? (Unit: g)",
+                "raw": "To determine the total volume of the measuring cup in grams, we need to look at the markings on the cup. The cup has markings for both volume in milliliters (ml) and weight in grams (g) for substances like flour and sugar.\n\nFrom the image, the measuring cup has markings up to 1000 grams for flour. Therefore, the total volume capacity of the measuring cup is 1000 grams.",
+                "extracted": "1000",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "1000",
+                "post_flags": [
+                    "formatted_integer"
+                ]
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "1000",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "m1_gated:vision_only_no_numbers",
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "what is the total volume of the measuring cup?",
+        "image": "images/2.jpg",
+        "choices": null,
+        "unit": "g",
+        "precision": null,
+        "answer_type": "integer",
+        "question_type": "free_form"
+    },
+    "3": {
+        "pid": "3",
+        "final_answer": "145\u00b0",
+        "answer_a": "145\u00b0",
+        "answer_b": "135\u00b0",
+        "direct_solver_raw": "To solve for \\(\\angle BOC\\), we can use the properties of angle bisectors in a triangle.\n\nGiven:\n- \\(\\angle A = 110^\\circ\\)\n\nIn \\(\\triangle ABC\\), the sum of the interior angles is \\(180^\\circ\\). Therefore, we have:\n\n\\[\n\\angle B + \\angle C = 180^\\circ - \\angle A = 180^\\circ - 110^\\circ = 70^\\circ\n\\]\n\nSince \\(OB\\) and \\(OC\\) are the angle bisectors of \\(\\angle B\\) and \\(\\angle C\\), respectively, \\(\\angle BOC\\) is given by:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{\\angle B}{2} - \\frac{\\angle C}{2}\n\\]\n\nUsing \\(\\angle B + \\angle C = 70^\\circ\\), we can express \\(\\angle B\\) and \\(\\angle C\\) as:\n\n\\[\n\\angle B = x, \\quad \\angle C = 70^\\circ - x\n\\]\n\nSubstituting into the equation for \\(\\angle BOC\\):\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ - x}{2}\n\\]\n\nSimplifying:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ}{2} + \\frac{x}{2}\n\\]\n\n\\[\n\\angle BOC = 180^\\circ - 35^\\circ = 145^\\circ\n\\]\n\nThus, the measure of \\(\\angle BOC\\) is \\(\\boxed{145^\\circ}\\).",
+        "direct_solver_extracted": "135\u00b0",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\n\u25b3ABC\u7684\u4e24\u5185\u89d2\u5e73\u5206\u7ebfOB\u3001OC\u76f8\u4ea4\u4e8e\u70b9O\uff0c\u82e5\u2220A\uff1d110\u00b0\uff0c\u5219\u2220BOC\uff1d\uff08\uff09\n\nChoices:\nA. 135\u00b0\nB. 140\u00b0\nC. 145\u00b0\nD. 150\u00b0\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: \u25b3ABC\u7684\u4e24\u5185\u89d2\u5e73\u5206\u7ebfOB\u3001OC\u76f8\u4ea4\u4e8e\u70b9O\uff0c\u82e5\u2220A\uff1d110\u00b0\uff0c\u5219\u2220BOC\uff1d\uff08\uff09\nChoices:\n(A) 135\u00b0\n(B) 140\u00b0\n(C) 145\u00b0\n(D) 150\u00b0\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "```python\n# Given: \u2220A = 110\u00b0\n# In a triangle, the sum of angles is 180\u00b0.\n# Therefore, \u2220B + \u2220C = 180\u00b0 - \u2220A = 70\u00b0\n# The angle bisectors of \u2220B and \u2220C intersect at O.\n# The angle \u2220BOC is given by the formula: \u2220BOC = 90\u00b0 + \u2220A/2\n\nangle_A = 110\nangle_BOC = 90 + angle_A / 2\n\n# Determine the correct choice\nif angle_BOC == 135:\n    answer = \"135\u00b0\"\nelif angle_BOC == 140:\n    answer = \"140\u00b0\"\nelif angle_BOC == 145:\n    answer = \"145\u00b0\"\nelif angle_BOC == 150:\n    answer = \"150\u00b0\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)\n```",
+                "extracted": "# Given: \u2220A = 110\u00b0\n# In a triangle, the sum of angles is 180\u00b0.\n# Therefore, \u2220B + \u2220C = 180\u00b0 - \u2220A = 70\u00b0\n# The angle bisectors of \u2220B and \u2220C intersect at O.\n# The angle \u2220BOC is given by the formula: \u2220BOC = 90\u00b0 + \u2220A/2\n\nangle_A = 110\nangle_BOC = 90 + angle_A / 2\n\n# Determine the correct choice\nif angle_BOC == 135:\n    answer = \"135\u00b0\"\nelif angle_BOC == 140:\n    answer = \"140\u00b0\"\nelif angle_BOC == 145:\n    answer = \"145\u00b0\"\nelif angle_BOC == 150:\n    answer = \"150\u00b0\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)",
+                "error": "",
+                "extracted_raw": "# Given: \u2220A = 110\u00b0\n# In a triangle, the sum of angles is 180\u00b0.\n# Therefore, \u2220B + \u2220C = 180\u00b0 - \u2220A = 70\u00b0\n# The angle bisectors of \u2220B and \u2220C intersect at O.\n# The angle \u2220BOC is given by the formula: \u2220BOC = 90\u00b0 + \u2220A/2\n\nangle_A = 110\nangle_BOC = 90 + angle_A / 2\n\n# Determine the correct choice\nif angle_BOC == 135:\n    answer = \"135\u00b0\"\nelif angle_BOC == 140:\n    answer = \"140\u00b0\"\nelif angle_BOC == 145:\n    answer = \"145\u00b0\"\nelif angle_BOC == 150:\n    answer = \"150\u00b0\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "145\u00b0",
+                "answer_raw": "145\u00b0",
+                "answer": "145\u00b0",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\n\u25b3ABC\u7684\u4e24\u5185\u89d2\u5e73\u5206\u7ebfOB\u3001OC\u76f8\u4ea4\u4e8e\u70b9O\uff0c\u82e5\u2220A\uff1d110\u00b0\uff0c\u5219\u2220BOC\uff1d\uff08\uff09\nChoices:\n(A) 135\u00b0\n(B) 140\u00b0\n(C) 145\u00b0\n(D) 150\u00b0",
+                "raw": "To solve for \\(\\angle BOC\\), we can use the properties of angle bisectors in a triangle.\n\nGiven:\n- \\(\\angle A = 110^\\circ\\)\n\nIn \\(\\triangle ABC\\), the sum of the interior angles is \\(180^\\circ\\). Therefore, we have:\n\n\\[\n\\angle B + \\angle C = 180^\\circ - \\angle A = 180^\\circ - 110^\\circ = 70^\\circ\n\\]\n\nSince \\(OB\\) and \\(OC\\) are the angle bisectors of \\(\\angle B\\) and \\(\\angle C\\), respectively, \\(\\angle BOC\\) is given by:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{\\angle B}{2} - \\frac{\\angle C}{2}\n\\]\n\nUsing \\(\\angle B + \\angle C = 70^\\circ\\), we can express \\(\\angle B\\) and \\(\\angle C\\) as:\n\n\\[\n\\angle B = x, \\quad \\angle C = 70^\\circ - x\n\\]\n\nSubstituting into the equation for \\(\\angle BOC\\):\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ - x}{2}\n\\]\n\nSimplifying:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ}{2} + \\frac{x}{2}\n\\]\n\n\\[\n\\angle BOC = 180^\\circ - 35^\\circ = 145^\\circ\n\\]\n\nThus, the measure of \\(\\angle BOC\\) is \\(\\boxed{145^\\circ}\\).",
+                "extracted": "135\u00b0",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "135\u00b0",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "Question:\n\u25b3ABC\u7684\u4e24\u5185\u89d2\u5e73\u5206\u7ebfOB\u3001OC\u76f8\u4ea4\u4e8e\u70b9O\uff0c\u82e5\u2220A\uff1d110\u00b0\uff0c\u5219\u2220BOC\uff1d\uff08\uff09\nChoices:\n(A) 135\u00b0\n(B) 140\u00b0\n(C) 145\u00b0\n(D) 150\u00b0\n\nAnswer_A: 145\u00b0\nAnswer_A_error: \nCode_A_suspicious: False ()\n\nCode_A:\n# Given: \u2220A = 110\u00b0\n# In a triangle, the sum of angles is 180\u00b0.\n# Therefore, \u2220B + \u2220C = 180\u00b0 - \u2220A = 70\u00b0\n# The angle bisectors of \u2220B and \u2220C intersect at O.\n# The angle \u2220BOC is given by the formula: \u2220BOC = 90\u00b0 + \u2220A/2\n\nangle_A = 110\nangle_BOC = 90 + angle_A / 2\n\n# Determine the correct choice\nif angle_BOC == 135:\n    answer = \"135\u00b0\"\nelif angle_BOC == 140:\n    answer = \"140\u00b0\"\nelif angle_BOC == 145:\n    answer = \"145\u00b0\"\nelif angle_BOC == 150:\n    answer = \"150\u00b0\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)\n\nStdout_A:\n145\u00b0\n\nAnswer_B: 135\u00b0\n\nDirect_Solver_Reasoning (Module-3 raw):\nTo solve for \\(\\angle BOC\\), we can use the properties of angle bisectors in a triangle.\n\nGiven:\n- \\(\\angle A = 110^\\circ\\)\n\nIn \\(\\triangle ABC\\), the sum of the interior angles is \\(180^\\circ\\). Therefore, we have:\n\n\\[\n\\angle B + \\angle C = 180^\\circ - \\angle A = 180^\\circ - 110^\\circ = 70^\\circ\n\\]\n\nSince \\(OB\\) and \\(OC\\) are the angle bisectors of \\(\\angle B\\) and \\(\\angle C\\), respectively, \\(\\angle BOC\\) is given by:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{\\angle B}{2} - \\frac{\\angle C}{2}\n\\]\n\nUsing \\(\\angle B + \\angle C = 70^\\circ\\), we can express \\(\\angle B\\) and \\(\\angle C\\) as:\n\n\\[\n\\angle B = x, \\quad \\angle C = 70^\\circ - x\n\\]\n\nSubstituting into the equation for \\(\\angle BOC\\):\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ - x}{2}\n\\]\n\nSimplifying:\n\n\\[\n\\angle BOC = 180^\\circ - \\frac{x}{2} - \\frac{70^\\circ}{2} + \\frac{x}{2}\n\\]\n\n\\[\n\\angle BOC = 180^\\circ - 35^\\circ = 145^\\circ\n\\]\n\nThus, the measure of \\(\\angle BOC\\) is \\(\\boxed{145^\\circ}\\).",
+                "raw": "Answer_A",
+                "extracted": "145\u00b0",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "post_flags": []
+            }
+        },
+        "decision_flags": [
+            "a_b_disagree",
+            "verifier_called",
+            "verifier_use_image:geometry",
+            "verifier_called_with_image",
+            "verifier_chose_a_label",
+            "verifier_overrode_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "\u25b3ABC\u7684\u4e24\u5185\u89d2\u5e73\u5206\u7ebfOB\u3001OC\u76f8\u4ea4\u4e8e\u70b9O\uff0c\u82e5\u2220A\uff1d110\u00b0\uff0c\u5219\u2220BOC\uff1d\uff08\uff09",
+        "image": "images/3.jpg",
+        "choices": [
+            "135\u00b0",
+            "140\u00b0",
+            "145\u00b0",
+            "150\u00b0"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "4": {
+        "pid": "4",
+        "final_answer": "4",
+        "answer_a": "UNSURE",
+        "answer_b": "4",
+        "direct_solver_raw": "To solve the problem, let's identify and subtract the specified objects from the image:\n\n1. **Large Rubber Spheres**: \n   - The green sphere on the left appears to be large and rubbery.\n\n2. **Big Shiny Cylinders**:\n   - The yellow cylinder on the right appears to be big and shiny.\n\nNow, let's count the total objects and subtract the identified ones:\n\n- Total objects in the image: 6 (green sphere, purple cylinder, purple sphere, shiny cube, yellow cube, yellow cylinder)\n\nSubtract the identified objects:\n- Large rubber sphere: 1 (green sphere)\n- Big shiny cylinder: 1 (yellow cylinder)\n\nObjects left after subtraction:\n- Purple cylinder\n- Purple sphere\n- Shiny cube\n- Yellow cube\n\nTotal objects left: 4\n\nFinal answer: 4 objects are left.",
+        "direct_solver_extracted": "4",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: free_form\nanswer_type: integer\nprecision: None\nunit: None\n\nQuestion:\nSubtract all large rubber spheres. Subtract all big shiny cylinders. How many objects are left?\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: Subtract all large rubber spheres. Subtract all big shiny cylinders. How many objects are left?\nHint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nSolution:",
+                "raw": "(skipped: vision-only gating)",
+                "extracted": "print('UNSURE')",
+                "error": "",
+                "extracted_raw": "print('UNSURE')",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nSubtract all large rubber spheres. Subtract all big shiny cylinders. How many objects are left?",
+                "raw": "To solve the problem, let's identify and subtract the specified objects from the image:\n\n1. **Large Rubber Spheres**: \n   - The green sphere on the left appears to be large and rubbery.\n\n2. **Big Shiny Cylinders**:\n   - The yellow cylinder on the right appears to be big and shiny.\n\nNow, let's count the total objects and subtract the identified ones:\n\n- Total objects in the image: 6 (green sphere, purple cylinder, purple sphere, shiny cube, yellow cube, yellow cylinder)\n\nSubtract the identified objects:\n- Large rubber sphere: 1 (green sphere)\n- Big shiny cylinder: 1 (yellow cylinder)\n\nObjects left after subtraction:\n- Purple cylinder\n- Purple sphere\n- Shiny cube\n- Yellow cube\n\nTotal objects left: 4\n\nFinal answer: 4 objects are left.",
+                "extracted": "4",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "4",
+                "post_flags": [
+                    "formatted_integer"
+                ]
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "4",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "m1_gated:vision_only_no_numbers",
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "Subtract all large rubber spheres. Subtract all big shiny cylinders. How many objects are left?",
+        "image": "images/4.jpg",
+        "choices": null,
+        "unit": null,
+        "precision": null,
+        "answer_type": "integer",
+        "question_type": "free_form"
+    },
+    "5": {
+        "pid": "5",
+        "final_answer": "102",
+        "answer_a": "UNSURE",
+        "answer_b": "102",
+        "direct_solver_raw": "To find \\( m\\angle H \\), we need to determine the value of \\( x \\) first. The polygon \\( EFGHJ \\) is a pentagon, and the sum of the interior angles of a pentagon is given by:\n\n\\[\n(5-2) \\times 180^\\circ = 540^\\circ\n\\]\n\nThe angles of the pentagon are given as:\n- \\( \\angle E = x^\\circ \\)\n- \\( \\angle F = (x + 20)^\\circ \\)\n- \\( \\angle G = (x + 5)^\\circ \\)\n- \\( \\angle H = (x - 5)^\\circ \\)\n- \\( \\angle J = (x + 10)^\\circ \\)\n\nAdding these angles, we have:\n\n\\[\nx + (x + 20) + (x + 5) + (x - 5) + (x + 10) = 540\n\\]\n\nSimplifying the equation:\n\n\\[\nx + x + 20 + x + 5 + x - 5 + x + 10 = 540\n\\]\n\n\\[\n5x + 30 = 540\n\\]\n\nSubtract 30 from both sides:\n\n\\[\n5x = 510\n\\]\n\nDivide by 5:\n\n\\[\nx = 102\n\\]\n\nNow, substitute \\( x = 102 \\) into \\( \\angle H = (x - 5)^\\circ \\):\n\n\\[\n\\angle H = (102 - 5)^\\circ = 97^\\circ\n\\]\n\nThus, \\( m\\angle H = 97^\\circ \\).\n\nThe correct answer is \\(\\boxed{97}\\).",
+        "direct_solver_extracted": "102",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\nFind $m\\angle H$\n\nChoices:\nA. 97\nB. 102\nC. 107\nD. 122\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: Find $m\\angle H$\nChoices:\n(A) 97\n(B) 102\n(C) 107\n(D) 122\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "```python\n# Based on the problem statement, we need to choose the correct value for m\u2220H from the given choices.\n# Without additional information or context, we cannot determine the correct angle.\n# Therefore, we will output UNSURE as we cannot solve it with the given data.\n\nprint(\"UNSURE\")\n```",
+                "extracted": "# Based on the problem statement, we need to choose the correct value for m\u2220H from the given choices.\n# Without additional information or context, we cannot determine the correct angle.\n# Therefore, we will output UNSURE as we cannot solve it with the given data.\n\nprint(\"UNSURE\")",
+                "error": "",
+                "extracted_raw": "# Based on the problem statement, we need to choose the correct value for m\u2220H from the given choices.\n# Without additional information or context, we cannot determine the correct angle.\n# Therefore, we will output UNSURE as we cannot solve it with the given data.\n\nprint(\"UNSURE\")",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nFind $m\\angle H$\nChoices:\n(A) 97\n(B) 102\n(C) 107\n(D) 122",
+                "raw": "To find \\( m\\angle H \\), we need to determine the value of \\( x \\) first. The polygon \\( EFGHJ \\) is a pentagon, and the sum of the interior angles of a pentagon is given by:\n\n\\[\n(5-2) \\times 180^\\circ = 540^\\circ\n\\]\n\nThe angles of the pentagon are given as:\n- \\( \\angle E = x^\\circ \\)\n- \\( \\angle F = (x + 20)^\\circ \\)\n- \\( \\angle G = (x + 5)^\\circ \\)\n- \\( \\angle H = (x - 5)^\\circ \\)\n- \\( \\angle J = (x + 10)^\\circ \\)\n\nAdding these angles, we have:\n\n\\[\nx + (x + 20) + (x + 5) + (x - 5) + (x + 10) = 540\n\\]\n\nSimplifying the equation:\n\n\\[\nx + x + 20 + x + 5 + x - 5 + x + 10 = 540\n\\]\n\n\\[\n5x + 30 = 540\n\\]\n\nSubtract 30 from both sides:\n\n\\[\n5x = 510\n\\]\n\nDivide by 5:\n\n\\[\nx = 102\n\\]\n\nNow, substitute \\( x = 102 \\) into \\( \\angle H = (x - 5)^\\circ \\):\n\n\\[\n\\angle H = (102 - 5)^\\circ = 97^\\circ\n\\]\n\nThus, \\( m\\angle H = 97^\\circ \\).\n\nThe correct answer is \\(\\boxed{97}\\).",
+                "extracted": "102",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "102",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "102",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "Find $m\\angle H$",
+        "image": "images/5.jpg",
+        "choices": [
+            "97",
+            "102",
+            "107",
+            "122"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "6": {
+        "pid": "6",
+        "final_answer": "5cm",
+        "answer_a": "UNSURE",
+        "answer_b": "5cm",
+        "direct_solver_raw": "To find the length of \\( AC \\), we can use the information given:\n\n1. \\( CB = 4.0 \\)\n2. \\( DB = 7.0 \\)\n3. \\( D \\) is the midpoint of \\( AC \\).\n\nSince \\( D \\) is the midpoint of \\( AC \\), we have:\n\n\\[\nAD = DC\n\\]\n\nThe total length from \\( D \\) to \\( B \\) is:\n\n\\[\nDB = DC + CB = 7.0\n\\]\n\nSince \\( DC = AD \\), we can express \\( DC \\) as:\n\n\\[\nDC = \\frac{AC}{2}\n\\]\n\nSubstituting \\( DC \\) in the equation:\n\n\\[\n\\frac{AC}{2} + 4.0 = 7.0\n\\]\n\nSolving for \\( AC \\):\n\n\\[\n\\frac{AC}{2} = 7.0 - 4.0 = 3.0\n\\]\n\n\\[\nAC = 3.0 \\times 2 = 6.0\n\\]\n\nThus, the length of \\( AC \\) is \\( 6 \\) cm.\n\nThe correct answer is \\(\\boxed{6 \\text{ cm}}\\).",
+        "direct_solver_extracted": "5cm",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\nAs shown in the figure, if CB = 4.0, DB = 7.0, and D is the midpoint of AC, then the length of AC is ()\n\nChoices:\nA. 6cm\nB. 7cm\nC. 4cm\nD. 5cm\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: As shown in the figure, if CB = 4.0, DB = 7.0, and D is the midpoint of AC, then the length of AC is ()\nChoices:\n(A) 6cm\n(B) 7cm\n(C) 4cm\n(D) 5cm\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "```python\n# Given that D is the midpoint of AC, we have AD = DC.\n# Also, given DB = 7.0 and CB = 4.0, we can find AB using the triangle inequality or other geometric properties.\n# However, since D is the midpoint, AC = 2 * AD.\n\n# Let's assume AD = x, then DC = x and AC = 2x.\n# Since D is the midpoint, and we don't have any other information about the triangle or line segments,\n# we can assume that the length of AC is twice the length of AD.\n\n# Since no additional information is provided, and the choices are fixed,\n# we need to deduce the length of AC based on the given choices.\n\n# Since D is the midpoint, and no other information is provided, we assume AC = 2 * AD.\n# We have no direct information about AD, but we know AC must be a reasonable length based on the choices.\n\n# Given the choices, the only reasonable assumption is that AC is twice the length of one of the segments.\n# Since D is the midpoint, and no other information is provided, we assume AC = 2 * AD.\n# We have no direct information about AD, but we know AC must be a reasonable length based on the choices.\n\n# The only choice that makes sense given D is the midpoint and no other information is provided is:\nanswer = \"6cm\"\n\nprint(answer)\n```",
+                "extracted": "print('UNSURE')",
+                "error": "",
+                "extracted_raw": "# Given that D is the midpoint of AC, we have AD = DC.\n# Also, given DB = 7.0 and CB = 4.0, we can find AB using the triangle inequality or other geometric properties.\n# However, since D is the midpoint, AC = 2 * AD.\n\n# Let's assume AD = x, then DC = x and AC = 2x.\n# Since D is the midpoint, and we don't have any other information about the triangle or line segments,\n# we can assume that the length of AC is twice the length of AD.\n\n# Since no additional information is provided, and the choices are fixed,\n# we need to deduce the length of AC based on the given choices.\n\n# Since D is the midpoint, and no other information is provided, we assume AC = 2 * AD.\n# We have no direct information about AD, but we know AC must be a reasonable length based on the choices.\n\n# Given the choices, the only reasonable assumption is that AC is twice the length of one of the segments.\n# Since D is the midpoint, and no other information is provided, we assume AC = 2 * AD.\n# We have no direct information about AD, but we know AC must be a reasonable length based on the choices.\n\n# The only choice that makes sense given D is the midpoint and no other information is provided is:\nanswer = \"6cm\"\n\nprint(answer)",
+                "sanitize_notes": [
+                    "nonexecutable_implicit_multiplication_detected"
+                ]
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nAs shown in the figure, if CB = 4.0, DB = 7.0, and D is the midpoint of AC, then the length of AC is ()\nChoices:\n(A) 6cm\n(B) 7cm\n(C) 4cm\n(D) 5cm",
+                "raw": "To find the length of \\( AC \\), we can use the information given:\n\n1. \\( CB = 4.0 \\)\n2. \\( DB = 7.0 \\)\n3. \\( D \\) is the midpoint of \\( AC \\).\n\nSince \\( D \\) is the midpoint of \\( AC \\), we have:\n\n\\[\nAD = DC\n\\]\n\nThe total length from \\( D \\) to \\( B \\) is:\n\n\\[\nDB = DC + CB = 7.0\n\\]\n\nSince \\( DC = AD \\), we can express \\( DC \\) as:\n\n\\[\nDC = \\frac{AC}{2}\n\\]\n\nSubstituting \\( DC \\) in the equation:\n\n\\[\n\\frac{AC}{2} + 4.0 = 7.0\n\\]\n\nSolving for \\( AC \\):\n\n\\[\n\\frac{AC}{2} = 7.0 - 4.0 = 3.0\n\\]\n\n\\[\nAC = 3.0 \\times 2 = 6.0\n\\]\n\nThus, the length of \\( AC \\) is \\( 6 \\) cm.\n\nThe correct answer is \\(\\boxed{6 \\text{ cm}}\\).",
+                "extracted": "5cm",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "5cm",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "5cm",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "m1_exec_sanitized",
+            "m1_forced_unsure:nonexecutable_code",
+            "m1_sanitized",
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "As shown in the figure, if CB = 4.0, DB = 7.0, and D is the midpoint of AC, then the length of AC is ()",
+        "image": "images/6.jpg",
+        "choices": [
+            "6cm",
+            "7cm",
+            "4cm",
+            "5cm"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "7": {
+        "pid": "7",
+        "final_answer": "quarter past",
+        "answer_a": "UNSURE",
+        "answer_b": "quarter past",
+        "direct_solver_raw": "To determine the time shown on the clock:\n\n1. **Hour Hand**: The hour hand is pointing between 8 and 9, indicating it is after 8 o'clock.\n\n2. **Minute Hand**: The minute hand is pointing at 3, which represents 15 minutes past the hour.\n\nTherefore, the time is \"quarter past eight.\"\n\nThe correct choice is (E) quarter past.",
+        "direct_solver_extracted": "quarter past",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\nWhat time is shown? Answer by typing a time word, not a number. It is (_) after eight.\n\nChoices:\nA. half\nB. quarter\nC. o'clock\nD. quarter to\nE. quarter past\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: What time is shown? Answer by typing a time word, not a number. It is (_) after eight.\nChoices:\n(A) half\n(B) quarter\n(C) o'clock\n(D) quarter to\n(E) quarter past\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "(skipped: vision-only gating)",
+                "extracted": "print('UNSURE')",
+                "error": "",
+                "extracted_raw": "print('UNSURE')",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nWhat time is shown? Answer by typing a time word, not a number. It is (_) after eight.\nChoices:\n(A) half\n(B) quarter\n(C) o'clock\n(D) quarter to\n(E) quarter past",
+                "raw": "To determine the time shown on the clock:\n\n1. **Hour Hand**: The hour hand is pointing between 8 and 9, indicating it is after 8 o'clock.\n\n2. **Minute Hand**: The minute hand is pointing at 3, which represents 15 minutes past the hour.\n\nTherefore, the time is \"quarter past eight.\"\n\nThe correct choice is (E) quarter past.",
+                "extracted": "quarter past",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "quarter past",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "quarter past",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "m1_gated:vision_only_no_numbers",
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "What time is shown? Answer by typing a time word, not a number. It is (_) after eight.",
+        "image": "images/7.jpg",
+        "choices": [
+            "half",
+            "quarter",
+            "o'clock",
+            "quarter to",
+            "quarter past"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "8": {
+        "pid": "8",
+        "final_answer": "Yes",
+        "answer_a": "UNSURE",
+        "answer_b": "Yes",
+        "direct_solver_raw": "To solve the problem, let's analyze the image step-by-step:\n\n1. **Identify the brown metal sedan**: The brown metal sedan is on the right side of the image.\n\n2. **Count the tiny gray bicycles on the left side of the sedan**: There is one tiny gray bicycle on the left side of the sedan.\n\n3. **Identify the tiny green bicycle**: The tiny green bicycle is on the left side of the image.\n\n4. **Count the things to the left of the tiny green bicycle**: There are no objects to the left of the tiny green bicycle.\n\nNow, compare the two counts:\n\n- Number of tiny gray bicycles on the left side of the brown metal sedan: 1\n- Number of things to the left of the tiny green bicycle: 0\n\nSince 1 is greater than 0, the answer is:\n\n(A) Yes",
+        "direct_solver_extracted": "Yes",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\nIs the number of tiny gray bicycles that are on the left side of the brown metal sedan greater than the number of things that are to the left of the tiny green bicycle?\n\nChoices:\nA. Yes\nB. No\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: Is the number of tiny gray bicycles that are on the left side of the brown metal sedan greater than the number of things that are to the left of the tiny green bicycle?\nChoices:\n(A) Yes\n(B) No\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "(skipped: vision-only gating)",
+                "extracted": "print('UNSURE')",
+                "error": "",
+                "extracted_raw": "print('UNSURE')",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nIs the number of tiny gray bicycles that are on the left side of the brown metal sedan greater than the number of things that are to the left of the tiny green bicycle?\nChoices:\n(A) Yes\n(B) No",
+                "raw": "To solve the problem, let's analyze the image step-by-step:\n\n1. **Identify the brown metal sedan**: The brown metal sedan is on the right side of the image.\n\n2. **Count the tiny gray bicycles on the left side of the sedan**: There is one tiny gray bicycle on the left side of the sedan.\n\n3. **Identify the tiny green bicycle**: The tiny green bicycle is on the left side of the image.\n\n4. **Count the things to the left of the tiny green bicycle**: There are no objects to the left of the tiny green bicycle.\n\nNow, compare the two counts:\n\n- Number of tiny gray bicycles on the left side of the brown metal sedan: 1\n- Number of things to the left of the tiny green bicycle: 0\n\nSince 1 is greater than 0, the answer is:\n\n(A) Yes",
+                "extracted": "Yes",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "Yes",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "Yes",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "m1_gated:vision_only_no_numbers",
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "Is the number of tiny gray bicycles that are on the left side of the brown metal sedan greater than the number of things that are to the left of the tiny green bicycle?",
+        "image": "images/8.jpg",
+        "choices": [
+            "Yes",
+            "No"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "9": {
+        "pid": "9",
+        "final_answer": "8",
+        "answer_a": "UNSURE",
+        "answer_b": "8",
+        "direct_solver_raw": "To solve this problem, we need to apply the Pythagorean theorem. The given figure is a \"\u52fe\u80a1\u6811\" (Pythagorean tree), where each square is constructed on the sides of a right triangle.\n\n1. **Identify the side lengths of squares A and B:**\n   - The area of square A is 5, so its side length is \\(\\sqrt{5}\\).\n   - The area of square B is 3, so its side length is \\(\\sqrt{3}\\).\n\n2. **Apply the Pythagorean theorem:**\n   - Since squares A and B are on the legs of a right triangle, the hypotenuse will be the side of square C.\n   - According to the Pythagorean theorem: \n     \\[\n     (\\text{side of C})^2 = (\\text{side of A})^2 + (\\text{side of B})^2\n     \\]\n   - Substitute the side lengths:\n     \\[\n     (\\text{side of C})^2 = (\\sqrt{5})^2 + (\\sqrt{3})^2 = 5 + 3 = 8\n     \\]\n\n3. **Determine the area of square C:**\n   - The area of square C is \\((\\text{side of C})^2 = 8\\).\n\nThus, the area of the largest square C is 8.\n\nThe correct answer is \\((D) 8\\).",
+        "direct_solver_extracted": "8",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\n\u5982\u56fe\u662f\u4e00\u682a\u7f8e\u4e3d\u7684\u52fe\u80a1\u6811\uff0c\u5176\u4e2d\u6240\u6709\u56db\u8fb9\u5f62\u90fd\u662f\u6b63\u65b9\u5f62\uff0c\u6240\u6709\u7684\u4e09\u89d2\u5f62\u90fd\u662f\u76f4\u89d2\u4e09\u89d2\u5f62\uff0c\u82e5\u6b63\u65b9\u5f62A\u3001B\u7684\u9762\u79ef\u5206\u522b\u4e3a5\u30013\uff0c\u5219\u6700\u5927\u6b63\u65b9\u5f62C\u7684\u9762\u79ef\u662f\uff08\uff09\n\nChoices:\nA. 15\nB. 13\nC. 11\nD. 8\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: \u5982\u56fe\u662f\u4e00\u682a\u7f8e\u4e3d\u7684\u52fe\u80a1\u6811\uff0c\u5176\u4e2d\u6240\u6709\u56db\u8fb9\u5f62\u90fd\u662f\u6b63\u65b9\u5f62\uff0c\u6240\u6709\u7684\u4e09\u89d2\u5f62\u90fd\u662f\u76f4\u89d2\u4e09\u89d2\u5f62\uff0c\u82e5\u6b63\u65b9\u5f62A\u3001B\u7684\u9762\u79ef\u5206\u522b\u4e3a5\u30013\uff0c\u5219\u6700\u5927\u6b63\u65b9\u5f62C\u7684\u9762\u79ef\u662f\uff08\uff09\nChoices:\n(A) 15\n(B) 13\n(C) 11\n(D) 8\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "```python\n# Given the areas of squares A and B\narea_A = 5\narea_B = 3\n\n# The side lengths of squares A and B\nside_A = area_A ** 0.5\nside_B = area_B ** 0.5\n\n# Using the Pythagorean theorem to find the side of square C\nside_C = (side_A ** 2 + side_B ** 2) ** 0.5\n\n# The area of square C\narea_C = side_C ** 2\n\n# Determine the correct choice\nif area_C == 15:\n    answer = \"15\"\nelif area_C == 13:\n    answer = \"13\"\nelif area_C == 11:\n    answer = \"11\"\nelif area_C == 8:\n    answer = \"8\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)\n```",
+                "extracted": "# Given the areas of squares A and B\narea_A = 5\narea_B = 3\n\n# The side lengths of squares A and B\nside_A = area_A ** 0.5\nside_B = area_B ** 0.5\n\n# Using the Pythagorean theorem to find the side of square C\nside_C = (side_A ** 2 + side_B ** 2) ** 0.5\n\n# The area of square C\narea_C = side_C ** 2\n\n# Determine the correct choice\nif area_C == 15:\n    answer = \"15\"\nelif area_C == 13:\n    answer = \"13\"\nelif area_C == 11:\n    answer = \"11\"\nelif area_C == 8:\n    answer = \"8\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)",
+                "error": "",
+                "extracted_raw": "# Given the areas of squares A and B\narea_A = 5\narea_B = 3\n\n# The side lengths of squares A and B\nside_A = area_A ** 0.5\nside_B = area_B ** 0.5\n\n# Using the Pythagorean theorem to find the side of square C\nside_C = (side_A ** 2 + side_B ** 2) ** 0.5\n\n# The area of square C\narea_C = side_C ** 2\n\n# Determine the correct choice\nif area_C == 15:\n    answer = \"15\"\nelif area_C == 13:\n    answer = \"13\"\nelif area_C == 11:\n    answer = \"11\"\nelif area_C == 8:\n    answer = \"8\"\nelse:\n    answer = \"UNSURE\"\n\nprint(answer)",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "UNSURE",
+                "answer_raw": "UNSURE",
+                "answer": "UNSURE",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\n\u5982\u56fe\u662f\u4e00\u682a\u7f8e\u4e3d\u7684\u52fe\u80a1\u6811\uff0c\u5176\u4e2d\u6240\u6709\u56db\u8fb9\u5f62\u90fd\u662f\u6b63\u65b9\u5f62\uff0c\u6240\u6709\u7684\u4e09\u89d2\u5f62\u90fd\u662f\u76f4\u89d2\u4e09\u89d2\u5f62\uff0c\u82e5\u6b63\u65b9\u5f62A\u3001B\u7684\u9762\u79ef\u5206\u522b\u4e3a5\u30013\uff0c\u5219\u6700\u5927\u6b63\u65b9\u5f62C\u7684\u9762\u79ef\u662f\uff08\uff09\nChoices:\n(A) 15\n(B) 13\n(C) 11\n(D) 8",
+                "raw": "To solve this problem, we need to apply the Pythagorean theorem. The given figure is a \"\u52fe\u80a1\u6811\" (Pythagorean tree), where each square is constructed on the sides of a right triangle.\n\n1. **Identify the side lengths of squares A and B:**\n   - The area of square A is 5, so its side length is \\(\\sqrt{5}\\).\n   - The area of square B is 3, so its side length is \\(\\sqrt{3}\\).\n\n2. **Apply the Pythagorean theorem:**\n   - Since squares A and B are on the legs of a right triangle, the hypotenuse will be the side of square C.\n   - According to the Pythagorean theorem: \n     \\[\n     (\\text{side of C})^2 = (\\text{side of A})^2 + (\\text{side of B})^2\n     \\]\n   - Substitute the side lengths:\n     \\[\n     (\\text{side of C})^2 = (\\sqrt{5})^2 + (\\sqrt{3})^2 = 5 + 3 = 8\n     \\]\n\n3. **Determine the area of square C:**\n   - The area of square C is \\((\\text{side of C})^2 = 8\\).\n\nThus, the area of the largest square C is 8.\n\nThe correct answer is \\((D) 8\\).",
+                "extracted": "8",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "8",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "RULE (skipped verifier): Answer_A UNSURE, use Answer_B",
+                "raw": "",
+                "extracted": "8",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": []
+            }
+        },
+        "decision_flags": [
+            "a_b_disagree",
+            "verifier_skipped:a_unsure_use_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "\u5982\u56fe\u662f\u4e00\u682a\u7f8e\u4e3d\u7684\u52fe\u80a1\u6811\uff0c\u5176\u4e2d\u6240\u6709\u56db\u8fb9\u5f62\u90fd\u662f\u6b63\u65b9\u5f62\uff0c\u6240\u6709\u7684\u4e09\u89d2\u5f62\u90fd\u662f\u76f4\u89d2\u4e09\u89d2\u5f62\uff0c\u82e5\u6b63\u65b9\u5f62A\u3001B\u7684\u9762\u79ef\u5206\u522b\u4e3a5\u30013\uff0c\u5219\u6700\u5927\u6b63\u65b9\u5f62C\u7684\u9762\u79ef\u662f\uff08\uff09",
+        "image": "images/9.jpg",
+        "choices": [
+            "15",
+            "13",
+            "11",
+            "8"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    },
+    "10": {
+        "pid": "10",
+        "final_answer": "UNSURE",
+        "answer_a": "C",
+        "answer_b": "A",
+        "direct_solver_raw": "To determine which object comes next, let's analyze the pattern in the sequence:\n\n1. **First Row:**\n   - The objects are: \ud835\udc4b, \ud835\udc42, \ud835\udc40 (from left to right).\n   - These shapes appear to be symmetrical or mirrored versions of each other.\n\n2. **Second Row:**\n   - The objects are: \u221e, \ud835\udc47, 8 (from left to right).\n   - These shapes also have symmetrical or mirrored properties.\n\n3. **Third Row:**\n   - The objects are: \ud835\udc47, \ud800\udf08 (from left to right).\n   - The first object is a standard \"T\" shape.\n   - The second object is similar to the first but with an additional horizontal line.\n\n**Pattern Analysis:**\n- Each row seems to follow a pattern of symmetry or mirroring.\n- The first two rows have three objects each, while the third row has two objects, suggesting the next object completes the sequence.\n\n**Prediction:**\n- The third row starts with a \"T\" and then adds a horizontal line to create a new shape.\n- The next logical step would be to add another horizontal line to the existing shape, creating a more complex version.\n\n**Conclusion:**\n- The next object should be a more complex version of the \"T\" shape with additional lines.\n\n**Choice:**\n- (E) E is the object that fits this pattern, as it adds another horizontal line to the existing shape.\n\nThus, the object that comes next is **(E) E**.",
+        "direct_solver_extracted": "A",
+        "modules": {
+            "task_inference": {
+                "prompt": "PROBLEM\nquestion_type: multi_choice\nanswer_type: text\nprecision: None\nunit: None\n\nQuestion:\nWhich object comes next?\n\nChoices:\nA. A\nB. B\nC. C\nD. D\nE. E\n\nAdditional context (caption/OCR/few-shot/etc):\nQuestion: Which object comes next?\nChoices:\n(A) A\n(B) B\n(C) C\n(D) D\n(E) E\nHint: Please answer the question and provide the EXACT content/value of the correct choice (NOT the option letter). End your response with a single line in the form \"Answer: <value>\". For example: Answer: 145\u00b0 or Answer: tokyo.\nSolution:",
+                "raw": "```python\nprint(\"Answer: C\")\n```",
+                "extracted": "print(\"Answer: C\")",
+                "error": "",
+                "extracted_raw": "print(\"Answer: C\")",
+                "sanitize_notes": []
+            },
+            "code_executor": {
+                "stdout": "Answer: C",
+                "answer_raw": "C",
+                "answer": "C",
+                "post_flags": [],
+                "error": ""
+            },
+            "direct_solver": {
+                "prompt": "Question:\nWhich object comes next?\nChoices:\n(A) A\n(B) B\n(C) C\n(D) D\n(E) E",
+                "raw": "To determine which object comes next, let's analyze the pattern in the sequence:\n\n1. **First Row:**\n   - The objects are: \ud835\udc4b, \ud835\udc42, \ud835\udc40 (from left to right).\n   - These shapes appear to be symmetrical or mirrored versions of each other.\n\n2. **Second Row:**\n   - The objects are: \u221e, \ud835\udc47, 8 (from left to right).\n   - These shapes also have symmetrical or mirrored properties.\n\n3. **Third Row:**\n   - The objects are: \ud835\udc47, \ud800\udf08 (from left to right).\n   - The first object is a standard \"T\" shape.\n   - The second object is similar to the first but with an additional horizontal line.\n\n**Pattern Analysis:**\n- Each row seems to follow a pattern of symmetry or mirroring.\n- The first two rows have three objects each, while the third row has two objects, suggesting the next object completes the sequence.\n\n**Prediction:**\n- The third row starts with a \"T\" and then adds a horizontal line to create a new shape.\n- The next logical step would be to add another horizontal line to the existing shape, creating a more complex version.\n\n**Conclusion:**\n- The next object should be a more complex version of the \"T\" shape with additional lines.\n\n**Choice:**\n- (E) E is the object that fits this pattern, as it adds another horizontal line to the existing shape.\n\nThus, the object that comes next is **(E) E**.",
+                "extracted": "A",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "answer_raw": "A",
+                "post_flags": []
+            },
+            "verifier": {
+                "prompt": "Question:\nWhich object comes next?\nChoices:\n(A) A\n(B) B\n(C) C\n(D) D\n(E) E\n\nAnswer_A: C\nAnswer_A_error: \nCode_A_suspicious: False ()\n\nCode_A:\nprint(\"Answer: C\")\n\nStdout_A:\nAnswer: C\n\nAnswer_B: A\n\nDirect_Solver_Reasoning (Module-3 raw):\nTo determine which object comes next, let's analyze the pattern in the sequence:\n\n1. **First Row:**\n   - The objects are: \ud835\udc4b, \ud835\udc42, \ud835\udc40 (from left to right).\n   - These shapes appear to be symmetrical or mirrored versions of each other.\n\n2. **Second Row:**\n   - The objects are: \u221e, \ud835\udc47, 8 (from left to right).\n   - These shapes also have symmetrical or mirrored properties.\n\n3. **Third Row:**\n   - The objects are: \ud835\udc47, \ud800\udf08 (from left to right).\n   - The first object is a standard \"T\" shape.\n   - The second object is similar to the first but with an additional horizontal line.\n\n**Pattern Analysis:**\n- Each row seems to follow a pattern of symmetry or mirroring.\n- The first two rows have three objects each, while the third row has two objects, suggesting the next object completes the sequence.\n\n**Prediction:**\n- The third row starts with a \"T\" and then adds a horizontal line to create a new shape.\n- The next logical step would be to add another horizontal line to the existing shape, creating a more complex version.\n\n**Conclusion:**\n- The next object should be a more complex version of the \"T\" shape with additional lines.\n\n**Choice:**\n- (E) E is the object that fits this pattern, as it adds another horizontal line to the existing shape.\n\nThus, the object that comes next is **(E) E**.",
+                "raw": "UNSURE",
+                "extracted": "UNSURE",
+                "error": "",
+                "extracted_raw": "",
+                "sanitize_notes": [],
+                "post_flags": []
+            }
+        },
+        "decision_flags": [
+            "a_b_disagree",
+            "verifier_called",
+            "verifier_overrode_a",
+            "verifier_overrode_b"
+        ],
+        "notes": {
+            "code_a_suspicious": false,
+            "code_a_suspicious_reason": ""
+        },
+        "errors": [],
+        "question": "Which object comes next?",
+        "image": "images/10.jpg",
+        "choices": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E"
+        ],
+        "unit": null,
+        "precision": null,
+        "answer_type": "text",
+        "question_type": "multi_choice"
+    }
+}
