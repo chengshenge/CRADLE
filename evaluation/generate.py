@@ -50,14 +50,43 @@ _CODE_FENCE_RE = re.compile(r"```(?:python)?\s*(.*?)```", re.DOTALL | re.IGNOREC
 def extract_python_code(text: str) -> str:
     """
     Extract python code from a model response.
-    Accepts either raw code or a ```python ... ``` fenced block.
+
+    Supports:
+      - Proper fenced blocks: ```python ... ```
+      - Unterminated opening fence: ```python ... (EOF)
+      - Raw code (no fences)
+
+    Always strips any markdown fence lines.
     """
     if not isinstance(text, str):
         return ""
+
+    # 1) Proper fenced block
     m = _CODE_FENCE_RE.search(text)
     if m:
-        return (m.group(1) or "").strip()
-    return text.strip()
+        code = (m.group(1) or "")
+        code = re.sub(r"(?m)^\s*```.*$", "", code)
+        return code.strip()
+
+    # 2) Opening fence without closing fence
+    m = re.search(r"```(?:python)?\s*\n(.*)$", text, flags=re.IGNORECASE | re.DOTALL)
+    if m:
+        code = m.group(1) or ""
+        code = re.sub(r"(?m)^\s*```.*$", "", code)
+        return code.strip()
+
+    # 3) No fence: still strip any stray fence lines
+    return re.sub(r"(?m)^\s*```.*$", "", text).strip()
+
+
+def strip_markdown_fences(code: str) -> str:
+    """Remove any markdown fence lines from code (defensive)."""
+    if not isinstance(code, str):
+        try:
+            code = str(code)
+        except Exception:
+            return ""
+    return re.sub(r"(?m)^\s*```.*$", "", code).strip()
 
 # -----------------------------
 # Code sanitization (ensure raw numeric output)
@@ -286,7 +315,7 @@ def _distance_like(problem: Dict[str, Any]) -> bool:
         return True
     return False
 
-def postprocess_answer(answer: str, problem: Dict[str, Any]) -> Tuple[str, List[str]]:
+def postprocess_answer(answer: str, problem: Dict[str, Any], allow_unit_rescale: bool = True) -> Tuple[str, List[str]]:
     """
     Postprocess an extracted answer string:
       - normalize choice answers (already mostly handled by extraction)
@@ -335,7 +364,7 @@ def postprocess_answer(answer: str, problem: Dict[str, Any]) -> Tuple[str, List[
     flags.append(f"formatted_dp_{digits}")
 
     # Unit/scale rescue: if rounding collapses to 0.0 but value is small non-zero and distance-like
-    if _distance_like(problem) and digits >= 1:
+    if allow_unit_rescale and _distance_like(problem) and digits >= 1:
         zero_str = "0." + ("0" * digits)
         if formatted == zero_str and abs(fa) > 0 and abs(fa) < 1:
             for scale in (100.0, 1000.0):
@@ -458,6 +487,22 @@ def should_force_verifier_when_a_unsure(problem: Dict[str, Any]) -> Tuple[bool, 
         return True, "a_unsure_counting"
     return False, ""
 
+
+def should_use_image_in_verifier(problem: Dict[str, Any]) -> Tuple[bool, str]:
+    """Decide whether the verifier should use the image when resolving A vs B."""
+    q = (problem.get("question") or "")
+    qlow = q.lower()
+    meta = (problem.get("metadata") or {})
+    ctx = (meta.get("context") or "").lower()
+    cat = (meta.get("category") or "").lower()
+
+    if any(k in qlow for k in _GEOMETRY_KEYWORDS) or any(k in ctx for k in ["geometry", "diagram"]) or "geometry" in cat:
+        return True, "geometry"
+    if any(k in qlow for k in _MEASUREMENT_KEYWORDS) or any(k in ctx for k in ["measurement", "chart", "plot"]):
+        return True, "measurement"
+    if any(k in qlow for k in _COUNTING_KEYWORDS):
+        return True, "counting"
+    return False, ""
 
 def _is_code_safe_enough(code: str) -> Tuple[bool, str]:
     if not code.strip():
@@ -605,7 +650,7 @@ def evaluate_code_sandbox(code_string: str, timeout_s: int = 5) -> Tuple[str, Op
     Execute python code in a subprocess with basic safety checks and a timeout.
     Returns: (stdout, error_string_or_None)
     """
-    code = code_string or ""
+    code = strip_markdown_fences(code_string or "")
 
     # Rewrite allow-listed imports to avoid __import__ in the sandbox
     code, import_err = rewrite_safe_imports(code)
@@ -790,33 +835,47 @@ Output format rules (very strict):
 
 
 VERIFIER_SYSTEM = """You are Module-4 (Verifier).
-You will be given the original problem and two candidate answers plus additional evidence:
 
-- Answer_A: produced by executing code from Module-2
-- Answer_B: produced by the direct solver (Module-3)
-- Code_A: the python program that produced Answer_A
-- Stdout_A: raw stdout from executing Code_A
-- Code_A_suspicious: whether Code_A likely fabricated unseen scene/values
+You are given:
+- The original problem (text + choices)
+- Answer_A (from Module-2 code execution)
+- Answer_B (from Module-3 direct solver)
+- Additional evidence for Answer_A (Code_A, Stdout_A, and whether Code_A is suspicious)
 
-Decision rules:
-1) If both answers match semantically, output that answer.
+CRITICAL OUTPUT RULE:
+You MUST output EXACTLY ONE of these three strings:
+- Answer_A   (verbatim, exactly as provided)
+- Answer_B   (verbatim, exactly as provided)
+- UNSURE
+
+Do NOT invent a third answer. Do NOT output labels like "A" or "B". Do NOT add explanation.
+
+Decision guidelines:
+1) If Answer_A and Answer_B agree, output Answer_A.
 2) If one answer is UNSURE/empty/error and the other is not, choose the non-UNSURE answer.
-3) If Code_A_suspicious is True, distrust Answer_A unless Answer_B is also UNSURE/error.
-4) Prefer answers consistent with choices, units, and required precision/decimal places.
-5) If the problem can be solved purely from the textual information (e.g., uses given numbers/theorems) and Code_A is not suspicious,
-   prefer Answer_A. If the problem clearly requires reading/counting from the image and Answer_A is UNSURE, prefer Answer_B.
-
-Output ONLY the final answer (no explanation)."""
+3) If Code_A_suspicious is True, distrust Answer_A (prefer Answer_B unless Answer_B is UNSURE).
+4) If the problem can be solved from the textual information alone and Code_A is not suspicious, prefer Answer_A.
+5) If the problem clearly requires reading/counting from the image, prefer Answer_B (unless Answer_B is UNSURE)."""
 
 VERIFIER_SYSTEM_VISION = """You are Module-4 (Verifier) WITH IMAGE access.
-You will be given the original problem (text + choices), the problem image, and candidate answers.
 
-Your job:
-1) Solve the problem yourself using BOTH the text and the image.
-2) Use Answer_A / Answer_B only as hints; either or both may be wrong.
-3) Prefer mathematically consistent solutions. If choices exist, choose the matching choice text exactly.
+You are given:
+- The original problem (text + choices) and the problem image
+- Answer_A and Answer_B (candidates)
+- You may use the image to decide which candidate is correct
 
-Output ONLY the final answer. No explanation. No JSON."""
+CRITICAL OUTPUT RULE:
+You MUST output EXACTLY ONE of these three strings:
+- Answer_A   (verbatim, exactly as provided)
+- Answer_B   (verbatim, exactly as provided)
+- UNSURE
+
+Do NOT invent a third answer. Do NOT output labels like "A" or "B". Do NOT add explanation.
+
+Decision guidelines:
+- Use the image + text to judge which candidate matches the problem.
+- Prefer the candidate that matches choices/units/required precision.
+- If neither candidate can be verified, output UNSURE."""
 
 
 
@@ -874,6 +933,7 @@ def run_agent_on_problem(
             m1.raw = raw
             m1.extracted_raw = extract_python_code(raw)
             m1.extracted, m1.sanitize_notes = sanitize_code_for_raw_output(m1.extracted_raw)
+            m1.extracted = strip_markdown_fences(m1.extracted)
             if m1.sanitize_notes:
                 trace["decision_flags"].append("m1_sanitized")
 
@@ -898,7 +958,7 @@ def run_agent_on_problem(
             ans_raw = extract_answer_from_text(last_nonempty_line(stdout), problem)
             m2["answer_raw"] = ans_raw
 
-            ans_proc, flags = postprocess_answer(ans_raw, problem)
+            ans_proc, flags = postprocess_answer(ans_raw, problem, allow_unit_rescale=True)
             m2["answer"] = ans_proc
             m2["post_flags"] = flags
             for f in flags:
@@ -932,7 +992,7 @@ def run_agent_on_problem(
         )
         m3.raw = raw
         m3_raw_ans = extract_answer_from_text(raw, problem)
-        m3.extracted, m3_flags = postprocess_answer(m3_raw_ans, problem)
+        m3.extracted, m3_flags = postprocess_answer(m3_raw_ans, problem, allow_unit_rescale=False)
         # store post flags as part of the module dict
         m3_dict = m3.__dict__.copy()
         m3_dict["answer_raw"] = m3_raw_ans
@@ -970,19 +1030,17 @@ def run_agent_on_problem(
     # If Answer_A is UNSURE, we usually take Answer_B.
     # However, for vision-heavy problems (geometry/measurement/counting), we force a verifier call WITH IMAGE.
     if ans_a.lower() == "unsure" and ans_b.lower() != "unsure":
-        force_v, force_reason = should_force_verifier_when_a_unsure(problem)
-        if not force_v:
-            trace["decision_flags"].append("verifier_skipped:a_unsure")
-            final_answer = ans_b
-            m4.prompt = "RULE (skipped verifier): Answer_A UNSURE, use Answer_B"
-            m4.extracted = final_answer
-            trace["modules"]["verifier"] = m4.__dict__
-            trace["final_answer"] = final_answer
-            trace["answer_a"] = ans_a
-            trace["answer_b"] = ans_b
-            return final_answer, trace
-        else:
-            trace["decision_flags"].append(f"verifier_forced:{force_reason}")
+        # In v5 we do NOT force a verifier call when Answer_A is UNSURE.
+        # Reason: forcing a verifier can override a correct Answer_B with a third invented answer.
+        trace["decision_flags"].append("verifier_skipped:a_unsure_use_b")
+        final_answer = ans_b
+        m4.prompt = "RULE (skipped verifier): Answer_A UNSURE, use Answer_B"
+        m4.extracted = final_answer
+        trace["modules"]["verifier"] = m4.__dict__
+        trace["final_answer"] = final_answer
+        trace["answer_a"] = ans_a
+        trace["answer_b"] = ans_b
+        return final_answer, trace
 
     if suspicious and ans_b.lower() != "unsure":
         trace["decision_flags"].append("verifier_skipped:code_a_suspicious")
@@ -1036,10 +1094,10 @@ def run_agent_on_problem(
     m4.prompt = verifier_user
     trace["decision_flags"].append("verifier_called")
     try:
-        use_image_for_verifier = any(
-            isinstance(f, str) and f.startswith("verifier_forced:")
-            for f in trace.get("decision_flags", [])
-        )
+        use_image_for_verifier, img_reason = should_use_image_in_verifier(problem)
+        use_image_for_verifier = bool(use_image_for_verifier and problem_decoded_image is not None)
+        if use_image_for_verifier:
+            trace["decision_flags"].append(f"verifier_use_image:{img_reason}")
         raw = model.chat(
             messages=[
                 {
@@ -1055,9 +1113,48 @@ def run_agent_on_problem(
         if use_image_for_verifier:
             trace["decision_flags"].append("verifier_called_with_image")
         m4.raw = raw
-        chosen = extract_answer_from_text(raw, problem)
-        chosen, v_flags = postprocess_answer(chosen, problem)
+
+        # Coerce verifier output to one of {Answer_A, Answer_B, UNSURE}.
+        raw_clean = (raw or "").strip()
+        raw_u = raw_clean.upper()
+
+        chosen = ""
+        v_flags: List[str] = []
+
+        # Some models may output labels; map them explicitly.
+        if raw_u in {"A", "ANSWER_A", "ANS_A", "CHOICE_A"}:
+            chosen = ans_a
+            trace["decision_flags"].append("verifier_chose_a_label")
+        elif raw_u in {"B", "ANSWER_B", "ANS_B", "CHOICE_B"}:
+            chosen = ans_b
+            trace["decision_flags"].append("verifier_chose_b_label")
+        elif raw_u in {"UNSURE", "UNKNOWN"}:
+            chosen = "UNSURE"
+        else:
+            extracted = extract_answer_from_text(raw, problem)
+            extracted_proc, v_flags = postprocess_answer(extracted, problem, allow_unit_rescale=False)
+
+            # If it matches either candidate semantically, snap to that candidate verbatim.
+            if answers_agree(extracted_proc, ans_a, problem):
+                chosen = ans_a
+            elif answers_agree(extracted_proc, ans_b, problem):
+                chosen = ans_b
+            elif extracted_proc.upper() == "UNSURE":
+                chosen = "UNSURE"
+            else:
+                trace["decision_flags"].append("verifier_invalid_output_fallback")
+                trace["notes"]["verifier_invalid_raw"] = raw_clean[:200]
+                # Fallback: prefer a non-UNSURE candidate; prefer Answer_B.
+                if ans_b.lower() != "unsure":
+                    chosen = ans_b
+                elif ans_a.lower() != "unsure":
+                    chosen = ans_a
+                else:
+                    chosen = "UNSURE"
+                v_flags = []
+
         m4.extracted = chosen
+
         # store flags
         m4_dict = m4.__dict__.copy()
         m4_dict["post_flags"] = v_flags
