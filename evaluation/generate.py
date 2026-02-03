@@ -109,7 +109,7 @@ def sanitize_code_for_raw_output(code: str) -> Tuple[str, List[str]]:
         return "", ["code_not_string"]
 
     out_lines: List[str] = []
-    for line in scan_code.splitlines():
+    for line in code.splitlines():
         orig = line
         m = _PRINT_FORMAT_RE.match(line)
         if m:
@@ -145,109 +145,10 @@ def sanitize_code_for_raw_output(code: str) -> Tuple[str, List[str]]:
 
 
 # -----------------------------
-# Float robustness (avoid == on computed floats)
-# -----------------------------
-_IF_EQ_NUM_RE = re.compile(
-    r"^(\s*)(if|elif)\s+(.+?)\s*==\s*([-+]?(?:\d+\.\d+|\d+)(?:[eE][-+]?\d+)?)\s*:\s*$"
-)
-_IF_NUM_EQ_RE = re.compile(
-    r"^(\s*)(if|elif)\s+([-+]?(?:\d+\.\d+|\d+)(?:[eE][-+]?\d+)?)\s*==\s*(.+?)\s*:\s*$"
-)
-
-def sanitize_code_for_float_comparisons(code: str, tol: float = 1e-6) -> Tuple[str, List[str]]:
-    """Rewrite simple `if expr == <number>:` patterns to a tolerance check.
-
-    This reduces false UNSURE fallthrough due to floating-point rounding.
-    Only rewrites comparisons against numeric LITERALS in `if/elif` lines.
-    """
-    notes: List[str] = []
-    if not isinstance(code, str):
-        return "", ["code_not_string"]
-
-    out_lines: List[str] = []
-    for line in scan_code.splitlines():
-        m = _IF_EQ_NUM_RE.match(line)
-        if m:
-            indent, kw, expr, num = m.group(1), m.group(2), m.group(3).strip(), m.group(4).strip()
-            out_lines.append(f"{indent}{kw} abs(({expr}) - ({num})) < {tol}:")
-            notes.append("rewrote_float_eq_to_tol")
-            continue
-
-        m = _IF_NUM_EQ_RE.match(line)
-        if m:
-            indent, kw, num, expr = m.group(1), m.group(2), m.group(3).strip(), m.group(4).strip()
-            out_lines.append(f"{indent}{kw} abs(({expr}) - ({num})) < {tol}:")
-            notes.append("rewrote_float_eq_to_tol")
-            continue
-
-        out_lines.append(line)
-
-    return "\n".join(out_lines).strip(), notes
-
-
-# -----------------------------
 # Executability guard (prevent sandbox SyntaxError from non-Python algebra)
 # -----------------------------
 _EQUATION_LIKE_RE = re.compile(r"(?<![=!<>])=(?![=])")
 _IMPLICIT_MULT_RE = re.compile(r"\b(\d+)([a-zA-Z])\b")
-
-
-def _mask_strings_and_comments(code: str) -> str:
-    """Return code with string literals and comments replaced by spaces (preserving layout).
-
-    This prevents false positives like detecting implicit multiplication in `"6cm"` inside a string.
-    """
-    if not isinstance(code, str):
-        try:
-            code = str(code)
-        except Exception:
-            return ""
-
-    try:
-        import tokenize as _tokenize
-        import io as _io
-
-        lines = code.splitlines(True)  # keep line endings
-
-        def _mask_in_line(i: int, start: int, end: int) -> None:
-            line = lines[i]
-            has_nl = line.endswith("\n")
-            core_len = len(line) - (1 if has_nl else 0)
-            s = max(0, min(start, core_len))
-            e = max(0, min(end, core_len))
-            if e <= s:
-                return
-            core = line[:core_len]
-            core = core[:s] + (" " * (e - s)) + core[e:]
-            lines[i] = core + ("\n" if has_nl else "")
-
-        for tok in _tokenize.generate_tokens(_io.StringIO(code).readline):
-            ttype = tok.type
-            if ttype not in (_tokenize.STRING, _tokenize.COMMENT):
-                continue
-            (sline, scol) = tok.start
-            (eline, ecol) = tok.end
-            sline -= 1
-            eline -= 1
-            if sline < 0 or eline < 0:
-                continue
-            if sline == eline:
-                _mask_in_line(sline, scol, ecol)
-            else:
-                # mask from start col to end of first line
-                _mask_in_line(sline, scol, 10**9)
-                # mask full middle lines
-                for li in range(sline + 1, eline):
-                    _mask_in_line(li, 0, 10**9)
-                # mask start of last line to end col
-                _mask_in_line(eline, 0, ecol)
-
-        return "".join(lines)
-    except Exception:
-        # Fallback: best-effort regex mask (may not handle nested quotes perfectly)
-        masked = re.sub(r'(""".*?"""|\'\'\'.*?\'\'\'|".*?"|\'.*?\')', ' ', code, flags=re.DOTALL)
-        masked = re.sub(r"(?m)#.*$", lambda m: " " * len(m.group(0)), masked)
-        return masked
 
 def sanitize_code_for_executability(code: str) -> Tuple[str, List[str], bool]:
     """
@@ -262,15 +163,13 @@ def sanitize_code_for_executability(code: str) -> Tuple[str, List[str], bool]:
         return "", ["empty_code"], False
 
     # Detect implicit multiplication like '2x' (very common in non-code algebra).
-    scan_code = _mask_strings_and_comments(code)
-
-    if _IMPLICIT_MULT_RE.search(scan_code):
+    if _IMPLICIT_MULT_RE.search(code):
         notes.append("nonexecutable_implicit_multiplication_detected")
         return "print('UNSURE')", notes, True
 
     # Detect equation-like lines with a single '=' that are not assignments.
     # We conservatively treat any '=' where the LHS is not a simple lvalue as non-executable.
-    for line in scan_code.splitlines():
+    for line in code.splitlines():
         l = line.strip()
         if not l or l.startswith("#"):
             continue
@@ -759,7 +658,7 @@ def rewrite_safe_imports(code: str) -> Tuple[str, Optional[str]]:
             return "", "Code is not a string"
 
     out_lines: List[str] = []
-    for line in scan_code.splitlines():
+    for line in code.splitlines():
         m = _IMPORT_LINE_RE.match(line)
         if m:
             rest = m.group(1)
@@ -1180,10 +1079,6 @@ def run_agent_on_problem(
             m1.extracted_raw = extract_python_code(raw)
             m1.extracted, m1.sanitize_notes = sanitize_code_for_raw_output(m1.extracted_raw)
             m1.extracted = strip_markdown_fences(m1.extracted)
-            m1.extracted, float_notes = sanitize_code_for_float_comparisons(m1.extracted)
-            if float_notes:
-                m1.sanitize_notes.extend(float_notes)
-                trace["decision_flags"].append("m1_float_tol_rewrite")
             m1.extracted, exec_notes, forced_unsure = sanitize_code_for_executability(m1.extracted)
             if exec_notes:
                 m1.sanitize_notes.extend(exec_notes)
