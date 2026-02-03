@@ -7,7 +7,7 @@ import os
 import re
 import sys
 import traceback
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
 from datasets import load_dataset
@@ -58,6 +58,62 @@ def extract_python_code(text: str) -> str:
     if m:
         return (m.group(1) or "").strip()
     return text.strip()
+
+# -----------------------------
+# Code sanitization (ensure raw numeric output)
+# -----------------------------
+_PRINT_FORMAT_RE = re.compile(r"^\s*print\(\s*format\((.+?),\s*['\"]\.\d+f['\"]\)\s*\)\s*$")
+_PRINT_ROUND_RE = re.compile(r"^\s*print\(\s*round\((.+?),\s*\d+\)\s*\)\s*$")
+_PRINT_STRFMT_RE = re.compile(r"^\s*print\(\s*['\"][^'\"]*\{:\.\d+f\}[^'\"]*['\"]\.format\((.+?)\)\s*\)\s*$")
+_PRINT_FSTRING_RE = re.compile(r"^\s*print\(\s*f['\"]\{(.+?)\:\.\d+f\}['\"]\s*\)\s*$")
+
+def sanitize_code_for_raw_output(code: str) -> Tuple[str, List[str]]:
+    """Best-effort: rewrite common formatting/rounding print patterns to print the raw expression.
+
+    Why: if code prints a rounded value (e.g. 0.0), downstream unit-rescale cannot recover.
+    This runs in the main process (safe) before sandbox execution.
+
+    Returns: (sanitized_code, notes)
+    """
+    notes: List[str] = []
+    if not isinstance(code, str):
+        return "", ["code_not_string"]
+
+    out_lines: List[str] = []
+    for line in code.splitlines():
+        orig = line
+        m = _PRINT_FORMAT_RE.match(line)
+        if m:
+            expr = m.group(1).strip()
+            out_lines.append(f"print({expr})")
+            notes.append("rewrote_print_format_to_raw")
+            continue
+
+        m = _PRINT_ROUND_RE.match(line)
+        if m:
+            expr = m.group(1).strip()
+            out_lines.append(f"print({expr})")
+            notes.append("rewrote_print_round_to_raw")
+            continue
+
+        m = _PRINT_STRFMT_RE.match(line)
+        if m:
+            expr = m.group(1).strip()
+            out_lines.append(f"print({expr})")
+            notes.append("rewrote_print_strformat_to_raw")
+            continue
+
+        m = _PRINT_FSTRING_RE.match(line)
+        if m:
+            expr = m.group(1).strip()
+            out_lines.append(f"print({expr})")
+            notes.append("rewrote_print_fstring_to_raw")
+            continue
+
+        out_lines.append(orig)
+
+    return "\n".join(out_lines).strip(), notes
+
 
 
 _NUM_RE = re.compile(r"[-+]?(?:\d+\.\d+|\d+)(?:[eE][-+]?\d+)?")
@@ -373,6 +429,36 @@ _BANNED_CODE_PATTERNS = [
 ]
 
 
+# When Module-1 is UNSURE, we sometimes STILL want a verifier call (with image) for vision-heavy tasks
+_GEOMETRY_KEYWORDS = [
+    "angle", "triangle", "quadrilateral", "circle", "diagram", "figure", "geometry",
+    "parallel", "perpendicular", "bisector", "midpoint", "congruent", "similar",
+    "tangent", "chord", "arc", "radius", "diameter", "inscribed", "intersect",
+    "m∠", "∠", "degree", "°",
+]
+_MEASUREMENT_KEYWORDS = [
+    "ruler", "thermometer", "graduated", "cylinder", "beaker", "scale", "gauge",
+    "reading", "read the", "measure", "volume", "capacity",
+]
+_COUNTING_KEYWORDS = ["how many", "count", "number of", "subtract all"]
+
+def should_force_verifier_when_a_unsure(problem: Dict[str, Any]) -> Tuple[bool, str]:
+    """Return (force, reason). Force means call verifier WITH IMAGE even if Answer_A is UNSURE."""
+    q = (problem.get("question") or "")
+    qlow = q.lower()
+    meta = (problem.get("metadata") or {})
+    ctx = (meta.get("context") or "").lower()
+    cat = (meta.get("category") or "").lower()
+
+    if any(k in qlow for k in _GEOMETRY_KEYWORDS) or any(k in ctx for k in ["geometry", "diagram"]) or "geometry" in cat:
+        return True, "a_unsure_geometry"
+    if any(k in qlow for k in _MEASUREMENT_KEYWORDS) or any(k in ctx for k in ["measurement", "chart", "plot"]):
+        return True, "a_unsure_measurement"
+    if any(k in qlow for k in _COUNTING_KEYWORDS):
+        return True, "a_unsure_counting"
+    return False, ""
+
+
 def _is_code_safe_enough(code: str) -> Tuple[bool, str]:
     if not code.strip():
         return False, "Empty code"
@@ -485,6 +571,10 @@ def _sandbox_worker(code: str, q) -> None:
         "dict": dict,
         "set": set,
         "tuple": tuple,
+        "format": format,
+        "sorted": sorted,
+        "any": any,
+        "all": all,
     }
 
     safe_globals = {
@@ -674,12 +764,14 @@ Goal: Write a SHORT Python program to solve the problem from the PROVIDED TEXT O
 
 Rules:
 - Output ONLY a python code block fenced with ```python ...```. No prose.
-- The code MUST end by printing ONLY the final answer (single line) via print(...).
 - Do NOT use any import/from statements. The modules math, fractions, decimal are already available as variables.
 - No file I/O, no network, no subprocess, no OS/system access.
-- You may use: math, fractions, decimal.
+- The code MUST end by printing ONLY the final answer (single line) via print(...).
+
+Answer-format rules:
 - If choices are provided, you MUST print EXACTLY one of the provided choices (copy-paste the text).
-- If precision indicates decimal places, print with exactly that many decimal places (e.g., use format or round).
+- If the answer is numeric, print the RAW numeric value (full precision). DO NOT use round(), format(), f-strings, or any rounding/formatting.
+  (Downstream code will enforce decimal places and unit/scale rescue if needed.)
 - If you truly cannot solve from the given information, print UNSURE.
 
 Think silently; only output code."""
@@ -716,15 +808,26 @@ Decision rules:
 
 Output ONLY the final answer (no explanation)."""
 
+VERIFIER_SYSTEM_VISION = """You are Module-4 (Verifier) WITH IMAGE access.
+You will be given the original problem (text + choices), the problem image, and candidate answers.
+
+Your job:
+1) Solve the problem yourself using BOTH the text and the image.
+2) Use Answer_A / Answer_B only as hints; either or both may be wrong.
+3) Prefer mathematically consistent solutions. If choices exist, choose the matching choice text exactly.
+
+Output ONLY the final answer. No explanation. No JSON."""
+
+
 
 @dataclass
 class ModuleLog:
     prompt: str = ""
     raw: str = ""
-    extracted: str = ""
+    extracted: str = ""          # final (possibly sanitized) extracted content
     error: str = ""
-
-
+    extracted_raw: str = ""      # for Module-1: raw extracted python before sanitization
+    sanitize_notes: List[str] = field(default_factory=list)
 def run_agent_on_problem(
     model: OpenAIChatModel,
     problem: Dict[str, Any],
@@ -754,7 +857,9 @@ def run_agent_on_problem(
     if gate:
         trace["decision_flags"].append(f"m1_gated:{gate_reason}")
         m1.raw = "(skipped: vision-only gating)"
-        m1.extracted = "print('UNSURE')"
+        m1.extracted_raw = "print('UNSURE')"
+        m1.extracted, m1.sanitize_notes = "print('UNSURE')", []
+
     else:
         try:
             raw = model.chat(
@@ -767,7 +872,11 @@ def run_agent_on_problem(
                 max_tokens=max_tokens,
             )
             m1.raw = raw
-            m1.extracted = extract_python_code(raw)
+            m1.extracted_raw = extract_python_code(raw)
+            m1.extracted, m1.sanitize_notes = sanitize_code_for_raw_output(m1.extracted_raw)
+            if m1.sanitize_notes:
+                trace["decision_flags"].append("m1_sanitized")
+
         except Exception as e:
             m1.error = f"{e}"
     trace["modules"]["task_inference"] = m1.__dict__
@@ -858,16 +967,22 @@ def run_agent_on_problem(
         return final_answer, trace
 
     # Fast-path: UNSURE / error rules to avoid unnecessary verifier calls
+    # If Answer_A is UNSURE, we usually take Answer_B.
+    # However, for vision-heavy problems (geometry/measurement/counting), we force a verifier call WITH IMAGE.
     if ans_a.lower() == "unsure" and ans_b.lower() != "unsure":
-        trace["decision_flags"].append("verifier_skipped:a_unsure")
-        final_answer = ans_b
-        m4.prompt = "RULE (skipped verifier): Answer_A UNSURE, use Answer_B"
-        m4.extracted = final_answer
-        trace["modules"]["verifier"] = m4.__dict__
-        trace["final_answer"] = final_answer
-        trace["answer_a"] = ans_a
-        trace["answer_b"] = ans_b
-        return final_answer, trace
+        force_v, force_reason = should_force_verifier_when_a_unsure(problem)
+        if not force_v:
+            trace["decision_flags"].append("verifier_skipped:a_unsure")
+            final_answer = ans_b
+            m4.prompt = "RULE (skipped verifier): Answer_A UNSURE, use Answer_B"
+            m4.extracted = final_answer
+            trace["modules"]["verifier"] = m4.__dict__
+            trace["final_answer"] = final_answer
+            trace["answer_a"] = ans_a
+            trace["answer_b"] = ans_b
+            return final_answer, trace
+        else:
+            trace["decision_flags"].append(f"verifier_forced:{force_reason}")
 
     if suspicious and ans_b.lower() != "unsure":
         trace["decision_flags"].append("verifier_skipped:code_a_suspicious")
@@ -921,15 +1036,24 @@ def run_agent_on_problem(
     m4.prompt = verifier_user
     trace["decision_flags"].append("verifier_called")
     try:
+        use_image_for_verifier = any(
+            isinstance(f, str) and f.startswith("verifier_forced:")
+            for f in trace.get("decision_flags", [])
+        )
         raw = model.chat(
             messages=[
-                {"role": "system", "content": VERIFIER_SYSTEM},
+                {
+                    "role": "system",
+                    "content": (VERIFIER_SYSTEM_VISION if use_image_for_verifier else VERIFIER_SYSTEM),
+                },
                 {"role": "user", "content": verifier_user},
             ],
-            decoded_image=None,
+            decoded_image=(problem_decoded_image if use_image_for_verifier else None),
             temperature=0.0,
-            max_tokens=128,
+            max_tokens=256 if use_image_for_verifier else 128,
         )
+        if use_image_for_verifier:
+            trace["decision_flags"].append("verifier_called_with_image")
         m4.raw = raw
         chosen = extract_answer_from_text(raw, problem)
         chosen, v_flags = postprocess_answer(chosen, problem)
