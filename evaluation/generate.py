@@ -144,6 +144,54 @@ def sanitize_code_for_raw_output(code: str) -> Tuple[str, List[str]]:
     return "\n".join(out_lines).strip(), notes
 
 
+# -----------------------------
+# Executability guard (prevent sandbox SyntaxError from non-Python algebra)
+# -----------------------------
+_EQUATION_LIKE_RE = re.compile(r"(?<![=!<>])=(?![=])")
+_IMPLICIT_MULT_RE = re.compile(r"\b(\d+)([a-zA-Z])\b")
+
+def sanitize_code_for_executability(code: str) -> Tuple[str, List[str], bool]:
+    """
+    Guardrail: if the model outputs non-executable algebra (e.g., '2x' or 'x+1 = 3'),
+    avoid crashing the sandbox by forcing UNSURE.
+
+    Returns: (code_or_unsure, notes, forced_unsure)
+    """
+    notes: List[str] = []
+    code = strip_markdown_fences(code or "").strip()
+    if not code:
+        return "", ["empty_code"], False
+
+    # Detect implicit multiplication like '2x' (very common in non-code algebra).
+    if _IMPLICIT_MULT_RE.search(code):
+        notes.append("nonexecutable_implicit_multiplication_detected")
+        return "print('UNSURE')", notes, True
+
+    # Detect equation-like lines with a single '=' that are not assignments.
+    # We conservatively treat any '=' where the LHS is not a simple lvalue as non-executable.
+    for line in code.splitlines():
+        l = line.strip()
+        if not l or l.startswith("#"):
+            continue
+        if "==" in l or ">=" in l or "<=" in l or "!=" in l or ":=" in l:
+            continue
+        if _EQUATION_LIKE_RE.search(l):
+            # Split on first '='
+            left, right = l.split("=", 1)
+            left = left.strip()
+            # Simple assignment target patterns
+            if re.fullmatch(r"[A-Za-z_]\w*", left) or re.fullmatch(r"[A-Za-z_]\w*\s*\[[^\]]+\]\s*", left):
+                continue
+            # Anything else is likely a math equation
+            notes.append("nonexecutable_equation_line_detected")
+            return "print('UNSURE')", notes, True
+
+    return code, notes, False
+
+
+
+
+
 
 _NUM_RE = re.compile(r"[-+]?(?:\d+\.\d+|\d+)(?:[eE][-+]?\d+)?")
 
@@ -166,41 +214,100 @@ def normalize_for_compare(s: str) -> str:
 def extract_answer_from_text(raw: str, problem: Dict[str, Any]) -> str:
     """
     Extract a clean answer string from potentially verbose model output.
-    Preference order:
-      1) Exact choice text if multi_choice
-      2) A/B/C/... mapping if multi_choice
-      3) Last number if numeric
-      4) First non-empty line
+
+    Robustness goals:
+      - Treat UNSURE/UNKNOWN as UNSURE early (avoid mapping to choice letters like 'E' via substring).
+      - Prefer longer choice strings first (avoid 'quarter' stealing 'quarter past').
+      - For single-letter choices (A/B/C...), require token boundaries (avoid substring matches).
+      - Support common prefixes like 'Answer:' / 'Final Answer:' (case-insensitive).
     """
     if not isinstance(raw, str):
         try:
             raw = str(raw)
         except Exception:
             return ""
+
     raw_str = raw.strip()
     if raw_str == "":
         return ""
 
+    # If the model uses an explicit answer line, use it to reduce noise.
+    m = re.search(r"(?im)^\s*(?:final\s*)?answer\s*[:：]\s*(.+?)\s*$", raw_str)
+    if m:
+        raw_str = (m.group(1) or "").strip()
+
+    # Early UNSURE/UNKNOWN handling (prevents accidental letter/substring matches).
+    low = raw_str.strip().lower()
+    if low in {"unsure", "unknown", "unable to determine", "cannot determine", "can't determine", "not sure"}:
+        return "UNSURE"
+    if re.fullmatch(r"(?:unsure|unknown|unable to determine|cannot determine|can't determine|not sure)\.?", low):
+        return "UNSURE"
+
     choices = problem.get("choices", None)
     if choices:
-        # 1) Exact choice substring match
+        # Normalize choices as strings
+        choice_list: List[str] = []
         for c in choices:
-            if isinstance(c, str) and c.strip() != "" and c in raw_str:
-                return c.strip()
+            if isinstance(c, str):
+                cs = c.strip()
+            else:
+                cs = str(c).strip()
+            choice_list.append(cs)
 
-        # 2) A/B/C/D mapping
+        # If choices are single letters (A/B/C...), only match by token boundary.
+        all_single_letters = all(len(c) == 1 and c.isalpha() for c in choice_list)
+
+        raw_upper = raw_str.upper()
+        raw_lower = raw_str.lower()
+
+        if all_single_letters:
+            # Try to find a standalone letter token (prefer explicit answer patterns)
+            m = re.search(r"(?i)(?:^|[\s:（(])([A-Z])(?:$|[\s\)）\.\!,;:])", raw_upper)
+            if m:
+                letter = m.group(1).upper()
+                if letter in choice_list:
+                    return letter
+            return raw_str.splitlines()[0].strip()
+
+        # 1) Exact choice match: prefer longer choices first.
+        # Use case-insensitive matching; for single-word alphanum choices use word boundaries.
+        indexed = list(enumerate(choice_list))
+        indexed.sort(key=lambda t: len(t[1]), reverse=True)
+
+        for idx, c in indexed:
+            if not c:
+                continue
+
+            # If choice is just one character letter, use boundaries
+            if len(c) == 1 and c.isalpha():
+                if re.search(rf"(?i)(?:^|[\s:（(]){re.escape(c)}(?:$|[\s\)）\.\!,;:])", raw_str):
+                    return c
+                continue
+
+            # If choice is a simple word (letters/numbers/_), use word boundary match.
+            if re.fullmatch(r"[A-Za-z0-9_]+", c):
+                if re.search(rf"(?i)\b{re.escape(c)}\b", raw_str):
+                    return c
+            else:
+                # Otherwise substring match (case-insensitive)
+                if c.lower() in raw_lower:
+                    return c
+
+        # 2) A/B/C/D mapping: accept "A" etc and map into provided choice strings
         letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        # Search for single letter answer like "A" or "(B)" or "Answer: C"
-        m = re.search(r"(?:^|[\s:（(])([A-Z])(?:$|[\s\)）\.!,])", raw_str.upper())
+        m = re.search(r"(?i)(?:^|[\s:（(])([A-Z])(?:$|[\s\)）\.\!,;:])", raw_str)
         if m:
-            letter = m.group(1)
+            letter = m.group(1).upper()
             idx = letters.find(letter)
-            if 0 <= idx < len(choices):
-                c = choices[idx]
-                return c.strip() if isinstance(c, str) else str(c)
+            if 0 <= idx < len(choice_list):
+                return choice_list[idx]
 
-        # 3) fallback: first line
-        return raw_str.splitlines()[0].strip()
+        # 3) fallback: first non-empty line
+        for line in raw_str.splitlines():
+            line = line.strip()
+            if line:
+                return line
+        return ""
 
     # Numeric-ish answer types
     if problem.get("answer_type") in {"float", "integer", "number"} or problem.get("precision") is not None:
@@ -413,20 +520,31 @@ def should_gate_task_inference(problem: Dict[str, Any], extra_context: str) -> T
 
 def is_code_suspicious(code: str) -> Tuple[bool, str]:
     """
-    Detect when Module-1 code likely 'invented' unseen scene/values (common failure mode for vision-only problems).
+    Detect when Module-1 code likely 'invented' unseen scene/values or is explicitly guessing.
+
+    This helps prevent fabricated "objects = [...]" solutions for vision-only problems and
+    also prevents "assume/guess" answers from being treated as reliable.
     """
     c = (code or "").strip().lower()
     if not c:
         return False, ""
     if "print('unsure" in c or 'print("unsure' in c:
         return False, ""
+
+    # Explicit guessing / assumption language
+    if any(w in c for w in ["assume", "guess", "probably", "typical", "since no", "no additional information", "let's assume"]):
+        return True, "explicit_assumption_or_guess"
+
+    # Constructed object lists (CLEVR-like fabrication)
     if "objects" in c and "[" in c and "]" in c:
         if any(w in c for w in _CLEVR_OBJECT_WORDS):
             return True, "constructed_objects_list"
-    # many string literals can be a sign of fabricated structured scene
+
+    # Many string literals can be a sign of fabricated structured scene
     n_quotes = c.count("'") + c.count('"')
     if n_quotes >= 16 and any(w in c for w in _CLEVR_OBJECT_WORDS):
         return True, "many_string_literals_clevr"
+
     return False, ""
 
 
@@ -678,6 +796,8 @@ def evaluate_code_sandbox(code_string: str, timeout_s: int = 5) -> Tuple[str, Op
         if q.empty():
             return "", "No output from sandbox process"
         out, err = q.get_nowait()
+        if (err is None) and (not str(out).strip()):
+            return "", "Empty stdout (no print)"
         return out, err
     except Exception as e:
         return "", f"Sandbox failure: {e}"
@@ -817,6 +937,7 @@ Answer-format rules:
 - If choices are provided, you MUST print EXACTLY one of the provided choices (copy-paste the text).
 - If the answer is numeric, print the RAW numeric value (full precision). DO NOT use round(), format(), f-strings, or any rounding/formatting.
   (Downstream code will enforce decimal places and unit/scale rescue if needed.)
+- The output MUST be valid executable Python. Do NOT write algebraic equations like `x + 1 = 3` (use code to solve), and do NOT use implicit multiplication like `2x` (write `2*x`).
 - If you truly cannot solve from the given information, print UNSURE.
 
 Think silently; only output code."""
@@ -934,6 +1055,12 @@ def run_agent_on_problem(
             m1.extracted_raw = extract_python_code(raw)
             m1.extracted, m1.sanitize_notes = sanitize_code_for_raw_output(m1.extracted_raw)
             m1.extracted = strip_markdown_fences(m1.extracted)
+            m1.extracted, exec_notes, forced_unsure = sanitize_code_for_executability(m1.extracted)
+            if exec_notes:
+                m1.sanitize_notes.extend(exec_notes)
+                trace["decision_flags"].append("m1_exec_sanitized")
+            if forced_unsure:
+                trace["decision_flags"].append("m1_forced_unsure:nonexecutable_code")
             if m1.sanitize_notes:
                 trace["decision_flags"].append("m1_sanitized")
 
