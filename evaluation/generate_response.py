@@ -53,74 +53,122 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     # input
-    parser.add_argument('--dataset_name', type=str, default='AI4Math/MathVista')
-    parser.add_argument('--test_split_name', type=str, default='testmini')
-    parser.add_argument('--data_dir', type=str, default='../data')
-    parser.add_argument('--input_file', type=str, default='testmini.json')
+    parser.add_argument("--dataset_name", type=str, default="AI4Math/MathVista")
+    parser.add_argument("--test_split_name", type=str, default="testmini")
+    parser.add_argument("--data_dir", type=str, default="../data")
+    parser.add_argument("--input_file", type=str, default="testmini.json")
 
     # output
-    parser.add_argument('--output_dir', type=str, default='results/gpt4o')
-    parser.add_argument('--output_file', type=str, default='output_gpt4o_testmini.json')
-    parser.add_argument('--max_num_problems', type=int, default=-1)
-    parser.add_argument('--save_every', type=int, default=20)
+    parser.add_argument("--output_dir", type=str, default="results/gpt4o")
+    parser.add_argument("--output_file", type=str, default="output_gpt4o_testmini.json")
+    parser.add_argument("--max_num_problems", type=int, default=-1)
+    parser.add_argument("--save_every", type=int, default=20)
 
     # model
     parser.add_argument(
-        '--model',
+        "--model",
         type=str,
-        default='gpt-4o',
-        choices=['gpt-3.5-turbo', 'gpt-4o', 'gpt-4.1'],
+        default="gpt-4o",
+        choices=["gpt-3.5-turbo", "gpt-4o", "gpt-4.1"],
     )
-    parser.add_argument('--key', type=str, default='', help='OpenAI API key')
+    parser.add_argument("--key", type=str, default="", help="OpenAI API key")
 
     # query
-    parser.add_argument('--query_file', type=str, default=None)
-    parser.add_argument('--caption_file', type=str, default='../data/texts/captions_bard.json')
-    parser.add_argument('--ocr_file', type=str, default='../data/texts/ocrs_easyocr.json')
-    parser.add_argument('--shot_type', type=str, default='solution', choices=['solution', 'code'])
-    parser.add_argument('--shot_num', type=int, default=0)
-    parser.add_argument('--use_caption', action='store_true')
-    parser.add_argument('--use_ocr', action='store_true')
+    parser.add_argument("--query_file", type=str, default=None)
+    parser.add_argument("--caption_file", type=str, default="../data/texts/captions_bard.json")
+    parser.add_argument("--ocr_file", type=str, default="../data/texts/ocrs_easyocr.json")
+    parser.add_argument("--shot_type", type=str, default="solution", choices=["solution", "code"])
+    parser.add_argument("--shot_num", type=int, default=0)
+    parser.add_argument("--use_caption", action="store_true")
+    parser.add_argument("--use_ocr", action="store_true")
 
     # agent
     parser.add_argument(
-        '--agent',
+        "--agent",
         type=str,
-        default='direct',
-        choices=['direct', 'cradle_math_dynamic'],
-        help='direct: original single-call; cradle_math_dynamic: 6-module + dynamic skill learning'
+        default="direct",
+        choices=["direct", "cradle_math_dynamic", "visual_sketchpad"],
+        help=(
+            "direct: original single-call; "
+            "cradle_math_dynamic: 6-module + dynamic skill learning; "
+            "visual_sketchpad: VisualSketchpad tool-interleaved agent"
+        ),
     )
 
-    # dynamic skill options
-    parser.add_argument('--skills_dir', type=str, default='skills',
-                        help='subdir under output_dir to store learned skills')
-    parser.add_argument('--freeze_skills', action='store_true',
-                        help='load skills but do not add/update new ones')
-    parser.add_argument('--reset_skills', action='store_true',
-                        help='clear learned skills at start (for reproducibility)')
-    parser.add_argument('--max_new_skills', type=int, default=3,
-                        help='max new skills to accept per run (safety)')
-    parser.add_argument('--cradle_max_steps', type=int, default=10,
-                        help='max tool steps in action planning')
+    # dynamic skill options (for cradle_math_dynamic)
+    parser.add_argument(
+        "--skills_dir",
+        type=str,
+        default="skills",
+        help="subdir under output_dir to store learned skills",
+    )
+    parser.add_argument(
+        "--freeze_skills",
+        action="store_true",
+        help="load skills but do not add/update new ones",
+    )
+    parser.add_argument(
+        "--reset_skills",
+        action="store_true",
+        help="clear learned skills at start (for reproducibility)",
+    )
+    parser.add_argument(
+        "--max_new_skills",
+        type=int,
+        default=3,
+        help="max new skills to accept per run (safety)",
+    )
+    parser.add_argument(
+        "--cradle_max_steps",
+        type=int,
+        default=10,
+        help="max tool steps in action planning",
+    )
 
     # CRADLE alignment: observation (image) injection policy
-    parser.add_argument('--attach_image_mode', type=str, default='all',
-                        choices=['all', 'selective'],
-                        help='all: attach image to EVERY LLM call (closest to CRADLE); '
-                             'selective: attach only to certain steps')
-    parser.add_argument('--image_steps', type=str, default='IG,AP,SR',
-                        help='comma-separated step names used when attach_image_mode=selective')
-    parser.add_argument('--json_max_retries', type=int, default=1,
-                        help='re-ask retries when a strict JSON contract is violated (no repair).')
+    parser.add_argument(
+        "--attach_image_mode",
+        type=str,
+        default="all",
+        choices=["all", "selective"],
+        help=(
+            "all: attach image to EVERY LLM call (closest to CRADLE); "
+            "selective: attach only to certain steps"
+        ),
+    )
+    parser.add_argument(
+        "--image_steps",
+        type=str,
+        default="IG,AP,SR",
+        help="comma-separated step names used when attach_image_mode=selective",
+    )
+    parser.add_argument(
+        "--json_max_retries",
+        type=int,
+        default=1,
+        help="re-ask retries when a strict JSON contract is violated (no repair).",
+    )
+
+    # VisualSketchpad options
+    parser.add_argument("--vsk_max_reply", type=int, default=10, help="max dialogue turns in VisualSketchpad")
+    parser.add_argument("--vsk_keep_traces", action="store_true", help="keep VisualSketchpad traces under output_dir")
+    parser.add_argument("--vsk_root", type=str, default=None, help="optional: path to VisualSketchpad repo root")
+    parser.add_argument("--vsk_som_address", type=str, default="http://localhost:8080/")
+    parser.add_argument("--vsk_gd_address", type=str, default="http://localhost:8081/")
+    parser.add_argument("--vsk_da_address", type=str, default="http://localhost:8082/")
 
     # retry / rate limit
-    parser.add_argument('--max_retries', type=int, default=10)
-    parser.add_argument('--retry_sleep', type=int, default=20,
-                        help='seconds to sleep when hitting rate limit')
+    parser.add_argument("--max_retries", type=int, default=10)
+    parser.add_argument(
+        "--retry_sleep",
+        type=int,
+        default=20,
+        help="seconds to sleep when hitting rate limit",
+    )
 
     # other
-    parser.add_argument('--rerun', action='store_true')
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument("--rerun", action="store_true")
+    parser.add_argument("--debug", action="store_true")
 
     return parser.parse_args()
 
@@ -135,9 +183,10 @@ def main():
     # load dataset
     logging.info(f"Loading dataset {args.dataset_name}, split {args.test_split_name}")
     data_list = load_dataset(args.dataset_name, split=args.test_split_name)
+
     # IMPORTANT: normalize pid to str for stable JSON keys and correct skipping.
     # HuggingFace dataset pids can be int, but JSON object keys are always str.
-    data = {str(item['pid']): item for item in data_list}
+    data = {str(item["pid"]): item for item in data_list}
 
     # load / build query
     if args.query_file:
@@ -164,14 +213,15 @@ def main():
 
     # backbone model
     from models import gpt
+
     backbone = gpt.GPT_Model(client=client, model=args.model)
 
     # agent wrapper
-    if args.agent == 'cradle_math_dynamic':
+    if args.agent == "cradle_math_dynamic":
         from models import cradle_math_dynamic
 
-        attach_all = (args.attach_image_mode == 'all')
-        image_steps = [s.strip() for s in args.image_steps.split(',') if s.strip()]
+        attach_all = args.attach_image_mode == "all"
+        image_steps = [s.strip() for s in args.image_steps.split(",") if s.strip()]
 
         model = cradle_math_dynamic.CradleMathDynamicAgent(
             backbone=backbone,
@@ -188,10 +238,34 @@ def main():
         )
 
         logging.info(
-            f"Agent loaded: cradle_math_dynamic (backbone={args.model}, "
-            f"attach_image_mode={args.attach_image_mode}, image_steps={image_steps}, "
-            f"json_max_retries={args.json_max_retries})"
+            "Agent loaded: cradle_math_dynamic "
+            f"(backbone={args.model}, attach_image_mode={args.attach_image_mode}, "
+            f"image_steps={image_steps}, json_max_retries={args.json_max_retries})"
         )
+
+    elif args.agent == "visual_sketchpad":
+        # NOTE: this wrapper must exist at models/visual_sketchpad.py (you created it in the previous step)
+        from models import visual_sketchpad
+
+        model = visual_sketchpad.VisualSketchpadAgent(
+            output_dir=args.output_dir,
+            api_key=api_key,
+            model=args.model,
+            temperature=0.0,
+            max_reply=args.vsk_max_reply,
+            keep_traces=args.vsk_keep_traces,
+            task_type="vision",
+            vsk_root=args.vsk_root,
+            som_address=args.vsk_som_address,
+            gd_address=args.vsk_gd_address,
+            da_address=args.vsk_da_address,
+        )
+
+        logging.info(
+            "Agent loaded: visual_sketchpad "
+            f"(backbone={args.model}, vsk_max_reply={args.vsk_max_reply}, keep_traces={args.vsk_keep_traces})"
+        )
+
     else:
         model = backbone
         logging.info(f"Agent loaded: direct (model={args.model})")
@@ -211,20 +285,31 @@ def main():
     skip_pids = []
     if not args.rerun:
         for pid, res in results.items():
-            if 'response' in res and verify_response(res['response']):
+            if "response" in res and verify_response(res["response"]):
                 skip_pids.append(pid)
 
     test_pids = [pid for pid in data if pid not in skip_pids]
     if args.max_num_problems > 0:
-        test_pids = test_pids[:args.max_num_problems]
+        test_pids = test_pids[: args.max_num_problems]
 
     logging.info(f"Running {len(test_pids)} problems")
 
     # loop
     for i, pid in enumerate(tqdm(test_pids)):
         problem = data[pid].copy()
-        decoded_image = problem.pop('decoded_image')
+        decoded_image = problem.pop("decoded_image")
+
+        # default query from query_data
         query = query_data[pid]
+
+        # for visual_sketchpad, use a concise, tool-friendly prompt (recommended)
+        if args.agent == "visual_sketchpad":
+            try:
+                from models.visual_sketchpad import build_mathvista_query_for_vsk
+
+                query = build_mathvista_query_for_vsk(problem)
+            except Exception as e:
+                logging.warning(f"[{pid}] build_mathvista_query_for_vsk failed, fallback to query_data. err={e}")
 
         if args.debug:
             logging.info(f"[{pid}] decoded_image is None? {decoded_image is None} type={type(decoded_image)}")
@@ -232,34 +317,42 @@ def main():
         attempt = 0
         while True:
             try:
-                response = model.get_response(
-                    user_prompt=query,
-                    decoded_image=decoded_image
-                )
+                response = model.get_response(user_prompt=query, decoded_image=decoded_image)
 
                 results[pid] = problem
-                results[pid]['query'] = query
-                results[pid]['response'] = response
-                results[pid]['agent'] = args.agent
-                results[pid]['backbone_model'] = args.model
-                if args.agent == 'cradle_math_dynamic':
-                    results[pid]['attach_image_mode'] = args.attach_image_mode
-                    results[pid]['image_steps'] = args.image_steps
-                    results[pid]['json_max_retries'] = args.json_max_retries
+                results[pid]["query"] = query
+                results[pid]["response"] = response
+                results[pid]["agent"] = args.agent
+                results[pid]["backbone_model"] = args.model
+
+                if args.agent == "cradle_math_dynamic":
+                    results[pid]["attach_image_mode"] = args.attach_image_mode
+                    results[pid]["image_steps"] = args.image_steps
+                    results[pid]["json_max_retries"] = args.json_max_retries
+
+                if args.agent == "visual_sketchpad":
+                    results[pid]["vsk_max_reply"] = args.vsk_max_reply
+                    results[pid]["vsk_keep_traces"] = args.vsk_keep_traces
+                    results[pid]["vsk_som_address"] = args.vsk_som_address
+                    results[pid]["vsk_gd_address"] = args.vsk_gd_address
+                    results[pid]["vsk_da_address"] = args.vsk_da_address
+                    if args.vsk_root:
+                        results[pid]["vsk_root"] = args.vsk_root
+
                 break
 
             except Exception as e:
                 msg = str(e)
                 attempt += 1
 
-                if 'rate limit' in msg.lower() or '429' in msg:
+                if "rate limit" in msg.lower() or "429" in msg:
                     if attempt > args.max_retries:
                         logging.error(f"[{pid}] Exceeded max retries due to rate limit.")
                         results[pid] = problem
-                        results[pid]['query'] = query
-                        results[pid]['error'] = msg
-                        results[pid]['agent'] = args.agent
-                        results[pid]['backbone_model'] = args.model
+                        results[pid]["query"] = query
+                        results[pid]["error"] = msg
+                        results[pid]["agent"] = args.agent
+                        results[pid]["backbone_model"] = args.model
                         break
 
                     logging.warning(
@@ -270,10 +363,10 @@ def main():
 
                 logging.error(f"[{pid}] Error: {msg}")
                 results[pid] = problem
-                results[pid]['query'] = query
-                results[pid]['error'] = msg
-                results[pid]['agent'] = args.agent
-                results[pid]['backbone_model'] = args.model
+                results[pid]["query"] = query
+                results[pid]["error"] = msg
+                results[pid]["agent"] = args.agent
+                results[pid]["backbone_model"] = args.model
                 break
 
         if (i % args.save_every == 0 and i > 0) or i == len(test_pids) - 1:
@@ -286,7 +379,7 @@ def main():
 # =========================
 # Entry
 # =========================
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.basicConfig(
         level=os.environ.get("LOGLEVEL", "INFO").upper(),
         format="[%(name)s] %(message)s",
@@ -294,9 +387,7 @@ if __name__ == '__main__':
         handlers=[RichHandler(rich_tracebacks=True)],
     )
 
-    for module in [
-        "asyncio", "datasets", "httpx", "openai", "PIL", "urllib3"
-    ]:
+    for module in ["asyncio", "datasets", "httpx", "openai", "PIL", "urllib3"]:
         logging.getLogger(module).setLevel(logging.WARNING)
 
     main()
