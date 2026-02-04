@@ -1,0 +1,38 @@
+{
+    "1": {
+        "pid": "1",
+        "question": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?",
+        "image": "images/1.jpg",
+        "choices": null,
+        "unit": null,
+        "precision": 1.0,
+        "answer": "1.2",
+        "question_type": "free_form",
+        "answer_type": "float",
+        "metadata": {
+            "category": "math-targeted-vqa",
+            "context": "scientific figure",
+            "grade": "college",
+            "img_height": 720,
+            "img_width": 1514,
+            "language": "english",
+            "skills": [
+                "scientific reasoning"
+            ],
+            "source": "SciBench",
+            "split": "testmini",
+            "task": "textbook question answering"
+        },
+        "query": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?\n\nPlease answer concisely.",
+        "caption": "",
+        "ocr": [],
+        "response": "Response Error: VisualSketchpad failed.\nSTDERR:\n/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/flaml/__init__.py:20: UserWarning: flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.\n  warnings.warn(\"flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.\")\nTraceback (most recent call last):\n  File \"/home/chengshengge/merge/CRADLE/scripts/run_visual_sketchpad_once.py\", line 72, in <module>\n    main()\n  File \"/home/chengshengge/merge/CRADLE/scripts/run_visual_sketchpad_once.py\", line 38, in main\n    import main as vsk_main\n  File \"/home/chengshengge/merge/CRADLE/third_party/VisualSketchpad/agent/main.py\", line 7, in <module>\n    from prompt import ReACTPrompt, MathPrompt, GeoPrompt, python_codes_for_images_reading, MULTIMODAL_ASSISTANT_MESSAGE\n  File \"/home/chengshengge/merge/CRADLE/third_party/VisualSketchpad/agent/prompt.py\", line 413, in <module>\n    from math_data import TASK2PROMPT\n  File \"/home/chengshengge/merge/CRADLE/third_party/VisualSketchpad/agent/math_data.py\", line 6, in <module>\n    from ipdb import set_trace as bp\nModuleNotFoundError: No module named 'ipdb'\n\nSTDOUT:\n",
+        "agent": "visual_sketchpad",
+        "backbone_model": "gpt-4o",
+        "vsk_max_reply": 10,
+        "vsk_keep_traces": true,
+        "vsk_som_address": "http://localhost:8080/",
+        "vsk_gd_address": "http://localhost:8081/",
+        "vsk_da_address": "http://localhost:8082/"
+    }
+}
