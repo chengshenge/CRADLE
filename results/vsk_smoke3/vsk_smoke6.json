@@ -1,0 +1,38 @@
+{
+    "1": {
+        "pid": "1",
+        "question": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?",
+        "image": "images/1.jpg",
+        "choices": null,
+        "unit": null,
+        "precision": 1.0,
+        "answer": "1.2",
+        "question_type": "free_form",
+        "answer_type": "float",
+        "metadata": {
+            "category": "math-targeted-vqa",
+            "context": "scientific figure",
+            "grade": "college",
+            "img_height": 720,
+            "img_width": 1514,
+            "language": "english",
+            "skills": [
+                "scientific reasoning"
+            ],
+            "source": "SciBench",
+            "split": "testmini",
+            "task": "textbook question answering"
+        },
+        "query": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?\n\nPlease answer concisely.",
+        "caption": "",
+        "ocr": [],
+        "response": "Response Error: VisualSketchpad failed.\nSTDERR:\nle>\n    som_client = Client(SOM_ADDRESS)\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/gradio_client/client.py\", line 162, in __init__\n    self.config = self._get_config()\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/gradio_client/client.py\", line 933, in _get_config\n    r = httpx.get(\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_api.py\", line 210, in get\n    return request(\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_api.py\", line 118, in request\n    return client.request(\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_client.py\", line 837, in request\n    return self.send(request, auth=auth, follow_redirects=follow_redirects)\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_client.py\", line 926, in send\n    response = self._send_handling_auth(\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_client.py\", line 954, in _send_handling_auth\n    response = self._send_handling_redirects(\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_client.py\", line 991, in _send_handling_redirects\n    response = self._send_single_request(request)\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_client.py\", line 1027, in _send_single_request\n    response = transport.handle_request(request)\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_transports/default.py\", line 235, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/lib/python3.10/contextlib.py\", line 153, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/home/chengshengge/merge/CRADLE/.venv/lib/python3.10/site-packages/httpx/_transports/default.py\", line 89, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [Errno 111] Connection refused\n\nSTDOUT:\nLoaded as API: http://localhost:8080/\n",
+        "agent": "visual_sketchpad",
+        "backbone_model": "gpt-4o",
+        "vsk_max_reply": 10,
+        "vsk_keep_traces": true,
+        "vsk_som_address": "http://localhost:8080/",
+        "vsk_gd_address": "http://localhost:8081/",
+        "vsk_da_address": "http://localhost:8082/"
+    }
+}
