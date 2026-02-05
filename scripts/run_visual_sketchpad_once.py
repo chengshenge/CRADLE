@@ -60,6 +60,28 @@ def main():
             vsk_tools.gd_client = Client(args.gd_address)
         if args.da_address:
             vsk_tools.da_client = Client(args.da_address)
+    # ---- ensure task_input/image.png exists for VisualSketchpad ----
+    import glob
+    from PIL import Image
+
+    task_dir = args.task_input
+    img_png = os.path.join(task_dir, "image.png")
+
+    if os.path.isdir(task_dir) and (not os.path.exists(img_png)):
+        # try to find an existing image inside task_dir
+        cands = []
+        for pat in ["*.png", "*.jpg", "*.jpeg", "images/*.png", "images/*.jpg", "images/*.jpeg"]:
+            cands += glob.glob(os.path.join(task_dir, pat))
+
+        # exclude the target path itself (just in case)
+        cands = [p for p in cands if os.path.isfile(p) and os.path.basename(p) != "image.png"]
+
+        if len(cands) > 0:
+            src = cands[0]
+            Image.open(src).convert("RGB").save(img_png)
+            print(f"[run_visual_sketchpad_once] wrote {img_png} from {src}")
+        else:
+            print(f"[run_visual_sketchpad_once] WARNING: no image found under {task_dir}; image.png will be missing.")
 
     vsk_main.run_agent(
         args.task_input,
