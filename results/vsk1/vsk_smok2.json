@@ -1,0 +1,38 @@
+{
+    "1": {
+        "pid": "1",
+        "question": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?",
+        "image": "images/1.jpg",
+        "choices": null,
+        "unit": null,
+        "precision": 1.0,
+        "answer": "1.2",
+        "question_type": "free_form",
+        "answer_type": "float",
+        "metadata": {
+            "category": "math-targeted-vqa",
+            "context": "scientific figure",
+            "grade": "college",
+            "img_height": 720,
+            "img_width": 1514,
+            "language": "english",
+            "skills": [
+                "scientific reasoning"
+            ],
+            "source": "SciBench",
+            "split": "testmini",
+            "task": "textbook question answering"
+        },
+        "query": "When a spring does work on an object, we cannot find the work by simply multiplying the spring force by the object's displacement. The reason is that there is no one value for the force-it changes. However, we can split the displacement up into an infinite number of tiny parts and then approximate the force in each as being constant. Integration sums the work done in all those parts. Here we use the generic result of the integration.\r\n\r\nIn Figure, a cumin canister of mass $m=0.40 \\mathrm{~kg}$ slides across a horizontal frictionless counter with speed $v=0.50 \\mathrm{~m} / \\mathrm{s}$. It then runs into and compresses a spring of spring constant $k=750 \\mathrm{~N} / \\mathrm{m}$. When the canister is momentarily stopped by the spring, by what distance $d$ is the spring compressed?\n\nPlease answer concisely.",
+        "caption": "",
+        "ocr": [],
+        "response": "Response Error: VisualSketchpad failed.\nSTDERR:\n/home/chengshengge/ENTER/envs/vsk_gpu/lib/python3.10/site-packages/flaml/__init__.py:20: UserWarning: flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.\n  warnings.warn(\"flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.\")\nTraceback (most recent call last):\n  File \"/home/chengshengge/ENTER/envs/vsk_gpu/lib/python3.10/site-packages/autogen/coding/jupyter/local_jupyter_server.py\", line 53, in __init__\n    subprocess.run(\n  File \"/home/chengshengge/ENTER/envs/vsk_gpu/lib/python3.10/subprocess.py\", line 526, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/home/chengshengge/ENTER/envs/vsk_gpu/bin/python', '-m', 'jupyter', 'kernelgateway', '--version']' returned non-zero exit status 1.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/chengshengge/merge/CRADLE/scripts/run_visual_sketchpad_once.py\", line 72, in <module>\n    main()\n  File \"/home/chengshengge/merge/CRADLE/scripts/run_visual_sketchpad_once.py\", line 64, in main\n    vsk_main.run_agent(\n  File \"/home/chengshengge/merge/CRADLE/third_party/VisualSketchpad/agent/main.py\", line 60, in run_agent\n    executor = CodeExecutor(working_dir=task_directory, use_vision_tools=True)\n  File \"/home/chengshengge/merge/CRADLE/third_party/VisualSketchpad/agent/execution.py\", line 26, in __init__\n    self.server = LocalJupyterServer()\n  File \"/home/chengshengge/ENTER/envs/vsk_gpu/lib/python3.10/site-packages/autogen/coding/jupyter/local_jupyter_server.py\", line 61, in __init__\n    raise ValueError(\nValueError: Jupyter gateway server is not installed. Please install it with `pip install jupyter_kernel_gateway`.\n\nSTDOUT:\nLoaded as API: http://localhost:8080/ \u2714\nLoaded as API: http://localhost:8081/ \u2714\nLoaded as API: http://localhost:8082/ \u2714\nLoaded as API: http://localhost:8080/ \u2714\nLoaded as API: http://localhost:8081/ \u2714\nLoaded as API: http://localhost:8082/ \u2714\n",
+        "agent": "visual_sketchpad",
+        "backbone_model": "gpt-4o",
+        "vsk_max_reply": 10,
+        "vsk_keep_traces": true,
+        "vsk_som_address": "http://localhost:8080/",
+        "vsk_gd_address": "http://localhost:8081/",
+        "vsk_da_address": "http://localhost:8082/"
+    }
+}
