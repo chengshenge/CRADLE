@@ -8,6 +8,21 @@ import tempfile
 import uuid
 from pathlib import Path
 
+import os
+from PIL import Image
+
+def ensure_image_png(task_dir: str, src_img_path: str) -> str:
+    """
+    VisualSketchpad expects task_dir/image.png to exist.
+    Create it from src_img_path if missing.
+    """
+    os.makedirs(task_dir, exist_ok=True)
+    dst = os.path.join(task_dir, "image.png")
+    if os.path.exists(dst):
+        return dst
+    Image.open(src_img_path).convert("RGB").save(dst)
+    return dst
+
 try:
     from PIL import Image
 except Exception:
@@ -132,7 +147,7 @@ class VisualSketchpadAgent:
         gd_address: str = "http://localhost:8081/",
         da_address: str = "http://localhost:8082/",
     ):
-        self.output_dir = output_dir
+        self.output_dir = os.path.abspath(output_dir)
         self.api_key = api_key
         self.model = model
         self.temperature = temperature
@@ -196,6 +211,7 @@ class VisualSketchpadAgent:
                     stderr=subprocess.PIPE,
                     text=True,
                     check=True,
+                    cwd=task_input,   # <--- 关键：让 VSK 运行时的相对路径指向 task_input
                 )
             except subprocess.CalledProcessError as e:
                 err = (e.stderr or "")[-2000:]
