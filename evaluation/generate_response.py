@@ -153,9 +153,10 @@ def parse_args():
     parser.add_argument("--vsk_max_reply", type=int, default=10, help="max dialogue turns in VisualSketchpad")
     parser.add_argument("--vsk_keep_traces", action="store_true", help="keep VisualSketchpad traces under output_dir")
     parser.add_argument("--vsk_root", type=str, default=None, help="optional: path to VisualSketchpad repo root")
-    parser.add_argument("--vsk_som_address", type=str, default="http://localhost:8080/")
-    parser.add_argument("--vsk_gd_address", type=str, default="http://localhost:8081/")
-    parser.add_argument("--vsk_da_address", type=str, default="http://localhost:8082/")
+    # CHANGED: use 127.0.0.1 instead of localhost to avoid IPv6 ::1 resolution issues
+    parser.add_argument("--vsk_som_address", type=str, default="http://127.0.0.1:8080/")
+    parser.add_argument("--vsk_gd_address", type=str, default="http://127.0.0.1:8081/")
+    parser.add_argument("--vsk_da_address", type=str, default="http://127.0.0.1:8082/")
 
     # retry / rate limit
     parser.add_argument("--max_retries", type=int, default=10)
@@ -244,7 +245,7 @@ def main():
         )
 
     elif args.agent == "visual_sketchpad":
-        # NOTE: this wrapper must exist at models/visual_sketchpad.py (you created it in the previous step)
+        # NOTE: this wrapper must exist at models/visual_sketchpad.py
         from models import visual_sketchpad
 
         model = visual_sketchpad.VisualSketchpadAgent(
@@ -299,11 +300,12 @@ def main():
         problem = data[pid].copy()
         decoded_image = problem.pop("decoded_image")
 
-        # default query from query_data
+        # default query from query_data (often already includes hint/format constraints)
         query = query_data[pid]
 
-        # for visual_sketchpad, use a concise, tool-friendly prompt (recommended)
-        if args.agent == "visual_sketchpad":
+        # For VisualSketchpad:
+        # Only override with dataset-provided hint when it truly exists; otherwise KEEP query_data
+        if args.agent == "visual_sketchpad" and (problem.get("hint") or "").strip():
             try:
                 from models.visual_sketchpad import build_mathvista_query_for_vsk
 
